@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/generator/generator.iml" filepath="$PROJECT_DIR$/.idea/modules/generator/generator.iml" group="generator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/generator/generator_main.iml" filepath="$PROJECT_DIR$/.idea/modules/generator/generator_main.iml" group="generator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/generator/generator_test.iml" filepath="$PROJECT_DIR$/.idea/modules/generator/generator_test.iml" group="generator" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/qrbill.iml" filepath="$PROJECT_DIR$/.idea/modules/qrbill.iml" />
+    </modules>
+  </component>
+</project>
