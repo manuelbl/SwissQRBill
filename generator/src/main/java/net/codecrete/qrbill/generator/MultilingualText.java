@@ -29,7 +29,7 @@ public class MultilingualText {
     private static ResourceBundle messageBundles[] = new ResourceBundle[4];
 
 
-    public static String getText(String key, QRBill.Language language) {
+    public static String getText(String key, Bill.Language language) {
 
         int index = getLanguageIndex(language);
         ResourceBundle bundle = messageBundles[index];
@@ -43,7 +43,7 @@ public class MultilingualText {
         return bundle.getString(key);
     }
 
-    private static int getLanguageIndex(QRBill.Language language) {
+    private static int getLanguageIndex(Bill.Language language) {
         int index;
         switch (language) {
             case German:

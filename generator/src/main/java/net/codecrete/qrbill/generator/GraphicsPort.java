@@ -10,8 +10,7 @@ import java.io.Closeable;
 import java.io.IOException;
 
 public interface GraphicsPort extends Closeable {
-    void startQRCode(double x, double y, double actualSize, double virtualSize) throws IOException;
-    void endQRCode() throws IOException;
+    void setTransformation(double translateX, double translateY, double scale) throws IOException;
     void startPath() throws IOException;
     void addRectangle(double x, double y, double width, double height) throws IOException;
     void fillPath(int color) throws IOException;

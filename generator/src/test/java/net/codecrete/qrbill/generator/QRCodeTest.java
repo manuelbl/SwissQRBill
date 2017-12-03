@@ -20,10 +20,9 @@ public class QRCodeTest {
 
     @Test
     public void SVGTest1() {
-        QRBill qrBill = new QRBill();
-        SampleData.fillExample1(qrBill);
+        Bill bill = SampleData.getExample1();
         byte[] svgReference = loadReferenceFile("qrcode_ex1.svg");
-        byte[] svg = qrBill.generate(QRBill.BillFormat.QRCodeOnly, QRBill.GraphicsFormat.SVG);
+        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QRCodeOnly, QRBill.GraphicsFormat.SVG);
         try {
             assertArrayEquals(svgReference, svg);
         } catch (AssertionError e) {
@@ -34,10 +33,9 @@ public class QRCodeTest {
 
     @Test
     public void SVGTest2() {
-        QRBill qrBill = new QRBill();
-        SampleData.fillExample2(qrBill);
+        Bill bill = SampleData.getExample2();
         byte[] svgReference = loadReferenceFile("qrcode_ex2.svg");
-        byte[] svg = qrBill.generate(QRBill.BillFormat.QRCodeOnly, QRBill.GraphicsFormat.SVG);
+        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QRCodeOnly, QRBill.GraphicsFormat.SVG);
         try {
             assertArrayEquals(svgReference, svg);
         } catch (AssertionError e) {
@@ -48,10 +46,9 @@ public class QRCodeTest {
 
     @Test
     public void SVGTest3() {
-        QRBill qrBill = new QRBill();
-        SampleData.fillExample3(qrBill);
+        Bill bill = SampleData.getExample3();
         byte[] svgReference = loadReferenceFile("qrcode_ex3.svg");
-        byte[] svg = qrBill.generate(QRBill.BillFormat.QRCodeOnly, QRBill.GraphicsFormat.SVG);
+        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QRCodeOnly, QRBill.GraphicsFormat.SVG);
         try {
             assertArrayEquals(svgReference, svg);
         } catch (AssertionError e) {
@@ -62,10 +59,9 @@ public class QRCodeTest {
 
     @Test
     public void SVGTest4() {
-        QRBill qrBill = new QRBill();
-        SampleData.fillExample3(qrBill);
+        Bill bill = SampleData.getExample4();
         byte[] svgReference = loadReferenceFile("qrcode_ex4.svg");
-        byte[] svg = qrBill.generate(QRBill.BillFormat.QRCodeOnly, QRBill.GraphicsFormat.SVG);
+        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QRCodeOnly, QRBill.GraphicsFormat.SVG);
         try {
             assertArrayEquals(svgReference, svg);
         } catch (AssertionError e) {

@@ -31,168 +31,14 @@ public class QRBill {
         QRCodeOnly
     }
 
-    public enum Language {
-        German,
-        French,
-        Italian,
-        English
-    }
-
-    public enum Version {
-        Version_1_0
-    }
-
-    public static final String FIELD_AMOUNT = "amount";
-    public static final String FIELD_CURRENCY = "currency";
-    public static final String FIELD_ACCOUNT = "account";
-    public static final String FIELD_CREDITOR = "creditor";
-    public static final String FIELD_FINAL_CREDITOR = "final_creditor";
-    public static final String FIELD_REFERENCE_NO = "reference_no";
-    public static final String FIELD_ADDITIONAL_INFO = "additional_info";
-    public static final String FIELD_DEBTOR = "debtor";
-
-    private Language language = Language.English;
-    private Version version = Version.Version_1_0;
-
-    private boolean isAmountOpen = false;
-    private double amount = 0;
-    private String currency = "CHF";
-    private String account = "CH";
-    private Person creditor = new Person();
-    private Person finalCreditor = null;
-    private String referenceNo = "0";
-    private String additionalInformation = null;
-    private boolean isDebtorOpen = false;
-    private Person debtor = new Person();
-    private LocalDate dueDate = null;
-
-    private boolean isValidated = false;
-    private boolean isValid = false;
-
-
-    public Language getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(Language language) {
-        this.language = language;
-        isValidated = false;
-    }
-
-    public Version getVersion() {
-        return version;
-    }
-
-    public void setVersion(Version version) {
-        this.version = version;
-        isValidated = false;
-    }
-
-    public boolean isAmountOpen() {
-        return isAmountOpen;
-    }
-
-    public void setAmountOpen(boolean amountOpen) {
-        isAmountOpen = amountOpen;
-        isValidated = false;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-        isValidated = false;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-        isValidated = false;
-    }
-
-    public LocalDate getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-        isValidated = false;
-    }
-
-    public Person getCreditor() {
-        return creditor;
-    }
-
-    public void setCreditor(Person creditor) {
-        this.creditor = creditor;
-        isValidated = false;
-    }
-
-    public Person getFinalCreditor() {
-        return finalCreditor;
-    }
-
-    public void setFinalCreditor(Person finalCreditor) {
-        this.finalCreditor = finalCreditor;
-        isValidated = false;
-    }
-
-    public String getReferenceNo() {
-        return referenceNo;
-    }
-
-    public void setReferenceNo(String referenceNo) {
-        this.referenceNo = referenceNo;
-        isValidated = false;
-    }
-
-    public String getAdditionalInformation() {
-        return additionalInformation;
-    }
-
-    public void setAdditionalInformation(String additionalInformation) {
-        this.additionalInformation = additionalInformation;
-        isValidated = false;
-    }
-
-    public boolean isDebtorOpen() {
-        return isDebtorOpen;
-    }
-
-    public void setDebtorOpen(boolean debtorOpen) {
-        isDebtorOpen = debtorOpen;
-        isValidated = false;
-    }
-
-    public Person getDebtor() {
-        return debtor;
-    }
-
-    public void setDebtor(Person debtor) {
-        this.debtor = debtor;
-        isValidated = false;
-    }
 
     public ValidationResult[] validate() {
         return null;
     }
 
-    public byte[] generate(BillFormat billFormat, GraphicsFormat graphicsFormat) {
+    public static byte[] generate(Bill bill, BillFormat billFormat, GraphicsFormat graphicsFormat) {
 
-        String qrCodeText = createQRCodeText();
+        String qrCodeText = createQRCodeText(bill);
         QrCode qrCode = QrCode.encodeText(qrCodeText, QrCode.Ecc.MEDIUM);
 
         try (GraphicsPort port = new SVGDrawing()) {
@@ -206,7 +52,7 @@ public class QRBill {
 
     private static void drawQRCode(GraphicsPort port, QrCode qrCode) throws IOException {
         int size = qrCode.size;
-        port.startQRCode(0, 0, 46, qrCode.size);
+        port.setTransformation(0, 0, 46.0 / qrCode.size);
         port.startPath();
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
@@ -216,7 +62,7 @@ public class QRBill {
             }
         }
         port.fillPath(0);
-        port.endQRCode();
+        port.setTransformation(0, 0, 1);
 
         // Swiss cross
         port.startPath();
@@ -236,7 +82,7 @@ public class QRBill {
     }
 
 
-    public String createQRCodeText() {
+    public static String createQRCodeText(Bill bill) {
         StringBuilder sb = new StringBuilder();
 
         // Header
@@ -245,31 +91,31 @@ public class QRBill {
         appendDataField(sb, "1"); // Coding
 
         // CdtrInf
-        appendDataField(sb, account); // IBAN
-        appendPerson(sb, creditor); // Cdtr
+        appendDataField(sb, bill.getAccount()); // IBAN
+        appendPerson(sb, bill.getCreditor()); // Cdtr
 
         // UltmtCdtr
-        appendPerson(sb, finalCreditor);
+        appendPerson(sb, bill.getFinalCreditor());
 
         // CCyAmtDate
-        appendDataField(sb, isAmountOpen ? "" : formatAmount(amount)); // Amt
-        appendDataField(sb, currency); // Ccy
-        appendDataField(sb, dueDate != null ? formatDate(dueDate) : ""); // ReqdExctnDt
+        appendDataField(sb, bill.isAmountOpen() ? "" : formatAmount(bill.getAmount())); // Amt
+        appendDataField(sb, bill.getCurrency()); // Ccy
+        appendDataField(sb, bill.getDueDate() != null ? formatDate(bill.getDueDate()) : ""); // ReqdExctnDt
 
         // UltmtDbtr
-        appendPerson(sb, isDebtorOpen ? null : debtor);
+        appendPerson(sb, bill.isDebtorOpen() ? null : bill.getDebtor());
 
         // RmtInf
         String referenceType = "NON";
-        if (referenceNo != null) {
-            if (referenceNo.startsWith("RF"))
+        if (bill.getReferenceNo() != null) {
+            if (bill.getReferenceNo().startsWith("RF"))
                 referenceType = "SCOR";
-            else if (referenceNo.length() > 0)
+            else if (bill.getReferenceNo().length() > 0)
                 referenceType = "QRR";
         }
         appendDataField(sb, referenceType); // Tp
-        appendDataField(sb, referenceNo); // Ref
-        appendDataField(sb, additionalInformation); // Unstrd
+        appendDataField(sb, bill.getReferenceNo()); // Ref
+        appendDataField(sb, bill.getAdditionalInformation()); // Unstrd
 
         return sb.toString();
     }
@@ -316,39 +162,3 @@ public class QRBill {
     }
 
 }
-
-
-/*
-
---- Sample ---
-
-SPC
-0100
-1
-CH5800791123000889012
-Robert Schneider AG
-Rue du Lac
-1268
-2501
-Biel
-CH
-
-
-
-
-
-
-3949.75
-CHF
-2019-10-31
-Pia Rutschmann
-Marktgasse
-28
-9400
-Rorschach
-CH
-NON
-
-Rechnung Nr. 3139 für Gartenarbeiten und Entsorgung Schnittmaterial.
-
- */

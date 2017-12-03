@@ -18,6 +18,7 @@ public class SVGDrawing implements GraphicsPort {
 
     private ByteArrayOutputStream buffer;
     private Writer stream;
+    private boolean isInGroup = false;
 
     public SVGDrawing() throws IOException {
         buffer = new ByteArrayOutputStream();
@@ -29,6 +30,10 @@ public class SVGDrawing implements GraphicsPort {
     }
 
     public void close() throws IOException {
+        if (isInGroup) {
+            stream.write("</g>\r\n");
+            isInGroup = false;
+        }
         if (stream != null) {
             stream.write("</svg>\r\n");
             stream.close();
@@ -37,7 +42,7 @@ public class SVGDrawing implements GraphicsPort {
     }
 
     public void startPath() throws IOException {
-        stream.write("  <path d=\"");
+        stream.write("<path d=\"");
     }
 
     public void addRectangle(double x, double y, double width, double height) throws IOException {
@@ -60,17 +65,23 @@ public class SVGDrawing implements GraphicsPort {
         stream.write("\"/>\r\n");
     }
 
-    public void startQRCode(double x, double y, double actualSize, double virtualSize) throws IOException {
-        stream.write("  <g transform=\"translate(");
-        stream.write(formatCoordinate(x));
-        stream.write(" ");
-        stream.write(formatCoordinate(y));
-        stream.write(") scale(");
-        stream.write(formatCoordinate(actualSize/virtualSize));
-        stream.write(")\">\r\n");
-    }
-    public void endQRCode() throws IOException {
-        stream.write("  </g>\r\n");
+    public void setTransformation(double translateX, double translateY, double scale) throws IOException {
+        if (isInGroup) {
+            stream.write("</g>\r\n");
+            isInGroup = false;
+        }
+        if (translateX != 0 || translateY != 0 || scale != 1) {
+            stream.write("<g transform=\"translate(");
+            stream.write(formatCoordinate(translateX));
+            stream.write(" ");
+            stream.write(formatCoordinate(translateY));
+            if (scale != 1) {
+                stream.write(") scale(");
+                stream.write(formatCoordinate(scale));
+            }
+            stream.write(")\">\r\n");
+            isInGroup = true;
+        }
     }
 
     public byte[] getResult() throws IOException {

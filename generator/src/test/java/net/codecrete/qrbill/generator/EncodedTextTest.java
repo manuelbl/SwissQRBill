@@ -14,8 +14,7 @@ public class EncodedTextTest {
 
     @Test
     public void createText1() {
-        QRBill qrBill = new QRBill();
-        SampleData.fillExample1(qrBill);
+        Bill bill = SampleData.getExample1();
         assertEquals("SPC\r\n" +
                         "0100\r\n" +
                         "1\r\n" +
@@ -44,13 +43,12 @@ public class EncodedTextTest {
                         "QRR\r\n" +
                         "210000000003139471430009017\r\n" +
                         "Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010",
-                qrBill.createQRCodeText());
+                QRBill.createQRCodeText(bill));
     }
 
     @Test
     public void createText2() {
-        QRBill qrBill = new QRBill();
-        SampleData.fillExample2(qrBill);
+        Bill bill = SampleData.getExample2();
         assertEquals("SPC\r\n" +
                         "0100\r\n" +
                         "1\r\n" +
@@ -79,13 +77,12 @@ public class EncodedTextTest {
                         "NON\r\n" +
                         "\r\n" +
                         "Donation to the Winterfest Campaign",
-                qrBill.createQRCodeText());
+                QRBill.createQRCodeText(bill));
     }
 
     @Test
     public void createText3() {
-        QRBill qrBill = new QRBill();
-        SampleData.fillExample3(qrBill);
+        Bill bill = SampleData.getExample3();
         assertEquals("SPC\r\n" +
                         "0100\r\n" +
                         "1\r\n" +
@@ -114,13 +111,12 @@ public class EncodedTextTest {
                         "SCOR\r\n" +
                         "RF18539007547034\r\n" +
                         "",
-                qrBill.createQRCodeText());
+                QRBill.createQRCodeText(bill));
     }
 
     @Test
     public void createText4() {
-        QRBill qrBill = new QRBill();
-        SampleData.fillExample4(qrBill);
+        Bill bill = SampleData.getExample4();
         assertEquals("SPC\r\n" +
                         "0100\r\n" +
                         "1\r\n" +
@@ -149,6 +145,6 @@ public class EncodedTextTest {
                         "NON\r\n" +
                         "\r\n" +
                         "",
-                qrBill.createQRCodeText());
+                QRBill.createQRCodeText(bill));
     }
 }
