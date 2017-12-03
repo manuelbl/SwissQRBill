@@ -21,57 +21,43 @@ public class QRCodeTest {
     @Test
     public void SVGTest1() {
         Bill bill = SampleData.getExample1();
-        byte[] svgReference = loadReferenceFile("qrcode_ex1.svg");
         byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QRCodeOnly, QRBill.GraphicsFormat.SVG);
-        try {
-            assertArrayEquals(svgReference, svg);
-        } catch (AssertionError e) {
-            saveActualFile(svg);
-            throw e;
-        }
+        compareFileContents(svg, "qrcode_ex1.svg");
     }
 
     @Test
     public void SVGTest2() {
         Bill bill = SampleData.getExample2();
-        byte[] svgReference = loadReferenceFile("qrcode_ex2.svg");
         byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QRCodeOnly, QRBill.GraphicsFormat.SVG);
-        try {
-            assertArrayEquals(svgReference, svg);
-        } catch (AssertionError e) {
-            saveActualFile(svg);
-            throw e;
-        }
+        compareFileContents(svg, "qrcode_ex2.svg");
     }
 
     @Test
     public void SVGTest3() {
         Bill bill = SampleData.getExample3();
-        byte[] svgReference = loadReferenceFile("qrcode_ex3.svg");
         byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QRCodeOnly, QRBill.GraphicsFormat.SVG);
-        try {
-            assertArrayEquals(svgReference, svg);
-        } catch (AssertionError e) {
-            saveActualFile(svg);
-            throw e;
-        }
+        compareFileContents(svg, "qrcode_ex3.svg");
     }
 
     @Test
     public void SVGTest4() {
         Bill bill = SampleData.getExample4();
-        byte[] svgReference = loadReferenceFile("qrcode_ex4.svg");
         byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QRCodeOnly, QRBill.GraphicsFormat.SVG);
+        compareFileContents(svg, "qrcode_ex4.svg");
+    }
+
+
+    private void compareFileContents(byte[] actualContent, String expectedFileName) {
+        byte[] exptectedContent = loadReferenceFile(expectedFileName);
         try {
-            assertArrayEquals(svgReference, svg);
+            assertArrayEquals(exptectedContent, actualContent);
         } catch (AssertionError e) {
-            saveActualFile(svg);
+            saveActualFile(actualContent);
             throw e;
         }
     }
 
-
-    public static byte[] loadReferenceFile(String filename) {
+    private static byte[] loadReferenceFile(String filename) {
         try (InputStream is = QRCodeTest.class.getResourceAsStream("/" + filename)) {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             byte[] chunk = new byte[8192];
@@ -87,7 +73,7 @@ public class QRCodeTest {
         }
     }
 
-    public static void saveActualFile(byte[] data) {
+    private static void saveActualFile(byte[] data) {
         Path file = Paths.get("actual.svg");
         try (OutputStream os = Files.newOutputStream(file, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
             os.write(data);
