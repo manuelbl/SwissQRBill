@@ -41,8 +41,40 @@ public class QRBill {
         String qrCodeText = createQRCodeText(bill);
         QrCode qrCode = QrCode.encodeText(qrCodeText, QrCode.Ecc.MEDIUM);
 
-        try (GraphicsPort port = new SVGDrawing()) {
-            drawQRCode(port, qrCode);
+        double drawingWidth;
+        double drawingHeight;
+
+        switch (billFormat) {
+            case QRCodeOnly:
+                drawingWidth = 46;
+                drawingHeight = 46;
+                break;
+            case A6LandscapeSheet:
+                drawingWidth = 148.5;
+                drawingHeight = 105;
+                break;
+            case A5LandscapeSheet:
+                drawingWidth = 210;
+                drawingHeight = 148.5;
+                break;
+            case A4PortraitSheet:
+            default:
+                drawingWidth = 210;
+                drawingHeight = 297;
+                break;
+        }
+
+        try (GraphicsGenerator port = new SVGDrawing(drawingWidth, drawingHeight)) {
+
+            switch (billFormat) {
+                case QRCodeOnly:
+                    drawQRCodeOnly(port, qrCode);
+                    break;
+                case A6LandscapeSheet:
+                    drawQRBill(port, bill, qrCode, 0, 0);
+                    break;
+            }
+
             return port.getResult();
 
         } catch (IOException e) {
@@ -50,19 +82,37 @@ public class QRBill {
         }
     }
 
-    private static void drawQRCode(GraphicsPort port, QrCode qrCode) throws IOException {
+    private static void drawQRBill(GraphicsGenerator port, Bill bill, QrCode qrCode, double offsetX, double offsetY) throws IOException {
+
+        Bill.Language language = bill.getLanguage();
+        port.setTransformation(5, 5, 1);
+        double yPos = 0;
+        port.putText(MultilingualText.getText(MultilingualText.KEY_QR_BILL_PAYMENT_PART, language), 0, yPos, 11, true);
+        yPos += FontMetrics.getLineHeight(11) + FontMetrics.getLabelPadding();
+        port.putText(MultilingualText.getText(MultilingualText.KEY_SUPPORTS, language), 0, yPos, 8, true);
+        yPos += FontMetrics.getLineHeight(8) + FontMetrics.getTextPadding();
+        port.putText(MultilingualText.getText(MultilingualText.KEY_CREDIT_TRANSFER, language), 0, yPos, 10, false);
+        drawQRCode(port, qrCode, offsetX + 5, offsetY + 30);
+    }
+
+    private static void drawQRCodeOnly(GraphicsGenerator port, QrCode qrCode) throws IOException {
+        drawQRCode(port, qrCode, 0, 0);
+    }
+
+    private static void drawQRCode(GraphicsGenerator port, QrCode qrCode, double offsetX, double offsetY) throws IOException {
         int size = qrCode.size;
-        port.setTransformation(0, 0, 46.0 / qrCode.size);
+        final double unit = 25.4 / 72;
+        port.setTransformation(offsetX, offsetY, 46.0 / qrCode.size / unit);
         port.startPath();
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
                 if (qrCode.getModule(x, y)) {
-                    port.addRectangle(x, y, 1, 1);
+                    port.addRectangle(x * unit, y * unit, unit, unit);
                 }
             }
         }
         port.fillPath(0);
-        port.setTransformation(0, 0, 1);
+        port.setTransformation(offsetX, offsetY, 1);
 
         // Swiss cross
         port.startPath();
@@ -75,8 +125,6 @@ public class QRBill {
         final double BAR_LENGTH = 35 / 9.0;
         port.startPath();
         port.addRectangle(23 - BAR_WIDTH / 2, 23 - BAR_LENGTH / 2, BAR_WIDTH, BAR_LENGTH);
-        port.fillPath(0xffffff);
-        port.startPath();
         port.addRectangle(23 - BAR_LENGTH / 2, 23 - BAR_WIDTH / 2, BAR_LENGTH, BAR_WIDTH);
         port.fillPath(0xffffff);
     }
