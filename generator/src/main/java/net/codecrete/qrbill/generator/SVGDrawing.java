@@ -17,7 +17,6 @@ import java.util.Locale;
 public class SVGDrawing implements GraphicsGenerator {
 
     private static final double MM_TO_PT = 72 / 25.4;
-    private static final double PT_TO_MM = 25.4 / 72;
 
     private ByteArrayOutputStream buffer;
     private Writer stream;
@@ -91,6 +90,15 @@ public class SVGDrawing implements GraphicsGenerator {
         stream.write("</text>\r\n");
     }
 
+    public int putMultilineText(String text, double x, double y, double maxWidth, int fontSize, boolean isBold) throws IOException {
+        String[] lines = FontMetrics.splitLines(text, maxWidth * MM_TO_PT, fontSize, isBold);
+        for (String line : lines) {
+            putText(line, x, y, fontSize, isBold);
+            y += FontMetrics.getLineHeight(fontSize);
+        }
+        return lines.length;
+    }
+
     public void setTransformation(double translateX, double translateY, double scale) throws IOException {
         if (isInGroup) {
             stream.write("</g>\r\n");
@@ -152,7 +160,7 @@ public class SVGDrawing implements GraphicsGenerator {
                         entity = "&amp;";
                         break;
                     case '\'':
-                        entity = "&apos";
+                        entity = "&apos;";
                         break;
                     default:
                         entity = "&quot;";

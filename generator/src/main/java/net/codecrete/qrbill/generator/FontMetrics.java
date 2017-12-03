@@ -48,4 +48,20 @@ public class FontMetrics {
     public static double getTextPadding() {
         return 2 * PT_TO_MM;
     }
+
+    /**
+     * Splits the text into lines.
+     * <p>
+     *     If a line would exceed the specified maximum length, linebreaks are inserted.
+     *     Newlines are treated as fixed linebreaks.
+     * </p>
+     * @param text the text
+     * @param maxLength the maximum line length (in pt)
+     * @param fontSize the font size (in pt)
+     * @param isBold indicates of the bold font should be used
+     * @return
+     */
+    public static String[] splitLines(String text, double maxLength, int fontSize, boolean isBold) {
+        return text.split("\\n");
+    }
 }

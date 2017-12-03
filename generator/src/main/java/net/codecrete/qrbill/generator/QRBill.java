@@ -31,6 +31,10 @@ public class QRBill {
         QRCodeOnly
     }
 
+    private static final int FONT_SIZE_TITLE = 11;
+    private static final int FONT_SIZE_LABEL = 8;
+    private static final int FONT_SIZE_TEXT = 10;
+
 
     public ValidationResult[] validate() {
         return null;
@@ -87,12 +91,36 @@ public class QRBill {
         Bill.Language language = bill.getLanguage();
         port.setTransformation(5, 5, 1);
         double yPos = 0;
-        port.putText(MultilingualText.getText(MultilingualText.KEY_QR_BILL_PAYMENT_PART, language), 0, yPos, 11, true);
-        yPos += FontMetrics.getLineHeight(11) + FontMetrics.getLabelPadding();
-        port.putText(MultilingualText.getText(MultilingualText.KEY_SUPPORTS, language), 0, yPos, 8, true);
-        yPos += FontMetrics.getLineHeight(8) + FontMetrics.getTextPadding();
-        port.putText(MultilingualText.getText(MultilingualText.KEY_CREDIT_TRANSFER, language), 0, yPos, 10, false);
-        drawQRCode(port, qrCode, offsetX + 5, offsetY + 30);
+        port.putText(MultilingualText.getText(MultilingualText.KEY_QR_BILL_PAYMENT_PART, language), 0, yPos, FONT_SIZE_TITLE, true);
+        yPos += FontMetrics.getLineHeight(FONT_SIZE_TITLE) + FontMetrics.getLabelPadding();
+        port.putText(MultilingualText.getText(MultilingualText.KEY_SUPPORTS, language), 0, yPos, FONT_SIZE_LABEL, true);
+        yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
+        port.putText(MultilingualText.getText(MultilingualText.KEY_CREDIT_TRANSFER, language), 0, yPos, FONT_SIZE_TEXT, false);
+
+        drawQRCode(port, qrCode, offsetX + 5, offsetY + 26);
+
+        port.setTransformation(5, 81, 1);
+        yPos = 0;
+        port.putText(MultilingualText.getText(MultilingualText.KEY_CURRENCY, language), 0, yPos, FONT_SIZE_LABEL, true);
+        yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
+        port.putText(bill.getCurrency(), 0, yPos, FONT_SIZE_TEXT, false);
+
+        yPos = 0;
+        port.putText(MultilingualText.getText(MultilingualText.KEY_AMOUNT, language), 20, yPos, FONT_SIZE_LABEL, true);
+        if (!bill.isAmountOpen()) {
+            yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
+            port.putText(formatAmountForDisplay(bill.getAmount()), 20, yPos, FONT_SIZE_TEXT, false);
+        }
+
+        port.setTransformation(65, 5, 1);
+        yPos = 0;
+        port.putText(MultilingualText.getText(MultilingualText.KEY_ACCOUNT, language), 0, yPos, FONT_SIZE_LABEL, true);
+        yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
+        port.putText(formatIBANForDisplay(bill.getAccount()), 0, yPos, FONT_SIZE_TEXT, false);
+        yPos += FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
+        port.putText(MultilingualText.getText(MultilingualText.KEY_CREDITOR, language), 0, yPos, FONT_SIZE_LABEL, true);
+        yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
+        port.putMultilineText(formatPersonForDisplay(bill.getCreditor()), 0, yPos, 65, FONT_SIZE_TEXT, false);
     }
 
     private static void drawQRCodeOnly(GraphicsGenerator port, QrCode qrCode) throws IOException {
@@ -146,9 +174,9 @@ public class QRBill {
         appendPerson(sb, bill.getFinalCreditor());
 
         // CCyAmtDate
-        appendDataField(sb, bill.isAmountOpen() ? "" : formatAmount(bill.getAmount())); // Amt
+        appendDataField(sb, bill.isAmountOpen() ? "" : formatAmountForCode(bill.getAmount())); // Amt
         appendDataField(sb, bill.getCurrency()); // Ccy
-        appendDataField(sb, bill.getDueDate() != null ? formatDate(bill.getDueDate()) : ""); // ReqdExctnDt
+        appendDataField(sb, bill.getDueDate() != null ? formatDateForCode(bill.getDueDate()) : ""); // ReqdExctnDt
 
         // UltmtDbtr
         appendPerson(sb, bill.isDebtorOpen() ? null : bill.getDebtor());
@@ -192,21 +220,65 @@ public class QRBill {
     }
 
     private static DecimalFormat AMOUNT_FIELD_FORMAT;
+    private static DecimalFormat AMOUNT_DISPLAY_FORMAT;
 
     static {
         AMOUNT_FIELD_FORMAT = new DecimalFormat("#0.00");
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ENGLISH);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
         symbols.setDecimalSeparator('.');
         AMOUNT_FIELD_FORMAT.setDecimalFormatSymbols(symbols);
+        AMOUNT_DISPLAY_FORMAT = new DecimalFormat("###,##0.00");
+        symbols = new DecimalFormatSymbols(Locale.US);
+        symbols.setDecimalSeparator('.');
+        symbols.setGroupingSeparator('\'');
+        AMOUNT_DISPLAY_FORMAT.setDecimalFormatSymbols(symbols);
     }
 
-    private static String formatAmount(double amount) {
+    private static String formatAmountForCode(double amount) {
         return AMOUNT_FIELD_FORMAT.format(amount);
     }
 
+    private static String formatAmountForDisplay(double amount) {
+        return AMOUNT_DISPLAY_FORMAT.format(amount);
+    }
 
-    private static String formatDate(LocalDate date) {
+    private static String formatDateForCode(LocalDate date) {
         return date.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
+    private static String formatIBANForDisplay(String iban) {
+        StringBuilder sb = new StringBuilder(25);
+        sb.append(iban, 0, 4);
+        sb.append(" ");
+        sb.append(iban, 4, 8);
+        sb.append(" ");
+        sb.append(iban, 8, 12);
+        sb.append(" ");
+        sb.append(iban, 12, 16);
+        sb.append(" ");
+        sb.append(iban, 16, 21);
+        return sb.toString();
+    }
+
+    private static String formatPersonForDisplay(Person person) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(person.getName());
+        String street = person.getStreet();
+        if (street != null) {
+            sb.append("\n");
+            sb.append(street);
+        }
+        String houseNo = person.getHouseNumber();
+        if (houseNo != null) {
+            sb.append(street != null ? " " : "\n");
+            sb.append(houseNo);
+        }
+        sb.append("\n");
+        sb.append(person.getCountryCode());
+        sb.append("-");
+        sb.append(person.getPostalCode());
+        sb.append(" ");
+        sb.append(person.getCity());
+        return sb.toString();
+    }
 }
