@@ -16,7 +16,7 @@ public class MultilingualText {
     public static final String KEY_CREDIT_TRANSFER = "credit_transfer";
     public static final String KEY_ACCOUNT = "account";
     public static final String KEY_CREDITOR = "creditor";
-    public static final String KEY_ULTIMATE_CREDITOR = "ultimate_creditor";
+    public static final String KEY_FINAL_CREDITOR = "ultimate_creditor";
     public static final String KEY_REFERENCE_NUMBER = "reference_no";
     public static final String KEY_ADDITIONAL_INFORMATION = "additional_info";
     public static final String KEY_DEBTOR = "debtor";

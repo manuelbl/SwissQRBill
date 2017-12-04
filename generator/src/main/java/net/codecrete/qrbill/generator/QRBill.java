@@ -31,9 +31,10 @@ public class QRBill {
         QRCodeOnly
     }
 
-    private static final int FONT_SIZE_TITLE = 11;
-    private static final int FONT_SIZE_LABEL = 8;
-    private static final int FONT_SIZE_TEXT = 10;
+    private static final int FONT_SIZE_TITLE = 11; // pt
+    private static final int FONT_SIZE_LABEL = 8; // pt
+    private static final int FONT_SIZE_TEXT = 10; // pt
+    private static final double BORDER_WIDTH = 5; // mm
 
 
     public ValidationResult[] validate() {
@@ -89,17 +90,23 @@ public class QRBill {
     private static void drawQRBill(GraphicsGenerator port, Bill bill, QrCode qrCode, double offsetX, double offsetY) throws IOException {
 
         Bill.Language language = bill.getLanguage();
-        port.setTransformation(5, 5, 1);
+
+        // title section
+        port.setTransformation(BORDER_WIDTH, BORDER_WIDTH, 1);
         double yPos = 0;
         port.putText(MultilingualText.getText(MultilingualText.KEY_QR_BILL_PAYMENT_PART, language), 0, yPos, FONT_SIZE_TITLE, true);
+
+        // scheme section
         yPos += FontMetrics.getLineHeight(FONT_SIZE_TITLE) + FontMetrics.getLabelPadding();
         port.putText(MultilingualText.getText(MultilingualText.KEY_SUPPORTS, language), 0, yPos, FONT_SIZE_LABEL, true);
         yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
         port.putText(MultilingualText.getText(MultilingualText.KEY_CREDIT_TRANSFER, language), 0, yPos, FONT_SIZE_TEXT, false);
 
-        drawQRCode(port, qrCode, offsetX + 5, offsetY + 26);
+        // QR code section
+        drawQRCode(port, qrCode, offsetX + BORDER_WIDTH, offsetY + 26);
 
-        port.setTransformation(5, 81, 1);
+        // amount section
+        port.setTransformation(BORDER_WIDTH, 81, 1);
         yPos = 0;
         port.putText(MultilingualText.getText(MultilingualText.KEY_CURRENCY, language), 0, yPos, FONT_SIZE_LABEL, true);
         yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
@@ -112,15 +119,63 @@ public class QRBill {
             port.putText(formatAmountForDisplay(bill.getAmount()), 20, yPos, FONT_SIZE_TEXT, false);
         }
 
+        // information section
         port.setTransformation(65, 5, 1);
         yPos = 0;
+        // account
         port.putText(MultilingualText.getText(MultilingualText.KEY_ACCOUNT, language), 0, yPos, FONT_SIZE_LABEL, true);
         yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
         port.putText(formatIBANForDisplay(bill.getAccount()), 0, yPos, FONT_SIZE_TEXT, false);
         yPos += FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
+
+        // creditor
         port.putText(MultilingualText.getText(MultilingualText.KEY_CREDITOR, language), 0, yPos, FONT_SIZE_LABEL, true);
         yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
-        port.putMultilineText(formatPersonForDisplay(bill.getCreditor()), 0, yPos, 65, FONT_SIZE_TEXT, false);
+        int numLines = port.putMultilineText(formatPersonForDisplay(bill.getCreditor()), 0, yPos, 65, FONT_SIZE_TEXT, false);
+        yPos += numLines * FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
+
+        // final creditor
+        if (bill.getFinalCreditor() != null && bill.getFinalCreditor().getName() != null && bill.getFinalCreditor().getName().trim().length() != 0) {
+            port.putText(MultilingualText.getText(MultilingualText.KEY_FINAL_CREDITOR, language), 0, yPos, FONT_SIZE_LABEL, true);
+            yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
+            numLines = port.putMultilineText(formatPersonForDisplay(bill.getFinalCreditor()), 0, yPos, 65, FONT_SIZE_TEXT, false);
+            yPos += numLines * FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
+        }
+
+        // reference number
+        String refNo = formatReferenceNumber(bill.getReferenceNo());
+        if (refNo != null) {
+            port.putText(MultilingualText.getText(MultilingualText.KEY_REFERENCE_NUMBER, language), 0, yPos, FONT_SIZE_LABEL, true);
+            yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
+            port.putText(refNo, 0, yPos, FONT_SIZE_TEXT, false);
+            yPos += FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
+        }
+
+        // additional information
+        String additionalInfo = bill.getAdditionalInformation();
+        if (additionalInfo != null && additionalInfo.trim().length() != 0) {
+            int p = additionalInfo.indexOf("##");
+            if (p > 0)
+                additionalInfo = additionalInfo.substring(0, p) + '\n' + additionalInfo.substring(p);
+            port.putText(MultilingualText.getText(MultilingualText.KEY_ADDITIONAL_INFORMATION, language), 0, yPos, FONT_SIZE_LABEL, true);
+            yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
+            numLines = port.putMultilineText(additionalInfo, 0, yPos, 65, FONT_SIZE_TEXT, false);
+            yPos += numLines * FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
+        }
+
+        // final creditor
+        if (bill.getDebtor() != null && bill.getDebtor().getName() != null && bill.getDebtor().getName().trim().length() != 0) {
+            port.putText(MultilingualText.getText(MultilingualText.KEY_DEBTOR, language), 0, yPos, FONT_SIZE_LABEL, true);
+            yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
+            numLines = port.putMultilineText(formatPersonForDisplay(bill.getDebtor()), 0, yPos, 65, FONT_SIZE_TEXT, false);
+            yPos += numLines * FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
+        }
+
+        if (bill.getDueDate() != null) {
+            port.putText(MultilingualText.getText(MultilingualText.KEY_DUE_DATE, language), 0, yPos, FONT_SIZE_LABEL, true);
+            yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
+            port.putText(formatDateForDisplay(bill.getDueDate()), 0, yPos, FONT_SIZE_TEXT, false);
+        }
     }
 
     private static void drawQRCodeOnly(GraphicsGenerator port, QrCode qrCode) throws IOException {
@@ -221,6 +276,7 @@ public class QRBill {
 
     private static DecimalFormat AMOUNT_FIELD_FORMAT;
     private static DecimalFormat AMOUNT_DISPLAY_FORMAT;
+    private static DateTimeFormatter DATE_DISPLAY_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     static {
         AMOUNT_FIELD_FORMAT = new DecimalFormat("#0.00");
@@ -244,6 +300,10 @@ public class QRBill {
 
     private static String formatDateForCode(LocalDate date) {
         return date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+
+    private static String formatDateForDisplay(LocalDate date) {
+        return date.format(DATE_DISPLAY_FORMAT);
     }
 
     private static String formatIBANForDisplay(String iban) {
@@ -279,6 +339,29 @@ public class QRBill {
         sb.append(person.getPostalCode());
         sb.append(" ");
         sb.append(person.getCity());
+        return sb.toString();
+    }
+
+    private static String formatReferenceNumber(String refNo) {
+        if (refNo == null)
+            return null;
+        refNo = refNo.trim();
+        int len = refNo.length();
+        if (len == 0)
+            return null;
+        if (refNo.startsWith("RF"))
+            return refNo;
+
+        StringBuilder sb = new StringBuilder();
+        int t = 0;
+        while (t < len) {
+            int n = t + (len - t - 1) % 4 + 1;
+            if (t != 0)
+                sb.append(" ");
+            sb.append(refNo.substring(t, n));
+            t = n;
+        }
+
         return sb.toString();
     }
 }
