@@ -43,7 +43,7 @@ public class EncodedTextTest {
                         "QRR\r\n" +
                         "210000000003139471430009017\r\n" +
                         "Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010",
-                QRBill.createQRCodeText(bill));
+                createQRCodeText(bill));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class EncodedTextTest {
                         "NON\r\n" +
                         "\r\n" +
                         "Donation to the Winterfest Campaign",
-                QRBill.createQRCodeText(bill));
+                createQRCodeText(bill));
     }
 
     @Test
@@ -111,7 +111,7 @@ public class EncodedTextTest {
                         "SCOR\r\n" +
                         "RF18539007547034\r\n" +
                         "",
-                QRBill.createQRCodeText(bill));
+                createQRCodeText(bill));
     }
 
     @Test
@@ -145,6 +145,12 @@ public class EncodedTextTest {
                         "NON\r\n" +
                         "\r\n" +
                         "",
-                QRBill.createQRCodeText(bill));
+                createQRCodeText(bill));
+    }
+
+
+    private String createQRCodeText(Bill bill) {
+        QRCode qrCode = new QRCode(bill);
+        return qrCode.getText();
     }
 }
