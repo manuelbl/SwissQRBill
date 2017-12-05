@@ -59,6 +59,22 @@ public interface GraphicsGenerator extends Closeable {
     void startPath() throws IOException;
 
     /**
+     * Moves the current point of the open path to the specified position.
+     * @param x x-coordinate of position
+     * @param y y-coordinate of position
+     * @throws IOException thrown if the graphics cannot be generated
+     */
+    void moveTo(double x, double y) throws IOException;
+
+    /**
+     * Adds a line segment to the open path from the previous point to the speicifed position.
+     * @param x x-coordinate of position
+     * @param y y-coordinate of position
+     * @throws IOException thrown if the graphics cannot be generated
+     */
+    void lineTo(double x, double y) throws IOException;
+
+    /**
      * Adds a rectangle to the path
      * @param x the rectangle's left position (in mm)
      * @param y the rectangle's top position (in mm)
@@ -74,6 +90,14 @@ public interface GraphicsGenerator extends Closeable {
      * @throws IOException thrown if the graphics cannot be generated
      */
     void fillPath(int color) throws IOException;
+
+    /**
+     * Strokes the current path and ends it
+     * @param strokeWidth the stroke width (in pt)
+     * @param color the stroke color (expressed similar to HTML, e.g. 0xffffff for white)
+     * @throws IOException thrown if the graphics cannot be generated
+     */
+    void strokePath(double strokeWidth, int color) throws IOException;
 
     /**
      * Returns the generated graphics as a byte array

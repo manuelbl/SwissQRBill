@@ -34,7 +34,15 @@ public class QRBill {
     private static final int FONT_SIZE_TITLE = 11; // pt
     private static final int FONT_SIZE_LABEL = 8; // pt
     private static final int FONT_SIZE_TEXT = 10; // pt
-    private static final double BORDER_WIDTH = 5; // mm
+    private static final double HORIZ_BORDER = 8; // mm
+    private static final double VERT_BORDER = 8; // mm
+    private static final double MIDDLE_SPACING = 5; // mm
+    private static final double LEFT_COLUMN_WIDTH = 54; // mm
+    private static final double AMOUNT_WIDTH = 40; // mm (must not be smaller than 40)
+    private static final double AMOUNT_HEIGHT = 15; // mm (must not be smaller than 15)
+    private static final double RIGHT_COLUMN_WIDTH
+            = 148.5 - 2 * HORIZ_BORDER - MIDDLE_SPACING - LEFT_COLUMN_WIDTH; // mm (must not be smaller than 65)
+    private static final double DEBTOR_HEIGHT = 25; // mm (must no be smaller than 25)
 
 
     public ValidationResult[] validate() {
@@ -76,7 +84,7 @@ public class QRBill {
                     drawQRCodeOnly(port, qrCode);
                     break;
                 case A6LandscapeSheet:
-                    drawQRBill(port, bill, qrCode, 0, 0);
+                    drawQRBill(port, bill, qrCode);
                     break;
             }
 
@@ -87,12 +95,12 @@ public class QRBill {
         }
     }
 
-    private static void drawQRBill(GraphicsGenerator port, Bill bill, QrCode qrCode, double offsetX, double offsetY) throws IOException {
+    private static void drawQRBill(GraphicsGenerator port, Bill bill, QrCode qrCode) throws IOException {
 
         Bill.Language language = bill.getLanguage();
 
         // title section
-        port.setTransformation(BORDER_WIDTH, BORDER_WIDTH, 1);
+        port.setTransformation(HORIZ_BORDER, VERT_BORDER, 1);
         double yPos = 0;
         port.putText(MultilingualText.getText(MultilingualText.KEY_QR_BILL_PAYMENT_PART, language), 0, yPos, FONT_SIZE_TITLE, true);
 
@@ -101,26 +109,30 @@ public class QRBill {
         port.putText(MultilingualText.getText(MultilingualText.KEY_SUPPORTS, language), 0, yPos, FONT_SIZE_LABEL, true);
         yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
         port.putText(MultilingualText.getText(MultilingualText.KEY_CREDIT_TRANSFER, language), 0, yPos, FONT_SIZE_TEXT, false);
+        yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL);
 
         // QR code section
-        drawQRCode(port, qrCode, offsetX + BORDER_WIDTH, offsetY + 26);
+        double qrCodeSpacing = (105 - VERT_BORDER * 2 - yPos - AMOUNT_HEIGHT - FontMetrics.getLineHeight(FONT_SIZE_LABEL) - FontMetrics.getTextPadding() - 46) / 2;
+        drawQRCode(port, qrCode, HORIZ_BORDER, VERT_BORDER + yPos + qrCodeSpacing);
 
         // amount section
-        port.setTransformation(BORDER_WIDTH, 81, 1);
+        port.setTransformation(HORIZ_BORDER, VERT_BORDER + yPos + 2 * qrCodeSpacing + 46, 1);
         yPos = 0;
         port.putText(MultilingualText.getText(MultilingualText.KEY_CURRENCY, language), 0, yPos, FONT_SIZE_LABEL, true);
         yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
         port.putText(bill.getCurrency(), 0, yPos, FONT_SIZE_TEXT, false);
 
         yPos = 0;
-        port.putText(MultilingualText.getText(MultilingualText.KEY_AMOUNT, language), 20, yPos, FONT_SIZE_LABEL, true);
-        if (!bill.isAmountOpen()) {
-            yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
-            port.putText(formatAmountForDisplay(bill.getAmount()), 20, yPos, FONT_SIZE_TEXT, false);
+        port.putText(MultilingualText.getText(MultilingualText.KEY_AMOUNT, language), LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, yPos, FONT_SIZE_LABEL, true);
+        yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
+        if (bill.isAmountOpen()) {
+            drawCorners(port, LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, yPos, AMOUNT_WIDTH, AMOUNT_HEIGHT);
+        } else {
+            port.putText(formatAmountForDisplay(bill.getAmount()), LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, yPos, FONT_SIZE_TEXT, false);
         }
 
         // information section
-        port.setTransformation(65, 5, 1);
+        port.setTransformation(HORIZ_BORDER + LEFT_COLUMN_WIDTH + MIDDLE_SPACING, VERT_BORDER, 1);
         yPos = 0;
         // account
         port.putText(MultilingualText.getText(MultilingualText.KEY_ACCOUNT, language), 0, yPos, FONT_SIZE_LABEL, true);
@@ -131,14 +143,14 @@ public class QRBill {
         // creditor
         port.putText(MultilingualText.getText(MultilingualText.KEY_CREDITOR, language), 0, yPos, FONT_SIZE_LABEL, true);
         yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
-        int numLines = port.putMultilineText(formatPersonForDisplay(bill.getCreditor()), 0, yPos, 65, FONT_SIZE_TEXT, false);
+        int numLines = port.putMultilineText(formatPersonForDisplay(bill.getCreditor()), 0, yPos, RIGHT_COLUMN_WIDTH, FONT_SIZE_TEXT, false);
         yPos += numLines * FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
 
         // final creditor
         if (bill.getFinalCreditor() != null && bill.getFinalCreditor().getName() != null && bill.getFinalCreditor().getName().trim().length() != 0) {
             port.putText(MultilingualText.getText(MultilingualText.KEY_FINAL_CREDITOR, language), 0, yPos, FONT_SIZE_LABEL, true);
             yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
-            numLines = port.putMultilineText(formatPersonForDisplay(bill.getFinalCreditor()), 0, yPos, 65, FONT_SIZE_TEXT, false);
+            numLines = port.putMultilineText(formatPersonForDisplay(bill.getFinalCreditor()), 0, yPos, RIGHT_COLUMN_WIDTH, FONT_SIZE_TEXT, false);
             yPos += numLines * FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
         }
 
@@ -159,15 +171,18 @@ public class QRBill {
                 additionalInfo = additionalInfo.substring(0, p) + '\n' + additionalInfo.substring(p);
             port.putText(MultilingualText.getText(MultilingualText.KEY_ADDITIONAL_INFORMATION, language), 0, yPos, FONT_SIZE_LABEL, true);
             yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
-            numLines = port.putMultilineText(additionalInfo, 0, yPos, 65, FONT_SIZE_TEXT, false);
+            numLines = port.putMultilineText(additionalInfo, 0, yPos, RIGHT_COLUMN_WIDTH, FONT_SIZE_TEXT, false);
             yPos += numLines * FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
         }
 
-        // final creditor
-        if (bill.getDebtor() != null && bill.getDebtor().getName() != null && bill.getDebtor().getName().trim().length() != 0) {
-            port.putText(MultilingualText.getText(MultilingualText.KEY_DEBTOR, language), 0, yPos, FONT_SIZE_LABEL, true);
-            yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
-            numLines = port.putMultilineText(formatPersonForDisplay(bill.getDebtor()), 0, yPos, 65, FONT_SIZE_TEXT, false);
+        // debtor
+        port.putText(MultilingualText.getText(MultilingualText.KEY_DEBTOR, language), 0, yPos, FONT_SIZE_LABEL, true);
+        yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
+        if (bill.isDebtorOpen()) {
+            drawCorners(port, 0, yPos, RIGHT_COLUMN_WIDTH, DEBTOR_HEIGHT);
+            yPos += 25 + FontMetrics.getLabelPadding();
+        } else {
+            numLines = port.putMultilineText(formatPersonForDisplay(bill.getDebtor()), 0, yPos, RIGHT_COLUMN_WIDTH, FONT_SIZE_TEXT, false);
             yPos += numLines * FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
         }
 
@@ -210,6 +225,31 @@ public class QRBill {
         port.addRectangle(23 - BAR_WIDTH / 2, 23 - BAR_LENGTH / 2, BAR_WIDTH, BAR_LENGTH);
         port.addRectangle(23 - BAR_LENGTH / 2, 23 - BAR_WIDTH / 2, BAR_LENGTH, BAR_WIDTH);
         port.fillPath(0xffffff);
+    }
+
+    private static void drawCorners(GraphicsGenerator generator, double x, double y, double width, double height) throws IOException {
+        final double lwh = 0.5 / 72 * 25.4;
+        final double s = 3;
+
+        generator.startPath();
+
+        generator.moveTo(x + lwh, y + s);
+        generator.lineTo(x + lwh, y + lwh);
+        generator.lineTo(x + s, y + lwh);
+
+        generator.moveTo(x + width - s, y + lwh);
+        generator.lineTo(x + width - lwh, y + lwh);
+        generator.lineTo(x + width - lwh, y + s);
+
+        generator.moveTo(x + width - lwh, y + height - s);
+        generator.lineTo(x + width - lwh, y + height - lwh);
+        generator.lineTo(x + width - s, y + height - lwh);
+
+        generator.moveTo(x + s, y + height - lwh);
+        generator.lineTo(x + lwh, y + height - lwh);
+        generator.lineTo(x + lwh, y + height - s);
+
+        generator.strokePath(1, 0);
     }
 
 

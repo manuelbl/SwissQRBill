@@ -55,6 +55,22 @@ public class SVGDrawing implements GraphicsGenerator {
         stream.write("<path d=\"");
     }
 
+    public void moveTo(double x, double y) throws IOException {
+        stream.write("M");
+        stream.write(formatCoordinate(x));
+        stream.write(",");
+        stream.write(formatCoordinate(y));
+        stream.write(" ");
+    }
+
+    public void lineTo(double x, double y) throws IOException {
+        stream.write("L");
+        stream.write(formatCoordinate(x));
+        stream.write(",");
+        stream.write(formatCoordinate(y));
+        stream.write(" ");
+    }
+
     public void addRectangle(double x, double y, double width, double height) throws IOException {
         stream.write("M");
         stream.write(formatCoordinate(x));
@@ -73,6 +89,16 @@ public class SVGDrawing implements GraphicsGenerator {
         stream.write("\" fill=\"#");
         stream.write(formatColor(color));
         stream.write("\"/>\r\n");
+    }
+
+    public void strokePath(double strokeWidth, int color) throws IOException {
+        stream.write("\" stroke=\"#");
+        stream.write(formatColor(color));
+        if (strokeWidth != 1) {
+            stream.write("\" stroke-width=\"");
+            stream.write(formatNumber(strokeWidth));
+        }
+        stream.write("\" fill=\"none\"/>\r\n");
     }
 
     public void putText(String text, double x, double y, int fontSize, boolean isBold) throws IOException {
