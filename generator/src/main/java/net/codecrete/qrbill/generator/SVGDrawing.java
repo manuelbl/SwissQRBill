@@ -37,6 +37,7 @@ public class SVGDrawing implements GraphicsGenerator {
         stream.write(" ");
         stream.write(formatCoordinate(height));
         stream.write("\" xmlns=\"http://www.w3.org/2000/svg\">\r\n");
+        stream.write("<g font-family=\"Helvetica,Arial\">\r\n");
     }
 
     public void close() throws IOException {
@@ -45,6 +46,7 @@ public class SVGDrawing implements GraphicsGenerator {
             isInGroup = false;
         }
         if (stream != null) {
+            stream.write("</g>\r\n");
             stream.write("</svg>\r\n");
             stream.close();
             stream = null;
@@ -107,7 +109,7 @@ public class SVGDrawing implements GraphicsGenerator {
         stream.write(formatCoordinate(x));
         stream.write("\" y=\"");
         stream.write(formatCoordinate(y));
-        stream.write("\" font-family=\"Helvetica,Arial\" font-size=\"");
+        stream.write("\" font-size=\"");
         stream.write(formatNumber(fontSize));
         if (isBold)
             stream.write("\" font-weight=\"bold");
