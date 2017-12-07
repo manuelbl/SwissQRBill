@@ -160,14 +160,14 @@ public class QRBill {
         // creditor
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_CREDITOR, language), 0, yPos, FONT_SIZE_LABEL, true);
         yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
-        int numLines = graphics.putMultilineText(formatPersonForDisplay(bill.getCreditor()), 0, yPos, RIGHT_COLUMN_WIDTH, FONT_SIZE_TEXT, false);
+        int numLines = graphics.putMultilineText(formatPersonForDisplay(bill.getCreditor()), 0, yPos, RIGHT_COLUMN_WIDTH, FONT_SIZE_TEXT);
         yPos += numLines * FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
 
         // final creditor
         if (bill.getFinalCreditor() != null && bill.getFinalCreditor().getName() != null && bill.getFinalCreditor().getName().trim().length() != 0) {
             graphics.putText(MultilingualText.getText(MultilingualText.KEY_FINAL_CREDITOR, language), 0, yPos, FONT_SIZE_LABEL, true);
             yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
-            numLines = graphics.putMultilineText(formatPersonForDisplay(bill.getFinalCreditor()), 0, yPos, RIGHT_COLUMN_WIDTH, FONT_SIZE_TEXT, false);
+            numLines = graphics.putMultilineText(formatPersonForDisplay(bill.getFinalCreditor()), 0, yPos, RIGHT_COLUMN_WIDTH, FONT_SIZE_TEXT);
             yPos += numLines * FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
         }
 
@@ -188,7 +188,7 @@ public class QRBill {
                 additionalInfo = additionalInfo.substring(0, p) + '\n' + additionalInfo.substring(p);
             graphics.putText(MultilingualText.getText(MultilingualText.KEY_ADDITIONAL_INFORMATION, language), 0, yPos, FONT_SIZE_LABEL, true);
             yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
-            numLines = graphics.putMultilineText(additionalInfo, 0, yPos, RIGHT_COLUMN_WIDTH, FONT_SIZE_TEXT, false);
+            numLines = graphics.putMultilineText(additionalInfo, 0, yPos, RIGHT_COLUMN_WIDTH, FONT_SIZE_TEXT);
             yPos += numLines * FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
         }
 
@@ -199,7 +199,7 @@ public class QRBill {
             drawCorners(0, yPos, RIGHT_COLUMN_WIDTH, DEBTOR_HEIGHT);
             yPos += 25 + FontMetrics.getLabelPadding();
         } else {
-            numLines = graphics.putMultilineText(formatPersonForDisplay(bill.getDebtor()), 0, yPos, RIGHT_COLUMN_WIDTH, FONT_SIZE_TEXT, false);
+            numLines = graphics.putMultilineText(formatPersonForDisplay(bill.getDebtor()), 0, yPos, RIGHT_COLUMN_WIDTH, FONT_SIZE_TEXT);
             yPos += numLines * FontMetrics.getLineHeight(FONT_SIZE_TEXT) + FontMetrics.getLabelPadding();
         }
 

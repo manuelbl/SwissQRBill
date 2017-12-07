@@ -118,10 +118,10 @@ public class SVGDrawing implements GraphicsGenerator {
         stream.write("</text>\r\n");
     }
 
-    public int putMultilineText(String text, double x, double y, double maxWidth, int fontSize, boolean isBold) throws IOException {
-        String[] lines = FontMetrics.splitLines(text, maxWidth * MM_TO_PT, fontSize, isBold);
+    public int putMultilineText(String text, double x, double y, double maxWidth, int fontSize) throws IOException {
+        String[] lines = FontMetrics.splitLines(text, maxWidth * MM_TO_PT, fontSize);
         for (String line : lines) {
-            putText(line, x, y, fontSize, isBold);
+            putText(line, x, y, fontSize, false);
             y += FontMetrics.getLineHeight(fontSize);
         }
         return lines.length;

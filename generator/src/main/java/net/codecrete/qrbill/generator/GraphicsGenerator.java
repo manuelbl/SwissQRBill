@@ -46,11 +46,10 @@ public interface GraphicsGenerator extends Closeable {
      * @param y y position of the text's top (in mm)
      * @param maxWidth maximum length of text line / width of text block (in mm)
      * @param fontSize the font size (in pt)
-     * @param isBold indicates if the text is in bold or regular weight
      * @throws IOException thrown if the graphics cannot be generated
      * @return the number of text lines that were added
      */
-    int putMultilineText(String text, double x, double y, double maxWidth, int fontSize, boolean isBold) throws IOException;
+    int putMultilineText(String text, double x, double y, double maxWidth, int fontSize) throws IOException;
 
     /**
      * Starts a path that can be filled or stroked
