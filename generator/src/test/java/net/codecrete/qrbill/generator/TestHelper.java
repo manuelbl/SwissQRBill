@@ -20,11 +20,18 @@ import static org.junit.Assert.assertArrayEquals;
 public class TestHelper {
 
     public static void assertFileContentsEqual(byte[] actualContent, String expectedFileName) {
-        byte[] exptectedContent = loadReferenceFile(expectedFileName);
+        byte[] expectedContent = loadReferenceFile(expectedFileName);
+        String fileExtension = expectedFileName.substring(expectedFileName.lastIndexOf('.'));
+
         try {
-            assertArrayEquals(exptectedContent, actualContent);
+            if (fileExtension.equals(".pdf")) {
+                clearPdfID(expectedContent);
+                clearPdfID(actualContent);
+            }
+            assertArrayEquals(expectedContent, actualContent);
+
         } catch (AssertionError e) {
-            saveActualFile(actualContent);
+            saveActualFile(actualContent, fileExtension);
             throw e;
         }
     }
@@ -45,12 +52,28 @@ public class TestHelper {
         }
     }
 
-    private static void saveActualFile(byte[] data) {
-        Path file = Paths.get("actual.svg");
+    private static void saveActualFile(byte[] data, String fileExtension) {
+        Path file = Paths.get("actual" + fileExtension);
         try (OutputStream os = Files.newOutputStream(file, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
             os.write(data);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void clearPdfID(byte[] pdfData) {
+        int len = pdfData.length;
+        int offset = Math.max(len - 128, 0);
+        while (offset < len - 74) {
+            if (pdfData[offset] == '/' && pdfData[offset+1] == 'I' && pdfData[offset+2] == 'D'
+                    && pdfData[offset+3] == ' ' && pdfData[offset+4] == '[' && pdfData[offset+5] == '<') {
+                for (int i = offset + 6; i < offset + 73; i++)
+                    pdfData[i] = '0';
+                return;
+            }
+            offset++;
+        }
+
+        throw new AssertionError("PDF ID not found");
     }
 }

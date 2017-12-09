@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.Locale;
 
-public class SVGDrawing implements GraphicsGenerator {
+public class SVGGenerator implements GraphicsGenerator {
 
     private static final double MM_TO_PT = 72 / 25.4;
 
@@ -22,7 +22,7 @@ public class SVGDrawing implements GraphicsGenerator {
     private Writer stream;
     private boolean isInGroup = false;
 
-    public SVGDrawing(double width, double height) throws IOException {
+    public SVGGenerator(double width, double height) throws IOException {
         buffer = new ByteArrayOutputStream();
         stream = new OutputStreamWriter(buffer, StandardCharsets.UTF_8);
         stream.write(

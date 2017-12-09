@@ -98,7 +98,7 @@ public class QRBill {
                 break;
         }
 
-        try (GraphicsGenerator g = new SVGDrawing(drawingWidth, drawingHeight)) {
+        try (GraphicsGenerator g = createGraphicsGenerator(drawingWidth, drawingHeight)) {
 
             graphics = g;
             switch (billFormat) {
@@ -123,6 +123,21 @@ public class QRBill {
         } finally {
             graphics = null;
         }
+    }
+
+    private GraphicsGenerator createGraphicsGenerator(double width, double height) throws IOException {
+        GraphicsGenerator generator;
+        switch (graphicsFormat) {
+            case SVG:
+                generator = new SVGGenerator(width, height);
+                break;
+            case PDF:
+                generator = new PDFGenerator(width, height);
+                break;
+            default:
+                generator = null;
+        }
+        return generator;
     }
 
     private void drawQRBill(double offsetX, double offsetY, boolean hasBorder) throws IOException {

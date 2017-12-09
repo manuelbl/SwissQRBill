@@ -1,5 +1,6 @@
 # Project specific
 generator/actual.svg
+generator/actual.pdf
 
 #Gradle
 .gradle
