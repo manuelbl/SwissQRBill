@@ -101,7 +101,7 @@ class Validator {
         }
 
         // additional information
-        String additionalInfo = billIn.getAdditionalInformation();
+        String additionalInfo = trimmed(billIn.getAdditionalInformation());
         additionalInfo = clipValue(additionalInfo, 140, Bill.FIELD_ADDITIONAL_INFO);
         billOut.setAdditionalInformation(additionalInfo);
 
@@ -160,8 +160,12 @@ class Validator {
     private Person validatePerson(Person personIn, String fieldRoot, boolean mandatory) {
         Person personOut = cleanedPerson(personIn);
         if (personOut == null) {
-            if (mandatory)
+            if (mandatory) {
                 validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_NAME, "field_is_mandatory");
+                validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_POSTAL_CODE, "field_is_mandatory");
+                validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_CITY, "field_is_mandatory");
+                validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE, "field_is_mandatory");
+            }
             return null;
         }
 
@@ -176,9 +180,10 @@ class Validator {
         personOut.setPostalCode(clipValue(personOut.getPostalCode(), 16, fieldRoot, Bill.SUBFIELD_POSTAL_CODE));
         personOut.setCity(clipValue(personOut.getCity(), 35, fieldRoot, Bill.SUBFIELD_CITY));
 
-        if (personOut.getCountryCode().length() != 2
-                || !Character.isLetter(personOut.getCountryCode().charAt(0))
-                || !Character.isLetter(personOut.getCountryCode().charAt(1))) {
+        if (personOut.getCountryCode() != null) {
+            if (personOut.getCountryCode().length() != 2
+                    || !Character.isLetter(personOut.getCountryCode().charAt(0))
+                    || !Character.isLetter(personOut.getCountryCode().charAt(1)))
             validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE, "valid_country_code");
         }
 
