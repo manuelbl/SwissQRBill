@@ -32,7 +32,7 @@ public class A6BillTest {
     }
 
     @Test
-    public void createA6Bill() {
+    public void createA6Bill4() {
         Bill bill = SampleData.getExample4();
         byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6LandscapeSheet, QRBill.GraphicsFormat.SVG);
         TestHelper.assertFileContentsEqual(svg, "a6bill_ex4.svg");

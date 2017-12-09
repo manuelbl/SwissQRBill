@@ -6,61 +6,60 @@
 //
 package net.codecrete.qrbill.generator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static net.codecrete.qrbill.generator.ValidationMessage.Type;
+
+/**
+ * Container for validation results
+ */
 public class ValidationResult {
 
-    public enum Type {
-        Warning,
-        Error
+    private static final List<ValidationMessage> EMPTY_LIST = Collections.emptyList();
+
+    private List<ValidationMessage> validationMessages;
+
+    public List<ValidationMessage> getValidationMessages() {
+        if (validationMessages == null)
+            return EMPTY_LIST;
+        return validationMessages;
     }
 
-    private Type type;
-    private String field;
-    private String messageKey;
-    private String[] messageParameters;
-
-
-    public ValidationResult(Type type, String field, String messageKey) {
-        this.type = type;
-        this.field = field;
-        this.messageKey = messageKey;
+    public boolean hasMessages() {
+        return validationMessages != null;
     }
 
-    public ValidationResult(Type type, String field, String messageKey, String[] messageParameters) {
-        this.type = type;
-        this.field = field;
-        this.messageKey = messageKey;
-        this.messageParameters = messageParameters;
+    public boolean hasWarnings() {
+        if (validationMessages == null)
+            return false;
+        for (ValidationMessage message : validationMessages)
+            if (message.getType() == Type.Warning)
+                return true;
+        return false;
     }
 
-    public Type getType() {
-        return type;
+    public boolean hasErrors() {
+        if (validationMessages == null)
+            return false;
+        for (ValidationMessage message : validationMessages)
+            if (message.getType() == Type.Error)
+                return true;
+        return false;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void addMessage(Type type, String field, String messageKey) {
+        ValidationMessage message = new ValidationMessage(type, field, messageKey);
+        if (validationMessages == null)
+            validationMessages = new ArrayList<>();
+        validationMessages.add(message);
     }
 
-    public String getField() {
-        return field;
-    }
-
-    public void setField(String field) {
-        this.field = field;
-    }
-
-    public String getMessageKey() {
-        return messageKey;
-    }
-
-    public void setMessageKey(String messageKey) {
-        this.messageKey = messageKey;
-    }
-
-    public String[] getMessageParameters() {
-        return messageParameters;
-    }
-
-    public void setMessageParameters(String[] messageParameters) {
-        this.messageParameters = messageParameters;
+    public void addMessage(Type type, String field, String messageKey, String[] messageParameters) {
+        ValidationMessage message = new ValidationMessage(type, field, messageKey, messageParameters);
+        if (validationMessages == null)
+            validationMessages = new ArrayList<>();
+        validationMessages.add(message);
     }
 }

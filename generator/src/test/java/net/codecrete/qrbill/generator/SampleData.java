@@ -12,6 +12,7 @@ public class SampleData {
 
     public static Bill getExample1() {
         Bill bill = new Bill();
+        bill.setLanguage(Bill.Language.English);
         bill.setAccount("CH4431999123000889012");
         Person creditor = new Person();
         creditor.setName("Robert Schneider AG");
@@ -49,6 +50,7 @@ public class SampleData {
 
     public static Bill getExample2() {
         Bill bill = new Bill();
+        bill.setLanguage(Bill.Language.German);
         bill.setAccount("CH3709000000304442225");
         Person creditor = new Person();
         creditor.setName("Salvation Army Foundation Switzerland");
@@ -60,7 +62,7 @@ public class SampleData {
         bill.setCreditor(creditor);
         bill.setFinalCreditor(null);
         bill.setAmountOpen(true);
-        bill.setAmount(0);
+        bill.setAmount(null);
         bill.setCurrency("CHF");
         bill.setDueDate(null);
         bill.setDebtorOpen(true);
@@ -72,6 +74,7 @@ public class SampleData {
 
     public static Bill getExample3() {
         Bill bill = new Bill();
+        bill.setLanguage(Bill.Language.French);
         bill.setAccount("CH4431999123000889012");
         Person creditor = new Person();
         creditor.setName("Robert Schneider AG");
@@ -109,6 +112,7 @@ public class SampleData {
 
     public static Bill getExample4() {
         Bill bill = new Bill();
+        bill.setLanguage(Bill.Language.Italian);
         bill.setAccount("CH3709000000304442225");
         Person creditor = new Person();
         creditor.setName("ABC AG");
@@ -120,7 +124,7 @@ public class SampleData {
         bill.setCreditor(creditor);
         bill.setFinalCreditor(null);
         bill.setAmountOpen(true);
-        bill.setAmount(0);
+        bill.setAmount(null);
         bill.setCurrency("CHF");
         bill.setDueDate(null);
         bill.setDebtorOpen(true);

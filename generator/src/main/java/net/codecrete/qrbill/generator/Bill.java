@@ -21,28 +21,56 @@ public class Bill {
         Version_1_0
     }
 
-    public static final String FIELD_AMOUNT = "amount";
+    public static final String SUBFIELD_NAME = "name";
+    public static final String SUBFIELD_STREET = "street";
+    public static final String SUBFIELD_HOUSE_NO = "house_no";
+    public static final String SUBFIELD_POSTAL_CODE = "postal_code";
+    public static final String SUBFIELD_CITY = "city";
+    public static final String SUBFIELD_COUNTRY_CODE = "country_code";
+    public static final String FIELD_LANGUGAGE = "language";
     public static final String FIELD_CURRENCY = "currency";
+    public static final String FIELD_AMOUNT_IS_OPEN = "amount_is_open";
+    public static final String FIELD_AMOUNT = "amount";
     public static final String FIELD_ACCOUNT = "account";
-    public static final String FIELD_CREDITOR = "creditor";
-    public static final String FIELD_FINAL_CREDITOR = "final_creditor";
+    public static final String FIELDROOT_CREDITOR = "creditor.";
+    public static final String FIELD_CREDITOR_NAME = "creditor.name";
+    public static final String FIELD_CREDITOR_STREET = "creditor.street";
+    public static final String FIELD_CREDITOR_HOUSE_NO = "creditor.house_no";
+    public static final String FIELD_CREDITOR_POSTAL_CODE = "creditor.postal_code";
+    public static final String FIELD_CREDITOR_CITY = "creditor.city";
+    public static final String FIELD_CREDITOR_COUNTRY_CODE = "creditor.country_code";
+    public static final String FIELDROOT_FINAL_CREDITOR = "final_creditor.";
+    public static final String FIELD_FINAL_CREDITOR_NAME = "final_creditor.name";
+    public static final String FIELD_FINAL_CREDITOR_STREET = "final_creditor.street";
+    public static final String FIELD_FINAL_CREDITOR_HOUSE_NO = "final_creditor.house_no";
+    public static final String FIELD_FINAL_CREDITOR_POSTAL_CODE = "final_creditor.postal_code";
+    public static final String FIELD_FINAL_CREDITOR_CITY = "final_creditor.city";
+    public static final String FIELD_FINAL_CREDITOR_COUNTRY_CODE = "final_creditor.country_code";
     public static final String FIELD_REFERENCE_NO = "reference_no";
     public static final String FIELD_ADDITIONAL_INFO = "additional_info";
-    public static final String FIELD_DEBTOR = "debtor";
+    public static final String FIELDROOT_DEBTOR = "debtor.";
+    public static final String FIELD_DEBTOR_IS_OPEN = "debtor.is_open";
+    public static final String FIELD_DEBTOR_NAME = "debtor.name";
+    public static final String FIELD_DEBTOR_STREET = "debtor.street";
+    public static final String FIELD_DEBTOR_HOUSE_NO = "debtor.house_no";
+    public static final String FIELD_DEBTOR_POSTAL_CODE = "debtor.postal_code";
+    public static final String FIELD_DEBTOR_CITY = "debtor.city";
+    public static final String FIELD_DEBTOR_COUNTRY_CODE = "debtor.country_code";
+    public static final String FIELD_DUE_DATE = "due_date";
 
     private Language language = Language.English;
     private Version version = Version.Version_1_0;
 
-    private boolean isAmountOpen = false;
-    private double amount = 0;
+    private boolean isAmountOpen = true;
+    private Double amount = null;
     private String currency = "CHF";
-    private String account = "CH";
+    private String account = null;
     private Person creditor = new Person();
     private Person finalCreditor = null;
-    private String referenceNo = "0";
+    private String referenceNo = null;
     private String additionalInformation = null;
-    private boolean isDebtorOpen = false;
-    private Person debtor = new Person();
+    private boolean isDebtorOpen = true;
+    private Person debtor = null;
     private LocalDate dueDate = null;
 
 
@@ -70,11 +98,11 @@ public class Bill {
         isAmountOpen = amountOpen;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

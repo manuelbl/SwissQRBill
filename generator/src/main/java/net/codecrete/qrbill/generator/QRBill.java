@@ -35,7 +35,7 @@ public class QRBill {
     private static final double HORIZ_BORDER = 8; // mm
     private static final double VERT_BORDER = 8; // mm
     private static final double MIDDLE_SPACING = 5; // mm
-    private static final double LEFT_COLUMN_WIDTH = 54; // mm
+    private static final double LEFT_COLUMN_WIDTH = 56; // mm
     private static final double AMOUNT_WIDTH = 40; // mm (must not be smaller than 40)
     private static final double AMOUNT_HEIGHT = 15; // mm (must not be smaller than 15)
     private static final double RIGHT_COLUMN_WIDTH
@@ -50,13 +50,22 @@ public class QRBill {
     private GraphicsFormat graphicsFormat;
 
 
-    public ValidationResult[] validate() {
-        return null;
+    public static ValidationResult validate(Bill bill) {
+        ValidationResult result = new ValidationResult();
+        Validator validator = new Validator(bill, result);
+        validator.validate();
+        return result;
     }
 
     public static byte[] generate(Bill bill, BillFormat billFormat, GraphicsFormat graphicsFormat) {
+        ValidationResult result = new ValidationResult();
+        Validator validator = new Validator(bill, result);
+        Bill cleanedBill = validator.validate();
+        if (result.hasErrors())
+            throw new RuntimeException("Invalid QR bill data");
+
         QRBill qrBill = new QRBill();
-        qrBill.bill = bill;
+        qrBill.bill = cleanedBill;
         qrBill.qrCode = new QRCode(bill);
         qrBill.billFormat = billFormat;
         qrBill.graphicsFormat = graphicsFormat;

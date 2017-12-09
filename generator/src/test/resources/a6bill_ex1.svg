@@ -1,4 +1,4 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="148.5mm" height="105mm" version="1.1" viewBox="0 0 420.945 297.638" xmlns="http://www.w3.org/2000/svg">
 <g font-family="Helvetica,Arial">
@@ -18,10 +18,10 @@
 <g transform="translate(22.677 220.841)">
 <text x="0" y="6.4" font-size="8" font-weight="bold">Currency</text>
 <text x="0" y="19.6" font-size="10">CHF</text>
-<text x="39.685" y="6.4" font-size="8" font-weight="bold">Amount</text>
-<text x="39.685" y="19.6" font-size="10">123&apos;949.75</text>
+<text x="45.354" y="6.4" font-size="8" font-weight="bold">Amount</text>
+<text x="45.354" y="19.6" font-size="10">123&apos;949.75</text>
 </g>
-<g transform="translate(189.921 22.677)">
+<g transform="translate(195.591 22.677)">
 <text x="0" y="6.4" font-size="8" font-weight="bold">Account</text>
 <text x="0" y="19.6" font-size="10">CH44 3199 9123 0008 89012</text>
 <text x="0" y="36" font-size="8" font-weight="bold">Creditor</text>
@@ -36,14 +36,15 @@
 <text x="0" y="156.4" font-size="10">210 0000 0000 3139 4714 3000 9017</text>
 <text x="0" y="172.8" font-size="8" font-weight="bold">Additional information</text>
 <text x="0" y="186" font-size="10">Instruction of 15.09.2019</text>
-<text x="0" y="198" font-size="10">##S1/01/20170309/11/10201409/20/14000000</text>
-<text x="0" y="210" font-size="10">/22/36958/30/CH106017086/40/1020/41/3010</text>
-<text x="0" y="226.4" font-size="8" font-weight="bold">Debtor</text>
-<text x="0" y="239.6" font-size="10">Pia-Maria Rutschmann-Schnyder</text>
-<text x="0" y="251.6" font-size="10">Grosse Marktgasse 28</text>
-<text x="0" y="263.6" font-size="10">CH-9400 Rorschach</text>
-<text x="0" y="280" font-size="8" font-weight="bold">Due date</text>
-<text x="0" y="293.2" font-size="10">31.10.2019</text>
+<text x="0" y="198" font-size="10">##S1/01/20170309/11/10201409/20/1400000</text>
+<text x="0" y="210" font-size="10">0/22/36958/30/CH106017086/40/1020/41/30</text>
+<text x="0" y="222" font-size="10">10</text>
+<text x="0" y="238.4" font-size="8" font-weight="bold">Debtor</text>
+<text x="0" y="251.6" font-size="10">Pia-Maria Rutschmann-Schnyder</text>
+<text x="0" y="263.6" font-size="10">Grosse Marktgasse 28</text>
+<text x="0" y="275.6" font-size="10">CH-9400 Rorschach</text>
+<text x="0" y="292" font-size="8" font-weight="bold">Due date</text>
+<text x="0" y="305.2" font-size="10">31.10.2019</text>
 </g>
 </g>
 </svg>

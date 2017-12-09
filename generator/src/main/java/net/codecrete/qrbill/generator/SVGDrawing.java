@@ -26,7 +26,7 @@ public class SVGDrawing implements GraphicsGenerator {
         buffer = new ByteArrayOutputStream();
         stream = new OutputStreamWriter(buffer, StandardCharsets.UTF_8);
         stream.write(
-                "<?xml version=\"1.0\" standalone=\"no\"?>\r\n" +
+                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" +
                 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n" +
                 "<svg width=\"");
         stream.write(formatNumber(width));

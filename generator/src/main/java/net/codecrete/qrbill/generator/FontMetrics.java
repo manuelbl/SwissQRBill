@@ -161,6 +161,21 @@ public class FontMetrics {
     }
 
 
+    /**
+     * Returns the width of the specified character.
+     * <p>
+     *     The width is given in 0.0001 pt for a font size of 1 pt.
+     *     So to get the effective width in pt (1/72 in), it must
+     *     be multiplied with the font size and divided by 1000.
+     * </p>
+     * <p>
+     *     The method only supports characters as defined in
+     *     "Swiss Implementation Guidelines for Credit Transfer Initiation".
+     *     For all other characters, a default width is returned.
+     * </p>
+     * @param ch the character
+     * @return the width of the character
+     */
     private static double getCharWidth(char ch) {
         char width = 0;
         if (ch >= 0x20 && ch <= 0x7f)
