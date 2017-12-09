@@ -18,8 +18,7 @@ public class QRBill {
 
     public enum GraphicsFormat {
         PDF,
-        SVG,
-        PNG
+        SVG
     }
 
     public enum BillFormat {
@@ -107,7 +106,13 @@ public class QRBill {
                     drawQRCodeOnly();
                     break;
                 case A6LandscapeSheet:
-                    drawQRBill();
+                    drawQRBill(0, 0, false);
+                    break;
+                case A5LandscapeSheet:
+                    drawQRBill(61.5, 43.5, true);
+                    break;
+                case A4PortraitSheet:
+                    drawQRBill(61.5, 192, true);
                     break;
             }
 
@@ -120,12 +125,22 @@ public class QRBill {
         }
     }
 
-    private void drawQRBill() throws IOException {
+    private void drawQRBill(double offsetX, double offsetY, boolean hasBorder) throws IOException {
 
         Bill.Language language = bill.getLanguage();
 
+        // border
+        if (hasBorder) {
+            graphics.setTransformation(offsetX, offsetY, 1);
+            graphics.startPath();
+            graphics.moveTo(0, 105);
+            graphics.lineTo(0, 0);
+            graphics.lineTo(148.5, 0);
+            graphics.strokePath(0.5, 0);
+        }
+
         // title section
-        graphics.setTransformation(HORIZ_BORDER, VERT_BORDER, 1);
+        graphics.setTransformation(offsetX + HORIZ_BORDER, offsetY + VERT_BORDER, 1);
         double yPos = 0;
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_QR_BILL_PAYMENT_PART, language), 0, yPos, FONT_SIZE_TITLE, true);
 
@@ -139,10 +154,10 @@ public class QRBill {
         // QR code section
         double qrCodeSpacing = (105 - VERT_BORDER * 2 - yPos - AMOUNT_HEIGHT
                 - FontMetrics.getLineHeight(FONT_SIZE_LABEL) - FontMetrics.getTextPadding() - QRCode.SIZE) / 2;
-        qrCode.draw(graphics, HORIZ_BORDER, VERT_BORDER + yPos + qrCodeSpacing);
+        qrCode.draw(graphics, offsetX + HORIZ_BORDER, offsetY + VERT_BORDER + yPos + qrCodeSpacing);
 
         // amount section
-        graphics.setTransformation(HORIZ_BORDER, VERT_BORDER + yPos + 2 * qrCodeSpacing + QRCode.SIZE, 1);
+        graphics.setTransformation(offsetX + HORIZ_BORDER, offsetY + VERT_BORDER + yPos + 2 * qrCodeSpacing + QRCode.SIZE, 1);
         yPos = 0;
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_CURRENCY, language), 0, yPos, FONT_SIZE_LABEL, true);
         yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
@@ -158,7 +173,7 @@ public class QRBill {
         }
 
         // information section
-        graphics.setTransformation(HORIZ_BORDER + LEFT_COLUMN_WIDTH + MIDDLE_SPACING, VERT_BORDER, 1);
+        graphics.setTransformation(offsetX + HORIZ_BORDER + LEFT_COLUMN_WIDTH + MIDDLE_SPACING, offsetY + VERT_BORDER, 1);
         yPos = 0;
         // account
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_ACCOUNT, language), 0, yPos, FONT_SIZE_LABEL, true);
