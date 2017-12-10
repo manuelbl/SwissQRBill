@@ -86,7 +86,11 @@ class Validator {
         if (referenceNo != null) {
             referenceNo = whiteSpaceRemoved(referenceNo);
             if (referenceNo.startsWith("RF")) {
-                billOut.setReferenceNo(referenceNo);
+                if (!isValidISO11649ReferenceNo(referenceNo)) {
+                    validationResult.addMessage(Type.Error, Bill.FIELD_REFERENCE_NO, "valid_iso11649_creditor_ref");
+                } else {
+                    billOut.setReferenceNo(referenceNo);
+                }
             } else {
                 if (referenceNo.length() < 27)
                     referenceNo = "00000000000000000000000000".substring(0, 27 - referenceNo.length()) + referenceNo;
@@ -182,9 +186,8 @@ class Validator {
 
         if (personOut.getCountryCode() != null) {
             if (personOut.getCountryCode().length() != 2
-                    || !Character.isLetter(personOut.getCountryCode().charAt(0))
-                    || !Character.isLetter(personOut.getCountryCode().charAt(1)))
-            validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE, "valid_country_code");
+                    || !isAlphaNumeric(personOut.getCountryCode()))
+                validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE, "valid_country_code");
         }
 
         return personOut;
@@ -222,6 +225,8 @@ class Validator {
     private static boolean isValidIBAN(String iban) {
         if (iban.length() < 5)
             return false;
+        if (!isAlphaNumeric(iban))
+            return false;
         if (!Character.isLetter(iban.charAt(0)) || !Character.isLetter(iban.charAt(1))
                 || !Character.isDigit(iban.charAt(2)) || !Character.isDigit(iban.charAt(3)))
             return false;
@@ -251,6 +256,9 @@ class Validator {
     private static final int[] MOD_10 = { 0, 9, 4, 6, 8, 2, 7, 1, 3, 5 };
 
     private static boolean isValidQRReferenceNo(String referenceNo) {
+        if (!isNumeric(referenceNo))
+            return false;
+
         int carry = 0;
         int len = referenceNo.length();
         if (len != 27)
@@ -262,6 +270,21 @@ class Validator {
         }
 
         return carry == 0;
+    }
+
+    private static boolean isValidISO11649ReferenceNo(String referenceNo) {
+        if (referenceNo.length() < 5 || referenceNo.length() > 25)
+            return false;
+
+        if (!isAlphaNumeric(referenceNo))
+            return false;
+
+        if (!Character.isDigit(referenceNo.charAt(2)) || !Character.isDigit(referenceNo.charAt(3)))
+            return false;
+
+        // TODO verify check digits
+
+        return true;
     }
 
     private static String trimmed(String value) {
@@ -295,6 +318,31 @@ class Validator {
         if (len > lastCopied)
             sb.append(value, lastCopied, len);
         return sb.toString();
+    }
+
+    private static boolean isNumeric(String value) {
+        int len = value.length();
+        for (int i = 0; i < len; i++) {
+            char ch = value.charAt(i);
+            if (ch < '0' || ch > '9')
+                return false;
+        }
+        return true;
+    }
+
+    private static boolean isAlphaNumeric(String value) {
+        int len = value.length();
+        for (int i = 0; i < len; i++) {
+            char ch = value.charAt(i);
+            if (ch >= '0' && ch <= '9')
+                continue;
+            if (ch >= 'A' && ch <= 'Z')
+                continue;
+            if (ch >= 'a' && ch <= 'z')
+                continue;
+            return false;
+        }
+        return true;
     }
 
     private static boolean isNullOrEmpty(String value) {

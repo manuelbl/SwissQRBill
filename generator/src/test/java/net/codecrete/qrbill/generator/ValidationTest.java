@@ -173,6 +173,12 @@ public class ValidationTest {
         bill.setCreditor(person);
         validate();
         assertSingleErrorMessage(Bill.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
+
+        person = createValidPerson();
+        person.setCountryCode("R!");
+        bill.setCreditor(person);
+        validate();
+        assertSingleErrorMessage(Bill.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
     }
 
     @Test
@@ -267,6 +273,14 @@ public class ValidationTest {
         bill.setReferenceNo("1234567890");
         validate();
         assertSingleErrorMessage(Bill.FIELD_REFERENCE_NO, "valid_qr_ref_no");
+
+        bill.setReferenceNo("123ABC7890");
+        validate();
+        assertSingleErrorMessage(Bill.FIELD_REFERENCE_NO, "valid_qr_ref_no");
+
+        bill.setReferenceNo("RF38302!!3393");
+        validate();
+        assertSingleErrorMessage(Bill.FIELD_REFERENCE_NO, "valid_iso11649_creditor_ref");
     }
 
     @Test
