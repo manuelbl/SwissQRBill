@@ -34,24 +34,16 @@ class QRCode {
     void draw(GraphicsGenerator graphics, double offsetX, double offsetY) throws IOException {
         QrCode qrCode = QrCode.encodeText(textBuilder.toString(), QrCode.Ecc.MEDIUM);
 
-        int size = qrCode.size;
-        final double unit = 25.4 / 72;
-        graphics.setTransformation(offsetX, offsetY, SIZE / qrCode.size / unit);
+        boolean[][] modules = copyModules(qrCode);
+        clearSwissCrossArea(modules);
+
+        graphics.setTransformation(offsetX, offsetY, SIZE / modules.length / 25.4 * 72);
         graphics.startPath();
-        for (int y = 0; y < size; y++) {
-            for (int x = 0; x < size; x++) {
-                if (qrCode.getModule(x, y)) {
-                    graphics.addRectangle(x * unit, y * unit, unit, unit);
-                }
-            }
-        }
+        drawModulesPath(graphics, modules);
         graphics.fillPath(0);
         graphics.setTransformation(offsetX, offsetY, 1);
 
         // Swiss cross
-        graphics.startPath();
-        graphics.addRectangle(19.5, 19.5, 7, 7);
-        graphics.fillPath(0xffffff);
         graphics.startPath();
         graphics.addRectangle(20, 20, 6, 6);
         graphics.fillPath(0);
@@ -61,6 +53,28 @@ class QRCode {
         graphics.addRectangle(23 - BAR_WIDTH / 2, 23 - BAR_LENGTH / 2, BAR_WIDTH, BAR_LENGTH);
         graphics.addRectangle(23 - BAR_LENGTH / 2, 23 - BAR_WIDTH / 2, BAR_LENGTH, BAR_WIDTH);
         graphics.fillPath(0xffffff);
+    }
+
+    private void drawModulesPath(GraphicsGenerator graphics, boolean[][] modules) throws IOException {
+        // Simple algorithm to reduce the number of drawn rectangles
+        final double unit = 25.4 / 72;
+        int size = modules.length;
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                if (modules[y][x]) {
+                    graphics.addRectangle(x * unit, y * unit, unit, unit);
+                }
+            }
+        }
+    }
+
+    private static void clearSwissCrossArea(boolean[][] modules) {
+        // The Swiss cross area is supposed to be 7 by 7 mm in the center of
+        // the QR code, which is 46 by 46 mm.
+        // We clear sufficient modules to make room for the cross.
+        int size = modules.length;
+        int start = (int)Math.floor((46 - 6.8) / 2 * size / 46);
+        clearRectangle(modules, start, start, size - 2 * start, size - 2 * start);
     }
 
     private void createQRCodeText() {
@@ -116,6 +130,21 @@ class QRCode {
             value = "";
 
         textBuilder.append(CRLF).append(value);
+    }
+
+    private static boolean[][] copyModules(QrCode qrCode) {
+        int size = qrCode.size;
+        boolean[][] modules = new boolean[size][size];
+        for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
+                modules[y][x] = qrCode.getModule(x, y);
+        return modules;
+    }
+
+    private static void clearRectangle(boolean[][] modules, int x, int y, int width, int height) {
+        for (int iy = y; iy < y + height; iy++)
+            for (int ix = x; ix < x + width; ix++)
+                modules[iy][ix] = false;
     }
 
     private static DecimalFormat AMOUNT_FIELD_FORMAT;
