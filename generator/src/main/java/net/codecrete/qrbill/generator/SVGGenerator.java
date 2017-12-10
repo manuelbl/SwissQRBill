@@ -21,13 +21,17 @@ public class SVGGenerator implements GraphicsGenerator {
     private ByteArrayOutputStream buffer;
     private Writer stream;
     private boolean isInGroup = false;
+    private boolean isFirstMoveInPath;
+    private double lastPositionX;
+    private double lastPositionY;
+    private int approxPathLength;
 
     public SVGGenerator(double width, double height) throws IOException {
         buffer = new ByteArrayOutputStream();
         stream = new OutputStreamWriter(buffer, StandardCharsets.UTF_8);
         stream.write(
-                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" +
-                "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\r\n" +
+                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+                "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n" +
                 "<svg width=\"");
         stream.write(formatNumber(width));
         stream.write("mm\" height=\"");
@@ -36,18 +40,18 @@ public class SVGGenerator implements GraphicsGenerator {
         stream.write(formatCoordinate(width));
         stream.write(" ");
         stream.write(formatCoordinate(height));
-        stream.write("\" xmlns=\"http://www.w3.org/2000/svg\">\r\n");
-        stream.write("<g font-family=\"Helvetica,Arial\">\r\n");
+        stream.write("\" xmlns=\"http://www.w3.org/2000/svg\">\n");
+        stream.write("<g font-family=\"Helvetica,Arial\">\n");
     }
 
     public void close() throws IOException {
         if (isInGroup) {
-            stream.write("</g>\r\n");
+            stream.write("</g>\n");
             isInGroup = false;
         }
         if (stream != null) {
-            stream.write("</g>\r\n");
-            stream.write("</svg>\r\n");
+            stream.write("</g>\n");
+            stream.write("</svg>\n");
             stream.close();
             stream = null;
         }
@@ -55,42 +59,65 @@ public class SVGGenerator implements GraphicsGenerator {
 
     public void startPath() throws IOException {
         stream.write("<path d=\"");
+        isFirstMoveInPath = true;
+        approxPathLength = 0;
     }
 
     public void moveTo(double x, double y) throws IOException {
-        stream.write("M");
-        stream.write(formatCoordinate(x));
-        stream.write(",");
-        stream.write(formatCoordinate(y));
-        stream.write(" ");
+        if (isFirstMoveInPath) {
+            stream.write("M");
+            stream.write(formatCoordinate(x));
+            stream.write(",");
+            stream.write(formatCoordinate(y));
+            isFirstMoveInPath = false;
+        } else {
+            addPathNewlines(16);
+            stream.write("m");
+            stream.write(formatCoordinate(x - lastPositionX));
+            stream.write(",");
+            stream.write(formatCoordinate(y - lastPositionY));
+        }
+        lastPositionX = x;
+        lastPositionY = y;
+        approxPathLength += 16;
     }
 
     public void lineTo(double x, double y) throws IOException {
-        stream.write("L");
-        stream.write(formatCoordinate(x));
+        addPathNewlines(16);
+        stream.write("l");
+        stream.write(formatCoordinate(x - lastPositionX));
         stream.write(",");
-        stream.write(formatCoordinate(y));
-        stream.write(" ");
+        stream.write(formatCoordinate(y - lastPositionY));
+        lastPositionX = x;
+        lastPositionY = y;
+        approxPathLength += 16;
     }
 
     public void addRectangle(double x, double y, double width, double height) throws IOException {
-        stream.write("M");
-        stream.write(formatCoordinate(x));
-        stream.write(",");
-        stream.write(formatCoordinate(y));
+        addPathNewlines(40);
+        moveTo(x, y);
         stream.write("h");
         stream.write(formatCoordinate(width));
         stream.write("v");
         stream.write(formatCoordinate(height));
         stream.write("h");
         stream.write(formatCoordinate(-width));
-        stream.write("z ");
+        stream.write("z");
+        approxPathLength += 24;
+    }
+    
+    private void addPathNewlines(int expectedLength) throws IOException {
+        if (approxPathLength + expectedLength > 255) {
+            stream.write("\n");
+            approxPathLength = 0;
+        }
     }
 
     public void fillPath(int color) throws IOException {
         stream.write("\" fill=\"#");
         stream.write(formatColor(color));
-        stream.write("\"/>\r\n");
+        stream.write("\"/>\n");
+        isFirstMoveInPath = true;
     }
 
     public void strokePath(double strokeWidth, int color) throws IOException {
@@ -100,7 +127,8 @@ public class SVGGenerator implements GraphicsGenerator {
             stream.write("\" stroke-width=\"");
             stream.write(formatNumber(strokeWidth));
         }
-        stream.write("\" fill=\"none\"/>\r\n");
+        stream.write("\" fill=\"none\"/>\n");
+        isFirstMoveInPath = true;
     }
 
     public void putText(String text, double x, double y, int fontSize, boolean isBold) throws IOException {
@@ -115,7 +143,7 @@ public class SVGGenerator implements GraphicsGenerator {
             stream.write("\" font-weight=\"bold");
         stream.write("\">");
         stream.write(escapeXML(text));
-        stream.write("</text>\r\n");
+        stream.write("</text>\n");
     }
 
     public int putMultilineText(String text, double x, double y, double maxWidth, int fontSize) throws IOException {
@@ -129,7 +157,7 @@ public class SVGGenerator implements GraphicsGenerator {
 
     public void setTransformation(double translateX, double translateY, double scale) throws IOException {
         if (isInGroup) {
-            stream.write("</g>\r\n");
+            stream.write("</g>\n");
             isInGroup = false;
         }
         if (translateX != 0 || translateY != 0 || scale != 1) {
@@ -141,7 +169,7 @@ public class SVGGenerator implements GraphicsGenerator {
                 stream.write(") scale(");
                 stream.write(formatNumber(scale));
             }
-            stream.write(")\">\r\n");
+            stream.write(")\">\n");
             isInGroup = true;
         }
     }

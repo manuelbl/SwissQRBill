@@ -6,6 +6,7 @@
 //
 package net.codecrete.qrbill.generator;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 import io.nayuki.qrcodegen.QrCode;
 
 import java.io.IOException;
@@ -57,15 +58,43 @@ class QRCode {
 
     private void drawModulesPath(GraphicsGenerator graphics, boolean[][] modules) throws IOException {
         // Simple algorithm to reduce the number of drawn rectangles
-        final double unit = 25.4 / 72;
         int size = modules.length;
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
                 if (modules[y][x]) {
-                    graphics.addRectangle(x * unit, y * unit, unit, unit);
+                    drawLargestRectangle(graphics, modules, x, y);
                 }
             }
         }
+    }
+
+    // Simple algorithms to reduce the number of rectangles for drawing the QR code and reduce SVG size
+    private void drawLargestRectangle(GraphicsGenerator graphics, boolean[][] modules, int x, int y) throws IOException {
+        int size = modules.length;
+
+        int bestW = 1;
+        int bestH = 1;
+        int maxArea = 1;
+
+        int xLimit = size;
+        int iy = y;
+        while (iy < size && modules[iy][x]) {
+            int w = 0;
+            while (x + w < xLimit && modules[iy][x + w])
+                w++;
+            int area = w * (iy - y + 1);
+            if (area > maxArea) {
+                maxArea = area;
+                bestW = w;
+                bestH = iy - y + 1;
+            }
+            xLimit = x + w;
+            iy++;
+        }
+
+        final double unit = 25.4 / 72;
+        graphics.addRectangle(x * unit, y * unit, bestW * unit, bestH * unit);
+        clearRectangle(modules, x, y, bestW, bestH);
     }
 
     private static void clearSwissCrossArea(boolean[][] modules) {
