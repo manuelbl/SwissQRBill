@@ -220,7 +220,6 @@ class Validator {
         return personOut;
     }
 
-    private static final int IBAN_CHECK_MODULUS = 97;
 
     private static boolean isValidIBAN(String iban) {
         if (iban.length() < 5)
@@ -231,26 +230,7 @@ class Validator {
                 || !Character.isDigit(iban.charAt(2)) || !Character.isDigit(iban.charAt(3)))
             return false;
 
-        String rearranged = iban.substring(4) + iban.substring(0, 4);
-        int len = rearranged.length();
-        int sum = 0;
-        for (int i = 0; i < len; i++) {
-            char ch = rearranged.charAt(i);
-            if (ch >= '0' && ch <= '9') {
-                sum = sum * 10 + (ch - '0');
-            } else if (ch >= 'A' && ch <= 'Z') {
-                sum = sum * 100 + (ch - 'A' + 10);
-            } else if (ch >= 'a' && ch <= 'z') {
-                sum = sum * 100 + (ch - 'a' + 10);
-            } else {
-                return false;
-            }
-            if (sum > 9999999)
-                sum = sum % IBAN_CHECK_MODULUS;
-        }
-
-        sum = sum % IBAN_CHECK_MODULUS;
-        return sum == 1;
+        return hasValidMod97CheckDigits(iban);
     }
 
     private static final int[] MOD_10 = { 0, 9, 4, 6, 8, 2, 7, 1, 3, 5 };
@@ -282,9 +262,30 @@ class Validator {
         if (!Character.isDigit(referenceNo.charAt(2)) || !Character.isDigit(referenceNo.charAt(3)))
             return false;
 
-        // TODO verify check digits
+        return hasValidMod97CheckDigits(referenceNo);
+    }
 
-        return true;
+    private static boolean hasValidMod97CheckDigits(String number) {
+        String rearranged = number.substring(4) + number.substring(0, 4);
+        int len = rearranged.length();
+        int sum = 0;
+        for (int i = 0; i < len; i++) {
+            char ch = rearranged.charAt(i);
+            if (ch >= '0' && ch <= '9') {
+                sum = sum * 10 + (ch - '0');
+            } else if (ch >= 'A' && ch <= 'Z') {
+                sum = sum * 100 + (ch - 'A' + 10);
+            } else if (ch >= 'a' && ch <= 'z') {
+                sum = sum * 100 + (ch - 'a' + 10);
+            } else {
+                return false;
+            }
+            if (sum > 9999999)
+                sum = sum % 97;
+        }
+
+        sum = sum % 97;
+        return sum == 1;
     }
 
     private static String trimmed(String value) {

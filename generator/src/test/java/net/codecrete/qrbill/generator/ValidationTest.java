@@ -182,6 +182,81 @@ public class ValidationTest {
     }
 
     @Test
+    public void clippedFieldTest() {
+        bill = SampleData.getExample1();
+
+        Person person = createValidPerson();
+        person.setName("Name567890123456789012345678901234567890123456789012345678901234567890");
+        bill.setCreditor(person);
+        validate();
+        assertNoMessages();
+        assertEquals("Name567890123456789012345678901234567890123456789012345678901234567890", validatedBill.getCreditor().getName());
+
+        person = createValidPerson();
+        person.setName("Name5678901234567890123456789012345678901234567890123456789012345678901");
+        bill.setCreditor(person);
+        validate();
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_NAME, "field_clipped");
+        assertEquals("Name567890123456789012345678901234567890123456789012345678901234567890", validatedBill.getCreditor().getName());
+
+        person = createValidPerson();
+        person.setStreet("Street7890123456789012345678901234567890123456789012345678901234567890");
+        bill.setCreditor(person);
+        validate();
+        assertNoMessages();
+        assertEquals("Street7890123456789012345678901234567890123456789012345678901234567890", validatedBill.getCreditor().getStreet());
+
+        person = createValidPerson();
+        person.setStreet("Street78901234567890123456789012345678901234567890123456789012345678901");
+        bill.setCreditor(person);
+        validate();
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_STREET, "field_clipped");
+        assertEquals("Street7890123456789012345678901234567890123456789012345678901234567890", validatedBill.getCreditor().getStreet());
+
+        person = createValidPerson();
+        person.setHouseNumber("HouseNo890123456");
+        bill.setCreditor(person);
+        validate();
+        assertNoMessages();
+        assertEquals("HouseNo890123456", validatedBill.getCreditor().getHouseNumber());
+
+        person = createValidPerson();
+        person.setHouseNumber("HouseNo8901234567");
+        bill.setCreditor(person);
+        validate();
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_HOUSE_NO, "field_clipped");
+        assertEquals("HouseNo890123456", validatedBill.getCreditor().getHouseNumber());
+
+        person = createValidPerson();
+        person.setPostalCode("Postal7890123456");
+        bill.setCreditor(person);
+        validate();
+        assertNoMessages();
+        assertEquals("Postal7890123456", validatedBill.getCreditor().getPostalCode());
+
+        person = createValidPerson();
+        person.setPostalCode("Postal78901234567");
+        bill.setCreditor(person);
+        validate();
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_POSTAL_CODE, "field_clipped");
+        assertEquals("Postal7890123456", validatedBill.getCreditor().getPostalCode());
+
+        person = createValidPerson();
+        person.setCity("City5678901234567890123456789012345");
+        bill.setCreditor(person);
+        validate();
+        assertNoMessages();
+        assertEquals("City5678901234567890123456789012345", validatedBill.getCreditor().getCity());
+
+        person = createValidPerson();
+        person.setCity("City56789012345678901234567890123456");
+        bill.setCreditor(person);
+        validate();
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_CITY, "field_clipped");
+        assertEquals("City5678901234567890123456789012345", validatedBill.getCreditor().getCity());
+    }
+
+    @Test
     public void finalCreditorTest() {
         bill = SampleData.getExample1();
 
@@ -279,6 +354,10 @@ public class ValidationTest {
         assertSingleErrorMessage(Bill.FIELD_REFERENCE_NO, "valid_qr_ref_no");
 
         bill.setReferenceNo("RF38302!!3393");
+        validate();
+        assertSingleErrorMessage(Bill.FIELD_REFERENCE_NO, "valid_iso11649_creditor_ref");
+
+        bill.setReferenceNo("RF00539007547034");
         validate();
         assertSingleErrorMessage(Bill.FIELD_REFERENCE_NO, "valid_iso11649_creditor_ref");
     }
@@ -393,6 +472,18 @@ public class ValidationTest {
 
         ValidationMessage msg = result.getValidationMessages().get(0);
         assertEquals(Type.Error, msg.getType());
+        assertEquals(field, msg.getField());
+        assertEquals(messageKey, msg.getMessageKey());
+    }
+
+    private void assertSingleWarningMessage(String field, String messageKey) {
+        assertEquals(false, result.hasErrors());
+        assertEquals(true, result.hasWarnings());
+        assertEquals(true, result.hasMessages());
+        assertEquals(1, result.getValidationMessages().size());
+
+        ValidationMessage msg = result.getValidationMessages().get(0);
+        assertEquals(Type.Warning, msg.getType());
         assertEquals(field, msg.getField());
         assertEquals(messageKey, msg.getMessageKey());
     }
