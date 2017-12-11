@@ -310,7 +310,7 @@ public class FontMetrics {
             0,
             0,
             0,
-            222, // 0x0B ´ Acute accent
+            222, // 0xB4 ´ Acute accent
             0,
             0,
             0,

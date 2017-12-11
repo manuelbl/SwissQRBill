@@ -257,6 +257,81 @@ public class ValidationTest {
     }
 
     @Test
+    public void characterSetTest() {
+        bill = SampleData.getExample1();
+
+        Person person = createValidPerson();
+        person.setName("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        bill.setCreditor(person);
+        validate();
+        assertNoMessages();
+        assertEquals("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", validatedBill.getCreditor().getName());
+
+        person = createValidPerson();
+        person.setName("!\"#%&*;<>÷=@_$£[]{}\\`´");
+        bill.setCreditor(person);
+        validate();
+        assertNoMessages();
+        assertEquals("!\"#%&*;<>÷=@_$£[]{}\\`´", validatedBill.getCreditor().getName());
+
+        final String TEXT_WITHOUT_COMBINING_ACCENTS = "àáâäçèéêëìíîïñòóôöùúûüýßÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÑ";
+        final String TEXT_WITH_COMBINING_ACCENTS = "àáâäçèéêëìíîïñòóôöùúûüýßÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÑ";
+        assertEquals(TEXT_WITHOUT_COMBINING_ACCENTS.length(), 46);
+        assertEquals(TEXT_WITH_COMBINING_ACCENTS.length(), 59);
+
+        person = createValidPerson();
+        person.setName(TEXT_WITHOUT_COMBINING_ACCENTS);
+        bill.setCreditor(person);
+        validate();
+        assertNoMessages();
+        assertEquals(TEXT_WITHOUT_COMBINING_ACCENTS, validatedBill.getCreditor().getName());
+
+        person = createValidPerson();
+        person.setName(TEXT_WITH_COMBINING_ACCENTS);
+        bill.setCreditor(person);
+        validate();
+        assertNoMessages(); // silently normalized
+        assertEquals(TEXT_WITHOUT_COMBINING_ACCENTS, validatedBill.getCreditor().getName());
+
+        person = createValidPerson();
+        person.setName("abc\r\ndef");
+        bill.setCreditor(person);
+        validate();
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_NAME, "replaced_unsupported_characters");
+        assertEquals("abc def", validatedBill.getCreditor().getName());
+
+        person = createValidPerson();
+        person.setStreet("abc€def©ghi^");
+        bill.setCreditor(person);
+        validate();
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_STREET, "replaced_unsupported_characters");
+        assertEquals("abc.def.ghi.", validatedBill.getCreditor().getStreet());
+
+        person = createValidPerson();
+        person.setPostalCode("\uD83D\uDC80"); // surrogate pair (1 code point but 2 UTF-16 words)
+        bill.setCreditor(person);
+        validate();
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_POSTAL_CODE, "replaced_unsupported_characters");
+        assertEquals(".", validatedBill.getCreditor().getPostalCode());
+
+        person = createValidPerson();
+        person.setCity("\uD83C\uDDE8\uD83C\uDDED"); // two surrogate pairs
+        bill.setCreditor(person);
+        validate();
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_CITY, "replaced_unsupported_characters");
+        assertEquals("..", validatedBill.getCreditor().getCity());
+
+        person = createValidPerson();
+        person.setCity("-- \uD83D\uDC68\uD83C\uDFFB --"); // two surrogate pairs
+        bill.setCreditor(person);
+        validate();
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_CITY, "replaced_unsupported_characters");
+        assertEquals("-- .. --", validatedBill.getCreditor().getCity());
+
+
+    }
+
+    @Test
     public void finalCreditorTest() {
         bill = SampleData.getExample1();
 

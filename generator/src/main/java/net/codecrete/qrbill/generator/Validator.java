@@ -8,6 +8,8 @@ package net.codecrete.qrbill.generator;
 
 import net.codecrete.qrbill.generator.ValidationMessage.Type;
 
+import java.text.Normalizer;
+
 
 /**
  * Validates and cleans QR bill data.
@@ -125,44 +127,8 @@ class Validator {
         return billOut;
     }
 
-    private boolean validateMandatory(String value, String field) {
-        if (isNullOrEmpty(value)) {
-            validationResult.addMessage(Type.Error, field, "field_is_mandatory");
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean validateMandatory(String value, String fieldRoot, String subfield) {
-        if (isNullOrEmpty(value)) {
-            validationResult.addMessage(Type.Error, fieldRoot + subfield, "field_is_mandatory");
-            return false;
-        }
-
-        return true;
-    }
-
-    private String clipValue(String value, int maxLength, String field) {
-        if (value != null && value.length() > maxLength) {
-            validationResult.addMessage(Type.Warning, field, "field_clipped", new String[] { Integer.toString(maxLength) });
-            return value.substring(0, maxLength);
-        }
-
-        return value;
-    }
-
-    private String clipValue(String value, int maxLength, String fieldRoot, String subfield) {
-        if (value != null && value.length() > maxLength) {
-            validationResult.addMessage(Type.Warning, fieldRoot + subfield, "field_clipped", new String[] { Integer.toString(maxLength) });
-            return value.substring(0, maxLength);
-        }
-
-        return value;
-    }
-
     private Person validatePerson(Person personIn, String fieldRoot, boolean mandatory) {
-        Person personOut = cleanedPerson(personIn);
+        Person personOut = cleanedPerson(personIn, fieldRoot);
         if (personOut == null) {
             if (mandatory) {
                 validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_NAME, "field_is_mandatory");
@@ -201,15 +167,15 @@ class Validator {
         return true;
     }
 
-    private Person cleanedPerson(Person personIn) {
+    private Person cleanedPerson(Person personIn, String fieldRoot) {
         if (personIn == null)
             return null;
         Person personOut = new Person();
-        personOut.setName(trimmed(personIn.getName()));
-        personOut.setStreet(trimmed(personIn.getStreet()));
-        personOut.setHouseNumber(trimmed(personIn.getHouseNumber()));
-        personOut.setPostalCode(trimmed(personIn.getPostalCode()));
-        personOut.setCity(trimmed(personIn.getCity()));
+        personOut.setName(trimmed(cleanedValue(personIn.getName(), fieldRoot, Bill.SUBFIELD_NAME)));
+        personOut.setStreet(trimmed(cleanedValue(personIn.getStreet(), fieldRoot, Bill.SUBFIELD_STREET)));
+        personOut.setHouseNumber(trimmed(cleanedValue(personIn.getHouseNumber(), fieldRoot, Bill.SUBFIELD_HOUSE_NO)));
+        personOut.setPostalCode(trimmed(cleanedValue(personIn.getPostalCode(), fieldRoot, Bill.SUBFIELD_POSTAL_CODE)));
+        personOut.setCity(trimmed(cleanedValue(personIn.getCity(), fieldRoot, Bill.SUBFIELD_CITY)));
         personOut.setCountryCode(trimmed(personIn.getCountryCode()));
 
         if (personOut.getName() == null && personOut.getStreet() == null
@@ -220,6 +186,126 @@ class Validator {
         return personOut;
     }
 
+    private boolean validateMandatory(String value, String field) {
+        if (isNullOrEmpty(value)) {
+            validationResult.addMessage(Type.Error, field, "field_is_mandatory");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean validateMandatory(String value, String fieldRoot, String subfield) {
+        if (isNullOrEmpty(value)) {
+            validationResult.addMessage(Type.Error, fieldRoot + subfield, "field_is_mandatory");
+            return false;
+        }
+
+        return true;
+    }
+
+    private String clipValue(String value, int maxLength, String field) {
+        if (value != null && value.length() > maxLength) {
+            validationResult.addMessage(Type.Warning, field, "field_clipped", new String[] { Integer.toString(maxLength) });
+            return value.substring(0, maxLength);
+        }
+
+        return value;
+    }
+
+    private String clipValue(String value, int maxLength, String fieldRoot, String subfield) {
+        if (value != null && value.length() > maxLength) {
+            validationResult.addMessage(Type.Warning, fieldRoot + subfield, "field_clipped", new String[] { Integer.toString(maxLength) });
+            return value.substring(0, maxLength);
+        }
+
+        return value;
+    }
+
+    /**
+     * Returns a string where all unsupported characters have been replaced.
+     * <p>
+     *     If characters beyond 0xff are detected, the string is first normalized
+     *     such that letters with umlauts or accents expressed with two code points
+     *     are merged into a single code point (if possible), some of which might
+     *     become valid.
+     * </p>
+     * <p>
+     *     If the resulting strings is all white space, {@code null} is
+     *     returned and no warning is added.
+     * </p>
+     * @param value string to process
+     * @param isNormalized indicates if normalization has already been run
+     * @param fieldRoot field root
+     * @param subfield sub field name
+     * @return the cleaned string
+     */
+    private String cleanedValue(String value, boolean isNormalized, String fieldRoot, String subfield) {
+        if (value == null)
+            return null;
+
+        int len = value.length();
+        boolean justAddedSpace = false;
+        StringBuilder sb = null;
+        int lastCopiedPos = 0;
+
+        for (int i = 0; i < len; i++) {
+            char ch = value.charAt(i);
+
+            if (ch > 0xff && !isNormalized) {
+                if (Normalizer.isNormalized(value, Normalizer.Form.NFC)) {
+                    isNormalized = true;
+                } else {
+                    value = Normalizer.normalize(value, Normalizer.Form.NFC);
+                    return cleanedValue(value, true, fieldRoot, subfield);
+                }
+            }
+
+            if (!isValidQRBillCharacter(ch)) {
+                if (sb == null)
+                    sb = new StringBuilder(value.length());
+                if (i > lastCopiedPos)
+                    sb.append(value, lastCopiedPos, i);
+                if (Character.isHighSurrogate(ch)) {
+                    // Proper Unicode handling to prevent surrogates and combining characters
+                    // from being replaced with multiples periods.
+                    int codePoint = value.codePointAt(i);
+                    if (Character.getType(codePoint) != Character.COMBINING_SPACING_MARK)
+                        sb.append('.');
+                    justAddedSpace = false;
+                    i++;
+                    lastCopiedPos = i + 1;
+                } else {
+                    char replacement = Character.isWhitespace(ch) ? ' ' : '.';
+                    if (replacement != ' ' || !justAddedSpace) {
+                        sb.append(replacement);
+                        justAddedSpace = replacement == ' ';
+                    }
+                    lastCopiedPos = i + 1;
+                }
+            } else {
+                justAddedSpace = ch == ' ';
+            }
+        }
+
+        if (sb == null)
+            return value;
+
+        if (lastCopiedPos < len)
+            sb.append(value, lastCopiedPos, len);
+
+        String result = sb.toString().trim();
+        if (result.length() == 0)
+            return null;
+
+        validationResult.addMessage(Type.Warning, fieldRoot + subfield, "replaced_unsupported_characters");
+
+        return result;
+    }
+
+    private String cleanedValue(String value, String fieldRoot, String subfield) {
+        return cleanedValue(value, false, fieldRoot, subfield);
+    }
 
     private static boolean isValidIBAN(String iban) {
         if (iban.length() < 5)
@@ -348,5 +434,29 @@ class Validator {
 
     private static boolean isNullOrEmpty(String value) {
         return value == null || value.trim().length() == 0;
+    }
+
+    private static boolean isValidQRBillCharacter(char ch) {
+        if (ch < 0x20)
+            return false;
+        if (ch == 0x5e)
+            return false;
+        if (ch <= 0x7e)
+            return true;
+        if (ch == 0xa3 || ch == 0xb4)
+            return true;
+        if (ch < 0xc0 || ch > 0xfd)
+            return false;
+        if (ch == 0xc3 || ch == 0xc5 || ch == 0xc6)
+            return false;
+        if (ch == 0xd0 || ch == 0xd5 || ch == 0xd7 || ch == 0xd8)
+            return false;
+        if (ch == 0xdd || ch == 0xde)
+            return false;
+        if (ch == 0xe3 || ch == 0xe5 || ch == 0xe6)
+            return false;
+        if (ch == 0xf0 || ch == 0xf5 || ch == 0xf8)
+            return false;
+        return true;
     }
 }
