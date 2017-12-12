@@ -14,19 +14,19 @@ import java.text.Normalizer;
 /**
  * Validates and cleans QR bill data.
  */
-class Validator {
+public class Validator {
 
     private Bill billIn;
     private Bill billOut;
     private ValidationResult validationResult;
 
-    Validator(Bill bill, ValidationResult result) {
+    public Validator(Bill bill, ValidationResult result) {
         billIn = bill;
         billOut = new Bill();
         validationResult = result;
     }
 
-    Bill validate() {
+    public Bill validate() {
 
         billOut.setLanguage(billIn.getLanguage());
         billOut.setVersion(billIn.getVersion());

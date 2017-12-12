@@ -61,16 +61,27 @@ public class QRBill {
         Validator validator = new Validator(bill, result);
         Bill cleanedBill = validator.validate();
         if (result.hasErrors())
-            throw new RuntimeException("Invalid QR bill data");
+            throw new QRBillValidationError(result);
 
         QRBill qrBill = new QRBill();
         qrBill.bill = cleanedBill;
-        qrBill.qrCode = new QRCode(bill);
+        qrBill.qrCode = new QRCode(cleanedBill);
         qrBill.billFormat = billFormat;
         qrBill.graphicsFormat = graphicsFormat;
         return qrBill.generateOutput();
     }
 
+
+    public static String generateQrCodeText(Bill bill) {
+        ValidationResult result = new ValidationResult();
+        Validator validator = new Validator(bill, result);
+        Bill cleanedBill = validator.validate();
+        if (result.hasErrors())
+            throw new QRBillValidationError(result);
+
+        QRCode qrCode = new QRCode(cleanedBill);
+        return qrCode.getText();
+    }
 
 
     private byte[] generateOutput() {

@@ -1,13 +1,22 @@
 allprojects {
+    buildscript {
+        repositories {
+            mavenCentral()
+            maven {
+                url 'https://repo.spring.io/libs-milestone'
+            }
+        }
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://repo.spring.io/libs-milestone'
+        }
+    }
 }
 
-
 subprojects {
-  group 'net.codecrete.qrbill'
-  version '1.0-SNAPSHOT'
-
-  repositories {
-    mavenCentral()
-  }
+    group 'net.codecrete.qrbill'
+    version '1.0-SNAPSHOT'
 }
 

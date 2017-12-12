@@ -7,6 +7,7 @@
 package net.codecrete.qrbill.generator;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Bill {
 
@@ -176,5 +177,31 @@ public class Bill {
 
     public void setDebtor(Person debtor) {
         this.debtor = debtor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Bill bill = (Bill) o;
+        return isAmountOpen == bill.isAmountOpen &&
+                isDebtorOpen == bill.isDebtorOpen &&
+                language == bill.language &&
+                version == bill.version &&
+                Objects.equals(amount, bill.amount) &&
+                Objects.equals(currency, bill.currency) &&
+                Objects.equals(account, bill.account) &&
+                Objects.equals(creditor, bill.creditor) &&
+                Objects.equals(finalCreditor, bill.finalCreditor) &&
+                Objects.equals(referenceNo, bill.referenceNo) &&
+                Objects.equals(additionalInformation, bill.additionalInformation) &&
+                Objects.equals(debtor, bill.debtor) &&
+                Objects.equals(dueDate, bill.dueDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(language, version, isAmountOpen, amount, currency, account, creditor, finalCreditor,
+                referenceNo, additionalInformation, isDebtorOpen, debtor, dueDate);
     }
 }

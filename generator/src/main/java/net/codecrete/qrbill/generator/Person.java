@@ -6,6 +6,8 @@
 //
 package net.codecrete.qrbill.generator;
 
+import java.util.Objects;
+
 public class Person {
     private String name;
     private String street;
@@ -60,5 +62,23 @@ public class Person {
 
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(name, person.name) &&
+                Objects.equals(street, person.street) &&
+                Objects.equals(houseNumber, person.houseNumber) &&
+                Objects.equals(postalCode, person.postalCode) &&
+                Objects.equals(city, person.city) &&
+                Objects.equals(countryCode, person.countryCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, street, houseNumber, postalCode, city, countryCode);
     }
 }

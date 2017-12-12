@@ -18,6 +18,8 @@ public class ValidationMessage {
     private String messageKey;
     private String[] messageParameters;
 
+    public ValidationMessage() {
+    }
 
     public ValidationMessage(Type type, String field, String messageKey) {
         this.type = type;
