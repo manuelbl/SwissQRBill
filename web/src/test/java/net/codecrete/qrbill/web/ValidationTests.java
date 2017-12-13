@@ -6,8 +6,8 @@
 //
 package net.codecrete.qrbill.web;
 
-import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.ValidationMessage;
+import net.codecrete.qrbill.web.api.QrBill;
+import net.codecrete.qrbill.web.api.ValidationMessage;
 import net.codecrete.qrbill.web.api.ValidationResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,7 +29,7 @@ public class ValidationTests {
 
     @Test
     public void okValidationTest() {
-        Bill bill = createBill();
+        QrBill bill = createBill();
 
         ValidationResponse response = restTemplate.postForObject("/api/validate", bill, ValidationResponse.class);
 
@@ -39,7 +41,7 @@ public class ValidationTests {
 
     @Test
     public void truncationWarningTest() {
-        Bill bill = createBill();
+        QrBill bill = createBill();
         bill.getCreditor().setTown("city56789012345678901234567890123456");
 
         ValidationResponse response = restTemplate.postForObject("/api/validate", bill, ValidationResponse.class);
@@ -48,7 +50,7 @@ public class ValidationTests {
         assertNotNull(response.getValidationMessages());
         assertEquals(1, response.getValidationMessages().size());
         assertEquals(ValidationMessage.Type.Warning, response.getValidationMessages().get(0).getType());
-        assertEquals(Bill.FIELD_CREDITOR_TOWN, response.getValidationMessages().get(0).getField());
+        assertEquals(".creditor.town", response.getValidationMessages().get(0).getField());
         assertEquals("field_clipped", response.getValidationMessages().get(0).getMessageKey());
 
         assertNotNull(response.getValidatedBill());
@@ -57,9 +59,9 @@ public class ValidationTests {
         assertEquals(bill, response.getValidatedBill());
     }
 
-    private Bill createBill() {
-        Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.German);
+    private QrBill createBill() {
+        QrBill bill = new QrBill();
+        bill.setLanguage(QrBill.Language.de);
         bill.setAmount(100.35);
         bill.setCurrency("CHF");
         bill.setAccount("CH4431999123000889012");

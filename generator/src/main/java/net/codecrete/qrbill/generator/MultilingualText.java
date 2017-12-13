@@ -46,13 +46,13 @@ public class MultilingualText {
     private static int getLanguageIndex(Bill.Language language) {
         int index;
         switch (language) {
-            case German:
+            case de:
                 index = 0;
                 break;
-            case French:
+            case fr:
                 index = 1;
                 break;
-            case Italian:
+            case it:
                 index = 2;
                 break;
             default:

@@ -99,14 +99,17 @@ public class Address {
         return addr;
     }
 
-    public net.codecrete.qrbill.generator.Address toGeneratorAddress() {
+    public static net.codecrete.qrbill.generator.Address toGeneratorAddress(Address addr) {
+        if (addr == null)
+            return null;
+
         net.codecrete.qrbill.generator.Address address = new net.codecrete.qrbill.generator.Address();
-        address.setName(name);
-        address.setStreet(street);
-        address.setHouseNo(houseNo);
-        address.setPostalCode(postalCode);
-        address.setTown(town);
-        address.setCountryCode(countryCode);
+        address.setName(addr.name);
+        address.setStreet(addr.street);
+        address.setHouseNo(addr.houseNo);
+        address.setPostalCode(addr.postalCode);
+        address.setTown(addr.town);
+        address.setCountryCode(addr.countryCode);
         return address;
     }
 }

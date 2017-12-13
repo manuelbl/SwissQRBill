@@ -11,15 +11,16 @@ import java.util.Objects;
 
 public class Bill {
 
+    // Itentionally use lowercase
     public enum Language {
-        German,
-        French,
-        Italian,
-        English
+        de,
+        fr,
+        it,
+        en
     }
 
     public enum Version {
-        Version_1_0
+        V1_0
     }
 
     public static final String SUBFIELD_NAME = ".name";
@@ -28,7 +29,7 @@ public class Bill {
     public static final String SUBFIELD_POSTAL_CODE = ".postalCode";
     public static final String SUBFIELD_TOWN = ".town";
     public static final String SUBFIELD_COUNTRY_CODE = ".countryCode";
-    public static final String FIELD_LANGUGAGE = ".language";
+    public static final String FIELD_LANGUAGE = ".language";
     public static final String FIELD_CURRENCY = ".currency";
     public static final String FIELD_AMOUNT = ".amount";
     public static final String FIELD_ACCOUNT = ".account";
@@ -57,8 +58,8 @@ public class Bill {
     public static final String FIELD_DEBTOR_COUNTRY_CODE = ".debtor.countryCode";
     public static final String FIELD_DUE_DATE = ".dueDate";
 
-    private Language language = Language.English;
-    private Version version = Version.Version_1_0;
+    private Language language = Language.en;
+    private Version version = Version.V1_0;
 
     private Double amount = null;
     private String currency = "CHF";

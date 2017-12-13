@@ -8,8 +8,6 @@ package net.codecrete.qrbill.generator;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
-
 public class QRCodeTest {
 
     @Test

@@ -10,8 +10,11 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 
-import static net.codecrete.qrbill.generator.ValidationMessage.*;
-import static org.junit.Assert.*;
+import static net.codecrete.qrbill.generator.ValidationMessage.Type;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class ValidationTest {
 

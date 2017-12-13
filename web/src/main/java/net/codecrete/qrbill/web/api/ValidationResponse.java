@@ -6,15 +6,12 @@
 //
 package net.codecrete.qrbill.web.api;
 
-import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.ValidationMessage;
-
 import java.util.List;
 
 public class ValidationResponse {
 
     private List<ValidationMessage> validationMessages;
-    private Bill validatedBill;
+    private QrBill validatedBill;
 
     public List<ValidationMessage> getValidationMessages() {
         return validationMessages;
@@ -24,11 +21,11 @@ public class ValidationResponse {
         this.validationMessages = validationMessages;
     }
 
-    public Bill getValidatedBill() {
+    public QrBill getValidatedBill() {
         return validatedBill;
     }
 
-    public void setValidatedBill(Bill validatedBill) {
+    public void setValidatedBill(QrBill validatedBill) {
         this.validatedBill = validatedBill;
     }
 }
