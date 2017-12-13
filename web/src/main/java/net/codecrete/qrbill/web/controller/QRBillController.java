@@ -7,27 +7,23 @@
 package net.codecrete.qrbill.web.controller;
 
 import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.QRBillValidationError;
 import net.codecrete.qrbill.generator.ValidationResult;
 import net.codecrete.qrbill.generator.Validator;
 import net.codecrete.qrbill.web.api.QrBill;
 import net.codecrete.qrbill.web.api.ValidationMessage;
 import net.codecrete.qrbill.web.api.ValidationResponse;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import static net.codecrete.qrbill.generator.QRBill.*;
 
 @RestController
 public class QRBillController {
@@ -40,10 +36,11 @@ public class QRBillController {
     @RequestMapping(value = "/api/qrCodeText", method = RequestMethod.POST)
     public ResponseEntity generateQrCodeString(@RequestBody QrBill bill) {
         try {
-            String text = QRBill.generateQrCodeText(QrBill.toGeneratorBill(bill));
+            String text = generateQrCodeText(QrBill.toGeneratorBill(bill));
             return ResponseEntity.ok(text);
         } catch (QRBillValidationError e) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getValidationResult());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                    .body(ValidationMessage.fromList(e.getValidationResult().getValidationMessages()));
         }
     }
 
@@ -65,61 +62,59 @@ public class QRBillController {
         response.setValidatedBill(QrBill.from(validatedBill));
         return response;
     }
+
     /**
-     * Generates the QR bill for the specified data - either as an SVG or as a PDF.
-     * <p>
-     *     The type of the result (SVG or PDF) is specified using the {@code Accept} HTTP header.
-     * </p>
+     * Generates the QR bill as an SVG.
      * @param bill the QR bill data
      * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
-     * @param headers the HTTP headers
-     * @return the text as a string if the data is valid; a list of validation messages otherwise
+     * @return the generated bill if the data is valid; a list of validation messages otherwise
      */
-    @RequestMapping(value = "/api/bill/{format}", method = RequestMethod.POST, produces = { "image/svg+xml", "application/pdf"})
-    public ResponseEntity generateBill(@RequestBody QrBill bill, @PathVariable("format") String format, @RequestHeader HttpHeaders headers) {
-        QRBill.GraphicsFormat graphicsFormat = getGraphicsFormat(headers);
-        if (graphicsFormat == null)
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-                    .body("Specify at least one of the following mime types in the \"Accept\" header: image/svg+xml, application/pdf");
+    @RequestMapping(value = "/api/bill/svg/{format}", method = RequestMethod.POST)
+    public ResponseEntity generateSvgBill(@RequestBody QrBill bill, @PathVariable("format") String format) {
+        return generateBill(bill, format, GraphicsFormat.SVG);
+    }
 
-        QRBill.BillFormat billFormat = getBillFormat(format);
+    /**
+     * Generates the QR bill as a PDF.
+     * @param bill the QR bill data
+     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
+     * @return the generated bill if the data is valid; a list of validation messages otherwise
+     */
+    @RequestMapping(value = "/api/bill/pdf/{format}", method = RequestMethod.POST)
+    public ResponseEntity generatePdfBill(@RequestBody QrBill bill, @PathVariable("format") String format) {
+        return generateBill(bill, format, GraphicsFormat.PDF);
+    }
+
+
+    private ResponseEntity generateBill(QrBill bill, String format, GraphicsFormat graphicsFormat) {
+        BillFormat billFormat = getBillFormat(format);
         if (billFormat == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("Invalid bill format in URL. Valid values: qrCodeOnly, a6Landscape, a5Landscape, a4Portrait");
 
         try {
-            byte[] result = QRBill.generate(QrBill.toGeneratorBill(bill), billFormat, graphicsFormat);
+            byte[] result = generate(QrBill.toGeneratorBill(bill), billFormat, graphicsFormat);
             return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(result);
         } catch (QRBillValidationError e) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getValidationResult());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                    .body(ValidationMessage.fromList(e.getValidationResult().getValidationMessages()));
         }
     }
 
-    private static QRBill.GraphicsFormat getGraphicsFormat(HttpHeaders headers) {
-        List<String> acceptValues = headers.get(HttpHeaders.ACCEPT);
-        for (String value : acceptValues) {
-            if ("image/svg+xml".equals(value))
-                return QRBill.GraphicsFormat.SVG;
-            if ("application/pdf".equals(value))
-                return QRBill.GraphicsFormat.PDF;
-        }
-        return null;
-    }
-
-    private static QRBill.BillFormat getBillFormat(String value) {
-        QRBill.BillFormat format;
+    private static BillFormat getBillFormat(String value) {
+        BillFormat format;
         switch (value) {
             case "qrCodeOnly":
-                format = QRBill.BillFormat.QRCodeOnly;
+                format = BillFormat.QRCodeOnly;
                 break;
             case "a6Landscape":
-                format = QRBill.BillFormat.A6LandscapeSheet;
+                format = BillFormat.A6LandscapeSheet;
                 break;
             case "a5Landscape":
-                format = QRBill.BillFormat.A5LandscapeSheet;
+                format = BillFormat.A5LandscapeSheet;
                 break;
             case "a4Portrait":
-                format = QRBill.BillFormat.A4PortraitSheet;
+                format = BillFormat.A4PortraitSheet;
                 break;
             default:
                 format = null;
@@ -129,7 +124,7 @@ public class QRBillController {
 
     private static final MediaType MEDIA_TYPE_SVG = MediaType.valueOf("image/svg+xml;charset=UTF-8");
 
-    private static MediaType getContentType(QRBill.GraphicsFormat graphicsFormat) {
-        return graphicsFormat == QRBill.GraphicsFormat.SVG ? MEDIA_TYPE_SVG : MediaType.APPLICATION_PDF;
+    private static MediaType getContentType(GraphicsFormat graphicsFormat) {
+        return graphicsFormat == GraphicsFormat.SVG ? MEDIA_TYPE_SVG : MediaType.APPLICATION_PDF;
     }
 }
