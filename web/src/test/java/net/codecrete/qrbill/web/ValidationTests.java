@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,7 +30,7 @@ public class ValidationTests {
 
     @Test
     public void okValidationTest() {
-        QrBill bill = createBill();
+        QrBill bill = SampleData.createBill1();
 
         ValidationResponse response = restTemplate.postForObject("/api/validate", bill, ValidationResponse.class);
 
@@ -41,7 +42,7 @@ public class ValidationTests {
 
     @Test
     public void truncationWarningTest() {
-        QrBill bill = createBill();
+        QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown("city56789012345678901234567890123456");
 
         ValidationResponse response = restTemplate.postForObject("/api/validate", bill, ValidationResponse.class);
@@ -59,19 +60,20 @@ public class ValidationTests {
         assertEquals(bill, response.getValidatedBill());
     }
 
-    private QrBill createBill() {
-        QrBill bill = new QrBill();
-        bill.setLanguage(QrBill.Language.de);
-        bill.setAmount(100.35);
-        bill.setCurrency("CHF");
-        bill.setAccount("CH4431999123000889012");
-        bill.getCreditor().setName("Meierhans AG");
-        bill.getCreditor().setStreet("Bahnhofstrasse");
-        bill.getCreditor().setHouseNo("16");
-        bill.getCreditor().setPostalCode("2100");
-        bill.getCreditor().setTown("Irgendwo");
-        bill.getCreditor().setCountryCode("CH");
-        bill.setReferenceNo("RF18539007547034");
-        return bill;
+    @Test
+    public void missingCreditorTest() {
+        QrBill bill = SampleData.createBill1();
+        bill.setCreditor(null);
+
+        ValidationResponse response = restTemplate.postForObject("/api/validate", bill, ValidationResponse.class);
+
+        assertNotNull(response);
+        assertNotNull(response.getValidationMessages());
+        assertEquals(4, response.getValidationMessages().size());
+        for (ValidationMessage message : response.getValidationMessages()) {
+            assertEquals(ValidationMessage.Type.Error, message.getType());
+            assertTrue(message.getField().startsWith(".creditor."));
+            assertEquals("field_is_mandatory", message.getMessageKey());
+        }
     }
 }
