@@ -6,7 +6,6 @@
 //
 package net.codecrete.qrbill.generator;
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
 import io.nayuki.qrcodegen.QrCode;
 
 import java.io.IOException;
@@ -120,12 +119,12 @@ class QRCode {
         appendPerson(bill.getFinalCreditor());
 
         // CCyAmtDate
-        appendDataField(bill.isAmountOpen() ? "" : formatAmountForCode(bill.getAmount())); // Amt
+        appendDataField(bill.getAmount() == null ? "" : formatAmountForCode(bill.getAmount())); // Amt
         appendDataField(bill.getCurrency()); // Ccy
         appendDataField(bill.getDueDate() != null ? formatDateForCode(bill.getDueDate()) : ""); // ReqdExctnDt
 
         // UltmtDbtr
-        appendPerson(bill.isDebtorOpen() ? null : bill.getDebtor());
+        appendPerson(bill.getDebtor());
 
         // RmtInf
         String referenceType = "NON";
@@ -140,14 +139,14 @@ class QRCode {
         appendDataField(bill.getAdditionalInformation()); // Unstrd
     }
 
-    private void appendPerson(Person person) {
-        if (person != null) {
-            appendDataField(person.getName()); // Name
-            appendDataField(person.getStreet()); // StrtNm
-            appendDataField(person.getHouseNumber()); // BldgNb
-            appendDataField(person.getPostalCode()); // PstCd
-            appendDataField(person.getCity()); // TwnNm
-            appendDataField(person.getCountryCode()); // Ctrty
+    private void appendPerson(Address address) {
+        if (address != null) {
+            appendDataField(address.getName()); // Name
+            appendDataField(address.getStreet()); // StrtNm
+            appendDataField(address.getHouseNo()); // BldgNb
+            appendDataField(address.getPostalCode()); // PstCd
+            appendDataField(address.getTown()); // TwnNm
+            appendDataField(address.getCountryCode()); // Ctrty
         } else {
             for (int i = 0; i < 6; i++)
                 appendDataField("");

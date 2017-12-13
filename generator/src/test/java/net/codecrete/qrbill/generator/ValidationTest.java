@@ -41,29 +41,21 @@ public class ValidationTest {
     public void openAmountTest() {
         bill = SampleData.getExample1();
 
-        bill.setAmountOpen(true);
+        bill.setAmount(null);
         validate();
         assertNoMessages();
-        assertEquals(true, validatedBill.isAmountOpen());
-        assertEquals(null, validatedBill.getAmount());
+        assertNull(validatedBill.getAmount());
     }
 
     @Test
     public void amountTest() {
         bill = SampleData.getExample1();
 
-        bill.setAmountOpen(false);
         bill.setAmount(100.15);
         validate();
         assertNoMessages();
         assertEquals(Double.valueOf(100.15), validatedBill.getAmount());
 
-        bill.setAmountOpen(false);
-        bill.setAmount(null);
-        validate();
-        assertSingleErrorMessage(Bill.FIELD_AMOUNT, "amount_open_or_mandatory");
-
-        bill.setAmountOpen(false);
         bill.setAmount(0.0);
         validate();
         assertSingleErrorMessage(Bill.FIELD_AMOUNT, "amount_in_valid_range");
@@ -100,83 +92,83 @@ public class ValidationTest {
     public void creditorTest() {
         bill = SampleData.getExample1();
 
-        Person person = createValidPerson();
-        bill.setCreditor(person);
+        Address address = createValidPerson();
+        bill.setCreditor(address);
         validate();
         assertNoMessages();
         assertNotNull(validatedBill.getCreditor());
         assertEquals("Zuppinger AG", validatedBill.getCreditor().getName());
         assertEquals("Industriestrasse", validatedBill.getCreditor().getStreet());
-        assertEquals("34a", validatedBill.getCreditor().getHouseNumber());
+        assertEquals("34a", validatedBill.getCreditor().getHouseNo());
         assertEquals("9548", validatedBill.getCreditor().getPostalCode());
-        assertEquals("Matzingen", validatedBill.getCreditor().getCity());
+        assertEquals("Matzingen", validatedBill.getCreditor().getTown());
         assertEquals("CH", validatedBill.getCreditor().getCountryCode());
 
         bill.setCreditor(null);
         validate();
         assertMandatoryPersonMessages(Bill.FIELDROOT_CREDITOR);
 
-        Person emptyPerson = new Person();
-        bill.setCreditor(emptyPerson);
+        Address emptyAddress = new Address();
+        bill.setCreditor(emptyAddress);
         validate();
         assertMandatoryPersonMessages(Bill.FIELDROOT_CREDITOR);
 
-        emptyPerson.setName("  ");
-        bill.setCreditor(emptyPerson);
+        emptyAddress.setName("  ");
+        bill.setCreditor(emptyAddress);
         validate();
         assertMandatoryPersonMessages(Bill.FIELDROOT_CREDITOR);
 
-        person = createValidPerson();
-        person.setName("  ");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setName("  ");
+        bill.setCreditor(address);
         validate();
         assertSingleErrorMessage(Bill.FIELD_CREDITOR_NAME, "field_is_mandatory");
 
-        person = createValidPerson();
-        person.setStreet(null);
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setStreet(null);
+        bill.setCreditor(address);
         validate();
         assertNoMessages();
 
-        person = createValidPerson();
-        person.setStreet(null);
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setStreet(null);
+        bill.setCreditor(address);
         validate();
         assertNoMessages();
 
-        person = createValidPerson();
-        person.setHouseNumber(null);
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setHouseNo(null);
+        bill.setCreditor(address);
         validate();
         assertNoMessages();
 
-        person = createValidPerson();
-        person.setPostalCode("");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setPostalCode("");
+        bill.setCreditor(address);
         validate();
         assertSingleErrorMessage(Bill.FIELD_CREDITOR_POSTAL_CODE, "field_is_mandatory");
 
-        person = createValidPerson();
-        person.setCity(null);
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setTown(null);
+        bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_CREDITOR_CITY, "field_is_mandatory");
+        assertSingleErrorMessage(Bill.FIELD_CREDITOR_TOWN, "field_is_mandatory");
 
-        person = createValidPerson();
-        person.setCountryCode("  ");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setCountryCode("  ");
+        bill.setCreditor(address);
         validate();
         assertSingleErrorMessage(Bill.FIELD_CREDITOR_COUNTRY_CODE, "field_is_mandatory");
 
-        person = createValidPerson();
-        person.setCountryCode("Schweiz");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setCountryCode("Schweiz");
+        bill.setCreditor(address);
         validate();
         assertSingleErrorMessage(Bill.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
 
-        person = createValidPerson();
-        person.setCountryCode("R!");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setCountryCode("R!");
+        bill.setCreditor(address);
         validate();
         assertSingleErrorMessage(Bill.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
     }
@@ -185,91 +177,91 @@ public class ValidationTest {
     public void clippedFieldTest() {
         bill = SampleData.getExample1();
 
-        Person person = createValidPerson();
-        person.setName("Name567890123456789012345678901234567890123456789012345678901234567890");
-        bill.setCreditor(person);
+        Address address = createValidPerson();
+        address.setName("Name567890123456789012345678901234567890123456789012345678901234567890");
+        bill.setCreditor(address);
         validate();
         assertNoMessages();
         assertEquals("Name567890123456789012345678901234567890123456789012345678901234567890", validatedBill.getCreditor().getName());
 
-        person = createValidPerson();
-        person.setName("Name5678901234567890123456789012345678901234567890123456789012345678901");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setName("Name5678901234567890123456789012345678901234567890123456789012345678901");
+        bill.setCreditor(address);
         validate();
         assertSingleWarningMessage(Bill.FIELD_CREDITOR_NAME, "field_clipped");
         assertEquals("Name567890123456789012345678901234567890123456789012345678901234567890", validatedBill.getCreditor().getName());
 
-        person = createValidPerson();
-        person.setStreet("Street7890123456789012345678901234567890123456789012345678901234567890");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setStreet("Street7890123456789012345678901234567890123456789012345678901234567890");
+        bill.setCreditor(address);
         validate();
         assertNoMessages();
         assertEquals("Street7890123456789012345678901234567890123456789012345678901234567890", validatedBill.getCreditor().getStreet());
 
-        person = createValidPerson();
-        person.setStreet("Street78901234567890123456789012345678901234567890123456789012345678901");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setStreet("Street78901234567890123456789012345678901234567890123456789012345678901");
+        bill.setCreditor(address);
         validate();
         assertSingleWarningMessage(Bill.FIELD_CREDITOR_STREET, "field_clipped");
         assertEquals("Street7890123456789012345678901234567890123456789012345678901234567890", validatedBill.getCreditor().getStreet());
 
-        person = createValidPerson();
-        person.setHouseNumber("HouseNo890123456");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setHouseNo("HouseNo890123456");
+        bill.setCreditor(address);
         validate();
         assertNoMessages();
-        assertEquals("HouseNo890123456", validatedBill.getCreditor().getHouseNumber());
+        assertEquals("HouseNo890123456", validatedBill.getCreditor().getHouseNo());
 
-        person = createValidPerson();
-        person.setHouseNumber("HouseNo8901234567");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setHouseNo("HouseNo8901234567");
+        bill.setCreditor(address);
         validate();
         assertSingleWarningMessage(Bill.FIELD_CREDITOR_HOUSE_NO, "field_clipped");
-        assertEquals("HouseNo890123456", validatedBill.getCreditor().getHouseNumber());
+        assertEquals("HouseNo890123456", validatedBill.getCreditor().getHouseNo());
 
-        person = createValidPerson();
-        person.setPostalCode("Postal7890123456");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setPostalCode("Postal7890123456");
+        bill.setCreditor(address);
         validate();
         assertNoMessages();
         assertEquals("Postal7890123456", validatedBill.getCreditor().getPostalCode());
 
-        person = createValidPerson();
-        person.setPostalCode("Postal78901234567");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setPostalCode("Postal78901234567");
+        bill.setCreditor(address);
         validate();
         assertSingleWarningMessage(Bill.FIELD_CREDITOR_POSTAL_CODE, "field_clipped");
         assertEquals("Postal7890123456", validatedBill.getCreditor().getPostalCode());
 
-        person = createValidPerson();
-        person.setCity("City5678901234567890123456789012345");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setTown("City5678901234567890123456789012345");
+        bill.setCreditor(address);
         validate();
         assertNoMessages();
-        assertEquals("City5678901234567890123456789012345", validatedBill.getCreditor().getCity());
+        assertEquals("City5678901234567890123456789012345", validatedBill.getCreditor().getTown());
 
-        person = createValidPerson();
-        person.setCity("City56789012345678901234567890123456");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setTown("City56789012345678901234567890123456");
+        bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(Bill.FIELD_CREDITOR_CITY, "field_clipped");
-        assertEquals("City5678901234567890123456789012345", validatedBill.getCreditor().getCity());
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_TOWN, "field_clipped");
+        assertEquals("City5678901234567890123456789012345", validatedBill.getCreditor().getTown());
     }
 
     @Test
     public void characterSetTest() {
         bill = SampleData.getExample1();
 
-        Person person = createValidPerson();
-        person.setName("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        bill.setCreditor(person);
+        Address address = createValidPerson();
+        address.setName("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        bill.setCreditor(address);
         validate();
         assertNoMessages();
         assertEquals("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", validatedBill.getCreditor().getName());
 
-        person = createValidPerson();
-        person.setName("!\"#%&*;<>÷=@_$£[]{}\\`´");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setName("!\"#%&*;<>÷=@_$£[]{}\\`´");
+        bill.setCreditor(address);
         validate();
         assertNoMessages();
         assertEquals("!\"#%&*;<>÷=@_$£[]{}\\`´", validatedBill.getCreditor().getName());
@@ -279,54 +271,54 @@ public class ValidationTest {
         assertEquals(TEXT_WITHOUT_COMBINING_ACCENTS.length(), 46);
         assertEquals(TEXT_WITH_COMBINING_ACCENTS.length(), 59);
 
-        person = createValidPerson();
-        person.setName(TEXT_WITHOUT_COMBINING_ACCENTS);
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setName(TEXT_WITHOUT_COMBINING_ACCENTS);
+        bill.setCreditor(address);
         validate();
         assertNoMessages();
         assertEquals(TEXT_WITHOUT_COMBINING_ACCENTS, validatedBill.getCreditor().getName());
 
-        person = createValidPerson();
-        person.setName(TEXT_WITH_COMBINING_ACCENTS);
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setName(TEXT_WITH_COMBINING_ACCENTS);
+        bill.setCreditor(address);
         validate();
         assertNoMessages(); // silently normalized
         assertEquals(TEXT_WITHOUT_COMBINING_ACCENTS, validatedBill.getCreditor().getName());
 
-        person = createValidPerson();
-        person.setName("abc\r\ndef");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setName("abc\r\ndef");
+        bill.setCreditor(address);
         validate();
         assertSingleWarningMessage(Bill.FIELD_CREDITOR_NAME, "replaced_unsupported_characters");
         assertEquals("abc def", validatedBill.getCreditor().getName());
 
-        person = createValidPerson();
-        person.setStreet("abc€def©ghi^");
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setStreet("abc€def©ghi^");
+        bill.setCreditor(address);
         validate();
         assertSingleWarningMessage(Bill.FIELD_CREDITOR_STREET, "replaced_unsupported_characters");
         assertEquals("abc.def.ghi.", validatedBill.getCreditor().getStreet());
 
-        person = createValidPerson();
-        person.setPostalCode("\uD83D\uDC80"); // surrogate pair (1 code point but 2 UTF-16 words)
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setPostalCode("\uD83D\uDC80"); // surrogate pair (1 code point but 2 UTF-16 words)
+        bill.setCreditor(address);
         validate();
         assertSingleWarningMessage(Bill.FIELD_CREDITOR_POSTAL_CODE, "replaced_unsupported_characters");
         assertEquals(".", validatedBill.getCreditor().getPostalCode());
 
-        person = createValidPerson();
-        person.setCity("\uD83C\uDDE8\uD83C\uDDED"); // two surrogate pairs
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setTown("\uD83C\uDDE8\uD83C\uDDED"); // two surrogate pairs
+        bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(Bill.FIELD_CREDITOR_CITY, "replaced_unsupported_characters");
-        assertEquals("..", validatedBill.getCreditor().getCity());
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_TOWN, "replaced_unsupported_characters");
+        assertEquals("..", validatedBill.getCreditor().getTown());
 
-        person = createValidPerson();
-        person.setCity("-- \uD83D\uDC68\uD83C\uDFFB --"); // two surrogate pairs
-        bill.setCreditor(person);
+        address = createValidPerson();
+        address.setTown("-- \uD83D\uDC68\uD83C\uDFFB --"); // two surrogate pairs
+        bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(Bill.FIELD_CREDITOR_CITY, "replaced_unsupported_characters");
-        assertEquals("-- .. --", validatedBill.getCreditor().getCity());
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_TOWN, "replaced_unsupported_characters");
+        assertEquals("-- .. --", validatedBill.getCreditor().getTown());
 
 
     }
@@ -335,16 +327,16 @@ public class ValidationTest {
     public void finalCreditorTest() {
         bill = SampleData.getExample1();
 
-        Person person = createValidPerson();
-        bill.setFinalCreditor(person);
+        Address address = createValidPerson();
+        bill.setFinalCreditor(address);
         validate();
         assertNoMessages();
         assertNotNull(validatedBill.getFinalCreditor());
         assertEquals("Zuppinger AG", validatedBill.getFinalCreditor().getName());
         assertEquals("Industriestrasse", validatedBill.getFinalCreditor().getStreet());
-        assertEquals("34a", validatedBill.getFinalCreditor().getHouseNumber());
+        assertEquals("34a", validatedBill.getFinalCreditor().getHouseNo());
         assertEquals("9548", validatedBill.getFinalCreditor().getPostalCode());
-        assertEquals("Matzingen", validatedBill.getFinalCreditor().getCity());
+        assertEquals("Matzingen", validatedBill.getFinalCreditor().getTown());
         assertEquals("CH", validatedBill.getFinalCreditor().getCountryCode());
 
         bill.setFinalCreditor(null);
@@ -352,29 +344,29 @@ public class ValidationTest {
         assertNoMessages();
         assertNull(validatedBill.getFinalCreditor());
 
-        Person emptyPerson = new Person();
-        bill.setFinalCreditor(emptyPerson);
+        Address emptyAddress = new Address();
+        bill.setFinalCreditor(emptyAddress);
         validate();
         assertNoMessages();
         assertNull(validatedBill.getFinalCreditor());
 
-        emptyPerson.setName("  ");
-        bill.setFinalCreditor(emptyPerson);
+        emptyAddress.setName("  ");
+        bill.setFinalCreditor(emptyAddress);
         validate();
         assertNoMessages();
         assertNull(validatedBill.getFinalCreditor());
 
-        person = createValidPerson();
-        person.setName("  ");
-        bill.setFinalCreditor(person);
+        address = createValidPerson();
+        address.setName("  ");
+        bill.setFinalCreditor(address);
         validate();
         assertSingleErrorMessage(Bill.FIELD_FINAL_CREDITOR_NAME, "field_is_mandatory");
 
-        person = createValidPerson();
-        person.setCity(null);
-        bill.setFinalCreditor(person);
+        address = createValidPerson();
+        address.setTown(null);
+        bill.setFinalCreditor(address);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_FINAL_CREDITOR_CITY, "field_is_mandatory");
+        assertSingleErrorMessage(Bill.FIELD_FINAL_CREDITOR_TOWN, "field_is_mandatory");
     }
 
     @Test
@@ -461,10 +453,9 @@ public class ValidationTest {
     public void openDebtorTest() {
         bill = SampleData.getExample1();
 
-        bill.setDebtorOpen(true);
+        bill.setDebtor(null);
         validate();
         assertNoMessages();
-        assertEquals(true, validatedBill.isDebtorOpen());
         assertNull(validatedBill.getDebtor());
     }
 
@@ -472,43 +463,41 @@ public class ValidationTest {
     public void debtorTest() {
         bill = SampleData.getExample1();
 
-        Person person = createValidPerson();
-        bill.setDebtorOpen(false);
-        bill.setDebtor(person);
+        Address address = createValidPerson();
+        bill.setDebtor(address);
         validate();
         assertNoMessages();
-        assertFalse(validatedBill.isDebtorOpen());
         assertNotNull(validatedBill.getDebtor());
         assertEquals("Zuppinger AG", validatedBill.getDebtor().getName());
         assertEquals("Industriestrasse", validatedBill.getDebtor().getStreet());
-        assertEquals("34a", validatedBill.getDebtor().getHouseNumber());
+        assertEquals("34a", validatedBill.getDebtor().getHouseNo());
         assertEquals("9548", validatedBill.getDebtor().getPostalCode());
-        assertEquals("Matzingen", validatedBill.getDebtor().getCity());
+        assertEquals("Matzingen", validatedBill.getDebtor().getTown());
         assertEquals("CH", validatedBill.getDebtor().getCountryCode());
 
-        Person emptyPerson = new Person();
-        bill.setDebtor(emptyPerson);
+        Address emptyAddress = new Address();
+        bill.setDebtor(emptyAddress);
         validate();
         assertNoMessages();
         assertNull(validatedBill.getDebtor());
 
-        emptyPerson.setName("  ");
-        bill.setDebtor(emptyPerson);
+        emptyAddress.setName("  ");
+        bill.setDebtor(emptyAddress);
         validate();
         assertNoMessages();
         assertNull(validatedBill.getDebtor());
 
-        person = createValidPerson();
-        person.setName("  ");
-        bill.setDebtor(person);
+        address = createValidPerson();
+        address.setName("  ");
+        bill.setDebtor(address);
         validate();
         assertSingleErrorMessage(Bill.FIELD_DEBTOR_NAME, "field_is_mandatory");
 
-        person = createValidPerson();
-        person.setCity(null);
-        bill.setDebtor(person);
+        address = createValidPerson();
+        address.setTown(null);
+        bill.setDebtor(address);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_DEBTOR_CITY, "field_is_mandatory");
+        assertSingleErrorMessage(Bill.FIELD_DEBTOR_TOWN, "field_is_mandatory");
     }
 
     @Test
@@ -575,14 +564,14 @@ public class ValidationTest {
         }
     }
 
-    private Person createValidPerson() {
-        Person person = new Person();
-        person.setName("Zuppinger AG");
-        person.setStreet("Industriestrasse");
-        person.setHouseNumber("34a");
-        person.setPostalCode("9548");
-        person.setCity("Matzingen");
-        person.setCountryCode("CH");
-        return person;
+    private Address createValidPerson() {
+        Address address = new Address();
+        address.setName("Zuppinger AG");
+        address.setStreet("Industriestrasse");
+        address.setHouseNo("34a");
+        address.setPostalCode("9548");
+        address.setTown("Matzingen");
+        address.setCountryCode("CH");
+        return address;
     }
 }

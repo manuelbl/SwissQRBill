@@ -4,7 +4,7 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-package net.codecrete.qrbill.web;
+package net.codecrete.qrbill.web.api;
 
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.ValidationMessage;

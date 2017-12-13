@@ -192,7 +192,7 @@ public class QRBill {
         yPos = 0;
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_AMOUNT, language), LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, yPos, FONT_SIZE_LABEL, true);
         yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
-        if (bill.isAmountOpen()) {
+        if (bill.getAmount() == null) {
             drawCorners(LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, yPos, AMOUNT_WIDTH, AMOUNT_HEIGHT);
         } else {
             graphics.putText(formatAmountForDisplay(bill.getAmount()), LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, yPos, FONT_SIZE_TEXT, false);
@@ -245,7 +245,7 @@ public class QRBill {
         // debtor
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_DEBTOR, language), 0, yPos, FONT_SIZE_LABEL, true);
         yPos += FontMetrics.getLineHeight(FONT_SIZE_LABEL) + FontMetrics.getTextPadding();
-        if (bill.isDebtorOpen()) {
+        if (bill.getDebtor() == null) {
             drawCorners(0, yPos, RIGHT_COLUMN_WIDTH, DEBTOR_HEIGHT);
             yPos += 25 + FontMetrics.getLabelPadding();
         } else {
@@ -324,25 +324,25 @@ public class QRBill {
         return sb.toString();
     }
 
-    private static String formatPersonForDisplay(Person person) {
+    private static String formatPersonForDisplay(Address address) {
         StringBuilder sb = new StringBuilder();
-        sb.append(person.getName());
-        String street = person.getStreet();
+        sb.append(address.getName());
+        String street = address.getStreet();
         if (street != null) {
             sb.append("\n");
             sb.append(street);
         }
-        String houseNo = person.getHouseNumber();
+        String houseNo = address.getHouseNo();
         if (houseNo != null) {
             sb.append(street != null ? " " : "\n");
             sb.append(houseNo);
         }
         sb.append("\n");
-        sb.append(person.getCountryCode());
+        sb.append(address.getCountryCode());
         sb.append("-");
-        sb.append(person.getPostalCode());
+        sb.append(address.getPostalCode());
         sb.append(" ");
-        sb.append(person.getCity());
+        sb.append(address.getTown());
         return sb.toString();
     }
 

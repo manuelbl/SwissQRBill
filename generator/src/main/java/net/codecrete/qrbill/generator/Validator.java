@@ -43,18 +43,13 @@ public class Validator {
         }
 
         // amount
-        if (billIn.isAmountOpen()) {
-            billOut.setAmountOpen(true);
+        Double amount = billIn.getAmount();
+        if (amount == null) {
+            billOut.setAmount(null);
+        } else if (billIn.getAmount() < 0.01 || billIn.getAmount() > 999999999.99) {
+            validationResult.addMessage(Type.Error, Bill.FIELD_AMOUNT, "amount_in_valid_range");
         } else {
-            Double amount = billIn.getAmount();
-            if (amount == null) {
-                validationResult.addMessage(Type.Error, Bill.FIELD_AMOUNT, "amount_open_or_mandatory");
-            } else if (billIn.getAmount() < 0.01 || billIn.getAmount() > 999999999.99) {
-                validationResult.addMessage(Type.Error, Bill.FIELD_AMOUNT, "amount_in_valid_range");
-            } else {
-                billOut.setAmountOpen(false);
-                billOut.setAmount(billIn.getAmount());
-            }
+            billOut.setAmount(billIn.getAmount());
         }
 
         // account no
@@ -76,11 +71,11 @@ public class Validator {
         }
 
         // creditor
-        Person creditor = validatePerson(billIn.getCreditor(), Bill.FIELDROOT_CREDITOR, true);
+        Address creditor = validatePerson(billIn.getCreditor(), Bill.FIELDROOT_CREDITOR, true);
         billOut.setCreditor(creditor);
 
         // final creditor
-        Person finalCreditor = validatePerson(billIn.getFinalCreditor(), Bill.FIELDROOT_FINAL_CREDITOR, false);
+        Address finalCreditor = validatePerson(billIn.getFinalCreditor(), Bill.FIELDROOT_FINAL_CREDITOR, false);
         billOut.setFinalCreditor(finalCreditor);
 
         // reference no
@@ -112,14 +107,8 @@ public class Validator {
         billOut.setAdditionalInformation(additionalInfo);
 
         // debtor
-        if (billIn.isDebtorOpen()) {
-            billOut.setDebtorOpen(true);
-            billOut.setDebtor(null);
-        } else {
-            Person debtor = validatePerson(billIn.getDebtor(), Bill.FIELDROOT_DEBTOR, false);
-            billOut.setDebtorOpen(debtor == null);
-            billOut.setDebtor(debtor);
-        }
+        Address debtor = validatePerson(billIn.getDebtor(), Bill.FIELDROOT_DEBTOR, false);
+        billOut.setDebtor(debtor);
 
         // due date
         billOut.setDueDate(billIn.getDueDate());
@@ -127,36 +116,36 @@ public class Validator {
         return billOut;
     }
 
-    private Person validatePerson(Person personIn, String fieldRoot, boolean mandatory) {
-        Person personOut = cleanedPerson(personIn, fieldRoot);
-        if (personOut == null) {
+    private Address validatePerson(Address addressIn, String fieldRoot, boolean mandatory) {
+        Address addressOut = cleanedPerson(addressIn, fieldRoot);
+        if (addressOut == null) {
             if (mandatory) {
                 validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_NAME, "field_is_mandatory");
                 validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_POSTAL_CODE, "field_is_mandatory");
-                validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_CITY, "field_is_mandatory");
+                validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_TOWN, "field_is_mandatory");
                 validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE, "field_is_mandatory");
             }
             return null;
         }
 
-        validateMandatory(personOut.getName(), fieldRoot, Bill.SUBFIELD_NAME);
-        validateMandatory(personOut.getPostalCode(), fieldRoot, Bill.SUBFIELD_POSTAL_CODE);
-        validateMandatory(personOut.getCity(), fieldRoot, Bill.SUBFIELD_CITY);
-        validateMandatory(personOut.getCountryCode(), fieldRoot, Bill.SUBFIELD_COUNTRY_CODE);
+        validateMandatory(addressOut.getName(), fieldRoot, Bill.SUBFIELD_NAME);
+        validateMandatory(addressOut.getPostalCode(), fieldRoot, Bill.SUBFIELD_POSTAL_CODE);
+        validateMandatory(addressOut.getTown(), fieldRoot, Bill.SUBFIELD_TOWN);
+        validateMandatory(addressOut.getCountryCode(), fieldRoot, Bill.SUBFIELD_COUNTRY_CODE);
 
-        personOut.setName(clipValue(personOut.getName(), 70, fieldRoot, Bill.SUBFIELD_NAME));
-        personOut.setStreet(clipValue(personOut.getStreet(), 70, fieldRoot, Bill.SUBFIELD_STREET));
-        personOut.setHouseNumber(clipValue(personOut.getHouseNumber(), 16, fieldRoot, Bill.SUBFIELD_HOUSE_NO));
-        personOut.setPostalCode(clipValue(personOut.getPostalCode(), 16, fieldRoot, Bill.SUBFIELD_POSTAL_CODE));
-        personOut.setCity(clipValue(personOut.getCity(), 35, fieldRoot, Bill.SUBFIELD_CITY));
+        addressOut.setName(clipValue(addressOut.getName(), 70, fieldRoot, Bill.SUBFIELD_NAME));
+        addressOut.setStreet(clipValue(addressOut.getStreet(), 70, fieldRoot, Bill.SUBFIELD_STREET));
+        addressOut.setHouseNo(clipValue(addressOut.getHouseNo(), 16, fieldRoot, Bill.SUBFIELD_HOUSE_NO));
+        addressOut.setPostalCode(clipValue(addressOut.getPostalCode(), 16, fieldRoot, Bill.SUBFIELD_POSTAL_CODE));
+        addressOut.setTown(clipValue(addressOut.getTown(), 35, fieldRoot, Bill.SUBFIELD_TOWN));
 
-        if (personOut.getCountryCode() != null) {
-            if (personOut.getCountryCode().length() != 2
-                    || !isAlphaNumeric(personOut.getCountryCode()))
+        if (addressOut.getCountryCode() != null) {
+            if (addressOut.getCountryCode().length() != 2
+                    || !isAlphaNumeric(addressOut.getCountryCode()))
                 validationResult.addMessage(Type.Error, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE, "valid_country_code");
         }
 
-        return personOut;
+        return addressOut;
     }
 
     private boolean validateIBAN(String iban, String field) {
@@ -167,23 +156,23 @@ public class Validator {
         return true;
     }
 
-    private Person cleanedPerson(Person personIn, String fieldRoot) {
-        if (personIn == null)
+    private Address cleanedPerson(Address addressIn, String fieldRoot) {
+        if (addressIn == null)
             return null;
-        Person personOut = new Person();
-        personOut.setName(trimmed(cleanedValue(personIn.getName(), fieldRoot, Bill.SUBFIELD_NAME)));
-        personOut.setStreet(trimmed(cleanedValue(personIn.getStreet(), fieldRoot, Bill.SUBFIELD_STREET)));
-        personOut.setHouseNumber(trimmed(cleanedValue(personIn.getHouseNumber(), fieldRoot, Bill.SUBFIELD_HOUSE_NO)));
-        personOut.setPostalCode(trimmed(cleanedValue(personIn.getPostalCode(), fieldRoot, Bill.SUBFIELD_POSTAL_CODE)));
-        personOut.setCity(trimmed(cleanedValue(personIn.getCity(), fieldRoot, Bill.SUBFIELD_CITY)));
-        personOut.setCountryCode(trimmed(personIn.getCountryCode()));
+        Address addressOut = new Address();
+        addressOut.setName(trimmed(cleanedValue(addressIn.getName(), fieldRoot, Bill.SUBFIELD_NAME)));
+        addressOut.setStreet(trimmed(cleanedValue(addressIn.getStreet(), fieldRoot, Bill.SUBFIELD_STREET)));
+        addressOut.setHouseNo(trimmed(cleanedValue(addressIn.getHouseNo(), fieldRoot, Bill.SUBFIELD_HOUSE_NO)));
+        addressOut.setPostalCode(trimmed(cleanedValue(addressIn.getPostalCode(), fieldRoot, Bill.SUBFIELD_POSTAL_CODE)));
+        addressOut.setTown(trimmed(cleanedValue(addressIn.getTown(), fieldRoot, Bill.SUBFIELD_TOWN)));
+        addressOut.setCountryCode(trimmed(addressIn.getCountryCode()));
 
-        if (personOut.getName() == null && personOut.getStreet() == null
-                && personOut.getHouseNumber() == null && personOut.getPostalCode() == null
-                && personOut.getCity() == null && personOut.getCountryCode() == null)
+        if (addressOut.getName() == null && addressOut.getStreet() == null
+                && addressOut.getHouseNo() == null && addressOut.getPostalCode() == null
+                && addressOut.getTown() == null && addressOut.getCountryCode() == null)
             return null;
 
-        return personOut;
+        return addressOut;
     }
 
     private boolean validateMandatory(String value, String field) {
