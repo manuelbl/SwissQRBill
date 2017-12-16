@@ -2,6 +2,10 @@
 generator/actual.svg
 generator/actual.pdf
 
+#Angular
+node_modules/
+dist/
+
 #Gradle
 .gradle
 build/

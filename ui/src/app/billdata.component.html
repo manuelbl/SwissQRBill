@@ -1,0 +1,50 @@
+<div class="example-container">
+  <form [formGroup]="billForm" novalidate (ngSubmit)="download(billForm)">
+
+    <mat-card>
+      <mat-card-title>Account</mat-card-title>
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput placeholder="Account" formControlName="account" id="account">
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card formGroupName="creditor">
+      <mat-card-title>Creditor</mat-card-title>
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput placeholder="Name" formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Street" formControlName="street">
+        </mat-form-field>
+    
+        <mat-form-field>
+          <input matInput placeholder="House number" formControlName="houseNo">
+        </mat-form-field>
+  
+        <mat-form-field>
+          <input matInput placeholder="Country code" formControlName="countryCode">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Postal code" formControlName="postalCode">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Town" formControlName="town">
+        </mat-form-field>
+                          
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <button mat-raised-button type="submit" [disabled]="!billForm.valid">Download</button>
+    </mat-card>
+
+  </form>
+
+  <pre>{{billForm.value | json}}</pre>
+</div>

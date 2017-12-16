@@ -10,6 +10,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'war'
 
 jar {
      baseName = 'qrbill-service'
@@ -17,6 +18,19 @@ jar {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+war {
+    baseName = 'qrbill-service'
+    manifest {
+        attributes 'Main-Class': 'net.codecrete.qrbill.web.Application'
+    }
+}
+
+task bootStandaloneBackend {
+    group 'application'
+    dependsOn bootRun
+}
+
 
 dependencies {
     compile project(':generator')
