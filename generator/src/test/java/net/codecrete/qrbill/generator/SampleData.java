@@ -42,7 +42,7 @@ public class SampleData {
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
         bill.setReferenceNo("210000000003139471430009017");
-        bill.setAdditionalInformation("Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
+        bill.setAdditionalInfo("Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
         return bill;
     }
 
@@ -64,7 +64,7 @@ public class SampleData {
         bill.setDueDate(null);
         bill.setDebtor(null);
         bill.setReferenceNo("");
-        bill.setAdditionalInformation("Donation to the Winterfest Campaign");
+        bill.setAdditionalInfo("Donation to the Winterfest Campaign");
         return bill;
     }
 
@@ -100,7 +100,7 @@ public class SampleData {
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
         bill.setReferenceNo("RF18539007547034");
-        bill.setAdditionalInformation(null);
+        bill.setAdditionalInfo(null);
         return bill;
     }
 
@@ -122,7 +122,7 @@ public class SampleData {
         bill.setDueDate(null);
         bill.setDebtor(null);
         bill.setReferenceNo("");
-        bill.setAdditionalInformation("");
+        bill.setAdditionalInfo("");
         return bill;
     }
 }

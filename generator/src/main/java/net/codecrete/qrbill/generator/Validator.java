@@ -102,9 +102,9 @@ public class Validator {
         }
 
         // additional information
-        String additionalInfo = trimmed(billIn.getAdditionalInformation());
+        String additionalInfo = trimmed(billIn.getAdditionalInfo());
         additionalInfo = clipValue(additionalInfo, 140, Bill.FIELD_ADDITIONAL_INFO);
-        billOut.setAdditionalInformation(additionalInfo);
+        billOut.setAdditionalInfo(additionalInfo);
 
         // debtor
         Address debtor = validatePerson(billIn.getDebtor(), Bill.FIELDROOT_DEBTOR, false);

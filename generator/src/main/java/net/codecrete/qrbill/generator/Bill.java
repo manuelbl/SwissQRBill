@@ -67,7 +67,7 @@ public class Bill {
     private Address creditor = new Address();
     private Address finalCreditor = null;
     private String referenceNo = null;
-    private String additionalInformation = null;
+    private String additionalInfo = null;
     private Address debtor = null;
     private LocalDate dueDate = null;
 
@@ -144,12 +144,12 @@ public class Bill {
         this.referenceNo = referenceNo;
     }
 
-    public String getAdditionalInformation() {
-        return additionalInformation;
+    public String getAdditionalInfo() {
+        return additionalInfo;
     }
 
-    public void setAdditionalInformation(String additionalInformation) {
-        this.additionalInformation = additionalInformation;
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
     public Address getDebtor() {
@@ -173,7 +173,7 @@ public class Bill {
                 Objects.equals(creditor, bill.creditor) &&
                 Objects.equals(finalCreditor, bill.finalCreditor) &&
                 Objects.equals(referenceNo, bill.referenceNo) &&
-                Objects.equals(additionalInformation, bill.additionalInformation) &&
+                Objects.equals(additionalInfo, bill.additionalInfo) &&
                 Objects.equals(debtor, bill.debtor) &&
                 Objects.equals(dueDate, bill.dueDate);
     }
@@ -181,6 +181,6 @@ public class Bill {
     @Override
     public int hashCode() {
         return Objects.hash(language, version, amount, currency, account, creditor, finalCreditor,
-                referenceNo, additionalInformation, debtor, dueDate);
+                referenceNo, additionalInfo, debtor, dueDate);
     }
 }

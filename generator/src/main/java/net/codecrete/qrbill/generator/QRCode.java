@@ -136,7 +136,7 @@ class QRCode {
         }
         appendDataField(referenceType); // Tp
         appendDataField(bill.getReferenceNo()); // Ref
-        appendDataField(bill.getAdditionalInformation()); // Unstrd
+        appendDataField(bill.getAdditionalInfo()); // Unstrd
     }
 
     private void appendPerson(Address address) {

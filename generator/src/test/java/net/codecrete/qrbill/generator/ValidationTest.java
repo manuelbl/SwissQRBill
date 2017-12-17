@@ -436,20 +436,20 @@ public class ValidationTest {
     public void additionalInfoTest() {
         bill = SampleData.getExample1();
 
-        bill.setAdditionalInformation("Bill no 39133");
+        bill.setAdditionalInfo("Bill no 39133");
         validate();
         assertNoMessages();
-        assertEquals("Bill no 39133", validatedBill.getAdditionalInformation());
+        assertEquals("Bill no 39133", validatedBill.getAdditionalInfo());
 
-        bill.setAdditionalInformation("   ");
+        bill.setAdditionalInfo("   ");
         validate();
         assertNoMessages();
-        assertNull(validatedBill.getAdditionalInformation());
+        assertNull(validatedBill.getAdditionalInfo());
 
-        bill.setAdditionalInformation("  Bill no 39133 ");
+        bill.setAdditionalInfo("  Bill no 39133 ");
         validate();
         assertNoMessages();
-        assertEquals("Bill no 39133", validatedBill.getAdditionalInformation());
+        assertEquals("Bill no 39133", validatedBill.getAdditionalInfo());
     }
 
     @Test

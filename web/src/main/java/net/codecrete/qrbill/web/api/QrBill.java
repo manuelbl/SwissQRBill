@@ -38,7 +38,7 @@ public class QrBill {
     private Address creditor = new Address();
     private Address finalCreditor = null;
     private String referenceNo = null;
-    private String additionalInformation = null;
+    private String additionalInfo = null;
     private Address debtor = null;
     private LocalDate dueDate = null;
 
@@ -115,12 +115,12 @@ public class QrBill {
         this.referenceNo = referenceNo;
     }
 
-    public String getAdditionalInformation() {
-        return additionalInformation;
+    public String getAdditionalInfo() {
+        return additionalInfo;
     }
 
-    public void setAdditionalInformation(String additionalInformation) {
-        this.additionalInformation = additionalInformation;
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
     public Address getDebtor() {
@@ -144,7 +144,7 @@ public class QrBill {
                 Objects.equals(creditor, bill.creditor) &&
                 Objects.equals(finalCreditor, bill.finalCreditor) &&
                 Objects.equals(referenceNo, bill.referenceNo) &&
-                Objects.equals(additionalInformation, bill.additionalInformation) &&
+                Objects.equals(additionalInfo, bill.additionalInfo) &&
                 Objects.equals(debtor, bill.debtor) &&
                 Objects.equals(dueDate, bill.dueDate);
     }
@@ -152,7 +152,7 @@ public class QrBill {
     @Override
     public int hashCode() {
         return Objects.hash(language, version, amount, currency, account, creditor, finalCreditor,
-                referenceNo, additionalInformation, debtor, dueDate);
+                referenceNo, additionalInfo, debtor, dueDate);
     }
 
 
@@ -166,7 +166,7 @@ public class QrBill {
         qrBill.creditor = Address.from(bill.getCreditor());
         qrBill.finalCreditor = Address.from(bill.getFinalCreditor());
         qrBill.referenceNo = bill.getReferenceNo();
-        qrBill.additionalInformation = bill.getAdditionalInformation();
+        qrBill.additionalInfo = bill.getAdditionalInfo();
         qrBill.debtor = Address.from(bill.getDebtor());
         qrBill.dueDate = bill.getDueDate();
         return qrBill;
@@ -185,7 +185,7 @@ public class QrBill {
         bill.setCreditor(Address.toGeneratorAddress(qrBill.creditor));
         bill.setFinalCreditor(Address.toGeneratorAddress(qrBill.finalCreditor));
         bill.setReferenceNo(qrBill.referenceNo);
-        bill.setAdditionalInformation(qrBill.additionalInformation);
+        bill.setAdditionalInfo(qrBill.additionalInfo);
         bill.setDebtor(Address.toGeneratorAddress(qrBill.debtor));
         bill.setDueDate(qrBill.dueDate);
         return bill;

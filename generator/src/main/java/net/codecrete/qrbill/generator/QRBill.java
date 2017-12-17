@@ -231,7 +231,7 @@ public class QRBill {
         }
 
         // additional information
-        String additionalInfo = bill.getAdditionalInformation();
+        String additionalInfo = bill.getAdditionalInfo();
         if (additionalInfo != null && additionalInfo.trim().length() != 0) {
             int p = additionalInfo.indexOf("##");
             if (p > 0)

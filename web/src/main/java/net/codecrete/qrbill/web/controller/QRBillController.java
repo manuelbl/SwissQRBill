@@ -13,6 +13,9 @@ import net.codecrete.qrbill.generator.Validator;
 import net.codecrete.qrbill.web.api.QrBill;
 import net.codecrete.qrbill.web.api.ValidationMessage;
 import net.codecrete.qrbill.web.api.ValidationResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +26,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Locale;
+
 import static net.codecrete.qrbill.generator.QRBill.*;
 
 @RestController
 public class QRBillController {
+
+    @Autowired
+    private MessageSource messageSource;
 
     /**
      * Generates the text contained in the QR code
@@ -39,8 +48,9 @@ public class QRBillController {
             String text = generateQrCodeText(QrBill.toGeneratorBill(bill));
             return ResponseEntity.ok(text);
         } catch (QRBillValidationError e) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-                    .body(ValidationMessage.fromList(e.getValidationResult().getValidationMessages()));
+            List<ValidationMessage> messages = ValidationMessage.fromList(e.getValidationResult().getValidationMessages());
+            addLocalMessages(messages);
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(messages);
         }
     }
 
@@ -57,8 +67,11 @@ public class QRBillController {
         Bill validatedBill = validator.validate();
 
         ValidationResponse response = new ValidationResponse();
-        if (result.hasMessages())
-            response.setValidationMessages(ValidationMessage.fromList(result.getValidationMessages()));
+        if (result.hasMessages()) {
+            List<ValidationMessage> messages = ValidationMessage.fromList(result.getValidationMessages());
+            addLocalMessages(messages);
+            response.setValidationMessages(messages);
+        }
         response.setValidatedBill(QrBill.from(validatedBill));
         return response;
     }
@@ -96,8 +109,9 @@ public class QRBillController {
             byte[] result = generate(QrBill.toGeneratorBill(bill), billFormat, graphicsFormat);
             return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(result);
         } catch (QRBillValidationError e) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-                    .body(ValidationMessage.fromList(e.getValidationResult().getValidationMessages()));
+            List<ValidationMessage> messages = ValidationMessage.fromList(e.getValidationResult().getValidationMessages());
+            addLocalMessages(messages);
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(messages);
         }
     }
 
@@ -126,5 +140,15 @@ public class QRBillController {
 
     private static MediaType getContentType(GraphicsFormat graphicsFormat) {
         return graphicsFormat == GraphicsFormat.SVG ? MEDIA_TYPE_SVG : MediaType.APPLICATION_PDF;
+    }
+
+    private void addLocalMessages(List<ValidationMessage> messages) {
+        if (messages == null)
+            return;
+
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        for (ValidationMessage message: messages) {
+            message.setMessage(messageSource.getMessage(message.getMessageKey(), null, currentLocale));
+        }
     }
 }
