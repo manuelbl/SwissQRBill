@@ -32,7 +32,7 @@ export class BillData implements OnInit {
       language: "en",
       version: "V1_0",
       currency: "CHF",
-      amount: 0,
+      amount: 100,
       account: "CH93 0076 2011 6238 5295 7",
       creditor: {
         name: "Lea Simmen",
@@ -53,40 +53,43 @@ export class BillData implements OnInit {
   }
 
   ngOnInit() {
-    this.billForm = this.formBuilder.group({
-      account: [this.bill.account, [Validators.required, Validators.pattern('[A-Z0-9 ]{5,26}')]],
-      creditor: this.formBuilder.group({
-        name: [this.bill.creditor.name, [Validators.required]],
-        street: [this.bill.creditor.street],
-        houseNo: [this.bill.creditor.houseNo],
-        countryCode: [this.bill.creditor.countryCode, [Validators.required, Validators.pattern('[A-Z]{2}')]],
-        postalCode: [this.bill.creditor.postalCode, [Validators.required]],
-        town: [this.bill.creditor.town, [Validators.required]]
+    this.billForm = new FormGroup({
+      account: new FormControl(this.bill.account, { validators: [Validators.required, Validators.pattern('[A-Z0-9 ]{5,26}')]}),
+      creditor: new FormGroup({
+        name: new FormControl(this.bill.creditor.name, { validators: Validators.required}),
+        street: new FormControl(this.bill.creditor.street),
+        houseNo: new FormControl(this.bill.creditor.houseNo),
+        countryCode: new FormControl(this.bill.creditor.countryCode, { validators: [Validators.required, Validators.pattern('[A-Z]{2}')]}),
+        postalCode: new FormControl(this.bill.creditor.postalCode, { validators: Validators.required}),
+        town: new FormControl(this.bill.creditor.town, { validators: Validators.required})
       }),
       finalCreditor: this.formBuilder.group({
-        name: [this.bill.finalCreditor.name],
-        street: [this.bill.finalCreditor.street],
-        houseNo: [this.bill.finalCreditor.houseNo],
-        countryCode: [this.bill.finalCreditor.countryCode, [Validators.pattern('[A-Z]{2}')]],
-        postalCode: [this.bill.finalCreditor.postalCode],
-        town: [this.bill.finalCreditor.town]
+        name: new FormControl(this.bill.finalCreditor.name),
+        street: new FormControl(this.bill.finalCreditor.street),
+        houseNo: new FormControl(this.bill.finalCreditor.houseNo),
+        countryCode: new FormControl(this.bill.finalCreditor.countryCode, { validators: Validators.pattern('[A-Z]{2}')}),
+        postalCode: new FormControl(this.bill.finalCreditor.postalCode),
+        town: new FormControl(this.bill.finalCreditor.town)
       }),
-      currency: [this.bill.currency, [Validators.required, Validators.pattern('[A-Z]{3}')]],
-      amount: [this.bill.amount, [Validators.required, Validators.min(0.01), Validators.max(999999999.99)]],
-      referenceNo: [this.bill.referenceNo],
-      additionalInfo: [this.bill.additionalInfo],
+      currency: new FormControl(this.bill.currency, { validators: [Validators.required, Validators.pattern('[A-Z]{3}')]}),
+      amount: new FormControl(this.bill.amount, { validators: [Validators.required, Validators.min(0.01), Validators.max(999999999.99)]}),
+      referenceNo: new FormControl(this.bill.referenceNo),
+      additionalInfo: new FormControl(this.bill.additionalInfo),
       debtor: this.formBuilder.group({
-        name: [this.bill.debtor.name],
-        street: [this.bill.debtor.street],
-        houseNo: [this.bill.debtor.houseNo],
-        countryCode: [this.bill.debtor.countryCode, [Validators.pattern('[A-Z]{2}')]],
-        postalCode: [this.bill.debtor.postalCode],
-        town: [this.bill.debtor.town]
+        name: new FormControl(this.bill.debtor.name),
+        street: new FormControl(this.bill.debtor.street),
+        houseNo: new FormControl(this.bill.debtor.houseNo),
+        countryCode: new FormControl(this.bill.debtor.countryCode, { validators: Validators.pattern('[A-Z]{2}')}),
+        postalCode: new FormControl(this.bill.debtor.postalCode),
+        town: new FormControl(this.bill.debtor.town)
       }),
-      dueDate: [this.bill.dueDate]
+      dueDate: new FormControl(this.bill.dueDate)
+    }, {
+      updateOn: 'blur'
     });
 
-    this.billForm.valueChanges.debounceTime(600)
+    this.billForm.valueChanges
+      //.debounceTime(600)
       .subscribe(val => this.validateServerSide(val));
   }
 
