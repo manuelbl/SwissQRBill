@@ -148,6 +148,42 @@ public class EncodedTextTest {
                 createQRCodeText(bill));
     }
 
+    @Test
+    public void decodeText1() {
+        Bill bill = SampleData.getExample1();
+        Bill bill2 = QRCode.decodeQRCodeText(createQRCodeText(bill));
+        assertEquals(bill, bill2);
+    }
+
+    @Test
+    public void decodeText2() {
+        Bill bill = SampleData.getExample2();
+        Bill bill2 = QRCode.decodeQRCodeText(createQRCodeText(bill));
+        bill2.getCreditor().setStreet(null); // replace empty string with null
+        bill2.getCreditor().setHouseNo(null); // replace empty string with null
+        bill2.setLanguage(bill.getLanguage()); // fix language (not contained in text)
+        assertEquals(bill, bill2);
+    }
+
+    @Test
+    public void decodeText3() {
+        Bill bill = SampleData.getExample3();
+        Bill bill2 = QRCode.decodeQRCodeText(createQRCodeText(bill));
+        bill2.setLanguage(bill.getLanguage()); // fix language (not contained in text)
+        bill2.setAdditionalInfo(null); // replace empty string with null
+        assertEquals(bill, bill2);
+    }
+
+    @Test
+    public void decodeText4() {
+        Bill bill = SampleData.getExample4();
+        Bill bill2 = QRCode.decodeQRCodeText(createQRCodeText(bill));
+        bill2.getCreditor().setStreet(null); // replace empty string with null
+        bill2.getCreditor().setHouseNo(null); // replace empty string with null
+        bill2.setLanguage(bill.getLanguage()); // fix language (not contained in text)
+        assertEquals(bill, bill2);
+    }
+
 
     private String createQRCodeText(Bill bill) {
         QRCode qrCode = new QRCode(bill);

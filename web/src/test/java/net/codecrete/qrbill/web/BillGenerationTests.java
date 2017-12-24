@@ -83,7 +83,7 @@ public class BillGenerationTests {
         assertNotNull(response);
         assertEquals(1, response.length);
         assertEquals(ValidationMessage.Type.Error, response[0].getType());
-        assertEquals(".creditor.town", response[0].getField());
+        assertEquals("creditor.town", response[0].getField());
         assertEquals("field_is_mandatory", response[0].getMessageKey());
     }
 }

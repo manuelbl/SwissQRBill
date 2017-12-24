@@ -51,7 +51,7 @@ public class ValidationTests {
         assertNotNull(response.getValidationMessages());
         assertEquals(1, response.getValidationMessages().size());
         assertEquals(ValidationMessage.Type.Warning, response.getValidationMessages().get(0).getType());
-        assertEquals(".creditor.town", response.getValidationMessages().get(0).getField());
+        assertEquals("creditor.town", response.getValidationMessages().get(0).getField());
         assertEquals("field_clipped", response.getValidationMessages().get(0).getMessageKey());
 
         assertNotNull(response.getValidatedBill());
@@ -72,7 +72,7 @@ public class ValidationTests {
         assertEquals(4, response.getValidationMessages().size());
         for (ValidationMessage message : response.getValidationMessages()) {
             assertEquals(ValidationMessage.Type.Error, message.getType());
-            assertTrue(message.getField().startsWith(".creditor."));
+            assertTrue(message.getField().startsWith("creditor."));
             assertEquals("field_is_mandatory", message.getMessageKey());
         }
     }
