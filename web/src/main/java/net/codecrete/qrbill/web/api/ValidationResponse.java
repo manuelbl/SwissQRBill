@@ -12,6 +12,7 @@ public class ValidationResponse {
 
     private List<ValidationMessage> validationMessages;
     private QrBill validatedBill;
+    private String billID;
 
     public List<ValidationMessage> getValidationMessages() {
         return validationMessages;
@@ -27,5 +28,13 @@ public class ValidationResponse {
 
     public void setValidatedBill(QrBill validatedBill) {
         this.validatedBill = validatedBill;
+    }
+
+    public String getBillID() {
+        return billID;
+    }
+
+    public void setBillID(String billID) {
+        this.billID = billID;
     }
 }

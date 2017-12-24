@@ -84,6 +84,11 @@ public class QRBill {
     }
 
 
+    public static Bill decodeQrCodeText(String text) {
+        return QRCode.decodeQRCodeText(text);
+    }
+
+
     private byte[] generateOutput() {
 
         double drawingWidth;
