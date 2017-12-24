@@ -20,7 +20,7 @@ figcaption, figure {
 }
 body {
 	line-height: 1;
-    font-family: Roboto,"Helvetica Neue",sans-serif;
+  font-family: Roboto,"Helvetica Neue",sans-serif;
 }
 ol, ul {
 	list-style: none;
@@ -37,290 +37,125 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-
-.form-column {
-    padding: 12px;
-    max-width: 512px;
-    margin: 0 auto;
+html, body {
+  height: 100%;
 }
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 
-/** Grid **/
+/** Sections **/
+.section {
+	clear: both;
+	padding: 0px;
+	margin: 0px;
+}
+
+/** Colum setup **/
+.col {
+	display: block;
+	float: left;
+	margin-left: 1.6%;
+}
+.col:first-child {
+  margin-left: 0;
+}
+
+/** Grouping **/
+.group:before, .group:after {
+	content:"";
+	display:table;
+}
+.group:after {
+	clear:both;
+}
+
+/** Container for content **/
 
 .container {
-    margin: 0 auto;
-    max-width: 1280px;
-    width: 90%;
-  }
-  
-  @media only screen and (min-width: 601px) {
-    .container {
-      width: 85%;
-    }
-  }
-  
-  @media only screen and (min-width: 993px) {
-    .container {
-      width: 70%;
-    }
-  }
-  
-  .container .row {
-    margin-left: -0.75rem;
-    margin-right: -0.75rem;
-  }
+  margin: 0 auto;
+  max-width: 1024px;
+  width: 90%;
+}
 
-  .row {
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
+@media only screen and (min-width: 601px) {
+  .container {
+    width: 85%;
   }
-  
-  .row:after {
-    content: "";
-    display: table;
-    clear: both;
+}
+
+@media only screen and (min-width: 993px) {
+  .container {
+    width: 80%;
   }
-  
-  .row .col {
-    float: left;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-    padding: 0 0.75rem;
-    min-height: 1px;
+}
+
+/** Grid for forms **/
+
+.form-line {
+  display: block;
+  position: relative;
+}
+.form-line:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.form-line .form-field {
+  float: left;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding-left: 1em;
+}
+.form-line .form-field:first-child {
+  padding-left: 0;
+}
+
+.s1 { width:  8.3333%; }
+.s2 { width: 16.6667%; }
+.s3 { width: 25%; }
+.s4 { width: 33.3333%; }
+.s5 { width: 41.6667%; }
+.s6 { width: 50%; }
+.s7 { width: 58.3333%; }
+.s8 { width: 66.6667%; }
+.s9 { width: 75%; }
+.s10 { width: 83.3333%; }
+.s11 { width: 91.6667%; }
+.s12 { width: 100% }
+
+
+/* Columns */
+	
+.span_2_of_2 {
+	width: 100%; 
+}
+
+.span_1_of_2 {
+	width: 49.2%; 
+}
+
+/* Go full width at less than 800 pixels */
+
+@media only screen and (max-width: 800px) {
+	.span_2_of_2 {
+		width: 100%; 
+	}
+	.span_1_of_2 {
+		width: 100%; 
+	}
+  .col {
+    margin-left: 0;
+    margin-right: 0;
   }
-  
-  .row .col[class*="push-"], .row .col[class*="pull-"] {
-    position: relative;
-  }
-  
-  .row .col.s1 {
-    width: 8.3333333333%;
-    margin-left: auto;
-    left: auto;
-    right: auto;
-  }
-  
-  .row .col.s2 {
-    width: 16.6666666667%;
-    margin-left: auto;
-    left: auto;
-    right: auto;
-  }
-  
-  .row .col.s3 {
-    width: 25%;
-    margin-left: auto;
-    left: auto;
-    right: auto;
-  }
-  
-  .row .col.s4 {
-    width: 33.3333333333%;
-    margin-left: auto;
-    left: auto;
-    right: auto;
-  }
-  
-  .row .col.s5 {
-    width: 41.6666666667%;
-    margin-left: auto;
-    left: auto;
-    right: auto;
-  }
-  
-  .row .col.s6 {
-    width: 50%;
-    margin-left: auto;
-    left: auto;
-    right: auto;
-  }
-  
-  .row .col.s7 {
-    width: 58.3333333333%;
-    margin-left: auto;
-    left: auto;
-    right: auto;
-  }
-  
-  .row .col.s8 {
-    width: 66.6666666667%;
-    margin-left: auto;
-    left: auto;
-    right: auto;
-  }
-  
-  .row .col.s9 {
-    width: 75%;
-    margin-left: auto;
-    left: auto;
-    right: auto;
-  }
-  
-  .row .col.s10 {
-    width: 83.3333333333%;
-    margin-left: auto;
-    left: auto;
-    right: auto;
-  }
-  
-  .row .col.s11 {
-    width: 91.6666666667%;
-    margin-left: auto;
-    left: auto;
-    right: auto;
-  }
-  
-  .row .col.s12 {
-    width: 100%;
-    margin-left: auto;
-    left: auto;
-    right: auto;
-  }
-  
-  .row .col.offset-s1 {
-    margin-left: 8.3333333333%;
-  }
-  
-  .row .col.pull-s1 {
-    right: 8.3333333333%;
-  }
-  
-  .row .col.push-s1 {
-    left: 8.3333333333%;
-  }
-  
-  .row .col.offset-s2 {
-    margin-left: 16.6666666667%;
-  }
-  
-  .row .col.pull-s2 {
-    right: 16.6666666667%;
-  }
-  
-  .row .col.push-s2 {
-    left: 16.6666666667%;
-  }
-  
-  .row .col.offset-s3 {
-    margin-left: 25%;
-  }
-  
-  .row .col.pull-s3 {
-    right: 25%;
-  }
-  
-  .row .col.push-s3 {
-    left: 25%;
-  }
-  
-  .row .col.offset-s4 {
-    margin-left: 33.3333333333%;
-  }
-  
-  .row .col.pull-s4 {
-    right: 33.3333333333%;
-  }
-  
-  .row .col.push-s4 {
-    left: 33.3333333333%;
-  }
-  
-  .row .col.offset-s5 {
-    margin-left: 41.6666666667%;
-  }
-  
-  .row .col.pull-s5 {
-    right: 41.6666666667%;
-  }
-  
-  .row .col.push-s5 {
-    left: 41.6666666667%;
-  }
-  
-  .row .col.offset-s6 {
-    margin-left: 50%;
-  }
-  
-  .row .col.pull-s6 {
-    right: 50%;
-  }
-  
-  .row .col.push-s6 {
-    left: 50%;
-  }
-  
-  .row .col.offset-s7 {
-    margin-left: 58.3333333333%;
-  }
-  
-  .row .col.pull-s7 {
-    right: 58.3333333333%;
-  }
-  
-  .row .col.push-s7 {
-    left: 58.3333333333%;
-  }
-  
-  .row .col.offset-s8 {
-    margin-left: 66.6666666667%;
-  }
-  
-  .row .col.pull-s8 {
-    right: 66.6666666667%;
-  }
-  
-  .row .col.push-s8 {
-    left: 66.6666666667%;
-  }
-  
-  .row .col.offset-s9 {
-    margin-left: 75%;
-  }
-  
-  .row .col.pull-s9 {
-    right: 75%;
-  }
-  
-  .row .col.push-s9 {
-    left: 75%;
-  }
-  
-  .row .col.offset-s10 {
-    margin-left: 83.3333333333%;
-  }
-  
-  .row .col.pull-s10 {
-    right: 83.3333333333%;
-  }
-  
-  .row .col.push-s10 {
-    left: 83.3333333333%;
-  }
-  
-  .row .col.offset-s11 {
-    margin-left: 91.6666666667%;
-  }
-  
-  .row .col.pull-s11 {
-    right: 91.6666666667%;
-  }
-  
-  .row .col.push-s11 {
-    left: 91.6666666667%;
-  }
-  
-  .row .col.offset-s12 {
-    margin-left: 100%;
-  }
-  
-  .row .col.pull-s12 {
-    right: 100%;
-  }
-  
-  .row .col.push-s12 {
-    left: 100%;
-  }
-  
+}
+
+/** Misc **/
+.top-spacing {
+  margin-top: 12px;
+}
+
+.full-height {
+  height: 100%;
+}
