@@ -1,9 +1,23 @@
 <h2 mat-dialog-title>Preview &amp; Download</h2>
+
 <mat-dialog-content>
-<p>
-  <img class="bill-preview" src="/api/bill/svg/a6Landscape/{{billID}}">
-</p>
+  <div class="section group">
+    <div class="col span_left">
+      <p>
+        <img class="bill-preview" src="/api/bill/svg/{{outputSize}}/{{billID}}">
+      </p>
+    </div>
+    <div class="col span_right">
+        <mat-button-toggle-group vertical [(ngModel)]="outputSize">
+          <mat-button-toggle value="qrCodeOnly">QR code only</mat-button-toggle>
+          <mat-button-toggle value="a6Landscape">A6 landscape</mat-button-toggle>
+          <mat-button-toggle value="a5Landscape">A5 landscape</mat-button-toggle>
+          <mat-button-toggle value="a4Portrait">A4 portrait</mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+  </div>
 </mat-dialog-content>
+
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Close</button>
   <button mat-button>Download</button>
