@@ -4,7 +4,7 @@
   <div class="section group">
     <div class="col span_left">
       <p>
-        <img class="bill-preview" src="/api/bill/svg/{{outputSize}}/{{billID}}">
+        <img class="bill-preview{{outputSize==='qrCodeOnly'?'':' with-border'}}" src="/api/bill/svg/{{outputSize}}/{{billID}}">
       </p>
     </div>
     <div class="col span_right">
@@ -19,6 +19,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
-  <button mat-button>Download</button>
+  <a mat-raised-button color="primary" href="/api/bill/pdf/{{outputSize}}/{{billID}}" download="qrbill.pdf" target="_blank">Download as PDF</a>
+  <a mat-raised-button color="primary" href="/api/bill/svg/{{outputSize}}/{{billID}}" download="qrbill.svg" target="_blank">Download as SVG</a>
+  <button mat-raised-button mat-dialog-close>Close</button>
 </mat-dialog-actions>

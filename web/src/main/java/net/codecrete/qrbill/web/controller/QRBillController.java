@@ -108,26 +108,7 @@ public class QRBillController {
      */
     @RequestMapping(value = "/api/bill/svg/{format}/{id}", method = RequestMethod.GET)
     public ResponseEntity generateSvgBillGet(@PathVariable("id") String billId, @PathVariable("format") String format) {
-        BillFormat billFormat = getBillFormat(format);
-        if (billFormat == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Invalid bill format in URL. Valid values: qrCodeOnly, a6Landscape, a5Landscape, a4Portrait");
-
-        Bill bill;
-        try {
-            bill = decodeID(billId);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Invalid bill ID. Validate bill data to get a valid ID");
-        }
-
-        try {
-            byte[] result = generate(bill, billFormat, GraphicsFormat.SVG);
-            return ResponseEntity.ok().contentType(getContentType(GraphicsFormat.SVG)).body(result);
-        } catch (QRBillValidationError e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Invalid bill ID. Validate bill data to get a valid ID");
-        }
+        return generateBillFromID(billId, format, GraphicsFormat.SVG);
     }
 
     /**
@@ -139,6 +120,17 @@ public class QRBillController {
     @RequestMapping(value = "/api/bill/pdf/{format}", method = RequestMethod.POST)
     public ResponseEntity generatePdfBill(@RequestBody QrBill bill, @PathVariable("format") String format) {
         return generateBill(bill, format, GraphicsFormat.PDF);
+    }
+
+    /**
+     * Generates the QR bill as a PDF.
+     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
+     * @param billId the ID of the QR bill (as returned by /api/validate)
+     * @return the generated bill
+     */
+    @RequestMapping(value = "/api/bill/pdf/{format}/{id}", method = RequestMethod.GET)
+    public ResponseEntity generatePdfBillGet(@PathVariable("id") String billId, @PathVariable("format") String format) {
+        return generateBillFromID(billId, format, GraphicsFormat.PDF);
     }
 
 
@@ -155,6 +147,29 @@ public class QRBillController {
             List<ValidationMessage> messages = ValidationMessage.fromList(e.getValidationResult().getValidationMessages());
             addLocalMessages(messages);
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(messages);
+        }
+    }
+
+    private ResponseEntity generateBillFromID(String billId, String format, GraphicsFormat graphicsFormat) {
+        BillFormat billFormat = getBillFormat(format);
+        if (billFormat == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Invalid bill format in URL. Valid values: qrCodeOnly, a6Landscape, a5Landscape, a4Portrait");
+
+        Bill bill;
+        try {
+            bill = decodeID(billId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Invalid bill ID. Validate bill data to get a valid ID");
+        }
+
+        try {
+            byte[] result = generate(bill, billFormat, graphicsFormat);
+            return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(result);
+        } catch (QRBillValidationError e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Invalid bill ID. Validate bill data to get a valid ID");
         }
     }
 
