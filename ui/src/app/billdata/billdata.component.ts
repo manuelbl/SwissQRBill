@@ -7,16 +7,18 @@
 import { Component, OnInit, Pipe } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, FormBuilder, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { MatDialog } from '@angular/material';
 import { ValidationErrors } from '@angular/forms/src/directives/validators';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
-import { QrBillService } from './qrbill.service';
-import { Address } from './qrbill-api/address';
-import { QrBill } from './qrbill-api/qrbill';
-import { ValidationMessage } from './qrbill-api/validation-message';
-import { ValidationResponse } from './qrbill-api/validation-response';
+import { QrBillService } from '../qrbill.service';
+import { Address } from '../qrbill-api/address';
+import { QrBill } from '../qrbill-api/qrbill';
+import { ValidationMessage } from '../qrbill-api/validation-message';
+import { ValidationResponse } from '../qrbill-api/validation-response';
+import { PreviewComponent } from '../preview/preview.component';
 
 @Component({
   selector: 'bill-data',
@@ -26,8 +28,14 @@ import { ValidationResponse } from './qrbill-api/validation-response';
 export class BillData implements OnInit {
   public bill: QrBill;
   public billForm: FormGroup;
+  private validatedBill: QrBill;
+  private billID: string;
+  private validationInProgress: number = 0;
+  private previewPressed: boolean = false;
+  
 
-  constructor(private formBuilder: FormBuilder, private qrBillService: QrBillService) {
+  constructor(private formBuilder: FormBuilder, private qrBillService: QrBillService,
+    private dialog: MatDialog) {
     this.bill = {
       language: "en",
       version: "V1_0",
@@ -53,6 +61,8 @@ export class BillData implements OnInit {
   }
 
   ngOnInit() {
+    // The below validations are only for a quick feedback. The real validation is performed server-side and
+    // only server-side messages are displayed.
     this.billForm = new FormGroup({
       account: new FormControl(this.bill.account, { validators: [Validators.required, Validators.pattern('[A-Z0-9 ]{5,26}')]}),
       creditor: new FormGroup({
@@ -89,43 +99,36 @@ export class BillData implements OnInit {
     });
 
     this.billForm.valueChanges
-      //.debounceTime(600)
       .subscribe(val => this.validateServerSide(val));
   }
 
   validateServerSide(value: any) {
+    this.validationInProgress++;
     let bill = this.getBill(value);
     return this.qrBillService.validate(bill)
       .subscribe(response => this.updateServerSideErrors(response));
   }
 
   updateServerSideErrors(response: ValidationResponse) {
+    this.validatedBill = response.validatedBill;
+    this.billID = response.billID;
+    this.validationInProgress--;
+
     this.clearServerSideErrors(this.billForm);
-    if (!response.validationMessages)
-      return;
-    
+    if (response.validationMessages) {
       let messages = response.validationMessages;
-      for (let i = 0; i < messages.length; i++) {
-        let msg = messages[i];
-        let control = this.billForm.get(msg.field.substring(1));
+      for (let msg of messages) {
+        let control = this.billForm.get(msg.field);
         let errors = control.errors;
         if (!errors)
           errors = { };
         errors["serverSide"] = msg.message;
         control.setErrors(errors);
       }
-  }
-
-  download(model: FormGroup) {
-    console.log(this.getBill(model));
-  }
-
-  getBill(value: any): QrBill {
-    if (value.dueDate instanceof Date) {
-      let dueDate = value.dueDate as Date;
-      value.dueDate = dueDate.toISOString().substring(0, 10);
     }
-    return value as QrBill;
+
+    if (this.previewPressed)
+      this.openPreview();
   }
 
   clearServerSideErrors(group: FormGroup) {
@@ -141,6 +144,40 @@ export class BillData implements OnInit {
         }
       }
     }
+  }
+
+  preview(model: FormGroup) {
+    if (!this.billID)
+      this.validateServerSide(this.billForm.value);
+    if (this.validationInProgress > 0) {
+      this.previewPressed = true;
+      return;
+    }
+
+    this.openPreview();
+  }
+
+  private openPreview() {
+    if (!this.billForm.valid)
+      return;
+
+    this.previewPressed = false;
+    this.dialog.open(PreviewComponent, {
+      width: '100vw',
+      height: '100vh',
+      data: {
+        validatedBill: this.validatedBill,
+        billID: this.billID
+      }
+    });
+  }
+
+  getBill(value: any): QrBill {
+    if (value.dueDate instanceof Date) {
+      let dueDate = value.dueDate as Date;
+      value.dueDate = dueDate.toISOString().substring(0, 10);
+    }
+    return value as QrBill;
   }
 }
 

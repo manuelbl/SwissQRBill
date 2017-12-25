@@ -1,4 +1,4 @@
-<form [formGroup]="billForm" novalidate (ngSubmit)="download(billForm)">
+<form [formGroup]="billForm" novalidate (ngSubmit)="preview(billForm)">
 
   <div class="section group">
     <div class="col span_1_of_2">
@@ -103,7 +103,7 @@
 
     <div class="col span_1_of_2">
       <mat-card class="top-spacing">
-        <mat-card-title>Amount</mat-card-title>
+        <mat-card-title>Payment Details</mat-card-title>
         <mat-card-content>
 
           <div class="form-line">
@@ -192,7 +192,7 @@
   <div class="section group">
     <div class="col span_2_of_2">
       <mat-card class="top-spacing">
-        <button mat-raised-button type="submit" [disabled]="!billForm.valid">Download</button>
+        <button mat-raised-button color="primary" type="submit">Preview &amp; Download</button>
       </mat-card>
     </div>
   </div>

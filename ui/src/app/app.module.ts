@@ -46,14 +46,19 @@ import 'hammerjs';
 
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { BillData } from './billdata.component';
+import { BillData } from './billdata/billdata.component';
 import { QrBillService } from './qrbill.service';
+import { PreviewComponent } from './preview/preview.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    BillData
+    BillData,
+    PreviewComponent
+  ],
+  entryComponents: [
+    PreviewComponent
   ],
   imports: [
     BrowserModule,

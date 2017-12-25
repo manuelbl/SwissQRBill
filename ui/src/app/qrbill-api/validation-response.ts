@@ -10,5 +10,5 @@ import { ValidationMessage } from './validation-message';
 export class ValidationResponse {
     validationMessages: ValidationMessage[];
     validatedBill: QrBill;
-
+    billID?: string;
 }

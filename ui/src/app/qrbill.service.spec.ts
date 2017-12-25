@@ -6,16 +6,16 @@
 //
 import { TestBed, inject } from '@angular/core/testing';
 
-import { QrbillService } from './qrbill.service';
+import { QrBillService } from './qrbill.service';
 
 describe('QrbillService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [QrbillService]
+      providers: [QrBillService]
     });
   });
 
-  it('should be created', inject([QrbillService], (service: QrbillService) => {
+  it('should be created', inject([QrBillService], (service: QrBillService) => {
     expect(service).toBeTruthy();
   }));
 });
