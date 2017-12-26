@@ -1,0 +1,17 @@
+.navbar-header {
+    padding: 8px 0;
+}
+
+.navbar-logo {
+    height: 26px;
+    margin: 0 4px 3px 0;
+    vertical-align: middle;
+}
+
+.navbar-link {
+    text-decoration: inherit;
+}
+
+.navbar-button:first-child {
+    margin-left: -16px;
+}

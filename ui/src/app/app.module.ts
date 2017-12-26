@@ -49,13 +49,16 @@ import { AppComponent } from './app.component';
 import { BillData } from './billdata/billdata.component';
 import { QrBillService } from './qrbill.service';
 import { PreviewComponent } from './preview/preview.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { AppRoutingModule } from './app-routing/app-routing.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     BillData,
-    PreviewComponent
+    PreviewComponent,
+    NavbarComponent
   ],
   entryComponents: [
     PreviewComponent
@@ -96,7 +99,8 @@ import { PreviewComponent } from './preview/preview.component';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule
   ],
   providers: [QrBillService],
   bootstrap: [AppComponent]
