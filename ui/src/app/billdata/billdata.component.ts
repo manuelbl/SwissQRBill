@@ -102,6 +102,7 @@ export class BillData implements OnInit {
       .subscribe(val => this.validateServerSide(val));
   }
 
+  // Send data to server for validation
   validateServerSide(value: any) {
     this.validationInProgress++;
     let bill = this.getBill(value);
@@ -109,37 +110,49 @@ export class BillData implements OnInit {
       .subscribe(response => this.updateServerSideErrors(response));
   }
 
+  // Use the validation response to update the error messages in the UI
   updateServerSideErrors(response: ValidationResponse) {
     this.validatedBill = response.validatedBill;
     this.billID = response.billID;
     this.validationInProgress--;
 
     this.clearServerSideErrors(this.billForm);
-    if (response.validationMessages) {
-      let messages = response.validationMessages;
+
+    let messages = response.validationMessages;
+    if (messages) {
       for (let msg of messages) {
-        let control = this.billForm.get(msg.field);
-        let errors = control.errors;
-        if (!errors)
-          errors = { };
-        errors["serverSide"] = msg.message;
-        control.setErrors(errors);
+        if (msg.type === "error") {
+          let control = this.billForm.get(msg.field);
+          let errors = control.errors;
+          if (!errors)
+            errors = { };
+          errors["serverSide"] = msg.message;
+          control.setErrors(errors);
+        }
       }
     }
 
-    if (this.previewPressed)
-      this.openPreview();
+    if (messages) {
+      // TODO: set focus to first field with error
+    } else {
+      // user clicked on "Preview" and is waiting for validation
+      if (this.previewPressed && this.validationInProgress == 0)
+        this.openPreview();
+    }
   }
 
+  // Remove the errors of type "serverSide"
   clearServerSideErrors(group: FormGroup) {
     for (let controlName in group.controls) {
-      let control: AbstractControl = group.get(controlName);
+      let control = group.get(controlName);
       if (control instanceof FormGroup) {
         this.clearServerSideErrors(control as FormGroup);
       } else {
         if (control.hasError("serverSide")) {
           let errors = control.errors;
           delete errors.serverSide;
+          if (Object.keys(errors).length === 0)
+            errors = null;
           control.setErrors(errors);
         }
       }
