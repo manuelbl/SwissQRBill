@@ -70,10 +70,15 @@ public class PDFGenerator implements GraphicsGenerator {
 
     @Override
     public int putMultilineText(String text, double x, double y, double maxWidth, int fontSize) throws IOException {
-        x *= MM_TO_PT;
+        String[] lines = FontMetrics.splitLines(text, maxWidth * MM_TO_PT, fontSize);
+        putTextLines(lines, x, y, fontSize);
+        return lines.length;
+    }
+
+    @Override
+    public void putTextLines(String[] lines, double x, double y, int fontSize) throws IOException {
         y *= -MM_TO_PT;
         y -= FontMetrics.getAscender(fontSize) * MM_TO_PT;
-        String[] lines = FontMetrics.splitLines(text, maxWidth * MM_TO_PT, fontSize);
         contentStream.setFont(PDType1Font.HELVETICA, fontSize);
         contentStream.beginText();
         contentStream.newLineAtOffset((float)x, (float)y);
@@ -87,7 +92,6 @@ public class PDFGenerator implements GraphicsGenerator {
             contentStream.showText(line);
         }
         contentStream.endText();
-        return lines.length;
     }
 
     @Override

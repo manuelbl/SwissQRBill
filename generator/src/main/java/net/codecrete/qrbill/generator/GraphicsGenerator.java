@@ -52,6 +52,16 @@ public interface GraphicsGenerator extends Closeable {
     int putMultilineText(String text, double x, double y, double maxWidth, int fontSize) throws IOException;
 
     /**
+     * Adds several lines of text to the graphics.
+     * @param lines the text lines
+     * @param x x position of the text's start (in mm)
+     * @param y y position of the text's top (in mm)
+     * @param fontSize the font size (in pt)
+     * @throws IOException thrown if the graphics cannot be generated
+     */
+    void putTextLines(String[] lines, double x, double y, int fontSize) throws IOException;
+
+    /**
      * Starts a path that can be filled or stroked
      * @throws IOException thrown if the graphics cannot be generated
      */

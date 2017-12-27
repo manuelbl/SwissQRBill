@@ -10,7 +10,7 @@
 <text x="0" y="25.6" font-size="8" font-weight="bold">Support</text>
 <text x="0" y="38.8" font-size="10">Virement</text>
 </g>
-<g transform="translate(197.008 621.014) scale(1.89)">
+<g transform="translate(197.008 621.214) scale(1.89)">
 <path d="M0,0h7v1h-7zm9,0h1v1h-1zm4,0h1v1h-1zm2,0h1v5h-1zm1,0h1v1h-1zm3,0h1v5h-1z
 m2,0h7v1h-7zm8,0h1v1h-1zm4,0h1v1h-1zm2,0h1v1h-1zm6,0h3v1h-3zm5,0h1v1h-1z
 m3,0h1v1h-1zm4,0h4v1h-4zm5,0h3v1h-3zm4,0h7v1h-7zm-62,1h1v6h-1zm6,0h1v6h-1z
@@ -179,7 +179,7 @@ m-65,1h5v1h-5zm7,0h1v1h-1zm2,0h1v1h-1zm2,0h1v1h-1zm4,0h1v1h-1zm2,0h3v1h-3z
 m6,0h1v1h-1zm2,0h1v1h-1zm3,0h1v1h-1zm5,0h1v1h-1zm4,0h1v1h-1zm3,0h2v1h-2z
 m6,0h1v1h-1zm2,0h2v1h-2zm4,0h1v1h-1zm4,0h1v1h-1zm8,0h1v1h-1zm2,0h1v1h-1z" fill="#000000"/>
 </g>
-<g transform="translate(197.008 621.014)">
+<g transform="translate(197.008 621.214)">
 <path d="M56.693,56.693h17.008v17.008h-17.008z" fill="#000000"/>
 <path d="M63.543,59.685h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z" fill="#ffffff"/>
 </g>

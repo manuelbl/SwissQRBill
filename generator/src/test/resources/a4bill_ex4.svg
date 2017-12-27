@@ -10,7 +10,7 @@
 <text x="0" y="25.6" font-size="8" font-weight="bold">Sostiene</text>
 <text x="0" y="38.8" font-size="10">Bonifico</text>
 </g>
-<g transform="translate(197.008 621.014) scale(3.18)">
+<g transform="translate(197.008 621.214) scale(3.18)">
 <path d="M0,0h7v1h-7zm10,0h1v2h-1zm4,0h1v1h-1zm2,0h3v1h-3zm4,0h3v1h-3zm4,0h3v1h-3z
 m4,0h3v1h-3zm6,0h7v1h-7zm-34,1h1v6h-1zm6,0h1v6h-1zm2,0h2v1h-2zm4,0h2v1h-2z
 m5,0h3v1h-3zm5,0h1v4h-1zm1,0h2v1h-2zm4,0h1v2h-1zm2,0h4v1h-4zm5,0h1v6h-1z
@@ -75,7 +75,7 @@ m2,0h6v1h-6zm8,0h2v1h-2zm3,0h1v1h-1zm2,0h1v2h-1zm3,0h1v2h-1zm7,0h1v2h-1z
 m-38,1h5v1h-5zm7,0h1v1h-1zm2,0h1v1h-1zm5,0h2v1h-2zm3,0h2v1h-2zm3,0h2v1h-2z
 m4,0h2v1h-2zm5,0h1v1h-1zm6,0h1v1h-1zm2,0h1v1h-1zm2,0h1v1h-1z" fill="#000000"/>
 </g>
-<g transform="translate(197.008 621.014)">
+<g transform="translate(197.008 621.214)">
 <path d="M56.693,56.693h17.008v17.008h-17.008z" fill="#000000"/>
 <path d="M63.543,59.685h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z" fill="#ffffff"/>
 </g>
@@ -85,7 +85,7 @@ m4,0h2v1h-2zm5,0h1v1h-1zm6,0h1v1h-1zm2,0h1v1h-1zm2,0h1v1h-1z" fill="#000000"/>
 <text x="45.354" y="6.4" font-size="8" font-weight="bold">Importo</text>
 <path d="M45.854,20.104l0,-8.004l8.004,0m96.378,0l8.004,0l0,8.004m0,25.512l0,8.004l-8.004,0m-96.378,0l-8.004,0l0,-8.004" stroke="#000000" fill="none"/>
 </g>
-<g transform="translate(369.921 566.929)">
+<g transform="translate(369.921 586.129)">
 <text x="0" y="6.4" font-size="8" font-weight="bold">Conto</text>
 <text x="0" y="19.6" font-size="10">CH37 0900 0000 3044 42225</text>
 <text x="0" y="36" font-size="8" font-weight="bold">Beneficiario</text>

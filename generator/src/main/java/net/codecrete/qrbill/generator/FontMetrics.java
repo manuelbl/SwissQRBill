@@ -27,28 +27,30 @@ public class FontMetrics {
     }
 
     /**
+     * Distance between baseline and bottom of letter extending the farest below the baseline.
+     * @param fontSize the font size (in pt)
+     * @return the distance (in mm)
+     */
+    public static double getDescender(int fontSize) {
+        return fontSize * 0.2 * PT_TO_MM;
+    }
+
+    /**
+     * Extra space between descender of text line and ascender of next line.
+     * @param fontSize the font size (in pt)
+     * @return the distance (in mm)
+     */
+    public static double getLeading(int fontSize) {
+        return fontSize * 0.2 * PT_TO_MM;
+    }
+
+    /**
      * Distance between the baselines of the consecutive text lines.
      * @param fontSize the font size (in pt)
      * @return the distance (in mm)
      */
     public static double getLineHeight(int fontSize) {
         return fontSize * 1.2 * PT_TO_MM;
-    }
-
-    /**
-     * Extra vertical padding before label
-     * @return the distance (in mm)
-     */
-    public static double getLabelPadding() {
-        return 6 * PT_TO_MM;
-    }
-
-    /**
-     * Extra vertical padding before text block
-     * @return the distance (in mm)
-     */
-    public static double getTextPadding() {
-        return 2 * PT_TO_MM;
     }
 
     /**

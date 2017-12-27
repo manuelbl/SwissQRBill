@@ -148,11 +148,15 @@ public class SVGGenerator implements GraphicsGenerator {
 
     public int putMultilineText(String text, double x, double y, double maxWidth, int fontSize) throws IOException {
         String[] lines = FontMetrics.splitLines(text, maxWidth * MM_TO_PT, fontSize);
+        putTextLines(lines, x, y, fontSize);
+        return lines.length;
+    }
+
+    public void putTextLines(String[] lines, double x, double y, int fontSize) throws IOException {
         for (String line : lines) {
             putText(line, x, y, fontSize, false);
             y += FontMetrics.getLineHeight(fontSize);
         }
-        return lines.length;
     }
 
     public void setTransformation(double translateX, double translateY, double scale) throws IOException {
