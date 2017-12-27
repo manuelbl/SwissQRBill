@@ -1,21 +1,20 @@
 <h2 mat-dialog-title>Preview &amp; Download</h2>
 
 <mat-dialog-content>
-  <div class="section group">
-    <div class="col span_left">
-      <p>
-        <img class="bill-preview{{outputSize==='qrCodeOnly'?'':' with-border'}}" src="/api/bill/svg/{{outputSize}}/{{billID}}">
-      </p>
-    </div>
-    <div class="col span_right">
-        <mat-button-toggle-group vertical [(ngModel)]="outputSize">
-          <mat-button-toggle value="qrCodeOnly">QR code only</mat-button-toggle>
-          <mat-button-toggle value="a6Landscape">A6 landscape</mat-button-toggle>
-          <mat-button-toggle value="a5Landscape">A5 landscape</mat-button-toggle>
-          <mat-button-toggle value="a4Portrait">A4 portrait</mat-button-toggle>
-        </mat-button-toggle-group>
-    </div>
+
+  <div class="output-size">
+    <mat-button-toggle-group [(ngModel)]="outputSize">
+      <mat-button-toggle value="a6Landscape">A6 landscape</mat-button-toggle>
+      <mat-button-toggle value="a5Landscape">A5 landscape</mat-button-toggle>
+      <mat-button-toggle value="a4Portrait">A4 portrait</mat-button-toggle>
+      <mat-button-toggle value="qrCodeOnly">QR code only</mat-button-toggle>
+    </mat-button-toggle-group>
   </div>
+
+  <div class="preview-section">
+    <img class="bill-preview" src="/api/bill/svg/{{outputSize}}/{{billID}}">
+  </div>
+
 </mat-dialog-content>
 
 <mat-dialog-actions>

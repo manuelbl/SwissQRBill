@@ -1,14 +1,28 @@
-.bill-preview {
-    max-width: 100%;
-    max-height: 480px;
-}
-.bill-preview.with-border {
-    border: 1pt #999 solid;
+.output-size {
+    padding: 12px 0;
 }
 
-.span_left {
-    width: 69.2%;
+.preview-section {
+    width: 660px;
+    height: 440px;
+    overflow: scroll;
+    box-sizing: border-box;
+    border: 1pt #999 solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #eee;
 }
-.span_right {
-    width: 29.2%;
+
+.bill-preview {
+    max-width: 100%;
+    display: block;
+    background: white;
+}
+
+@media only screen and (max-width: 720px) {
+    .preview-section {
+        width: 400px;
+        height: 300px;
+    }
 }

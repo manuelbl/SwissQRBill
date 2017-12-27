@@ -176,8 +176,8 @@ export class BillData implements OnInit {
 
     this.previewPressed = false;
     this.dialog.open(PreviewComponent, {
-      width: '100vw',
-      height: '100vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
       data: {
         validatedBill: this.validatedBill,
         billID: this.billID
