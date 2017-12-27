@@ -121,7 +121,7 @@ export class BillData implements OnInit {
     let messages = response.validationMessages;
     if (messages) {
       for (let msg of messages) {
-        if (msg.type === "error") {
+        if (msg.type === "Error") {
           let control = this.billForm.get(msg.field);
           let errors = control.errors;
           if (!errors)

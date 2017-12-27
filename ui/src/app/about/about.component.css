@@ -1,0 +1,18 @@
+.logo {
+    padding: 48px 0;
+}
+
+.logo img {
+    width: 200px;
+    height: 200px;
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: 400;
+    padding-bottom: 24px;
+}
+
+.about {
+    padding: 6px 0;
+}
