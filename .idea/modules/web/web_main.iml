@@ -9,20 +9,6 @@
         <webroots />
       </configuration>
     </facet>
-    <facet type="web" name="Web Gradle : web-1.0-SNAPSHOT.war">
-      <configuration>
-        <webroots>
-          <root url="file://$MODULE_DIR$/../../../web/src/main/webapp" relative="/" />
-        </webroots>
-      </configuration>
-    </facet>
-    <facet type="web" name="Web Gradle : qrbill-service-1.0-SNAPSHOT.war">
-      <configuration>
-        <webroots>
-          <root url="file://$MODULE_DIR$/../../../web/src/main/webapp" relative="/" />
-        </webroots>
-      </configuration>
-    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/../../../web/out/production/classes" />

@@ -10,7 +10,7 @@
         <div class="form-line">
           <mat-form-field class="form-field s12">
             <input matInput placeholder="Account" formControlName="account" required>
-            <mat-error *ngIf="billForm.hasError('serverSide', 'account')">{{billForm.getError('serverSide', 'account')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['account'])">{{billForm.getError('serverSide', 'account')}}</mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -22,36 +22,36 @@
         <div class="form-line">
           <mat-form-field class="form-field s12">
             <input matInput placeholder="Name" formControlName="name" required>
-            <mat-error *ngIf="billForm.hasError('serverSide', 'creditor.name')">{{billForm.getError('serverSide', 'creditor.name')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['creditor', 'name'])">{{billForm.getError('serverSide', 'creditor.name')}}</mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-line">
           <mat-form-field class="form-field s9">
             <input matInput placeholder="Street" formControlName="street">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'creditor.street')">{{billForm.getError('serverSide', 'creditor.street')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['creditor', 'street'])">{{billForm.getError('serverSide', 'creditor.street')}}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="form-field s3">
             <input matInput placeholder="House number" formControlName="houseNo">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'creditor.houseNo')">{{billForm.getError('serverSide', 'creditor.houseNo')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['creditor', 'houseNo'])">{{billForm.getError('serverSide', 'creditor.houseNo')}}</mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-line">
           <mat-form-field class="form-field s2">
             <input matInput placeholder="Country" formControlName="countryCode" required>
-            <mat-error *ngIf="billForm.hasError('serverSide', 'creditor.countryCode')">{{billForm.getError('serverSide', 'creditor.countryCode')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['creditor', 'countryCode'])">{{billForm.getError('serverSide', 'creditor.countryCode')}}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="form-field s3">
             <input matInput placeholder="Postal code" formControlName="postalCode" required>
-            <mat-error *ngIf="billForm.hasError('serverSide', 'creditor.postalCode')">{{billForm.getError('serverSide', 'creditor.postalCode')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['creditor', 'postalCode'])">{{billForm.getError('serverSide', 'creditor.postalCode')}}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="form-field s7">
             <input matInput placeholder="Town" formControlName="town" required>
-            <mat-error *ngIf="billForm.hasError('serverSide', 'creditor.town')">{{billForm.getError('serverSide', 'creditor.town')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['creditor', 'town'])">{{billForm.getError('serverSide', 'creditor.town')}}</mat-error>
           </mat-form-field>
         </div>
 
@@ -64,36 +64,36 @@
         <div class="form-line">
           <mat-form-field class="form-field s12">
             <input matInput placeholder="Name" formControlName="name">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'finalCreditor.name')">{{billForm.getError('serverSide', 'finalCreditor.name')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['finalCreditor', 'name'])">{{billForm.getError('serverSide', 'finalCreditor.name')}}</mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-line">
           <mat-form-field class="form-field s9">
             <input matInput placeholder="Street" formControlName="street">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'finalCreditor.street')">{{billForm.getError('serverSide', 'finalCreditor.street')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['finalCreditor', 'street'])">{{billForm.getError('serverSide', 'finalCreditor.street')}}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="form-field s3">
             <input matInput placeholder="House number" formControlName="houseNo">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'finalCreditor.houseNo')">{{billForm.getError('serverSide', 'finalCreditor.houseNo')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['finalCreditor', 'houseNo'])">{{billForm.getError('serverSide', 'finalCreditor.houseNo')}}</mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-line">
           <mat-form-field class="form-field s2">
             <input matInput placeholder="Country" formControlName="countryCode">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'finalCreditor.countryCode')">{{billForm.getError('serverSide', 'finalCreditor.countryCode')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['finalCreditor', 'countryCode'])">{{billForm.getError('serverSide', 'finalCreditor.countryCode')}}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="form-field s3">
             <input matInput placeholder="Postal code" formControlName="postalCode">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'finalCreditor.postalCode')">{{billForm.getError('serverSide', 'finalCreditor.postalCode')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['finalCreditor', 'postalCode'])">{{billForm.getError('serverSide', 'finalCreditor.postalCode')}}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="form-field s7">
             <input matInput placeholder="Town" formControlName="town">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'finalCreditor.town')">{{billForm.getError('serverSide', 'finalCreditor.town')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['finalCreditor', 'town'])">{{billForm.getError('serverSide', 'finalCreditor.town')}}</mat-error>
           </mat-form-field>
         </div>
 
@@ -110,12 +110,12 @@
         <div class="form-line">
           <mat-form-field class="form-field s2">
             <input matInput placeholder="Currency" formControlName="currency" required>
-            <mat-error *ngIf="billForm.hasError('serverSide', 'currency')">{{billForm.getError('serverSide', 'currency')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['currency'])">{{billForm.getError('serverSide', 'currency')}}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="form-field s4">
             <input type="number" matInput placeholder="Amount" formControlName="amount" required>
-            <mat-error *ngIf="billForm.hasError('serverSide', 'amount')">{{billForm.getError('serverSide', 'amount')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['amount'])">{{billForm.getError('serverSide', 'amount')}}</mat-error>
           </mat-form-field>
         </div>
 
@@ -124,21 +124,21 @@
             <input matInput [matDatepicker]="datePicker" placeholder="Due date" formControlName="dueDate">
             <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
             <mat-datepicker #datePicker></mat-datepicker>
-            <mat-error *ngIf="billForm.hasError('serverSide', 'dueDate')">{{billForm.getError('serverSide', 'dueDate')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['dueDate'])">{{billForm.getError('serverSide', 'dueDate')}}</mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-line">
           <mat-form-field class="form-field s12">
             <input matInput placeholder="Reference no" formControlName="referenceNo">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'referenceNo')">{{billForm.getError('serverSide', 'referenceNo')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['referenceNo'])">{{billForm.getError('serverSide', 'referenceNo')}}</mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-line">
           <mat-form-field class="form-field s12">
             <input matInput placeholder="Additional information" formControlName="additionalInfo">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'additionalInfo')">{{billForm.getError('serverSide', 'additionalInfo')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['additionalInfo'])">{{billForm.getError('serverSide', 'additionalInfo')}}</mat-error>
           </mat-form-field>
         </div>
 
@@ -151,36 +151,36 @@
         <div class="form-line">
           <mat-form-field class="form-field s12">
             <input matInput placeholder="Name" formControlName="name">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'debtor.name')">{{billForm.getError('serverSide', 'debtor.name')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'name'])">{{billForm.getError('serverSide', 'debtor.name')}}</mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-line">
           <mat-form-field class="form-field s9">
             <input matInput placeholder="Street" formControlName="street">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'debtor.street')">{{billForm.getError('serverSide', 'debtor.street')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'street'])">{{billForm.getError('serverSide', 'debtor.street')}}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="form-field s3">
             <input matInput placeholder="House number" formControlName="houseNo">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'debtor.houseNo')">{{billForm.getError('serverSide', 'debtor.houseNo')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'houseNo'])">{{billForm.getError('serverSide', 'debtor.houseNo')}}</mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-line">
           <mat-form-field class="form-field s2">
             <input matInput placeholder="Country" formControlName="countryCode">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'debtor.countryCode')">{{billForm.getError('serverSide', 'debtor.countryCode')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'countryCode'])">{{billForm.getError('serverSide', 'debtor.countryCode')}}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="form-field s3">
             <input matInput placeholder="Postal code" formControlName="postalCode">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'debtor.postalCode')">{{billForm.getError('serverSide', 'debtor.postalCode')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'postalCode'])">{{billForm.getError('serverSide', 'debtor.postalCode')}}</mat-error>
           </mat-form-field>
 
           <mat-form-field class="form-field s7">
             <input matInput placeholder="Town" formControlName="town">
-            <mat-error *ngIf="billForm.hasError('serverSide', 'debtor.town')">{{billForm.getError('serverSide', 'debtor.town')}}</mat-error>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'town'])">{{billForm.getError('serverSide', 'debtor.town')}}</mat-error>
           </mat-form-field>
         </div>
 

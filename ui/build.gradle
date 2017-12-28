@@ -1,0 +1,9 @@
+plugins {
+  id "com.moowork.node" version "1.2.0"
+}
+
+task build(type: NpmTask) {
+  args = ['run', 'build']
+}
+
+build.dependsOn(npm_install)

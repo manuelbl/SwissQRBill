@@ -5,13 +5,24 @@
 // https://opensource.org/licenses/MIT
 //
 import { TestBed, inject } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
 
 import { QrBillService } from './qrbill.service';
+
+class HttpClientMock {
+
+}
 
 describe('QrbillService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [QrBillService]
+      providers: [
+        QrBillService,
+        {
+          provide: HttpClient,
+          useClass: HttpClientMock
+        }
+      ]
     });
   });
 

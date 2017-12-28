@@ -10,27 +10,29 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
-apply plugin: 'war'
 
-jar {
-     baseName = 'qrbill-service'
-}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-war {
+def uiDir = "${project(':ui').projectDir}"
+//war {
+//    from "${uiDir}/dist"
+//}
+
+
+bootJar {
     baseName = 'qrbill-service'
-    manifest {
-        attributes 'Main-Class': 'net.codecrete.qrbill.web.Application'
+    mainClassName = 'net.codecrete.qrbill.web.Application'
+}
+
+processResources {
+    from ("$uiDir/dist/") {
+        into '/public'
     }
 }
 
-task bootStandaloneBackend {
-    group 'application'
-    dependsOn bootRun
-}
-
+processResources.dependsOn(':ui:build')
 
 dependencies {
     compile project(':generator')

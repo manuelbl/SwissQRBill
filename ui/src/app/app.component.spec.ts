@@ -39,17 +39,24 @@ import {
   MatStepperModule,
   MatDatepicker,
 } from '@angular/material';
+import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AboutComponent } from './about/about.component';
+import { APP_BASE_HREF } from '@angular/common';
 import { AppComponent } from './app.component';
 import { BillData } from './billdata/billdata.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NavbarComponent } from './navbar/navbar.component';
+import { AppRoutingModule } from './app-routing/app-routing.module';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        BillData
+        BillData,
+        NavbarComponent,
+        AboutComponent
       ],
       imports: [
         FormsModule,
@@ -59,7 +66,15 @@ describe('AppComponent', () => {
         MatButtonModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        RouterModule,
+        AppRoutingModule
+      ],
+      providers: [
+        {
+          provide: APP_BASE_HREF,
+          useValue: '/qrbill'
+        }
       ]
     }).compileComponents();
   }));
@@ -73,10 +88,10 @@ describe('AppComponent', () => {
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('app');
   }));
-  it('should render title in first card', async(() => {
+  it('should render navigation bar', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('mat-card-title').textContent).toContain('Account');
+    expect(compiled.querySelector('.navbar-button').textContent).toContain('Swiss QR Bill');
   }));
 });

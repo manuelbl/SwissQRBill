@@ -12,13 +12,13 @@
   </div>
 
   <div class="preview-section">
-    <img class="bill-preview" src="/api/bill/svg/{{outputSize}}/{{billID}}">
+    <img class="bill-preview" src="api/bill/svg/{{outputSize}}/{{billID}}">
   </div>
 
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <a mat-raised-button color="primary" href="/api/bill/pdf/{{outputSize}}/{{billID}}" download="qrbill.pdf" target="_blank">Download as PDF</a>
-  <a mat-raised-button color="primary" href="/api/bill/svg/{{outputSize}}/{{billID}}" download="qrbill.svg" target="_blank">Download as SVG</a>
+  <a mat-raised-button color="primary" href="api/bill/pdf/{{outputSize}}/{{billID}}" download="qrbill.pdf" target="_blank">Download as PDF</a>
+  <a mat-raised-button color="primary" href="api/bill/svg/{{outputSize}}/{{billID}}" download="qrbill.svg" target="_blank">Download as SVG</a>
   <button mat-raised-button mat-dialog-close>Close</button>
 </mat-dialog-actions>
