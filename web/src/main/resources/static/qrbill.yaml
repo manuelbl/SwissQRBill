@@ -1,0 +1,152 @@
+swagger: "2.0"
+info:
+  description: "Validate and generate Swiss QR bills."
+  version: "1.0.0"
+  title: "Swiss QR Bill"
+  license:
+    name: "MIT License"
+    url: "https://opensource.org/licenses/MIT"
+host: "www.codecrete.net"
+basePath: "/qrbill/api"
+tags:
+- name: "bills"
+  description: "Generate and validate QR bills"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/manuelbl/SwissQRBill"
+schemes:
+- "https"
+paths:
+  /validate:
+    post:
+      tags:
+      - "bills"
+      summary: "Validate the data for a QR bill"
+      description: "Validates the data for a QR bill. The result contains a list of errors (if any), a bill ID (if the data is valid) and the possibly modified bill data."
+      operationId: "validateBill"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Bill data to be validated"
+        required: true
+        schema:
+          $ref: "#/definitions/QrBill"
+      responses:
+        200:
+          description: "Validation result"
+          schema:
+            $ref: "#/definitions/ValidationResponse"
+definitions:
+  Address:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "First, middle and last name of a natural person or company or organization name of a legal person"
+      street:
+        type: "string"
+        description: "Street name (without the house number)"
+      houseNo:
+        type: "string"
+        description: "House or building number"
+      town:
+        type: "string"
+        description: "Town or city name"
+      postalCode:
+        type: "string"
+        description: "Postal code"
+      countryCode:
+        type: "string"
+        description: "Two letter ISO country code"
+  QrBill:
+    type: "object"
+    properties:
+      language:
+        type: "string"
+        description: "Language of the generated QR bill"
+        default: "de"
+        enum:
+        - "de"
+        - "fr"
+        - "it"
+        - "en"
+      version:
+        type: "string"
+        description: "QR bill specification version"
+        default: "V1_0"
+      amount:
+        type: "number"
+        description: "Bill amount"
+        minimum: 0.01
+        maximum: 999999999.99
+      currency:
+        type: "string"
+        default: "CHF"
+        description: "Bill currency"
+        enum:
+        - "CHF"
+        - "EUR"
+      account:
+        type: "string"
+        description: "Creditor's account"
+      creditor:
+        description: "Creditor details"
+        allOf:
+        - $ref: "#/definitions/Address"
+      finalCreditor:
+        description: "Final creditor details"
+        allOf:
+        - $ref: "#/definitions/Address"
+      referenceNo:
+        type: "string"
+        description: "Payment reference number (QR/ISR reference numer or ISO 11649 creditor reference)"
+      additionalInfo:
+        type: "string"
+        description: "Additional information for the bill recipient"
+      debtor:
+        description: "Debtor details"
+        allOf:
+        - $ref: "#/definitions/Address"
+      dueDate:
+        type: "string"
+        description: "Payment due date"
+        format: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+  ValidationMessage:
+    type: "object"
+    properties:
+      type:
+        type: "string"
+        description: "Message type (error or warning)"
+        enum:
+        - "Error"
+        - "Warning"
+      messageKey:
+        type: "string"
+        description: "Language independent message key"
+      messageParameters:
+        type: "array"
+        description: "Variable parts of the message (if any)"
+        items:
+          type: "string"
+      message:
+        type: "string"
+        description: "Localized message (incl. variable parts)"
+  ValidationResponse:
+    type: "object"
+    properties:
+      validationMessages:
+        type: "array"
+        items:
+          $ref: "#/definitions/ValidationMessage"
+      validatedBill:
+        $ref: "#/definitions/QrBill"
+      billID:
+        type: "string"
+        description: "Bill data ID. Used to retrieve the QR bill as SVG or PDF"
+externalDocs:
+  description: "Find out more about QR Bill"
+  url: "https://github.com/manuelbl/SwissQRBill"
