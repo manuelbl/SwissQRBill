@@ -49,6 +49,10 @@ public class ValidationResult {
         return false;
     }
 
+    public boolean isValid() {
+        return !hasErrors();
+    }
+
     public void addMessage(Type type, String field, String messageKey) {
         ValidationMessage message = new ValidationMessage(type, field, messageKey);
         if (validationMessages == null)

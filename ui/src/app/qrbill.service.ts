@@ -16,7 +16,7 @@ export class QrBillService {
   constructor(private http: HttpClient) { }
 
   validate(bill: QrBill): Observable<ValidationResponse> {
-    return this.http.post<ValidationResponse>("api/validate", bill);
+    return this.http.post<ValidationResponse>("api/bill/validate", bill);
   }
 
 }

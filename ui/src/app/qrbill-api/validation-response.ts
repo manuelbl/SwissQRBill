@@ -8,7 +8,9 @@ import { QrBill } from './qrbill';
 import { ValidationMessage } from './validation-message';
 
 export class ValidationResponse {
+    valid: boolean;
     validationMessages: ValidationMessage[];
     validatedBill: QrBill;
     billID?: string;
+    qrCodeText?: string;
 }

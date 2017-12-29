@@ -17,6 +17,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -32,12 +33,17 @@ public class ValidationTests {
     public void okValidationTest() {
         QrBill bill = SampleData.createBill1();
 
-        ValidationResponse response = restTemplate.postForObject("/api/validate", bill, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/api/bill/validate", bill, ValidationResponse.class);
 
         assertNotNull(response);
+        assertTrue(response.isValid());
         assertNull(response.getValidationMessages());
         assertNotNull(response.getValidatedBill());
         assertEquals(bill, response.getValidatedBill());
+        assertNotNull(response.getBillID());
+        assertTrue(response.getBillID().length() > 100);
+        assertNotNull(response.getQrCodeText());
+        assertTrue(response.getQrCodeText().length() > 100);
     }
 
     @Test
@@ -45,9 +51,10 @@ public class ValidationTests {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown("city56789012345678901234567890123456");
 
-        ValidationResponse response = restTemplate.postForObject("/api/validate", bill, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/api/bill/validate", bill, ValidationResponse.class);
 
         assertNotNull(response);
+        assertTrue(response.isValid());
         assertNotNull(response.getValidationMessages());
         assertEquals(1, response.getValidationMessages().size());
         assertEquals(ValidationMessage.Type.Warning, response.getValidationMessages().get(0).getType());
@@ -58,6 +65,11 @@ public class ValidationTests {
 
         bill.getCreditor().setTown("city5678901234567890123456789012345");
         assertEquals(bill, response.getValidatedBill());
+
+        assertNotNull(response.getBillID());
+        assertTrue(response.getBillID().length() > 100);
+        assertNotNull(response.getQrCodeText());
+        assertTrue(response.getQrCodeText().length() > 100);
     }
 
     @Test
@@ -65,9 +77,10 @@ public class ValidationTests {
         QrBill bill = SampleData.createBill1();
         bill.setCreditor(null);
 
-        ValidationResponse response = restTemplate.postForObject("/api/validate", bill, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/api/bill/validate", bill, ValidationResponse.class);
 
         assertNotNull(response);
+        assertFalse(response.isValid());
         assertNotNull(response.getValidationMessages());
         assertEquals(4, response.getValidationMessages().size());
         for (ValidationMessage message : response.getValidationMessages()) {
@@ -75,5 +88,7 @@ public class ValidationTests {
             assertTrue(message.getField().startsWith("creditor."));
             assertEquals("field_is_mandatory", message.getMessageKey());
         }
+        assertNull(response.getBillID());
+        assertNull(response.getQrCodeText());
     }
 }

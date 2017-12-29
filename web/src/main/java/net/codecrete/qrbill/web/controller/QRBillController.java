@@ -10,9 +10,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.QRBillValidationError;
+import net.codecrete.qrbill.generator.QRCode;
 import net.codecrete.qrbill.generator.ValidationResult;
 import net.codecrete.qrbill.generator.Validator;
 import net.codecrete.qrbill.web.api.QrBill;
+import net.codecrete.qrbill.web.api.QrCodeInformation;
 import net.codecrete.qrbill.web.api.ValidationMessage;
 import net.codecrete.qrbill.web.api.ValidationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,43 +51,76 @@ public class QRBillController {
     private MessageSource messageSource;
 
     /**
-     * Generates the text contained in the QR code
-     * @param bill the QR bill data
-     * @return the text as a string if the data is valid; a list of validation messages otherwise
-     */
-    @RequestMapping(value = "/api/qrCodeText", method = RequestMethod.POST)
-    public ResponseEntity generateQrCodeString(@RequestBody QrBill bill) {
-        try {
-            String text = generateQrCodeText(QrBill.toGeneratorBill(bill));
-            return ResponseEntity.ok(text);
-        } catch (QRBillValidationError e) {
-            List<ValidationMessage> messages = ValidationMessage.fromList(e.getValidationResult().getValidationMessages());
-            addLocalMessages(messages);
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(messages);
-        }
-    }
-
-    /**
      * Validates the QR bill data
      * @param bill the QR bill data
-     * @return returns the validation result: validated, possibly modified bill and the validation messages (if any)
+     * @return returns the validation result: validated, possibly modified bill, the validation messages (if any),
+     *  a bill ID (if the bill is valid) and the QR code text (if the bill is valid)
      */
-    @RequestMapping(value = "/api/validate", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/bill/validate", method = RequestMethod.POST)
     @ResponseBody
     public ValidationResponse validate(@RequestBody QrBill bill) {
+        // Validate data
         ValidationResult result = new ValidationResult();
         Validator validator = new Validator(QrBill.toGeneratorBill(bill), result);
         Bill validatedBill = validator.validate();
 
         ValidationResponse response = new ValidationResponse();
+        response.setValid(result.isValid());
+
+        // Generate localized messages
         if (result.hasMessages()) {
             List<ValidationMessage> messages = ValidationMessage.fromList(result.getValidationMessages());
             addLocalMessages(messages);
             response.setValidationMessages(messages);
         }
         response.setValidatedBill(QrBill.from(validatedBill));
-        if (!result.hasErrors())
-            response.setBillID(generateID(validatedBill));
+
+        // generate QR code text and bill ID
+        if (!result.hasErrors()) {
+            QRCode qrCode = new QRCode(validatedBill);
+            String qrCodeText = qrCode.getText();
+            response.setQrCodeText(qrCodeText);
+            response.setBillID(generateID(validatedBill, qrCodeText));
+        }
+
+        return response;
+    }
+
+    /**
+     * Decodes the text from the QR code and validates the information.
+     * @param info the text from the QR code
+     * @return returns the validation result: decoded bill data, the validation messages (if any),
+     *  a bill ID (if the bill is valid) and the QR code text
+     */
+    @RequestMapping(value = "/api/bill/decode", method = RequestMethod.POST)
+    @ResponseBody
+    public ValidationResponse decodeQRCodeText(@RequestBody QrCodeInformation info) {
+        Bill bill = QRBill.decodeQrCodeText(info.getQrCodeText());
+
+        // Validate data
+        ValidationResult result = new ValidationResult();
+        Validator validator = new Validator(bill, result);
+        Bill validatedBill = validator.validate();
+
+        ValidationResponse response = new ValidationResponse();
+        response.setValid(result.isValid());
+
+        // Generate localized messages
+        if (result.hasMessages()) {
+            List<ValidationMessage> messages = ValidationMessage.fromList(result.getValidationMessages());
+            addLocalMessages(messages);
+            response.setValidationMessages(messages);
+        }
+        response.setValidatedBill(QrBill.from(validatedBill));
+
+        // generate QR code text and bill ID
+        if (!result.hasErrors()) {
+            QRCode qrCode = new QRCode(validatedBill);
+            String qrCodeText = qrCode.getText();
+            response.setQrCodeText(qrCodeText);
+            response.setBillID(generateID(validatedBill, qrCodeText));
+        }
+
         return response;
     }
 
@@ -137,7 +172,7 @@ public class QRBillController {
     private ResponseEntity generateBill(QrBill bill, String format, GraphicsFormat graphicsFormat) {
         BillFormat billFormat = getBillFormat(format);
         if (billFormat == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Invalid bill format in URL. Valid values: qrCodeOnly, a6Landscape, a5Landscape, a4Portrait");
 
         try {
@@ -153,14 +188,14 @@ public class QRBillController {
     private ResponseEntity generateBillFromID(String billId, String format, GraphicsFormat graphicsFormat) {
         BillFormat billFormat = getBillFormat(format);
         if (billFormat == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Invalid bill format in URL. Valid values: qrCodeOnly, a6Landscape, a5Landscape, a4Portrait");
 
         Bill bill;
         try {
             bill = decodeID(billId);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Invalid bill ID. Validate bill data to get a valid ID");
         }
 
@@ -168,7 +203,7 @@ public class QRBillController {
             byte[] result = generate(bill, billFormat, graphicsFormat);
             return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(result);
         } catch (QRBillValidationError e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Invalid bill ID. Validate bill data to get a valid ID");
         }
     }
@@ -212,12 +247,11 @@ public class QRBillController {
 
     // --- ID Generation and decoding
 
-    private String generateID(Bill bill) {
-        String qrText = QRBill.generateQrCodeText(bill);
+    private String generateID(Bill bill, String qrCodeText) {
         BillPayload payload = new BillPayload();
         payload.setVersion(1);
         payload.setLanguage(bill.getLanguage().name());
-        payload.setQrText(qrText);
+        payload.setQrText(qrCodeText);
 
         Base64.Encoder base64 = Base64.getUrlEncoder();
         byte[] encodedData;

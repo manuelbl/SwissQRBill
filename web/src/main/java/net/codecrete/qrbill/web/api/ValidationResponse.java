@@ -10,9 +10,19 @@ import java.util.List;
 
 public class ValidationResponse {
 
+    private boolean valid;
     private List<ValidationMessage> validationMessages;
     private QrBill validatedBill;
+    private String qrCodeText;
     private String billID;
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
 
     public List<ValidationMessage> getValidationMessages() {
         return validationMessages;
@@ -28,6 +38,14 @@ public class ValidationResponse {
 
     public void setValidatedBill(QrBill validatedBill) {
         this.validatedBill = validatedBill;
+    }
+
+    public String getQrCodeText() {
+        return qrCodeText;
+    }
+
+    public void setQrCodeText(String qrCodeText) {
+        this.qrCodeText = qrCodeText;
     }
 
     public String getBillID() {

@@ -33,7 +33,7 @@ public class BillWithIdTests {
     public void okTest1() {
         QrBill bill = SampleData.createBill1();
 
-        ValidationResponse response = restTemplate.postForObject("/api/validate", bill, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/api/bill/validate", bill, ValidationResponse.class);
         String billId = response.getBillID();
 
         byte[] result = restTemplate.getForObject("/api/bill/svg/a6Landscape/" + billId, byte[].class);
