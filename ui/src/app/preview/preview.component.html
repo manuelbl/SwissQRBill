@@ -1,13 +1,13 @@
-<h2 mat-dialog-title>Preview &amp; Download</h2>
+<h2 mat-dialog-title i18n>Preview &amp; Download</h2>
 
 <mat-dialog-content>
 
   <div class="output-size">
     <mat-button-toggle-group [(ngModel)]="outputSize">
-      <mat-button-toggle value="a6Landscape">A6 landscape</mat-button-toggle>
-      <mat-button-toggle value="a5Landscape">A5 landscape</mat-button-toggle>
-      <mat-button-toggle value="a4Portrait">A4 portrait</mat-button-toggle>
-      <mat-button-toggle value="qrCodeOnly">QR code only</mat-button-toggle>
+      <mat-button-toggle value="a6Landscape" i18n>A6 landscape</mat-button-toggle>
+      <mat-button-toggle value="a5Landscape" i18n>A5 landscape</mat-button-toggle>
+      <mat-button-toggle value="a4Portrait" i18n>A4 portrait</mat-button-toggle>
+      <mat-button-toggle value="qrCodeOnly" i18n>QR code only</mat-button-toggle>
     </mat-button-toggle-group>
   </div>
 
@@ -18,7 +18,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <a mat-raised-button color="primary" href="api/bill/pdf/{{outputSize}}/{{billID}}" download="qrbill.pdf" target="_blank">Download as PDF</a>
-  <a mat-raised-button color="primary" href="api/bill/svg/{{outputSize}}/{{billID}}" download="qrbill.svg" target="_blank">Download as SVG</a>
-  <button mat-raised-button mat-dialog-close>Close</button>
+  <a mat-raised-button color="primary" href="api/bill/pdf/{{outputSize}}/{{billID}}" download="qrbill.pdf" target="_blank" i18n>Download as PDF</a>
+  <a mat-raised-button color="primary" href="api/bill/svg/{{outputSize}}/{{billID}}" download="qrbill.svg" target="_blank" i18n>Download as SVG</a>
+  <button mat-raised-button mat-dialog-close i18n>Close</button>
 </mat-dialog-actions>

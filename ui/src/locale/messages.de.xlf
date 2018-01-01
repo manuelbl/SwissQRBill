@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="645a591205bda576eecfd96dce52184f90b05daa" datatype="html">
+        <source>Preview &amp; Download</source>
+        <target>Vorschau &amp; Herunterladen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/preview/preview.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">198</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="52551a99f9b2fd31a36cc5effe6ab2c0f0afe4aa" datatype="html">
+        <source>A6 landscape</source>
+        <target>A6 Querformat</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/preview/preview.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d0e262fbd885de4a9b5713557314118b5428d959" datatype="html">
+        <source>A5 landscape</source>
+        <target>A5 Querformat</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/preview/preview.component.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="13d0bddd2f769995a9688452f78b536c6aecd061" datatype="html">
+        <source>A4 portrait</source>
+        <target>A4 Hochformat</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/preview/preview.component.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7f9ab44e6a153e4d490e019cee64da945ae7f341" datatype="html">
+        <source>QR code only</source>
+        <target>Nur QR-Code</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/preview/preview.component.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d21048e652baaac212f45f20273e72ee8439006c" datatype="html">
+        <source>Download as PDF</source>
+        <target>Als PDF herunterladen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/preview/preview.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7cf16ce09b9161b38cf23942c1341e2a64a9c519" datatype="html">
+        <source>Download as SVG</source>
+        <target>Als SVG herunterladen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/preview/preview.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f4e529ae5ffd73001d1ff4bbdeeb0a72e342e5c8" datatype="html">
+        <source>Close</source>
+        <target>Schliessen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/preview/preview.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="29881a45dafbe5aa05cd9d0441a4c0c2fb06df92" datatype="html">
+        <source>Account</source>
+        <target>Konto</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d66344de7270cbd94fa00741e4a76437ac21ca67" datatype="html">
+        <source>Creditor</source>
+        <target>Zahlungsempfänger</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cff1428d10d59d14e45edec3c735a27b5482db59" datatype="html">
+        <source>Name</source>
+        <target>Name</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">153</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2150cdcd46580c08f512eaa6d60a1f20877e971d" datatype="html">
+        <source>Street</source>
+        <target>Strasse</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">160</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7f5659adf4150c38bfb814ca4dc96a153335c83b" datatype="html">
+        <source>House number</source>
+        <target>Hausnummer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">165</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a43f25a9ac40e8e2441ff0be7a36b8e5d15534df" datatype="html">
+        <source>Country</source>
+        <target>Land</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">172</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cd6fe156aeef501950a8b39d88040da4c1301ee3" datatype="html">
+        <source>Postal code</source>
+        <target>Postleitzahl</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">177</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8d1bc1c15d52c3b7ed295c12cf72beccf882bfda" datatype="html">
+        <source>Town</source>
+        <target>Ort</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">95</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">182</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="79977b088742f530e394c20a40c7ad2d80086a51" datatype="html">
+        <source>Final creditor</source>
+        <target>Endgültiger Zahlungsempfänger</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5f17f540fc3a8526fc633c9e23ef9e7b43eb2dc1" datatype="html">
+        <source>Payment details</source>
+        <target>Zahlungsinformationen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">106</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="32072c7fb0469aaf82d256a59b3e0d6ecce973b9" datatype="html">
+        <source>Currency</source>
+        <target>Währung</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">112</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dfc2fb58e2a04ed944a4bd80f0a2087775134068" datatype="html">
+        <source>Amount</source>
+        <target>Betrag</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f2f085b2c292ce0d2f66de3c3754750b9fed1793" datatype="html">
+        <source>Due date</source>
+        <target>Zahlbar bis</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="719f8461c45fedfd5032e4a32b3abb987eb8eb73" datatype="html">
+        <source>Reference no</source>
+        <target>Referenznummer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">133</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="64b9fc0867ec08f47735ceb7e5e6b36d648e9776" datatype="html">
+        <source>Additional information</source>
+        <target>Zusätzliche Informationen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e4c8a2fb97839cb7002f5b961c99fda4644ed409" datatype="html">
+        <source>Debtor</source>
+        <target>Zahlungspflichtiger</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/billdata/billdata.component.ts</context>
+          <context context-type="linenumber">147</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="296b1555dfa8d8a997d495f3544f75bcaf044b45" datatype="html">
+        <source>Swiss QR Bill</source>
+        <target>Schweizer QR Rechnung</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/navbar/navbar.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/about/about.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/about/about.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="004b222ff9ef9dd4771b777950ca1d0e4cd4348a" datatype="html">
+        <source>About</source>
+        <target>Über</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/navbar/navbar.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ba24f95ac9587b65c66e77f3f487d1ea72893225" datatype="html">
+        <source>
+    Copyright © 2018 Manuel Bleichenbacher
+  </source>
+        <target>
+    Copyright © 2018 Manuel Bleichenbacher
+  </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/about/about.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2e93e44e57246a58edf98a98eb836a947213f11c" datatype="html">
+        <source>Licensend under</source>
+        <target>Lizenziert unter</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/about/about.component.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8316a2e0ecdb7871bed64868da33b99414bd3cf8" datatype="html">
+        <source>MIT License</source>
+        <target>MIT-Lizenz</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/about/about.component.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0700acd66ff8e138c37b73467d498f6c9c4ee3f6" datatype="html">
+        <source>Source code on</source>
+        <target>Sourcen auf</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/about/about.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="355a222236bc01b9a8cd3cb9ecf76891125aed69" datatype="html">
+        <source>GitHub</source>
+        <target>GitHub</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/about/about.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a03e342fa20cce1fda9a8e137ec6026c2feb3b16" datatype="html">
+        <source>API description as</source>
+        <target>API-Beschreibung als</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/about/about.component.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e68e0dcac66c199a3be5f66ba09cbf9ed57cd8ab" datatype="html">
+        <source>Swagger file</source>
+        <target>Swagger-Datei</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/about/about.component.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
