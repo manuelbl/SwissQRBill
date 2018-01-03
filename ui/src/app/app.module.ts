@@ -47,17 +47,11 @@ import 'hammerjs';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { BillData } from './billdata/billdata.component';
-import { QrBillService } from './qrbill.service';
+import { QrBillService } from './qrbill-api/qrbill.service';
 import { PreviewComponent } from './preview/preview.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AboutComponent } from './about/about.component';
-
-import { registerLocaleData } from '@angular/common';
-import localeEnCH from '@angular/common/locales/en-CH';
-import localeDeCH from '@angular/common/locales/de-CH';
-//import localeFrCH from '@angular/common/locales/fr-CH';
-//import localeItCH from '@angular/common/locales/it-CH';
 
 @NgModule({
   declarations: [
@@ -113,8 +107,3 @@ import localeDeCH from '@angular/common/locales/de-CH';
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-
-registerLocaleData(localeEnCH, 'en');
-registerLocaleData(localeDeCH, 'de');
-//registerLocaleData(localeFrCH, 'fr');
-//registerLocaleData(localeItCH, 'it');

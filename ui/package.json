@@ -5,9 +5,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --base-href /qrbill/ --proxy-config proxy-dev.json",
-    "start-de": "ng serve --host 0.0.0.0 --base-href /qrbill/ --proxy-config proxy-dev.json --aot --i18nFile=src/locale/messages.de.xlf --i18nFormat=xlf --locale=de",
-    "build": "ng build --prod --deploy-url=/qrbill/ --base-href=/qrbill/ --locale=en -output-path dist/en",
-    "build-de": "ng build --prod --deploy-url=/qrbill/ --base-href=/qrbill/ --i18nFile=src/locale/messages.de.xlf --i18nFormat=xlf --locale=de -output-path dist/de",
+    "start-de": "ng serve --host 0.0.0.0 --base-href /qrbill/ --proxy-config proxy-dev.json --aot --i18nFile=src/locale/messages.de.xlf --i18nFormat=xlf --locale=de-CH",
+    "build": "ng build --prod --deploy-url=/qrbill/ --base-href=/qrbill/ --locale=en-CH -output-path dist/en",
+    "build-de": "ng build --prod --deploy-url=/qrbill/ --base-href=/qrbill/ --i18nFile=src/locale/messages.de.xlf --i18nFormat=xlf --locale=de-CH -output-path dist/de",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

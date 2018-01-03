@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
-import { QrBillService } from '../qrbill.service';
+import { QrBillService } from '../qrbill-api/qrbill.service';
 import { Address } from '../qrbill-api/address';
 import { QrBill } from '../qrbill-api/qrbill';
 import { ValidationMessage } from '../qrbill-api/validation-message';
