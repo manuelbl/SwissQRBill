@@ -43,8 +43,10 @@ import {
   MatStepperModule,
 } from '@angular/material';
 import 'hammerjs';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { BillData } from './billdata/billdata.component';
 import { QrBillService } from './qrbill-api/qrbill.service';
@@ -52,6 +54,10 @@ import { PreviewComponent } from './preview/preview.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AboutComponent } from './about/about.component';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -101,7 +107,14 @@ import { AboutComponent } from './about/about.component';
     MatToolbarModule,
     MatTooltipModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [ HttpClient ]
+      }
+    })
   ],
   providers: [QrBillService],
   bootstrap: [AppComponent]

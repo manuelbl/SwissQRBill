@@ -2,8 +2,15 @@
   <div class="container">
     <a mat-button class="navbar-button" routerLink="/">
       <img class="navbar-logo" src="assets/swiss-qr-bill.svg">
-      <span i18n>Swiss QR Bill</span>
+      <span translate>app_name</span>
     </a>
-    <a mat-button class="navbar-hide-snall navbar-link" routerLink="about" i18n>About</a>
+    <a mat-button class="navbar-hide-small navbar-link" routerLink="about"><span translate>about</span></a>
+    <mat-menu #languageMenu="matMenu">
+      <button mat-menu-item (click)="switchLanguage('en')">English</button>
+      <button mat-menu-item (click)="switchLanguage('de')">Deutsch</button>
+    </mat-menu>
+    <button mat-icon-button [matMenuTriggerFor]="languageMenu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
   </div>
 </nav>

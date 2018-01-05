@@ -5,9 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --base-href /qrbill/ --proxy-config proxy-dev.json",
-    "start-de": "ng serve --host 0.0.0.0 --base-href /qrbill/ --proxy-config proxy-dev.json --aot --i18nFile=src/locale/messages.de.xlf --i18nFormat=xlf --locale=de-CH",
-    "build": "ng build --prod --deploy-url=/qrbill/ --base-href=/qrbill/ --locale=en-CH -output-path dist/en",
-    "build-de": "ng build --prod --deploy-url=/qrbill/ --base-href=/qrbill/ --i18nFile=src/locale/messages.de.xlf --i18nFormat=xlf --locale=de-CH -output-path dist/de",
+    "build-en": "ng build --prod --base-href=/qrbill/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -25,6 +23,8 @@
     "@angular/platform-browser": "^5.1.2",
     "@angular/platform-browser-dynamic": "^5.1.2",
     "@angular/router": "^5.1.2",
+    "@ngx-translate/core": "^9.0.2",
+    "@ngx-translate/http-loader": "^2.0.1",
     "core-js": "^2.4.1",
     "hammerjs": "^2.0.8",
     "rxjs": "^5.5.6",

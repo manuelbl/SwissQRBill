@@ -9,6 +9,7 @@ import { AbstractControl, FormControl, FormGroup, FormBuilder, FormGroupDirectiv
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialog } from '@angular/material';
 import { ValidationErrors } from '@angular/forms/src/directives/validators';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/map';
@@ -35,7 +36,7 @@ export class BillData implements OnInit {
   
 
   constructor(private formBuilder: FormBuilder, private qrBillService: QrBillService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog, private translate: TranslateService) {
     this.bill = {
       language: "en",
       version: "V1_0",
@@ -100,13 +101,17 @@ export class BillData implements OnInit {
 
     this.billForm.valueChanges
       .subscribe(val => this.validateServerSide(val));
+
+    this.translate.onLangChange.subscribe((params: LangChangeEvent) => {
+      this.validateServerSide(this.billForm.value);
+    });
   }
 
   // Send data to server for validation
   validateServerSide(value: any) {
     this.validationInProgress++;
     let bill = this.getBill(value);
-    return this.qrBillService.validate(bill)
+    return this.qrBillService.validate(bill, this.translate.currentLang)
       .subscribe(response => this.updateServerSideErrors(response));
   }
 
