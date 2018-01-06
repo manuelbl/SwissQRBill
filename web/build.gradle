@@ -15,24 +15,10 @@ apply plugin: 'io.spring.dependency-management'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-def uiDir = "${project(':ui').projectDir}"
-//war {
-//    from "${uiDir}/dist"
-//}
-
-
 bootJar {
     baseName = 'qrbill-service'
     mainClassName = 'net.codecrete.qrbill.web.Application'
 }
-
-processResources {
-    from ("$uiDir/dist/") {
-        into '/public'
-    }
-}
-
-processResources.dependsOn(':ui:build')
 
 dependencies {
     compile project(':generator')

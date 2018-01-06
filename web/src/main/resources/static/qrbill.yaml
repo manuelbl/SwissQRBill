@@ -40,7 +40,7 @@ info:
     url: "https://opensource.org/licenses/MIT"
 
 host: "www.codecrete.net"
-basePath: "/qrbill/api"
+basePath: "/qrbill-api"
 
 tags:
 - name: "bills"

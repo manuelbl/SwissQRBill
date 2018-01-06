@@ -19,16 +19,14 @@ mkdir /usr/share/qrbill
 chown qrbill /usr/share/qrbill
 chgrp qrbill /usr/share/qrbill
 
-cat >/usr/share/qrbill/deploy-agent.sh <<END_OF_FILE
+cat >/usr/share/qrbill/deploy-qrbill-service.sh <<END_OF_FILE
 #!/bin/sh
-cd ~qrbill
 systemctl stop qrbill.service
 sleep 5
-mv qrbill.jar qrbill.jar.old
-mv qrbill.jar.new qrbill.jar
+mv qrbill-service-*.jar ~qrbill/qrbill.jar
 systemctl start qrbill.service
 END_OF_FILE
-chmod +x /usr/share/qrbill/deploy-agent.sh
+chmod +x /usr/share/qrbill/deploy-qrbill-service.sh
 
 systemctl enable qrbill.service
 systemctl start qrbill

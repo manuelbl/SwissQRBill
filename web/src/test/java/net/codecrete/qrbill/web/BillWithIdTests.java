@@ -33,10 +33,10 @@ public class BillWithIdTests {
     public void okTest1() {
         QrBill bill = SampleData.createBill1();
 
-        ValidationResponse response = restTemplate.postForObject("/api/bill/validate", bill, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
         String billId = response.getBillID();
 
-        byte[] result = restTemplate.getForObject("/api/bill/svg/a6Landscape/" + billId, byte[].class);
+        byte[] result = restTemplate.getForObject("/bill/svg/a6Landscape/" + billId, byte[].class);
 
         assertNotNull(response);
         assertTrue(result.length > 1000);

@@ -66,7 +66,7 @@ public class DecodeTests {
         QrCodeInformation info = new QrCodeInformation();
         info.setQrCodeText(VALID_QR_CODE_TEXT);
 
-        ValidationResponse response = restTemplate.postForObject("/api/bill/decode", info, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("//bill/decode", info, ValidationResponse.class);
 
         assertNotNull(response);
         assertTrue(response.isValid());

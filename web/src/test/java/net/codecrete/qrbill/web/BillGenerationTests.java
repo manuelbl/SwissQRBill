@@ -33,7 +33,7 @@ public class BillGenerationTests {
     public void generateSVGTest() {
 
         QrBill bill = SampleData.createBill1();
-        byte[] response = restTemplate.postForObject("/api/bill/svg/a6Landscape", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/svg/a6Landscape", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -48,7 +48,7 @@ public class BillGenerationTests {
     public void generatePDFTest() {
 
         QrBill bill = SampleData.createBill1();
-        byte[] response = restTemplate.postForObject("/api/bill/pdf/a6Landscape", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/pdf/a6Landscape", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -62,7 +62,7 @@ public class BillGenerationTests {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown("city56789012345678901234567890123456");
 
-        byte[] response = restTemplate.postForObject("/api/bill/svg/a5Landscape", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/svg/a5Landscape", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -78,7 +78,7 @@ public class BillGenerationTests {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown(null);
 
-        ValidationMessage[] response = restTemplate.postForObject("/api/bill/svg/a4Portrait", bill, ValidationMessage[].class);
+        ValidationMessage[] response = restTemplate.postForObject("/bill/svg/a4Portrait", bill, ValidationMessage[].class);
 
         assertNotNull(response);
         assertEquals(1, response.length);
