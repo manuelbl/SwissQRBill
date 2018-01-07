@@ -6,15 +6,17 @@
     width: 100%;
     min-height: 320px;
     box-sizing: border-box;
-    border: 1px #999 solid;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #eee;
 }
 
 .bill-preview {
     max-width: 100%;
     display: block;
     background: white;
+    box-sizing: border-box;
+    border: 1px rgba(0,0,0,.4) solid;
+    box-shadow: 0 3px 3px -2px rgba(0,0,0,.2), 0 3px 4px 0 rgba(0,0,0,.14), 0 1px 8px 0 rgba(0,0,0,.12);
+    margin-bottom: 3px;
 }
