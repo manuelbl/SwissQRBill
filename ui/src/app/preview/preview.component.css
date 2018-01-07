@@ -3,11 +3,10 @@
 }
 
 .preview-section {
-    width: 660px;
-    height: 440px;
-    overflow: scroll;
+    width: 100%;
+    min-height: 320px;
     box-sizing: border-box;
-    border: 1pt #999 solid;
+    border: 1px #999 solid;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,28 +17,4 @@
     max-width: 100%;
     display: block;
     background: white;
-}
-
-@media only screen and (max-width: 720px) {
-    .preview-section {
-        width: 400px;
-    }
-}
-
-@media only screen and (max-height: 750px) {
-    .preview-section {
-        height: 400px;
-    }
-}
-
-@media only screen and (max-height: 710px) {
-    .preview-section {
-        height: 360px;
-    }
-}
-
-@media only screen and (max-height: 670px) {
-    .preview-section {
-        height: 320px;
-    }
 }
