@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatMenuModule, MatIconModule } from '@angular/material';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 
 import { NavbarComponent } from './navbar.component';
+import { TranslateMockLoader } from '../mock/translate-mock.loader';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -8,7 +11,14 @@ describe('NavbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavbarComponent ]
+      declarations: [ NavbarComponent ],
+      imports: [
+        MatMenuModule,
+        MatIconModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateMockLoader }
+        })
+      ]
     })
     .compileComponents();
   }));

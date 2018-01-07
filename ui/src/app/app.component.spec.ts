@@ -42,8 +42,11 @@ import {
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AboutComponent } from './about/about.component';
 import { APP_BASE_HREF } from '@angular/common';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+
+import { TranslateMockLoader } from './mock/translate-mock.loader';
+import { AboutComponent } from './about/about.component';
 import { AppComponent } from './app.component';
 import { BillData } from './billdata/billdata.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -66,9 +69,14 @@ describe('AppComponent', () => {
         MatButtonModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        MatMenuModule,
+        MatIconModule,
         BrowserAnimationsModule,
         RouterModule,
-        AppRoutingModule
+        AppRoutingModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateMockLoader }
+        })
       ],
       providers: [
         {
