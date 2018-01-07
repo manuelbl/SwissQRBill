@@ -55,7 +55,7 @@ html, body {
 .col {
 	display: block;
 	float: left;
-	margin-left: 1.6%;
+	margin-left: 2.4%;
 }
 .col:first-child {
   margin-left: 0;
@@ -133,7 +133,7 @@ html, body {
 }
 
 .span_1_of_2 {
-	width: 49.2%; 
+	width: 48.8%; 
 }
 
 /* Go full width at less than 800 pixels */
