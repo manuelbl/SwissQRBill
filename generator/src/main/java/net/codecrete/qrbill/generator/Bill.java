@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class Bill {
 
-    // Itentionally use lowercase
+    // Intentionally use lowercase
     public enum Language {
         de,
         fr,

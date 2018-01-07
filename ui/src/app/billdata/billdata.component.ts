@@ -38,7 +38,7 @@ export class BillData implements OnInit {
   constructor(private formBuilder: FormBuilder, private qrBillService: QrBillService,
     private dialog: MatDialog, private translate: TranslateService) {
     this.bill = {
-      language: "en",
+      language: translate.currentLang,
       version: "V1_0",
       currency: "CHF",
       amount: 100,
@@ -86,6 +86,7 @@ export class BillData implements OnInit {
       amount: new FormControl(this.bill.amount, { validators: [Validators.required, Validators.min(0.01), Validators.max(999999999.99)]}),
       referenceNo: new FormControl(this.bill.referenceNo),
       additionalInfo: new FormControl(this.bill.additionalInfo),
+      language: new FormControl(this.bill.language),
       debtor: this.formBuilder.group({
         name: new FormControl(this.bill.debtor.name),
         street: new FormControl(this.bill.debtor.street),

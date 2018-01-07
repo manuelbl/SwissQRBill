@@ -22,6 +22,7 @@
     "due_date": "Zahlbar bis",
     "reference_no": "Referenznummer",
     "additional_info": "Zusätzliche Informationen",
+    "slip_lang": "Sprache der QR-Rechnung",
     "debtor": "Zahlungspflichtiger",
     "app_name": "Schweizer QR-Rechnung",
     "about": "Über diese App",
@@ -31,5 +32,11 @@
     "source_code_on": "Sourcen auf",
     "github": "GitHub",
     "api_desc": "API-Beschreibung",
-    "swagger_file": "Swagger-Datei"
+    "swagger_file": "Swagger-Datei",
+    "lang": {
+        "en": "Englisch",
+        "de": "Deutsch",
+        "fr": "Französisch",
+        "it": "Italienisch"
+    }
 }

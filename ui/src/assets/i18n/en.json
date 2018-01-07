@@ -22,6 +22,7 @@
     "due_date": "Due date",
     "reference_no": "Reference number",
     "additional_info": "Additional information",
+    "slip_lang": "QR bill language",
     "debtor": "Debtor",
     "app_name": "Swiss QR Bill",
     "about": "About this app",
@@ -31,5 +32,11 @@
     "source_code_on": "Source on",
     "github": "GitHub",
     "api_desc": "API description",
-    "swagger_file": "Swagger file"
+    "swagger_file": "Swagger file",
+    "lang": {
+        "en": "English",
+        "de": "German",
+        "fr": "French",
+        "it": "Italian"
+    }
 }

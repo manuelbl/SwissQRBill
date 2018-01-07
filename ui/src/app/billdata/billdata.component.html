@@ -109,7 +109,10 @@
 
         <div class="form-line">
           <mat-form-field class="form-field s2">
-            <input matInput placeholder="{{ 'currency' | translate}}" formControlName="currency" required>
+            <mat-select placeholder="{{ 'currency' | translate}}" formControlName="currency" required>
+              <mat-option value="CHF">CHF</mat-option>
+              <mat-option value="EUR">EUR</mat-option>
+            </mat-select>
             <mat-error *ngIf="billForm.hasError('serverSide', ['currency'])">{{billForm.getError('serverSide', 'currency')}}</mat-error>
           </mat-form-field>
 
@@ -141,7 +144,19 @@
             <mat-error *ngIf="billForm.hasError('serverSide', ['additionalInfo'])">{{billForm.getError('serverSide', 'additionalInfo')}}</mat-error>
           </mat-form-field>
         </div>
-
+  
+        <div class="form-line">
+          <mat-form-field class="form-field s12">
+              <mat-select placeholder="{{ 'slip_lang' | translate}}" formControlName="language" required>
+                  <mat-option value="de"><span translate>lang.de</span></mat-option>
+                  <mat-option value="fr"><span translate>lang.fr</span></mat-option>
+                  <mat-option value="it"><span translate>lang.it</span></mat-option>
+                  <mat-option value="en"><span translate>lang.en</span></mat-option>
+                </mat-select>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['language'])">{{billForm.getError('serverSide', 'language')}}</mat-error>
+          </mat-form-field>
+        </div>
+    
       </div>
 
       <h2 class="top-spacing" translate>debtor</h2>
