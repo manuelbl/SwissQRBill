@@ -140,6 +140,8 @@ export class BillData implements OnInit {
 
     if (messages) {
       // TODO: set focus to first field with error
+      if (this.previewPressed && this.validationInProgress == 0)
+      this.previewPressed = false;
     } else {
       // user clicked on "Preview" and is waiting for validation
       if (this.previewPressed && this.validationInProgress == 0)
