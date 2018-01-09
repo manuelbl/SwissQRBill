@@ -2,15 +2,6 @@
 
 <mat-dialog-content>
 
-  <div class="output-size">
-    <mat-button-toggle-group [(ngModel)]="outputSize" color="primary">
-      <mat-button-toggle value="a6Landscape"><span translate>a6_landscape</span></mat-button-toggle>
-      <mat-button-toggle value="a5Landscape"><span translate>a5_landscape</span></mat-button-toggle>
-      <mat-button-toggle value="a4Portrait"><span translate>a4_portrait</span></mat-button-toggle>
-      <mat-button-toggle value="qrCodeOnly"><span translate>qr_code_only</span></mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
-
   <div class="preview-section">
     <img class="bill-preview" src="../qrbill-api/bill/svg/{{outputSize}}/{{billID}}">
   </div>

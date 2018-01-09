@@ -20,6 +20,7 @@ export class PreviewComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<PreviewComponent>,
       @Inject(MAT_DIALOG_DATA) private data: any) {
         this.billID = data.billID;
+        this.outputSize = data.outputSize;
       }
 
   ngOnInit() {

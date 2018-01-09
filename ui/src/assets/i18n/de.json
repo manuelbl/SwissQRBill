@@ -1,9 +1,12 @@
 {
     "preview_n_download": "Vorschau & Herunterladen",
-    "a6_landscape": "A6 Querformat",
-    "a5_landscape": "A5 Querformat",
-    "a4_portrait": "A4 Hochformat",
-    "qr_code_only": "Nur QR-Code",
+    "output_size": "Papierformat der QR-Rechnung",
+    "output_sizes": {
+        "a6_landscape": "A6 Querformat",
+        "a5_landscape": "A5 Querformat",
+        "a4_portrait": "A4 Hochformat",
+        "qr_code_only": "Nur QR-Code"
+    },
     "download_pdf": "Als PDF herunterladen",
     "download_svg": "Als SVG herunterladen",
     "close": "Schliessen",

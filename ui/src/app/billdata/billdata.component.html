@@ -155,6 +155,16 @@
                 </mat-select>
             <mat-error *ngIf="billForm.hasError('serverSide', ['language'])">{{billForm.getError('serverSide', 'language')}}</mat-error>
           </mat-form-field>
+
+          <mat-form-field class="form-field s5">
+              <mat-select placeholder="{{ 'output_size' | translate}}" formControlName="outputSize" required>
+                <mat-option value="a6Landscape"><span translate>output_sizes.a6_landscape</span></mat-option>
+                <mat-option value="a5Landscape"><span translate>output_sizes.a5_landscape</span></mat-option>
+                <mat-option value="a4Portrait"><span translate>output_sizes.a4_portrait</span></mat-option>
+                <mat-option value="qrCodeOnly"><span translate>output_sizes.qr_code_only</span></mat-option>
+              </mat-select>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['outputSize'])">{{billForm.getError('serverSide', 'outputSize')}}</mat-error>
+          </mat-form-field>  
         </div>
     
       </div>

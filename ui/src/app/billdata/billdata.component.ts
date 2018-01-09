@@ -28,6 +28,7 @@ import { PreviewComponent } from '../preview/preview.component';
 })
 export class BillData implements OnInit {
   public bill: QrBill;
+  public outputSize: string;
   public billForm: FormGroup;
   private validatedBill: QrBill;
   private billID: string;
@@ -59,6 +60,7 @@ export class BillData implements OnInit {
       },
       dueDate: "2018-03-31"
     };
+    this.outputSize = "a6Landscape";
   }
 
   ngOnInit() {
@@ -87,6 +89,7 @@ export class BillData implements OnInit {
       referenceNo: new FormControl(this.bill.referenceNo),
       additionalInfo: new FormControl(this.bill.additionalInfo),
       language: new FormControl(this.bill.language),
+      outputSize: new FormControl(this.outputSize),
       debtor: this.formBuilder.group({
         name: new FormControl(this.bill.debtor.name),
         street: new FormControl(this.bill.debtor.street),
@@ -188,7 +191,8 @@ export class BillData implements OnInit {
       maxHeight: '100vh',
       data: {
         validatedBill: this.validatedBill,
-        billID: this.billID
+        billID: this.billID,
+        outputSize: this.billForm.value.outputSize
       }
     });
   }
