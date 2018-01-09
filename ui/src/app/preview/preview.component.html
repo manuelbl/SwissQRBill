@@ -3,13 +3,13 @@
 <mat-dialog-content>
 
   <div class="preview-section">
-    <img class="bill-preview" src="../qrbill-api/bill/svg/{{outputSize}}/{{billID}}">
+    <img class="bill-preview mat-elevation-z6" src="../qrbill-api/bill/svg/{{outputSize}}/{{billID}}">
   </div>
 
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <a mat-raised-button color="primary" href="../qrbill-api/bill/pdf/{{outputSize}}/{{billID}}" download="qrbill.pdf" target="_blank"><span translate>download_pdf</span></a>
-  <a mat-raised-button color="primary" href="../qrbill-api/bill/svg/{{outputSize}}/{{billID}}" download="qrbill.svg" target="_blank"><span translate>download_svg</span></a>
-  <button mat-raised-button mat-dialog-close color="accent"><span translate>close</span></button>
+  <a mat-raised-button color="accent" href="../qrbill-api/bill/pdf/{{outputSize}}/{{billID}}" download="qrbill.pdf" target="_blank"><span translate>download_pdf</span></a>
+  <a mat-raised-button color="accent" href="../qrbill-api/bill/svg/{{outputSize}}/{{billID}}" download="qrbill.svg" target="_blank"><span translate>download_svg</span></a>
+  <button mat-raised-button mat-dialog-close color="primary"><span translate>close</span></button>
 </mat-dialog-actions>
