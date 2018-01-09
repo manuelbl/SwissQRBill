@@ -9,11 +9,11 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
-$custom-app-primary: mat-palette($mat-blue-grey);
-$custom-app-accent:  mat-palette($mat-grey, 700, 500, 900);
+$custom-app-primary: mat-palette($mat-blue, 700);
+$custom-app-accent:  mat-palette($mat-blue, 500);
 
 // The warn palette is optional (defaults to red).
-$custom-app-warn:    mat-palette($mat-deep-orange);
+$custom-app-warn:    mat-palette($mat-pink, 700);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $custom-app-theme: mat-light-theme($custom-app-primary, $custom-app-accent, $custom-app-warn);
