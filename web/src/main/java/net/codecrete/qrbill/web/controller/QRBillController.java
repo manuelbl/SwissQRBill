@@ -80,7 +80,7 @@ public class QRBillController {
             QRCode qrCode = new QRCode(validatedBill);
             String qrCodeText = qrCode.getText();
             response.setQrCodeText(qrCodeText);
-            response.setBillID(generateID(validatedBill, qrCodeText));
+            response.setBillID(generateID(qrCodeText, validatedBill.getLanguage().name()));
         }
 
         return response;
@@ -118,7 +118,7 @@ public class QRBillController {
             QRCode qrCode = new QRCode(validatedBill);
             String qrCodeText = qrCode.getText();
             response.setQrCodeText(qrCodeText);
-            response.setBillID(generateID(validatedBill, qrCodeText));
+            response.setBillID(generateID(qrCodeText, validatedBill.getLanguage().name()));
         }
 
         return response;
@@ -173,7 +173,7 @@ public class QRBillController {
         BillFormat billFormat = getBillFormat(format);
         if (billFormat == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Invalid bill format in URL. Valid values: qrCodeOnly, a6Landscape, a5Landscape, a4Portrait");
+                .body("Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
 
         try {
             byte[] result = generate(QrBill.toGeneratorBill(bill), billFormat, graphicsFormat);
@@ -189,7 +189,7 @@ public class QRBillController {
         BillFormat billFormat = getBillFormat(format);
         if (billFormat == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Invalid bill format in URL. Valid values: qrCodeOnly, a6Landscape, a5Landscape, a4Portrait");
+                    .body("Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
 
         Bill bill;
         try {
@@ -212,15 +212,19 @@ public class QRBillController {
         BillFormat format;
         switch (value) {
             case "qrCodeOnly":
+            case "qr-code-only":
                 format = BillFormat.QRCodeOnly;
                 break;
             case "a6Landscape":
+            case "a6-landscape":
                 format = BillFormat.A6LandscapeSheet;
                 break;
             case "a5Landscape":
+            case "a5-landscape":
                 format = BillFormat.A5LandscapeSheet;
                 break;
             case "a4Portrait":
+            case "a4-portrait":
                 format = BillFormat.A4PortraitSheet;
                 break;
             default:
@@ -247,21 +251,38 @@ public class QRBillController {
 
     // --- ID Generation and decoding
 
-    private String generateID(Bill bill, String qrCodeText) {
+    /**
+     * Generates an ID that encodes the entire bill data.
+     * <p>
+     *     The ID is the Base 64 (URL safe version) of the compressed (deflate) JSON data
+     *     consisting of version, language and the text string would be embedded in the QR code.
+     * </p>
+     * <p>
+     *     The ID is made URL safe by using the URL-safe RFC4648 Base 64 encoding and replacing
+     *     all equal signs (=) with tildes (~).
+     * </p>
+     * @param qrCodeText the QR code text
+     * @param language the ISO language code
+     * @return the generated ID
+     */
+    private String generateID(String qrCodeText, String language) {
+
         BillPayload payload = new BillPayload();
         payload.setVersion(1);
-        payload.setLanguage(bill.getLanguage().name());
+        payload.setLanguage(language);
         payload.setQrText(qrCodeText);
 
         Base64.Encoder base64 = Base64.getUrlEncoder();
         byte[] encodedData;
         try (ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-             OutputStream os2 = base64.wrap(buffer);
-             DeflaterOutputStream os3 = new DeflaterOutputStream(os2)) {
+             OutputStream intermediate = base64.wrap(buffer);
+             DeflaterOutputStream head = new DeflaterOutputStream(intermediate)) {
+
             ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(os3, payload);
-            os3.flush();
+            mapper.writeValue(head, payload);
+            head.flush();
             encodedData = buffer.toByteArray();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -270,16 +291,29 @@ public class QRBillController {
         return id.replace('=', '~');
     }
 
+    /**
+     * Decodes an bill ID and returns the bill data
+     * <p>
+     *     The bill ID is assumed to have been generated
+     *     by {@link #generateID(String, String)}.
+     * </p>
+     * @param id the ID
+     * @return the bill data
+     */
     private Bill decodeID(String id) {
+
         id = id.replace('~', '=');
         byte[] encodedData = id.getBytes(StandardCharsets.US_ASCII);
+
         Base64.Decoder base64 = Base64.getUrlDecoder();
         BillPayload payload;
-        try (InputStream is1 = new ByteArrayInputStream(encodedData);
-             InputStream is2 = base64.wrap(is1);
-             InflaterInputStream is3 = new InflaterInputStream(is2)) {
+        try (InputStream dataStream = new ByteArrayInputStream(encodedData);
+             InputStream intermediate = base64.wrap(dataStream);
+             InflaterInputStream head = new InflaterInputStream(intermediate)) {
+
             ObjectMapper mapper = new ObjectMapper();
-            payload = mapper.readValue(is3, BillPayload.class);
+            payload = mapper.readValue(head, BillPayload.class);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

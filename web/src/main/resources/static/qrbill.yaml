@@ -97,10 +97,10 @@ paths:
         required: true
         type: "string"
         enum:
-        - "a6Landscape"
-        - "a5Landscape"
-        - "a4Portrait"
-        - "qrCodeOnly"
+        - "a6-landscape"
+        - "a5-landscape"
+        - "a4-portrait"
+        - "qr-code-only"
       responses:
         "200":
           description: "QR bill as SVG"
@@ -134,10 +134,10 @@ paths:
         required: true
         type: "string"
         enum:
-        - "a6Landscape"
-        - "a5Landscape"
-        - "a4Portrait"
-        - "qrCodeOnly"
+        - "a6-landscape"
+        - "a5-landscape"
+        - "a4-portrait"
+        - "qr-code-only"
       responses:
         "200":
           description: "QR bill as PDF"
@@ -163,10 +163,10 @@ paths:
         required: true
         type: "string"
         enum:
-        - "a6Landscape"
-        - "a5Landscape"
-        - "a4Portrait"
-        - "qrCodeOnly"
+        - "a6-landscape"
+        - "a5-landscape"
+        - "a4-portrait"
+        - "qr-code-only"
       - name: "billID"
         in: "path"
         description: "Bill ID as returned by the validation response. Specifies the QR bill data uniquely."
@@ -197,10 +197,10 @@ paths:
         required: true
         type: "string"
         enum:
-        - "a6Landscape"
-        - "a5Landscape"
-        - "a4Portrait"
-        - "qrCodeOnly"
+        - "a6-landscape"
+        - "a5-landscape"
+        - "a4-portrait"
+        - "qr-code-only"
       - name: "billID"
         in: "path"
         description: "Bill ID as returned by the validation response. Specifies the QR bill data uniquely."

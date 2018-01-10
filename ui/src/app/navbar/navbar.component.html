@@ -5,12 +5,8 @@
       <span translate>app_name</span>
     </a>
     <a mat-button class="navbar-hide-small navbar-link" routerLink="about"><span translate>about</span></a>
-    <mat-menu #languageMenu="matMenu">
-      <button mat-menu-item (click)="switchLanguage('en')">English</button>
-      <button mat-menu-item (click)="switchLanguage('de')">Deutsch</button>
-    </mat-menu>
-    <button mat-icon-button [matMenuTriggerFor]="languageMenu">
+    <a mat-icon-button routerLink="settings">
       <mat-icon>more_vert</mat-icon>
-    </button>
+    </a>
   </div>
 </nav>

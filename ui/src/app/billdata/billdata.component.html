@@ -144,7 +144,7 @@
             <mat-error *ngIf="billForm.hasError('serverSide', ['additionalInfo'])">{{billForm.getError('serverSide', 'additionalInfo')}}</mat-error>
           </mat-form-field>
         </div>
-  
+
         <div class="form-line">
           <mat-form-field class="form-field s4">
               <mat-select placeholder="{{ 'slip_lang' | translate}}" formControlName="language" required>
@@ -158,15 +158,15 @@
 
           <mat-form-field class="form-field s5">
               <mat-select placeholder="{{ 'output_size' | translate}}" formControlName="outputSize" required>
-                <mat-option value="a6Landscape"><span translate>output_sizes.a6_landscape</span></mat-option>
-                <mat-option value="a5Landscape"><span translate>output_sizes.a5_landscape</span></mat-option>
-                <mat-option value="a4Portrait"><span translate>output_sizes.a4_portrait</span></mat-option>
-                <mat-option value="qrCodeOnly"><span translate>output_sizes.qr_code_only</span></mat-option>
+                <mat-option value="a6-landscape"><span translate>output_sizes.a6_landscape</span></mat-option>
+                <mat-option value="a5-landscape"><span translate>output_sizes.a5_landscape</span></mat-option>
+                <mat-option value="a4-portrait"><span translate>output_sizes.a4_portrait</span></mat-option>
+                <mat-option value="qr-code-only"><span translate>output_sizes.qr_code_only</span></mat-option>
               </mat-select>
             <mat-error *ngIf="billForm.hasError('serverSide', ['outputSize'])">{{billForm.getError('serverSide', 'outputSize')}}</mat-error>
-          </mat-form-field>  
+          </mat-form-field>
         </div>
-    
+
       </div>
 
       <h2 class="top-spacing" translate>debtor</h2>

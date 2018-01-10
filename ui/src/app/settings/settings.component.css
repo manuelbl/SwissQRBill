@@ -1,0 +1,11 @@
+.settings {
+    margin-top: 30px;
+}
+
+.settings mat-card {
+    max-width: 480px;
+}
+
+.settings .wide {
+    padding: 0 40px;
+}

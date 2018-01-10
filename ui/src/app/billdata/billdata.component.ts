@@ -34,7 +34,7 @@ export class BillData implements OnInit {
   private billID: string;
   private validationInProgress: number = 0;
   private previewPressed: boolean = false;
-  
+
 
   constructor(private formBuilder: FormBuilder, private qrBillService: QrBillService,
     private dialog: MatDialog, private translate: TranslateService) {
@@ -60,7 +60,7 @@ export class BillData implements OnInit {
       },
       dueDate: "2018-03-31"
     };
-    this.outputSize = "a6Landscape";
+    this.outputSize = "a6-landscape";
   }
 
   ngOnInit() {

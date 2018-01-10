@@ -36,7 +36,7 @@ public class BillWithIdTests {
         ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
         String billId = response.getBillID();
 
-        byte[] result = restTemplate.getForObject("/bill/svg/a6Landscape/" + billId, byte[].class);
+        byte[] result = restTemplate.getForObject("/bill/svg/a6-landscape/" + billId, byte[].class);
 
         assertNotNull(response);
         assertTrue(result.length > 1000);

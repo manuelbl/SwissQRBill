@@ -1,0 +1,11 @@
+<div class="settings">
+  <mat-card>
+    <mat-card-title>Language</mat-card-title>
+      <mat-card-content>
+      <mat-button-toggle-group [(ngModel)]="language" (ngModelChange)="switchLanguage($event)">
+        <mat-button-toggle value="de"><span class="wide">Deutsch</span></mat-button-toggle>
+        <mat-button-toggle value="en"><span class="wide">English</span></mat-button-toggle>
+      </mat-button-toggle-group>
+    </mat-card-content>
+  </mat-card>
+</div>

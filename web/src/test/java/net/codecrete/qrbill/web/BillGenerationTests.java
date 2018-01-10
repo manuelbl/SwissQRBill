@@ -33,7 +33,7 @@ public class BillGenerationTests {
     public void generateSVGTest() {
 
         QrBill bill = SampleData.createBill1();
-        byte[] response = restTemplate.postForObject("/bill/svg/a6Landscape", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/svg/a6-landscape", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -48,7 +48,7 @@ public class BillGenerationTests {
     public void generatePDFTest() {
 
         QrBill bill = SampleData.createBill1();
-        byte[] response = restTemplate.postForObject("/bill/pdf/a6Landscape", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/pdf/a6-landscape", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
