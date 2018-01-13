@@ -29,6 +29,7 @@
     "debtor": "Debtor",
     "app_name": "Swiss QR Bill",
     "about": "About this app",
+    "examples": "Examples",
     "copyright": "Copyright © 2018 Manuel Bleichenbacher",
     "licensed_under": "Licensed under",
     "mit_license": "MIT License",
@@ -41,5 +42,6 @@
         "de": "German",
         "fr": "French",
         "it": "Italian"
-    }
+    },
+    "use_bill": "USE"
 }

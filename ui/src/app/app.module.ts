@@ -55,6 +55,9 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AboutComponent } from './about/about.component';
 import { SettingsComponent } from './settings/settings.component';
+import { ExamplesComponent } from './examples/examples.component';
+import { ExampleService } from './example-service/example.service';
+import { BillSingletonService } from './bill-singleton-service/bill-singleton.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -67,7 +70,8 @@ export function createTranslateLoader(http: HttpClient) {
     PreviewComponent,
     NavbarComponent,
     AboutComponent,
-    SettingsComponent
+    SettingsComponent,
+    ExamplesComponent
   ],
   entryComponents: [
     PreviewComponent
@@ -118,7 +122,11 @@ export function createTranslateLoader(http: HttpClient) {
       }
     })
   ],
-  providers: [QrBillService],
+  providers: [
+    QrBillService,
+    ExampleService,
+    BillSingletonService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

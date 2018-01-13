@@ -1,0 +1,10 @@
+<div class="examples group">
+  <mat-card *ngFor="let ex of examples">
+    <mat-card-content>
+      <img src="../qrbill-api/bill/svg/a6-landscape/{{ex.billID}}">
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="useExample(ex)"><span class="action" translate>use_bill</span></button>
+    </mat-card-actions>
+  </mat-card>
+</div>

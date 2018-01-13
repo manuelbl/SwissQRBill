@@ -20,6 +20,7 @@ import { QrBill } from '../qrbill-api/qrbill';
 import { ValidationMessage } from '../qrbill-api/validation-message';
 import { ValidationResponse } from '../qrbill-api/validation-response';
 import { PreviewComponent } from '../preview/preview.component';
+import { BillSingletonService } from '../bill-singleton-service/bill-singleton.service';
 
 @Component({
   selector: 'bill-data',
@@ -37,29 +38,9 @@ export class BillData implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder, private qrBillService: QrBillService,
-    private dialog: MatDialog, private translate: TranslateService) {
-    this.bill = {
-      language: translate.currentLang,
-      version: "V1_0",
-      currency: "CHF",
-      amount: 100,
-      account: "CH93 0076 2011 6238 5295 7",
-      creditor: {
-        name: "Lea Simmen",
-        street: "Weinbergstrasse",
-        houseNo: "31",
-        postalCode: "5502",
-        town: "Hunzenschwil",
-        countryCode: "CH"
-      },
-      finalCreditor: {
-      },
-      additionalInfo: "",
-      referenceNo: "",
-      debtor: {
-      },
-      dueDate: "2018-03-31"
-    };
+      private dialog: MatDialog, private translate: TranslateService,
+      private billSingleton: BillSingletonService) {
+    this.bill = billSingleton.getBill();
     this.outputSize = "a6-landscape";
   }
 

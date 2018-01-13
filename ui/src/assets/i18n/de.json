@@ -28,6 +28,7 @@
     "slip_lang": "Sprache der QR-Rechnung",
     "debtor": "Zahlungspflichtiger",
     "app_name": "Schweizer QR-Rechnung",
+    "examples": "Beispiele",
     "about": "Über diese App",
     "copyright": "Copyright © 2018 Manuel Bleichenbacher",
     "licensed_under": "Lizenziert unter",
@@ -41,5 +42,6 @@
         "de": "Deutsch",
         "fr": "Französisch",
         "it": "Italienisch"
-    }
+    },
+    "use_bill": "VERWENDEN"
 }
