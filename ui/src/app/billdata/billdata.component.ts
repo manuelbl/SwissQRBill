@@ -66,7 +66,7 @@ export class BillData implements OnInit {
         town: new FormControl(this.bill.finalCreditor.town)
       }),
       currency: new FormControl(this.bill.currency, { validators: [Validators.required, Validators.pattern('[A-Z]{3}')]}),
-      amount: new FormControl(this.bill.amount, { validators: [Validators.required, Validators.min(0.01), Validators.max(999999999.99)]}),
+      amount: new FormControl(this.bill.amount, { validators: [Validators.min(0.01), Validators.max(999999999.99)]}),
       referenceNo: new FormControl(this.bill.referenceNo),
       additionalInfo: new FormControl(this.bill.additionalInfo),
       language: new FormControl(this.bill.language),
