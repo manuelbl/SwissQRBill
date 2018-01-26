@@ -21,11 +21,8 @@
  *   Software.
  */
 
-package io.nayuki.qrcodegen;
+package net.codecrete.io.nayuki.qrcodegen;
 
-import static io.nayuki.qrcodegen.QrSegment.Mode.ALPHANUMERIC;
-import static io.nayuki.qrcodegen.QrSegment.Mode.BYTE;
-import static io.nayuki.qrcodegen.QrSegment.Mode.NUMERIC;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,9 +86,9 @@ public final class QrSegmentAdvanced {
 	
 	private static int[][] computeBitCosts(byte[] data, int version) {
 		// Segment header sizes, measured in 1/6 bits
-		int bytesCost   = (4 + BYTE        .numCharCountBits(version)) * 6;
-		int alphnumCost = (4 + ALPHANUMERIC.numCharCountBits(version)) * 6;
-		int numberCost  = (4 + NUMERIC     .numCharCountBits(version)) * 6;
+		int bytesCost   = (4 + QrSegment.Mode.BYTE        .numCharCountBits(version)) * 6;
+		int alphnumCost = (4 + QrSegment.Mode.ALPHANUMERIC.numCharCountBits(version)) * 6;
+		int numberCost  = (4 + QrSegment.Mode.NUMERIC     .numCharCountBits(version)) * 6;
 		
 		// result[mode][len] is the number of 1/6 bits to encode the first len characters of the text, ending in the mode
 		int[][] result = new int[3][data.length + 1];
@@ -123,19 +120,19 @@ public final class QrSegmentAdvanced {
 	
 	private static QrSegment.Mode[] computeCharacterModes(byte[] data, int version, int[][] bitCosts) {
 		// Segment header sizes, measured in 1/6 bits
-		int bytesCost   = (4 + BYTE        .numCharCountBits(version)) * 6;
-		int alphnumCost = (4 + ALPHANUMERIC.numCharCountBits(version)) * 6;
-		int numberCost  = (4 + NUMERIC     .numCharCountBits(version)) * 6;
+		int bytesCost   = (4 + QrSegment.Mode.BYTE        .numCharCountBits(version)) * 6;
+		int alphnumCost = (4 + QrSegment.Mode.ALPHANUMERIC.numCharCountBits(version)) * 6;
+		int numberCost  = (4 + QrSegment.Mode.NUMERIC     .numCharCountBits(version)) * 6;
 		
 		// Infer the mode used for last character by taking the minimum
 		QrSegment.Mode curMode;
 		int end = bitCosts[0].length - 1;
 		if (bitCosts[0][end] <= Math.min(bitCosts[1][end], bitCosts[2][end]))
-			curMode = BYTE;
+			curMode = QrSegment.Mode.BYTE;
 		else if (bitCosts[1][end] <= bitCosts[2][end])
-			curMode = ALPHANUMERIC;
+			curMode = QrSegment.Mode.ALPHANUMERIC;
 		else
-			curMode = NUMERIC;
+			curMode = QrSegment.Mode.NUMERIC;
 		
 		// Work backwards to calculate optimal encoding mode for each character
 		QrSegment.Mode[] result = new QrSegment.Mode[data.length];
@@ -144,27 +141,27 @@ public final class QrSegmentAdvanced {
 		result[data.length - 1] = curMode;
 		for (int i = data.length - 2; i >= 0; i--) {
 			char c = (char)data[i];
-			if (curMode == NUMERIC) {
+			if (curMode == QrSegment.Mode.NUMERIC) {
 				if (isNumeric(c))
-					curMode = NUMERIC;
+					curMode = QrSegment.Mode.NUMERIC;
 				else if (isAlphanumeric(c) && (bitCosts[1][i] + 33 + 5) / 6 * 6 + numberCost == bitCosts[2][i + 1])
-					curMode = ALPHANUMERIC;
+					curMode = QrSegment.Mode.ALPHANUMERIC;
 				else
-					curMode = BYTE;
-			} else if (curMode == ALPHANUMERIC) {
+					curMode = QrSegment.Mode.BYTE;
+			} else if (curMode == QrSegment.Mode.ALPHANUMERIC) {
 				if (isNumeric(c) && (bitCosts[2][i] + 20 + 5) / 6 * 6 + alphnumCost == bitCosts[1][i + 1])
-					curMode = NUMERIC;
+					curMode = QrSegment.Mode.NUMERIC;
 				else if (isAlphanumeric(c))
-					curMode = ALPHANUMERIC;
+					curMode = QrSegment.Mode.ALPHANUMERIC;
 				else
-					curMode = BYTE;
-			} else if (curMode == BYTE) {
+					curMode = QrSegment.Mode.BYTE;
+			} else if (curMode == QrSegment.Mode.BYTE) {
 				if (isNumeric(c) && (bitCosts[2][i] + 20 + 5) / 6 * 6 + bytesCost == bitCosts[0][i + 1])
-					curMode = NUMERIC;
+					curMode = QrSegment.Mode.NUMERIC;
 				else if (isAlphanumeric(c) && (bitCosts[1][i] + 33 + 5) / 6 * 6 + bytesCost == bitCosts[0][i + 1])
-					curMode = ALPHANUMERIC;
+					curMode = QrSegment.Mode.ALPHANUMERIC;
 				else
-					curMode = BYTE;
+					curMode = QrSegment.Mode.BYTE;
 			} else
 				throw new AssertionError();
 			result[i] = curMode;
@@ -183,13 +180,13 @@ public final class QrSegmentAdvanced {
 		int start = 0;
 		for (int i = 1; i < data.length; i++) {
 			if (charModes[i] != curMode) {
-				if (curMode == BYTE)
+				if (curMode == QrSegment.Mode.BYTE)
 					result.add(QrSegment.makeBytes(Arrays.copyOfRange(data, start, i)));
 				else {
 					String temp = new String(data, start, i - start, StandardCharsets.US_ASCII);
-					if (curMode == NUMERIC)
+					if (curMode == QrSegment.Mode.NUMERIC)
 						result.add(QrSegment.makeNumeric(temp));
-					else if (curMode == ALPHANUMERIC)
+					else if (curMode == QrSegment.Mode.ALPHANUMERIC)
 						result.add(QrSegment.makeAlphanumeric(temp));
 					else
 						throw new AssertionError();
@@ -200,13 +197,13 @@ public final class QrSegmentAdvanced {
 		}
 		
 		// Final segment
-		if (curMode == BYTE)
+		if (curMode == QrSegment.Mode.BYTE)
 			result.add(QrSegment.makeBytes(Arrays.copyOfRange(data, start, data.length)));
 		else {
 			String temp = new String(data, start, data.length - start, StandardCharsets.US_ASCII);
-			if (curMode == NUMERIC)
+			if (curMode == QrSegment.Mode.NUMERIC)
 				result.add(QrSegment.makeNumeric(temp));
-			else if (curMode == ALPHANUMERIC)
+			else if (curMode == QrSegment.Mode.ALPHANUMERIC)
 				result.add(QrSegment.makeAlphanumeric(temp));
 			else
 				throw new AssertionError();
@@ -229,7 +226,7 @@ public final class QrSegmentAdvanced {
 	/**
 	 * Returns a segment representing the specified string encoded in kanji mode.
 	 * <p>Note that broadly speaking, the set of encodable characters are {kanji used in Japan, hiragana, katakana,
-	 * Asian punctuation, full-width ASCII}.<br/>
+	 * Asian punctuation, full-width ASCII}.<br>
 	 * In particular, non-encodable characters are {normal ASCII, half-width katakana, more extensive Chinese hanzi}.
 	 * @param text the text to be encoded, which must fall in the kanji mode subset of characters
 	 * @return a segment containing the data
@@ -253,7 +250,7 @@ public final class QrSegmentAdvanced {
 	/**
 	 * Tests whether the specified text string can be encoded as a segment in kanji mode.
 	 * <p>Note that broadly speaking, the set of encodable characters are {kanji used in Japan, hiragana, katakana,
-	 * Asian punctuation, full-width ASCII}.<br/>
+	 * Asian punctuation, full-width ASCII}.<br>
 	 * In particular, non-encodable characters are {normal ASCII, half-width katakana, more extensive Chinese hanzi}.
 	 * @param text the string to test for encodability
 	 * @return {@code true} if and only if the string can be encoded in kanji mode

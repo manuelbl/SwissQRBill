@@ -14,9 +14,3 @@ allprojects {
         }
     }
 }
-
-subprojects {
-    group 'net.codecrete.qrbill'
-    version '1.0-SNAPSHOT'
-}
-

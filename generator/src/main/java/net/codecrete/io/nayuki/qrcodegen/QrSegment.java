@@ -21,7 +21,7 @@
  *   Software.
  */
 
-package io.nayuki.qrcodegen;
+package net.codecrete.io.nayuki.qrcodegen;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;

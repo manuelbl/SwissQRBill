@@ -21,7 +21,7 @@
  *   Software.
  */
 
-package io.nayuki.qrcodegen;
+package net.codecrete.io.nayuki.qrcodegen;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -110,7 +110,7 @@ public final class QrCode {
 	 * @return a QR Code representing the segments
 	 * @throws NullPointerException if the list of segments, a segment, or the error correction level is {@code null}
 	 * @throws IllegalArgumentException if 1 &le; minVersion &le; maxVersion &le; 40 is violated, or if mask
-	 * &lt; &minus;1 or mask > 7, or if the data is too long to fit in a QR Code at maxVersion at the ECL
+	 * &lt; &minus;1 or mask &gt; 7, or if the data is too long to fit in a QR Code at maxVersion at the ECL
 	 */
 	public static QrCode encodeSegments(List<QrSegment> segs, Ecc ecl, int minVersion, int maxVersion, int mask, boolean boostEcl) {
 		Objects.requireNonNull(segs);

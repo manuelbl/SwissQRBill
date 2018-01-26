@@ -21,7 +21,7 @@
  *   Software.
  */
 
-package io.nayuki.qrcodegen;
+package net.codecrete.io.nayuki.qrcodegen;
 
 import java.util.BitSet;
 import java.util.Objects;

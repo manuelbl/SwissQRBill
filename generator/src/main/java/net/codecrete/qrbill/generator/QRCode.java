@@ -6,7 +6,7 @@
 //
 package net.codecrete.qrbill.generator;
 
-import io.nayuki.qrcodegen.QrCode;
+import net.codecrete.io.nayuki.qrcodegen.QrCode;
 
 import java.io.IOException;
 import java.text.DecimalFormat;

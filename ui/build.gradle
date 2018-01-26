@@ -3,6 +3,9 @@ plugins {
   id 'com.moowork.node' version '1.2.0'
 }
 
+group = 'net.codecrete.qrbill'
+version = '0.9.0'
+
 task angular(type: NpmTask) {
   args = ['run', 'build']
 }
