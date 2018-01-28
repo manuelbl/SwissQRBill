@@ -4,20 +4,12 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-import { Component, OnInit, Pipe } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, FormBuilder, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { ValidationErrors } from '@angular/forms/src/directives/validators';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/debounceTime';
 import { QrBillService } from '../qrbill-api/qrbill.service';
-import { Address } from '../qrbill-api/address';
 import { QrBill } from '../qrbill-api/qrbill';
-import { ValidationMessage } from '../qrbill-api/validation-message';
 import { ValidationResponse } from '../qrbill-api/validation-response';
 import { PreviewComponent } from '../preview/preview.component';
 import { BillSingletonService } from '../bill-singleton-service/bill-singleton.service';

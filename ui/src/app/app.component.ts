@@ -15,7 +15,7 @@ import { DateAdapter } from '@angular/material';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  title = 'Swiss QR Bill';
 
   constructor(private translate: TranslateService, private titleService: Title, private dateAdapter: DateAdapter<any>) {
     translate.addLangs(["en", "de"]);

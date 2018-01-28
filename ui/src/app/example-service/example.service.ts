@@ -5,7 +5,6 @@
 // https://opensource.org/licenses/MIT
 //
 import { Injectable } from '@angular/core';
-import { QrBill } from '../qrbill-api/qrbill';
 import { TranslateService } from '@ngx-translate/core';
 import { Example } from './example';
 
