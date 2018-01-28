@@ -104,8 +104,12 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
         }
     }
 
+## API Documention
+
+See Javadoc [API Documentation](https://www.codecrete.net/qrbill-javadoc/).
+
 ## QR Code
 
 For the generation of the QR code itself, [Nayuki's QR code generator](https://github.com/nayuki/QR-Code-generator) is used.
-At it is not available on Maven Central, it is included in this library (with a modified package name to avoid conflicts).
+As it is not available on Maven Central, it is included in this library (with a modified package name to avoid conflicts).
 The library has also been released under the MIT license.
