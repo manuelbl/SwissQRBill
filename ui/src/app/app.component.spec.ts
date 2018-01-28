@@ -6,38 +6,15 @@
 //
 import { TestBed, async } from '@angular/core/testing';
 import {
-  MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
   MatDatepickerModule,
   MatDialogModule,
-  MatExpansionModule,
-  MatGridListModule,
   MatIconModule,
   MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatNativeDateModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatRippleModule,
   MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatSortModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule,
-  MatStepperModule,
-  MatDatepicker,
+  DateAdapter,
 } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -51,6 +28,9 @@ import { AppComponent } from './app.component';
 import { BillData } from './billdata/billdata.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { SettingsComponent } from './settings/settings.component';
+import { ExamplesComponent } from './examples/examples.component';
+import { IsoDateAdapter } from './date-adapter/iso-date-adapter';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -59,18 +39,21 @@ describe('AppComponent', () => {
         AppComponent,
         BillData,
         NavbarComponent,
-        AboutComponent
+        SettingsComponent,
+        AboutComponent,
+        ExamplesComponent
       ],
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        MatInputModule,
-        MatCardModule,
         MatButtonModule,
+        MatButtonToggleModule,
+        MatCardModule,
         MatDatepickerModule,
-        MatNativeDateModule,
-        MatMenuModule,
+        MatDialogModule,
         MatIconModule,
+        MatInputModule,
+        MatSelectModule,
         BrowserAnimationsModule,
         RouterModule,
         AppRoutingModule,
@@ -79,10 +62,8 @@ describe('AppComponent', () => {
         })
       ],
       providers: [
-        {
-          provide: APP_BASE_HREF,
-          useValue: '/qrbill'
-        }
+        { provide: APP_BASE_HREF, useValue: '/qrbill' },
+        { provide: DateAdapter, useClass: IsoDateAdapter }
       ]
     }).compileComponents();
   }));
@@ -91,10 +72,10 @@ describe('AppComponent', () => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
-  it(`should have as title 'app'`, async(() => {
+  it(`should have as title 'Swiss QR Bill'`, async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app');
+    expect(app.title).toEqual('Swiss QR Bill');
   }));
   it('should render navigation bar', async(() => {
     const fixture = TestBed.createComponent(AppComponent);

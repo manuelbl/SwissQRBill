@@ -9,6 +9,8 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 
 import { SettingsComponent } from './settings.component';
 import { TranslateMockLoader } from '../mock/translate-mock.loader';
+import { MatCardModule, MatButtonToggleModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -18,6 +20,9 @@ describe('SettingsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ SettingsComponent ],
       imports: [
+        FormsModule,
+        MatButtonToggleModule,
+        MatCardModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateMockLoader }
         })

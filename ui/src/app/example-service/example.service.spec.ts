@@ -7,10 +7,17 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { ExampleService } from './example.service';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateMockLoader } from '../mock/translate-mock.loader';
 
 describe('ExampleService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateMockLoader }
+        })
+      ],
       providers: [ExampleService]
     });
   });

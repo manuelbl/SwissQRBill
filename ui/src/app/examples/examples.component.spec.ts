@@ -7,6 +7,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExamplesComponent } from './examples.component';
+import { MatCardModule } from '@angular/material';
+import { ExampleService } from '../example-service/example.service';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateMockLoader } from '../mock/translate-mock.loader';
+import { BillSingletonService } from '../bill-singleton-service/bill-singleton.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ExamplesComponent', () => {
   let component: ExamplesComponent;
@@ -14,7 +20,20 @@ describe('ExamplesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExamplesComponent ]
+      declarations: [
+        ExamplesComponent
+      ],
+      imports: [
+        MatCardModule,
+        RouterTestingModule,
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: TranslateMockLoader }
+        })
+      ],
+      providers: [
+        ExampleService,
+        BillSingletonService
+      ]
     })
     .compileComponents();
   }));
