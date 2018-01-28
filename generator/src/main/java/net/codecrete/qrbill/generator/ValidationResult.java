@@ -21,16 +21,28 @@ public class ValidationResult {
 
     private List<ValidationMessage> validationMessages;
 
+    /**
+     * Gets the list of validation messages
+     * @return the validation messages
+     */
     public List<ValidationMessage> getValidationMessages() {
         if (validationMessages == null)
             return EMPTY_LIST;
         return validationMessages;
     }
 
+    /**
+     * Gets if this validation result contains any messages
+     * @return {@code true} if there are validation messages, {@code false} otherwise
+     */
     public boolean hasMessages() {
         return validationMessages != null;
     }
 
+    /**
+     * Gets if this validation result contains any warning messages
+     * @return {@code true} if there are any warning messages, {@code false} otherwise
+     */
     public boolean hasWarnings() {
         if (validationMessages == null)
             return false;
@@ -40,6 +52,10 @@ public class ValidationResult {
         return false;
     }
 
+    /**
+     * Gets if this validation result contains any error messages
+     * @return {@code true} if there are any error messages, {@code false} otherwise
+     */
     public boolean hasErrors() {
         if (validationMessages == null)
             return false;
@@ -49,10 +65,20 @@ public class ValidationResult {
         return false;
     }
 
+    /**
+     * Gets if the bill data is valid and the validation therefore has succeeded
+     * @return {@code true} if the bill data was valid, {@code false} otherwise
+     */
     public boolean isValid() {
         return !hasErrors();
     }
 
+    /**
+     * Adds a validation message to this validation result
+     * @param type the message type
+     * @param field the name of the affected field
+     * @param messageKey the language-netural message key
+     */
     public void addMessage(Type type, String field, String messageKey) {
         ValidationMessage message = new ValidationMessage(type, field, messageKey);
         if (validationMessages == null)
@@ -60,6 +86,13 @@ public class ValidationResult {
         validationMessages.add(message);
     }
 
+    /**
+     * Adds a validation message to this validation result
+     * @param type the message type
+     * @param field the name of the affected field
+     * @param messageKey the language-netural message key
+     * @param messageParameters additional message parameters (text) to be inserted into the localized message
+     */
     public void addMessage(Type type, String field, String messageKey, String[] messageParameters) {
         ValidationMessage message = new ValidationMessage(type, field, messageKey, messageParameters);
         if (validationMessages == null)

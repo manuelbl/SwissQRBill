@@ -14,17 +14,32 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 
+/**
+ * Generates Swiss QR bills.
+ */
 public class QRBill {
 
+    /**
+     * Graphics format of generated QR bill.
+     */
     public enum GraphicsFormat {
+        /** PDF */
         PDF,
+        /** SVG */
         SVG
     }
 
+    /**
+     * The output size of the QR bill
+     */
     public enum BillFormat {
+        /** A4 sheet in portrait orientation. The QR bill is in the bottom right. */
         A4PortraitSheet,
+        /** A5 sheet in landscape orientation. The QR bill is in the bottom right. */
         A5LandscapeSheet,
+        /** A6 sheet in landscape orientation. The QR bill fills the entire sheet. */
         A6LandscapeSheet,
+        /** QR code only (46 by 46 mm). */
         QRCodeOnly
     }
 
@@ -69,6 +84,15 @@ public class QRBill {
     private double rightColumnExtraYOffset;
 
 
+    /**
+     * Validates the bill data.
+     * <p>
+     *     The validation result contains the error and warning
+     *     messages (if any).
+     * </p>
+     * @param bill bill data
+     * @return validation result
+     */
     public static ValidationResult validate(Bill bill) {
         ValidationResult result = new ValidationResult();
         Validator validator = new Validator(bill, result);
@@ -76,6 +100,17 @@ public class QRBill {
         return result;
     }
 
+    /**
+     * Generates a QR bill.
+     * <p>
+     *     If the bill data does not validate, a {@link QRBillValidationError} is thrown,
+     *     which contains the validation result.
+     * </p>
+     * @param bill the bill data
+     * @param billFormat the bill's output format
+     * @param graphicsFormat the bill's output size
+     * @return the generated QR bill (as a byte array)
+     */
     public static byte[] generate(Bill bill, BillFormat billFormat, GraphicsFormat graphicsFormat) {
         ValidationResult result = new ValidationResult();
         Validator validator = new Validator(bill, result);
@@ -92,6 +127,15 @@ public class QRBill {
     }
 
 
+    /**
+     * Generates the text that is embedded in the QR code.
+     * <p>
+     *     If the bill data does not validate, a {@link QRBillValidationError} is thrown,
+     *     which contains the validation result.
+     * </p>
+     * @param bill the bill data
+     * @return the QR code text
+     */
     public static String generateQrCodeText(Bill bill) {
         ValidationResult result = new ValidationResult();
         Validator validator = new Validator(bill, result);
@@ -104,6 +148,11 @@ public class QRBill {
     }
 
 
+    /**
+     * Decodes the text embedded in the QR code and fills it into a {@link Bill} data structure.
+     * @param text the text to decode
+     * @return the decoded bill data
+     */
     public static Bill decodeQrCodeText(String text) {
         return QRCode.decodeQRCodeText(text);
     }
