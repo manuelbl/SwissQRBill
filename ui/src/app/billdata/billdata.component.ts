@@ -181,9 +181,14 @@ export class BillData implements OnInit {
   getBill(value: any): QrBill {
     if (value.dueDate instanceof Date) {
       let dueDate = value.dueDate as Date;
-      value.dueDate = dueDate.toISOString().substring(0, 10);
+      value.dueDate = dueDate.getFullYear() + '-' + this._2digit(dueDate.getMonth() + 1)
+        + '-' + this._2digit(dueDate.getDate());
     }
     return value as QrBill;
+  }
+
+  private _2digit(n: number) {
+    return ('00' + n).slice(-2);
   }
 }
 

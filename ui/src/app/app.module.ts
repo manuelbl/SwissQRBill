@@ -41,6 +41,9 @@ import {
   MatToolbarModule,
   MatTooltipModule,
   MatStepperModule,
+  MAT_DATE_LOCALE,
+  DateAdapter,
+  NativeDateAdapter,
 } from '@angular/material';
 import 'hammerjs';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -58,6 +61,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { ExamplesComponent } from './examples/examples.component';
 import { ExampleService } from './example-service/example.service';
 import { BillSingletonService } from './bill-singleton-service/bill-singleton.service';
+import { IsoDateAdapter } from './date-adapter/iso-date-adapter';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -125,7 +129,8 @@ export function createTranslateLoader(http: HttpClient) {
   providers: [
     QrBillService,
     ExampleService,
-    BillSingletonService
+    BillSingletonService,
+    { provide: DateAdapter, useClass: IsoDateAdapter }
   ],
   bootstrap: [AppComponent]
 })
