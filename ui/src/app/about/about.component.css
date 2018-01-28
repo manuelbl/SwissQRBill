@@ -1,5 +1,5 @@
 .logo {
-    padding: 48px 0;
+    padding: 0 0 48px 0;
 }
 
 .logo img {
@@ -15,4 +15,9 @@ h1 {
 
 .about {
     padding: 6px 0;
+}
+
+.frame {
+    background: white;
+    padding: 48px 96px;;    
 }
