@@ -6,6 +6,7 @@
 //
 package net.codecrete.qrbill.web;
 
+import net.codecrete.qrbill.web.controller.PostalCodeData;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,5 +22,10 @@ public class WebServiceConfig implements WebMvcConfigurer {
         messageSource.setBasename("classpath:locale/messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
+    }
+
+    @Bean
+    public PostalCodeData postalCodeData() {
+        return new PostalCodeData();
     }
 }
