@@ -30,67 +30,15 @@ public class PostalCodeData {
     private PostalCode[] sortedByTown;
 
 
-    private void load() {
-        List<PostalCode> postalCodeList = new ArrayList<>();
-        try {
-            URL u = new URL("https://data.geo.admin.ch/ch.swisstopo-vd.ortschaftenverzeichnis_plz/PLZO_CSV_LV03.zip");
-            HttpURLConnection connection = (HttpURLConnection) u.openConnection();
-            connection.setInstanceFollowRedirects(true);
-            connection.connect();
-            try (InputStream in = connection.getInputStream();
-                 ZipInputStream zis = new ZipInputStream(in)) {
-                zis.getNextEntry();
-
-                try (InputStreamReader reader = new InputStreamReader(zis, StandardCharsets.UTF_8);
-                     BufferedReader lineReader = new BufferedReader(reader)) {
-
-                    lineReader.readLine();
-
-                    while (true) {
-                        String line = lineReader.readLine();
-                        if (line == null)
-                            break;
-
-                        processLine(line, postalCodeList);
-                    }
-                }
-            }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        setupSortedArrays(postalCodeList);
-    }
-
-    private void processLine(String line, List<PostalCode> postalCodeList) {
-        String[] values = line.split(";");
-        if (values.length >= 2) {
-            PostalCode pc = new PostalCode(values[1], values[0]);
-            postalCodeList.add(pc);
-        }
-    }
-
-    private void setupSortedArrays(List<PostalCode> postalCodeList) {
-        sortedByPostalCode = new PostalCode[postalCodeList.size()];
-        sortedByPostalCode = postalCodeList.toArray(sortedByPostalCode);
-        Arrays.sort(sortedByPostalCode, Comparator.comparing(pc -> pc.postalCode));
-
-        sortedByTown = new PostalCode[postalCodeList.size()];
-        sortedByTown = postalCodeList.toArray(sortedByTown);
-        Arrays.sort(sortedByTown, Comparator.comparing(pc -> pc.townLowercase));
-    }
-
     public List<PostalCode> suggestPostalCodes(String country, String substring) {
 
         if (country != null && country.length() != 0 && !country.equals("CH"))
             return EMPTY_RESULT;
 
-        if (sortedByPostalCode == null)
-            load();
-
         if (substring == null || substring.length() == 0)
             return EMPTY_RESULT;
+
+        checkData();
 
         substring = substring.trim();
         if (isNumeric(substring))
@@ -220,6 +168,63 @@ public class PostalCodeData {
         }
 
         return lower;
+    }
+
+
+    private synchronized void checkData() {
+        if (sortedByPostalCode == null)
+            load();
+    }
+
+    private void load() {
+        List<PostalCode> postalCodeList = new ArrayList<>();
+        try {
+            URL u = new URL("https://data.geo.admin.ch/ch.swisstopo-vd.ortschaftenverzeichnis_plz/PLZO_CSV_LV03.zip");
+            HttpURLConnection connection = (HttpURLConnection) u.openConnection();
+            connection.setInstanceFollowRedirects(true);
+            connection.connect();
+            try (InputStream in = connection.getInputStream();
+                 ZipInputStream zis = new ZipInputStream(in)) {
+                zis.getNextEntry();
+
+                try (InputStreamReader reader = new InputStreamReader(zis, StandardCharsets.UTF_8);
+                     BufferedReader lineReader = new BufferedReader(reader)) {
+
+                    lineReader.readLine();
+
+                    while (true) {
+                        String line = lineReader.readLine();
+                        if (line == null)
+                            break;
+
+                        processLine(line, postalCodeList);
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        setupSortedArrays(postalCodeList);
+    }
+
+    private void processLine(String line, List<PostalCode> postalCodeList) {
+        String[] values = line.split(";");
+        if (values.length >= 2) {
+            PostalCode pc = new PostalCode(values[1], values[0]);
+            postalCodeList.add(pc);
+        }
+    }
+
+    private void setupSortedArrays(List<PostalCode> postalCodeList) {
+        sortedByPostalCode = new PostalCode[postalCodeList.size()];
+        sortedByPostalCode = postalCodeList.toArray(sortedByPostalCode);
+        Arrays.sort(sortedByPostalCode, Comparator.comparing(pc -> pc.postalCode));
+
+        sortedByTown = new PostalCode[postalCodeList.size()];
+        sortedByTown = postalCodeList.toArray(sortedByTown);
+        Arrays.sort(sortedByTown, Comparator.comparing(pc -> pc.townLowercase));
     }
 
 

@@ -37,10 +37,13 @@ public class PostalCodeDataTests {
     public void getZurich() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "Zürich");
         assertEquals(20, result.size());
+        String previousCode = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertEquals("Zürich", pc.town);
             assertTrue("8000".compareTo(pc.postalCode) <= 0);
             assertTrue("8099".compareTo(pc.postalCode) >= 0);
+            assertTrue(previousCode.compareTo(pc.postalCode) < 0);
+            previousCode = pc.postalCode;
         }
     }
 
@@ -48,10 +51,13 @@ public class PostalCodeDataTests {
     public void getZurichSubstring() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "Züri");
         assertEquals(20, result.size());
+        String previousCode = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertEquals("Zürich", pc.town);
             assertTrue("8000".compareTo(pc.postalCode) <= 0);
             assertTrue("8099".compareTo(pc.postalCode) >= 0);
+            assertTrue(previousCode.compareTo(pc.postalCode) < 0);
+            previousCode = pc.postalCode;
         }
     }
 
@@ -59,9 +65,15 @@ public class PostalCodeDataTests {
     public void getDorfSubstring() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", " dorf");
         assertEquals(20, result.size());
+        String previousTown = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertTrue(pc.town.toLowerCase(Locale.FRENCH).contains("dorf"));
             assertNotNull(pc.postalCode);
+            if (previousTown.startsWith("Dorf") && !pc.town.startsWith("Dorf"))
+                previousTown = ""; // Reset between "Dorf...." towns and "...dorf..." towns
+            assertTrue(String.format("%s alphabetically before %s", previousTown, pc.town),
+                    previousTown.compareTo(pc.town) < 0);
+            previousTown = pc.town;
         }
     }
 
@@ -69,9 +81,15 @@ public class PostalCodeDataTests {
     public void getNumberSubstring() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "203");
         assertEquals(12, result.size());
+        String previousCode = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertNotNull(pc.town);
             assertTrue(pc.postalCode.contains("203"));
+            if (previousCode.startsWith("203") && !pc.postalCode.startsWith("203"))
+                previousCode = "";
+            assertTrue(String.format("%s <= %s", previousCode, pc.postalCode),
+                    previousCode.compareTo(pc.postalCode) <= 0);
+            previousCode = pc.postalCode;
         }
     }
 
@@ -79,9 +97,13 @@ public class PostalCodeDataTests {
     public void getNumber880Start() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("", "880 ");
         assertEquals(8, result.size());
+        String previousCode = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertNotNull(pc.town);
             assertTrue(pc.postalCode.startsWith("880"));
+            assertTrue(String.format("%s <= %s", previousCode, pc.postalCode),
+                    previousCode.compareTo(pc.postalCode) <= 0);
+            previousCode = pc.postalCode;
         }
     }
 
@@ -89,9 +111,13 @@ public class PostalCodeDataTests {
     public void getRickenbachStart() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes(null, " Rickenbach");
         assertEquals(8, result.size());
+        String previousTown = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertTrue(pc.town.startsWith("Rickenbach"));
             assertNotNull(pc.postalCode);
+            assertTrue(String.format("%s alphabetically before %s", previousTown, pc.town),
+                    previousTown.compareTo(pc.town.toLowerCase(Locale.FRENCH)) <= 0);
+            previousTown = pc.town.toLowerCase(Locale.FRENCH);
         }
     }
 
