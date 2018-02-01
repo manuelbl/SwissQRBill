@@ -9,7 +9,8 @@ import { Observable } from "rxjs/Observable";
 import { of } from 'rxjs/observable/of';
 
 let translations: any = {
-    app_name: "Swiss QR Bill"
+    app_name: "Swiss QR Bill",
+    copyright: "Copyright © 2018 Manuel Bleichenbacher"
 };
 
 export class TranslateMockLoader extends TranslateLoader {

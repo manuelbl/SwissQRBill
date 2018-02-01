@@ -17,6 +17,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 describe('ExamplesComponent', () => {
   let component: ExamplesComponent;
   let fixture: ComponentFixture<ExamplesComponent>;
+  let exampleService: ExampleService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,6 +37,8 @@ describe('ExamplesComponent', () => {
       ]
     })
     .compileComponents();
+
+    exampleService = TestBed.get(ExampleService);
   }));
 
   beforeEach(() => {
@@ -47,4 +50,14 @@ describe('ExamplesComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should render cards', async(() => {
+    const fixture = TestBed.createComponent(ExamplesComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('button').textContent).toContain('use');
+    expect(compiled.querySelector('img').src.endsWith('/' + exampleService.getExamples()[0].billID)).toBeTruthy();
+    expect(compiled.querySelectorAll('mat-card').length).toEqual(exampleService.getExamples().length);
+  }));
+  
 });
