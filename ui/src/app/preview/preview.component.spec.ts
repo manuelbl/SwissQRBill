@@ -4,7 +4,7 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatButtonToggleModule, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -55,4 +55,13 @@ describe('PreviewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should render UI', async(inject([MAT_DIALOG_DATA], (data) => {
+      const compiled = fixture.debugElement.nativeElement;
+      expect(compiled.querySelector('mat-dialog-content')).toBeTruthy();
+      expect(compiled.querySelector('mat-dialog-actions')).toBeTruthy();
+      expect(compiled.querySelector('a').href.endsWith(data.billID));
+      compiled.querySelector('button').click();
+    })));
+
 });

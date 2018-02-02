@@ -14,6 +14,9 @@ class HttpClientMock {
 }
 
 describe('QrbillService', () => {
+
+  let qrbillService: QrBillService;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -24,9 +27,16 @@ describe('QrbillService', () => {
         }
       ]
     });
+
+    qrbillService = TestBed.get(QrBillService);
   });
 
   it('should be created', inject([QrBillService], (service: QrBillService) => {
     expect(service).toBeTruthy();
+  }));
+
+  it('Service injected via inject(...) and TestBed.get(...) should be the same instance',
+    inject([QrBillService], (injectService: QrBillService) => {
+      expect(injectService).toBe(qrbillService);
   }));
 });

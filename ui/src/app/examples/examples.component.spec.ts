@@ -52,8 +52,6 @@ describe('ExamplesComponent', () => {
   });
 
   it('should render cards', async(() => {
-    const fixture = TestBed.createComponent(ExamplesComponent);
-    fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('button').textContent).toContain('use');
     expect(compiled.querySelector('img').src.endsWith('/' + exampleService.getExamples()[0].billID)).toBeTruthy();

@@ -40,4 +40,17 @@ describe('SettingsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should render radio buttons', async(() => {
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('mat-button-toggle').textContent).toEqual('Deutsch');
+  }));
+
+  it('should call swtichLanguage()', async(() => {
+    const compiled = fixture.debugElement.nativeElement;
+    spyOn(component, 'switchLanguage');
+    compiled.querySelector('input').click(); // yes, it's an radio button in Karma
+    expect(component.switchLanguage).toHaveBeenCalled();
+  }));
+
 });
