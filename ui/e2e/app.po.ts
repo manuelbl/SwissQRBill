@@ -5,7 +5,11 @@ export class AppPage {
     return browser.get('/');
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+  getNavbarText() {
+    return element(by.css('app-root .navbar-button')).getText();
+  }
+
+  getPreviewButton() {
+    return element(by.css('.sticky-footer button'));
   }
 }

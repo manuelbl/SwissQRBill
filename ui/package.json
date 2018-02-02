@@ -8,7 +8,7 @@
     "build": "ng build --prod --base-href=/qrbill/",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e --host 0.0.0.0 --base-href /qrbill/ --proxy-config proxy-dev.json"
   },
   "private": true,
   "dependencies": {
