@@ -1,12 +1,12 @@
-import { AppPage } from './app.po';
+import { MainPage } from './main.po';
 import { protractor } from 'protractor/built/ptor';
 import { browser, by, element } from 'protractor';
 
-describe('QR Bill App', () => {
-  let page: AppPage;
+describe('Main Page', () => {
+  let page: MainPage;
 
   beforeEach(() => {
-    page = new AppPage();
+    page = new MainPage();
   });
 
   it('should display UI', () => {
