@@ -16,7 +16,7 @@ The invoicing party can easily synchronize the received payment with the account
 they payment comes with a full set of data including the reference number used on the invoice. So the Swiss QR bill
 is convenient for the payer and payee.
 
-![QR Bill](https://github.com/manuelbl/SwissQRBill/wiki/images/qr-invoice.png)
+![QR Bill](https://raw.githubusercontent.com/wiki/manuelbl/SwissQRBill/images/qr-invoice-e1.svg?sanitize=true)
 
 *More [examples](https://github.com/manuelbl/SwissQRBill/wiki/Swiss-QR-Invoice-Examples) can be found in the [Wiki](https://github.com/manuelbl/SwissQRBill/wiki)*
 
