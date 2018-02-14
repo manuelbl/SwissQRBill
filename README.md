@@ -25,6 +25,7 @@ The Swiss QR bill library:
 
 - generates PDF and SVG files
 - generates A6, A5 and A4 sheets and QR code only
+- multilingual: German, French, Italian, English
 - validates the invoice data and provides detailed validation information
 - can parse the invoice data embedded in the QR code
 - is easy to use (see example below)
