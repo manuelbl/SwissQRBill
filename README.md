@@ -16,6 +16,22 @@ The invoicing party can easily synchronize the received payment with the account
 they payment comes with a full set of data including the reference number used on the invoice. So the Swiss QR bill
 is convenient for the payer and payee.
 
+![QR Bill](https://github.com/manuelbl/SwissQRBill/wiki/images/qr-invoice.png)
+
+
+## Features
+
+The Swiss QR bill library:
+
+- generates PDF and SVG files
+- generates A6, A5 and A4 sheets and QR code only
+- can parse the invoice data embedded in the QR code
+- is easy to use (see example below)
+- is small and fast
+- has a single dependency (PDFBox)
+- is free – even for commecial use (MIT License)
+
+
 ## Getting started
 
 The QR bill generator is available at Maven Central. To use it, just add it to your Maven or Gradle project.
@@ -107,6 +123,10 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
 ## API Documention
 
 See Javadoc [API Documentation](https://www.codecrete.net/qrbill-javadoc/).
+
+## More information
+
+More information can be found in the [Wiki](https://github.com/manuelbl/SwissQRBill/wiki).
 
 ## QR Code
 
