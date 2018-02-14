@@ -18,6 +18,7 @@ is convenient for the payer and payee.
 
 ![QR Bill](https://github.com/manuelbl/SwissQRBill/wiki/images/qr-invoice.png)
 
+*More [examples](https://github.com/manuelbl/SwissQRBill/wiki/Swiss-QR-Invoice-Examples) can be found in the [Wiki](https://github.com/manuelbl/SwissQRBill/wiki)*
 
 ## Features
 
