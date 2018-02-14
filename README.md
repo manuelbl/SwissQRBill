@@ -3,7 +3,7 @@
 Open-source Java library to generate Swiss QR bills.
 
 For demonstration pruposes, there is code for an Angular UI and a web service in addition to the Java library.
-[Create your first QR bill](https://www.codecrete.net/qrbill).
+Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill).
 
 ## Introduction
 
