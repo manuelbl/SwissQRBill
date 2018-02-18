@@ -137,3 +137,7 @@ More information can be found in the [Wiki](https://github.com/manuelbl/SwissQRB
 For the generation of the QR code itself, [Nayuki's QR code generator](https://github.com/nayuki/QR-Code-generator) is used.
 As it is not available on Maven Central, it is included in this library (with a modified package name to avoid conflicts).
 The library has also been released under the MIT license.
+
+## Other programming languages
+
+If you are looking for a library for a different programming language or for a library with professional services, you might want to check out [Services & Tools](https://www.moneytoday.ch/iso20022/movers-shakers/software-hersteller/services-tools/) on [MoneyToday.ch](https://www.moneytoday.ch).
