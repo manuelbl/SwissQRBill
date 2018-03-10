@@ -12,7 +12,7 @@ public class SampleData {
 
     public static Bill getExample1() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.en);
+        bill.setLanguage(Bill.Language.EN);
         bill.setAccount("CH4431999123000889012");
         Address creditor = new Address();
         creditor.setName("Robert Schneider AG");
@@ -48,7 +48,7 @@ public class SampleData {
 
     public static Bill getExample2() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.de);
+        bill.setLanguage(Bill.Language.DE);
         bill.setAccount("CH3709000000304442225");
         Address creditor = new Address();
         creditor.setName("Salvation Army Foundation Switzerland");
@@ -70,7 +70,7 @@ public class SampleData {
 
     public static Bill getExample3() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.fr);
+        bill.setLanguage(Bill.Language.FR);
         bill.setAccount("CH4431999123000889012");
         Address creditor = new Address();
         creditor.setName("Robert Schneider AG");
@@ -106,7 +106,7 @@ public class SampleData {
 
     public static Bill getExample4() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.it);
+        bill.setLanguage(Bill.Language.IT);
         bill.setAccount("CH3709000000304442225");
         Address creditor = new Address();
         creditor.setName("ABC AG");

@@ -96,6 +96,7 @@ public class PDFGenerator implements GraphicsGenerator {
 
     @Override
     public void startPath() throws IOException {
+        // path is start implicitly
     }
 
     @Override

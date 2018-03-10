@@ -83,7 +83,7 @@ public class ValidationMessage {
             return null;
 
         ValidationMessage message = new ValidationMessage();
-        message.type = Type.valueOf(msg.getType().name());
+        message.type = typeFromUppercase(msg.getType().name());
         message.field = msg.getField();
         message.messageKey = msg.getMessageKey();
         message.messageParameters = msg.getMessageParameters();
@@ -100,5 +100,13 @@ public class ValidationMessage {
         }
 
         return msgList;
+    }
+
+    private static Type typeFromUppercase(String name) {
+        if ("ERROR".equals(name))
+            return Type.Error;
+        if ("WARNING".equals(name))
+            return Type.Warning;
+        throw new RuntimeException("Invalid message type");
     }
 }

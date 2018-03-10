@@ -6,10 +6,12 @@
 //
 package net.codecrete.qrbill.generator;
 
+import java.io.Serializable;
+
 /**
  * QR bill validation message.
  */
-public class ValidationMessage {
+public class ValidationMessage implements Serializable {
 
     /**
      * Type of validatin message
@@ -20,12 +22,12 @@ public class ValidationMessage {
          * <p>A warning does not prevent the QR bill from being generated.
          * Warnings usually indicate that data was truncated or otherwise modified.</p>
          */
-        Warning,
+        WARNING,
         /**
          * Error.
          * <p>Errors prevent the QR bill from being generated.</p>
          */
-        Error
+        ERROR
     }
 
     private Type type;

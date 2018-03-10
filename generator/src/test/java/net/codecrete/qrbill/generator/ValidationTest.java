@@ -271,8 +271,8 @@ public class ValidationTest {
 
         final String TEXT_WITHOUT_COMBINING_ACCENTS = "àáâäçèéêëìíîïñòóôöùúûüýßÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÑ";
         final String TEXT_WITH_COMBINING_ACCENTS = "àáâäçèéêëìíîïñòóôöùúûüýßÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÑ";
-        assertEquals(TEXT_WITHOUT_COMBINING_ACCENTS.length(), 46);
-        assertEquals(TEXT_WITH_COMBINING_ACCENTS.length(), 59);
+        assertEquals(46, TEXT_WITHOUT_COMBINING_ACCENTS.length());
+        assertEquals(59, TEXT_WITH_COMBINING_ACCENTS.length());
 
         address = createValidPerson();
         address.setName(TEXT_WITHOUT_COMBINING_ACCENTS);
@@ -538,7 +538,7 @@ public class ValidationTest {
         assertEquals(1, result.getValidationMessages().size());
 
         ValidationMessage msg = result.getValidationMessages().get(0);
-        assertEquals(Type.Error, msg.getType());
+        assertEquals(Type.ERROR, msg.getType());
         assertEquals(field, msg.getField());
         assertEquals(messageKey, msg.getMessageKey());
     }
@@ -550,7 +550,7 @@ public class ValidationTest {
         assertEquals(1, result.getValidationMessages().size());
 
         ValidationMessage msg = result.getValidationMessages().get(0);
-        assertEquals(Type.Warning, msg.getType());
+        assertEquals(Type.WARNING, msg.getType());
         assertEquals(field, msg.getField());
         assertEquals(messageKey, msg.getMessageKey());
     }
@@ -561,7 +561,7 @@ public class ValidationTest {
         assertEquals(true, result.hasMessages());
         assertEquals(4, result.getValidationMessages().size());
         for (ValidationMessage msg : result.getValidationMessages()) {
-            assertEquals(Type.Error, msg.getType());
+            assertEquals(Type.ERROR, msg.getType());
             assertEquals("field_is_mandatory", msg.getMessageKey());
             assertTrue(msg.getField().startsWith(fieldRoot));
         }

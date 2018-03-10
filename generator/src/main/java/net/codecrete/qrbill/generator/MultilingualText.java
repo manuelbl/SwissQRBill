@@ -24,9 +24,9 @@ public class MultilingualText {
     public static final String KEY_CURRENCY = "currency";
     public static final String KEY_AMOUNT = "amount";
 
-    private static String languageCodes[] = { "de", "fr", "it", "en" };
+    private static String[] languageCodes = { "de", "fr", "it", "en" };
 
-    private static ResourceBundle messageBundles[] = new ResourceBundle[4];
+    private static ResourceBundle[] messageBundles = new ResourceBundle[4];
 
 
     public static String getText(String key, Bill.Language language) {
@@ -46,13 +46,13 @@ public class MultilingualText {
     private static int getLanguageIndex(Bill.Language language) {
         int index;
         switch (language) {
-            case de:
+            case DE:
                 index = 0;
                 break;
-            case fr:
+            case FR:
                 index = 1;
                 break;
-            case it:
+            case IT:
                 index = 2;
                 break;
             default:
@@ -60,5 +60,9 @@ public class MultilingualText {
         }
 
         return index;
+    }
+
+    private MultilingualText() {
+        // Do not create instances
     }
 }

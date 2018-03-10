@@ -6,6 +6,7 @@
 //
 package net.codecrete.qrbill.generator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +16,7 @@ import static net.codecrete.qrbill.generator.ValidationMessage.Type;
 /**
  * Container for validation results
  */
-public class ValidationResult {
+public class ValidationResult implements Serializable {
 
     private static final List<ValidationMessage> EMPTY_LIST = Collections.emptyList();
 
@@ -47,7 +48,7 @@ public class ValidationResult {
         if (validationMessages == null)
             return false;
         for (ValidationMessage message : validationMessages)
-            if (message.getType() == Type.Warning)
+            if (message.getType() == Type.WARNING)
                 return true;
         return false;
     }
@@ -60,7 +61,7 @@ public class ValidationResult {
         if (validationMessages == null)
             return false;
         for (ValidationMessage message : validationMessages)
-            if (message.getType() == Type.Error)
+            if (message.getType() == Type.ERROR)
                 return true;
         return false;
     }

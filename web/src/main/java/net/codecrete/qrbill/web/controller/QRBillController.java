@@ -213,19 +213,19 @@ public class QRBillController {
         switch (value) {
             case "qrCodeOnly":
             case "qr-code-only":
-                format = BillFormat.QRCodeOnly;
+                format = BillFormat.QR_CODE_ONLY;
                 break;
             case "a6Landscape":
             case "a6-landscape":
-                format = BillFormat.A6LandscapeSheet;
+                format = BillFormat.A6_LANDSCAPE_SHEET;
                 break;
             case "a5Landscape":
             case "a5-landscape":
-                format = BillFormat.A5LandscapeSheet;
+                format = BillFormat.A5_LANDSCAPE_SHEET;
                 break;
             case "a4Portrait":
             case "a4-portrait":
-                format = BillFormat.A4PortraitSheet;
+                format = BillFormat.A4_PORTRAIT_SHEET;
                 break;
             default:
                 format = null;

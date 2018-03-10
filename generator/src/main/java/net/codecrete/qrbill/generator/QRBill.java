@@ -34,13 +34,13 @@ public class QRBill {
      */
     public enum BillFormat {
         /** A4 sheet in portrait orientation. The QR bill is in the bottom right. */
-        A4PortraitSheet,
+        A4_PORTRAIT_SHEET,
         /** A5 sheet in landscape orientation. The QR bill is in the bottom right. */
-        A5LandscapeSheet,
+        A5_LANDSCAPE_SHEET,
         /** A6 sheet in landscape orientation. The QR bill fills the entire sheet. */
-        A6LandscapeSheet,
+        A6_LANDSCAPE_SHEET,
         /** QR code only (46 by 46 mm). */
-        QRCodeOnly
+        QR_CODE_ONLY
     }
 
     private static final double PT_TO_MM = 25.4 / 72;
@@ -164,19 +164,19 @@ public class QRBill {
         double drawingHeight;
 
         switch (billFormat) {
-            case QRCodeOnly:
+            case QR_CODE_ONLY:
                 drawingWidth = QRCode.SIZE;
                 drawingHeight = QRCode.SIZE;
                 break;
-            case A6LandscapeSheet:
+            case A6_LANDSCAPE_SHEET:
                 drawingWidth = 148.5;
                 drawingHeight = 105;
                 break;
-            case A5LandscapeSheet:
+            case A5_LANDSCAPE_SHEET:
                 drawingWidth = 210;
                 drawingHeight = 148.5;
                 break;
-            case A4PortraitSheet:
+            case A4_PORTRAIT_SHEET:
             default:
                 drawingWidth = 210;
                 drawingHeight = 297;
@@ -187,24 +187,26 @@ public class QRBill {
 
             graphics = g;
             switch (billFormat) {
-                case QRCodeOnly:
+                case QR_CODE_ONLY:
                     drawQRCodeOnly();
                     break;
-                case A6LandscapeSheet:
+                case A6_LANDSCAPE_SHEET:
                     drawQRBill(0, 0, false);
                     break;
-                case A5LandscapeSheet:
+                case A5_LANDSCAPE_SHEET:
                     drawQRBill(61.5, 43.5, true);
                     break;
-                case A4PortraitSheet:
+                case A4_PORTRAIT_SHEET:
                     drawQRBill(61.5, 192, true);
                     break;
+                default:
+                    throw new QrBillRuntimeException("Invalid bill format specified");
             }
 
             return graphics.getResult();
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new QrBillRuntimeException(e);
         } finally {
             graphics = null;
         }
@@ -466,23 +468,23 @@ public class QRBill {
 
 
 
-    private static DecimalFormat AMOUNT_DISPLAY_FORMAT;
-    private static DateTimeFormatter DATE_DISPLAY_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private static DecimalFormat amountDisplayFormat;
+    private static DateTimeFormatter dateDisplayFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     static {
-        AMOUNT_DISPLAY_FORMAT = new DecimalFormat("###,##0.00");
+        amountDisplayFormat = new DecimalFormat("###,##0.00");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
         symbols.setDecimalSeparator('.');
         symbols.setGroupingSeparator('\'');
-        AMOUNT_DISPLAY_FORMAT.setDecimalFormatSymbols(symbols);
+        amountDisplayFormat.setDecimalFormatSymbols(symbols);
     }
 
     private static String formatAmountForDisplay(double amount) {
-        return AMOUNT_DISPLAY_FORMAT.format(amount);
+        return amountDisplayFormat.format(amount);
     }
 
     private static String formatDateForDisplay(LocalDate date) {
-        return date.format(DATE_DISPLAY_FORMAT);
+        return date.format(dateDisplayFormat);
     }
 
     private static String formatIBANForDisplay(String iban) {

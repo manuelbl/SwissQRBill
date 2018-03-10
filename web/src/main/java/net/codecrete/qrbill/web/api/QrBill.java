@@ -7,8 +7,10 @@
 package net.codecrete.qrbill.web.api;
 
 import net.codecrete.qrbill.generator.Bill;
+import org.apache.tomcat.jni.Local;
 
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -158,7 +160,7 @@ public class QrBill {
 
     public static QrBill from(Bill bill) {
         QrBill qrBill = new QrBill();
-        qrBill.language = Language.valueOf(bill.getLanguage().name());
+        qrBill.language = apiLangFromGeneratorLang(bill.getLanguage());
         qrBill.version = Version.valueOf(bill.getVersion().name());
         qrBill.amount = bill.getAmount();
         qrBill.currency = bill.getCurrency();
@@ -177,7 +179,7 @@ public class QrBill {
             return null;
 
         Bill bill = new Bill();
-        bill.setLanguage(net.codecrete.qrbill.generator.Bill.Language.valueOf(qrBill.getLanguage().name()));
+        bill.setLanguage(generatorLangFromApiLang(qrBill.getLanguage()));
         bill.setVersion(net.codecrete.qrbill.generator.Bill.Version.valueOf(qrBill.getVersion().name()));
         bill.setAmount(qrBill.amount);
         bill.setCurrency(qrBill.currency);
@@ -189,5 +191,17 @@ public class QrBill {
         bill.setDebtor(Address.toGeneratorAddress(qrBill.debtor));
         bill.setDueDate(qrBill.dueDate);
         return bill;
+    }
+
+    private static Language apiLangFromGeneratorLang(net.codecrete.qrbill.generator.Bill.Language language) {
+        String name = language.name();
+        name = name.toLowerCase(Locale.US);
+        return Language.valueOf(name);
+    }
+
+    private static net.codecrete.qrbill.generator.Bill.Language generatorLangFromApiLang(Language language) {
+        String name = language.name();
+        name = name.toUpperCase(Locale.US);
+        return net.codecrete.qrbill.generator.Bill.Language.valueOf(name);
     }
 }

@@ -22,13 +22,13 @@ public class Bill {
      */
     public enum Language {
         /** German */
-        de,
+        DE,
         /** French */
-        fr,
+        FR,
         /** Italian */
-        it,
+        IT,
         /** English */
-        en
+        EN
     }
 
     /**
@@ -114,7 +114,7 @@ public class Bill {
     /** Field name of the due date */
     public static final String FIELD_DUE_DATE = "dueDate";
 
-    private Language language = Language.en;
+    private Language language = Language.EN;
     private Version version = Version.V1_0;
 
     private Double amount = null;

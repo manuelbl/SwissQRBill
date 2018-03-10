@@ -90,34 +90,10 @@ public class FontMetrics {
             // if line break needed...
             if (ch == '\n' || lineWidth > max) {
 
-                int breakPos;
-                if (ch == '\n') {
-                    breakPos = pos;
-                } else {
-                    // locate last space
-                    int spacePos = pos - 1;
-                    while (spacePos > lineStartPos) {
-                        if (text.charAt(spacePos) == ' ')
-                            break;
-                        spacePos--;
-                    }
-
-                    // if space found...
-                    if (spacePos > lineStartPos) {
-                        breakPos = spacePos;
-                    } else {
-                        // forcibly break word
-                        if (pos > lineStartPos)
-                            breakPos = pos;
-                        else
-                            breakPos = lineStartPos + 1; // at least one character
-                    }
-                }
+                int breakPos = ch == '\n' ? pos : findBreakPos(text, pos, lineStartPos);
 
                 // trim trailing spaces and add to result
-                int end = breakPos;
-                while (end > lineStartPos && text.charAt(end - 1) == ' ')
-                    end--;
+                int end = trimTrailingWhitepsace(text, lineStartPos, breakPos);
                 lines.add(text.substring(lineStartPos, end));
 
                 // skip trailing white space
@@ -126,17 +102,10 @@ public class FontMetrics {
                     pos++;
                     addEmptyLine = true;
                 } else if (ch == ' ') {
-                    while (pos < len) {
-                        ch = text.charAt(pos);
-                        if (ch != ' ') {
-                            if (ch == '\n') {
-                                pos++;
-                                addEmptyLine = true;
-                            }
-                            break;
-                        }
-                        pos++;
-                    }
+                    int p = skipWhitespaceOnLine(text, pos);
+                    if (p > pos && text.charAt(p - 1) == '\n')
+                        addEmptyLine = true;
+                    pos = p;
                 } else {
                     pos = breakPos;
                 }
@@ -151,15 +120,56 @@ public class FontMetrics {
 
         if (pos > lineStartPos) {
             // trim trailing spaces and add to result
-            int end = pos;
-            while (end > lineStartPos && text.charAt(end - 1) == ' ')
-                end--;
+            int end = trimTrailingWhitepsace(text, lineStartPos, pos);
             lines.add(text.substring(lineStartPos, end));
         } else if (addEmptyLine) {
             lines.add("");
         }
 
         return lines.toArray(new String[lines.size()]);
+    }
+
+    private static int findBreakPos(String text, int pos, int lineStartPos) {
+        int breakPos;
+        // locate last space
+        int spacePos = pos - 1;
+        while (spacePos > lineStartPos) {
+            if (text.charAt(spacePos) == ' ')
+                break;
+            spacePos--;
+        }
+
+        // if space found...
+        if (spacePos > lineStartPos) {
+            breakPos = spacePos;
+        } else {
+            // forcibly break word
+            if (pos > lineStartPos)
+                breakPos = pos;
+            else
+                breakPos = lineStartPos + 1; // at least one character
+        }
+        return breakPos;
+    }
+
+    private static int skipWhitespaceOnLine(String text, int pos) {
+        int len = text.length();
+        while (pos < len) {
+            char ch = text.charAt(pos);
+            if (ch != ' ') {
+                if (ch == '\n')
+                    pos++;
+                break;
+            }
+            pos++;
+        }
+        return pos;
+    }
+
+    private static int trimTrailingWhitepsace(String text, int lineStart, int end) {
+        while (end > lineStart && text.charAt(end - 1) == ' ')
+            end--;
+        return end;
     }
 
 
@@ -190,9 +200,9 @@ public class FontMetrics {
         return width;
     }
 
-    private final static char DEFAULT_WIDTH = 556;
+    private static final char DEFAULT_WIDTH = 556;
 
-    private final static char[] CHAR_WIDTH_20_7F = {
+    private static final char[] CHAR_WIDTH_20_7F = {
             278, // 0x20
             278, // 0x21 !
             355, // 0x22 "
@@ -291,7 +301,7 @@ public class FontMetrics {
             0
     };
 
-    final static char[] CHAR_WIDTH_A0_FF = {
+    private static final char[] CHAR_WIDTH_A0_FF = {
             0,
             0,
             0,
@@ -389,4 +399,8 @@ public class FontMetrics {
             0,
             0
     };
+
+    private FontMetrics() {
+        // Do not create instances
+    }
 }

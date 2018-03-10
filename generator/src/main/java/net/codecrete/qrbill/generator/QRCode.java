@@ -200,17 +200,17 @@ public class QRCode {
                 modules[iy][ix] = false;
     }
 
-    private static DecimalFormat AMOUNT_FIELD_FORMAT;
+    private static DecimalFormat amountFieldFormat;
 
     static {
-        AMOUNT_FIELD_FORMAT = new DecimalFormat("#0.00");
+        amountFieldFormat = new DecimalFormat("#0.00");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
         symbols.setDecimalSeparator('.');
-        AMOUNT_FIELD_FORMAT.setDecimalFormatSymbols(symbols);
+        amountFieldFormat.setDecimalFormatSymbols(symbols);
     }
 
     private static String formatAmountForCode(double amount) {
-        return AMOUNT_FIELD_FORMAT.format(amount);
+        return amountFieldFormat.format(amount);
     }
 
     private static String formatDateForCode(LocalDate date) {
@@ -330,7 +330,7 @@ public class QRCode {
 
     private static void throwSingleValidationError(String field, String messageKey) {
         ValidationResult result = new ValidationResult();
-        result.addMessage(Type.Error, field, messageKey);
+        result.addMessage(Type.ERROR, field, messageKey);
         throw new QRBillValidationError(result);
     }
 }
