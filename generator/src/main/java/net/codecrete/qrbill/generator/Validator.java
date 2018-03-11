@@ -111,25 +111,27 @@ public class Validator {
 
     private void validateReferenceNo(boolean isQRBillIBAN) {
         String referenceNo = trimmed(billIn.getReferenceNo());
-        if (referenceNo != null) {
-            referenceNo = whiteSpaceRemoved(referenceNo);
-            if (referenceNo.startsWith("RF")) {
-                if (!isValidISO11649ReferenceNo(referenceNo)) {
-                    validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, KEY_VALID_ISO11649_CREDITOR_REF);
-                } else {
-                    billOut.setReferenceNo(referenceNo);
-                }
-            } else {
-                if (referenceNo.length() < 27)
-                    referenceNo = "00000000000000000000000000".substring(0, 27 - referenceNo.length()) + referenceNo;
-                if (!isValidQRReferenceNo(referenceNo))
-                    validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, KEY_VALID_QR_REF_NO);
-                else
-                    billOut.setReferenceNo(referenceNo);
-            }
-        } else {
+
+        if (referenceNo == null) {
             if (isQRBillIBAN)
                 validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, KEY_MANDATORY_FOR_QR_IBAN);
+            return;
+        }
+
+        referenceNo = whiteSpaceRemoved(referenceNo);
+        if (referenceNo.startsWith("RF")) {
+            if (!isValidISO11649ReferenceNo(referenceNo)) {
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, KEY_VALID_ISO11649_CREDITOR_REF);
+            } else {
+                billOut.setReferenceNo(referenceNo);
+            }
+        } else {
+            if (referenceNo.length() < 27)
+                referenceNo = "00000000000000000000000000".substring(0, 27 - referenceNo.length()) + referenceNo;
+            if (!isValidQRReferenceNo(referenceNo))
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, KEY_VALID_QR_REF_NO);
+            else
+                billOut.setReferenceNo(referenceNo);
         }
     }
 
@@ -261,51 +263,66 @@ public class Validator {
      * @return the cleaned string
      */
     private String cleanedValue(String value, boolean isNormalized, String fieldRoot, String subfield) {
+
+        /* This code has cognitive complexity 31. Deal with it. */
+
         if (value == null)
             return null;
 
-        int len = value.length();
-        boolean justAddedSpace = false;
-        StringBuilder sb = null;
-        int lastCopiedPos = 0;
+        int len = value.length(); // length of value
+        boolean justProcessedSpace = false; // flag indicating whether we've just processed a space character
+        StringBuilder sb = null; // String builder for result
+        int lastCopiedPos = 0; // last position (excluding) copied to the result
 
-        for (int i = 0; i < len; i++) {
-            char ch = value.charAt(i);
+        // String processing pattern: Iterate all characters and focus on runs of valid characters
+        // that can simply be copied. If all characters are valid, no memory is allocated.
+        int pos = 0;
+        while (pos < len) {
+            char ch = value.charAt(pos); // current character
 
+            if (isValidQRBillCharacter(ch)) {
+                justProcessedSpace = ch == ' ';
+                pos++;
+                continue;
+            }
+
+            // Check for normalization
             if (ch > 0xff && !isNormalized) {
-                if (Normalizer.isNormalized(value, Normalizer.Form.NFC)) {
-                    isNormalized = true;
-                } else {
+                isNormalized = Normalizer.isNormalized(value, Normalizer.Form.NFC);
+                if (!isNormalized) {
+                    // Normalize string and start over
                     value = Normalizer.normalize(value, Normalizer.Form.NFC);
                     return cleanedValue(value, true, fieldRoot, subfield);
                 }
             }
 
-            if (!isValidQRBillCharacter(ch)) {
-                if (sb == null)
-                    sb = new StringBuilder(value.length());
-                if (i > lastCopiedPos)
-                    sb.append(value, lastCopiedPos, i);
-                if (Character.isHighSurrogate(ch)) {
-                    // Proper Unicode handling to prevent surrogates and combining characters
-                    // from being replaced with multiples periods.
-                    int codePoint = value.codePointAt(i);
-                    if (Character.getType(codePoint) != Character.COMBINING_SPACING_MARK)
-                        sb.append('.');
-                    justAddedSpace = false;
-                    i++;
-                    lastCopiedPos = i + 1;
-                } else {
-                    char replacement = Character.isWhitespace(ch) ? ' ' : '.';
-                    if (replacement != ' ' || !justAddedSpace) {
-                        sb.append(replacement);
-                        justAddedSpace = replacement == ' ';
-                    }
-                    lastCopiedPos = i + 1;
-                }
+            if (sb == null)
+                sb = new StringBuilder(value.length());
+
+            // copy processed characters to result before taking care of the invalid character
+            if (pos > lastCopiedPos)
+                sb.append(value, lastCopiedPos, pos);
+
+            if (Character.isHighSurrogate(ch)) {
+                // Proper Unicode handling to prevent surrogates and combining characters
+                // from being replaced with multiples periods.
+                int codePoint = value.codePointAt(pos);
+                if (Character.getType(codePoint) != Character.COMBINING_SPACING_MARK)
+                    sb.append('.');
+                justProcessedSpace = false;
+                pos++;
             } else {
-                justAddedSpace = ch == ' ';
+                if (Character.isWhitespace(ch)) {
+                    if (!justProcessedSpace)
+                        sb.append(' ');
+                    justProcessedSpace = true;
+                } else {
+                    sb.append('.');
+                    justProcessedSpace = false;
+                }
             }
+            pos++;
+            lastCopiedPos = pos;
         }
 
         if (sb == null)
@@ -457,15 +474,26 @@ public class Validator {
     }
 
     private static boolean isValidQRBillCharacter(char ch) {
-        if (ch < 0x20 || ch == 0x5e)
+        if (ch < 0x20)
             return false;
-        if (ch <= 0x7e || ch == 0xa3 || ch == 0xb4)
+        if (ch == 0x5e)
+            return false;
+        if (ch <= 0x7e)
+            return true;
+        if (ch == 0xa3 || ch == 0xb4)
             return true;
         if (ch < 0xc0 || ch > 0xfd)
             return false;
-         return ch != 0xc3 && ch != 0xc5 && ch != 0xc6
-                && ch != 0xd0 && ch != 0xd5 && ch != 0xd7 && ch != 0xd8 && ch != 0xdd && ch != 0xde
-                && ch != 0xe3 && ch != 0xe5 && ch != 0xe6
-                && ch != 0xf0 && ch != 0xf5 && ch != 0xf8;
+        if (ch == 0xc3 || ch == 0xc5 || ch == 0xc6)
+            return false;
+        if (ch == 0xd0 || ch == 0xd5 || ch == 0xd7 || ch == 0xd8)
+            return false;
+        if (ch == 0xdd || ch == 0xde)
+            return false;
+        if (ch == 0xe3 || ch == 0xe5 || ch == 0xe6)
+            return false;
+        if (ch == 0xf0 || ch == 0xf5 || ch == 0xf8)
+            return false;
+        return true;
     }
 }

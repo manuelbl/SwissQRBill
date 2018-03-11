@@ -245,28 +245,9 @@ public class QRCode {
 
         bill.setAccount(lines[3]);
 
-        Address creditor = new Address();
-        bill.setCreditor(creditor);
-        creditor.setName(lines[4]);
-        creditor.setStreet(lines[5]);
-        creditor.setHouseNo(lines[6]);
-        creditor.setPostalCode(lines[7]);
-        creditor.setTown(lines[8]);
-        creditor.setCountryCode(lines[9]);
+        bill.setCreditor(decodeAddress(lines, 4, false));
 
-        if (lines[10].length() > 0 && lines[11].length() > 0 && lines[12].length() > 0
-                && lines[13].length() > 0 && lines[14].length() > 0 && lines[15].length() > 0) {
-            Address finalCreditor = new Address();
-            bill.setFinalCreditor(finalCreditor);
-            finalCreditor.setName(lines[10]);
-            finalCreditor.setStreet(lines[11]);
-            finalCreditor.setHouseNo(lines[12]);
-            finalCreditor.setPostalCode(lines[13]);
-            finalCreditor.setTown(lines[14]);
-            finalCreditor.setCountryCode(lines[15]);
-        } else {
-            bill.setFinalCreditor(null);
-        }
+        bill.setFinalCreditor(decodeAddress(lines, 10, true));
 
         if (lines[16].length() > 0) {
             try {
@@ -290,19 +271,7 @@ public class QRCode {
             bill.setDueDate(null);
         }
 
-        if (lines[19].length() > 0 && lines[20].length() > 0 && lines[21].length() > 0
-                && lines[22].length() > 0 && lines[23].length() > 0 && lines[24].length() > 0) {
-            Address debtor = new Address();
-            bill.setDebtor(debtor);
-            debtor.setName(lines[19]);
-            debtor.setStreet(lines[20]);
-            debtor.setHouseNo(lines[21]);
-            debtor.setPostalCode(lines[22]);
-            debtor.setTown(lines[23]);
-            debtor.setCountryCode(lines[24]);
-        } else {
-            bill.setDebtor(null);
-        }
+        bill.setDebtor(decodeAddress(lines, 19, true));
 
         // reference type is ignored (line 25)
         bill.setReferenceNo(lines[26]);
@@ -310,6 +279,32 @@ public class QRCode {
 
         // remaining lines (alternative schemes) are ignored
         return bill;
+    }
+
+    /**
+     * Process six lines and extract and address
+     * @param lines line array
+     * @param startLine index of first line to process
+     * @param isOptional indicates if address is optional
+     * @return decoded address or {@code null} if address is optional and empty
+     */
+    private static Address decodeAddress(String[] lines, int startLine, boolean isOptional) {
+
+        boolean isEmpty = lines[startLine].length() == 0 && lines[startLine + 1].length() == 0
+                && lines[startLine + 2].length() == 0 && lines[startLine + 3].length() == 0
+                && lines[startLine + 4].length() == 0 && lines[startLine + 5].length() == 0;
+
+        if (isEmpty && isOptional)
+            return null;
+
+        Address address = new Address();
+        address.setName(lines[startLine]);
+        address.setStreet(lines[startLine + 1]);
+        address.setHouseNo(lines[startLine + 2]);
+        address.setPostalCode(lines[startLine + 3]);
+        address.setTown(lines[startLine + 4]);
+        address.setCountryCode(lines[startLine + 5]);
+        return address;
     }
 
     private static String[] splitLines(String text) {

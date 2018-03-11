@@ -65,19 +65,25 @@ public class FontMetrics {
      * @return an array of text lines
      */
     public static String[] splitLines(String text, double maxLength, int fontSize) {
+
+        /* Yes, this code has a cognitive complexity of 37. Deal with it. */
+
         ArrayList<String> lines = new ArrayList<>();
         int max = (int)(maxLength * 1000 / fontSize);
 
-        int len = text.length();
-        int pos = 0;
-        int lineStartPos = 0;
-        int lineWidth = 0;
-        boolean addEmptyLine = true;
+        int len = text.length(); // length of line
+        int pos = 0; // current position (0 ..< end)
+        int lineStartPos = 0; // start position of current line
+        int lineWidth = 0; // current line width (in AFM metric)
+        boolean addEmptyLine = true; // flag if an empty line should be added as the last line
 
+        // iterate over all characters
         while (pos < len) {
+
+            // get current character
             char ch = text.charAt(pos);
 
-            // ignore leading white space on line
+            // skip leading white space at start of current line
             if (ch == ' ' && pos == lineStartPos) {
                 lineStartPos++;
                 pos++;
@@ -86,42 +92,60 @@ public class FontMetrics {
 
             // add width of character
             lineWidth += getCharWidth(ch);
+            addEmptyLine = false;
 
-            // if line break needed...
+            // line break is need if the maximum width has been reached
+            // or if an explicit line break has been encountered
             if (ch == '\n' || lineWidth > max) {
 
-                int breakPos = ch == '\n' ? pos : findBreakPos(text, pos, lineStartPos);
-
-                // trim trailing spaces and add to result
-                int end = trimTrailingWhitepsace(text, lineStartPos, breakPos);
-                lines.add(text.substring(lineStartPos, end));
-
-                // skip trailing white space
-                addEmptyLine = false;
+                // find the position for the line break
+                int breakPos;
                 if (ch == '\n') {
-                    pos++;
-                    addEmptyLine = true;
-                } else if (ch == ' ') {
-                    int p = skipWhitespaceOnLine(text, pos);
-                    if (p > pos && text.charAt(p - 1) == '\n')
-                        addEmptyLine = true;
-                    pos = p;
+                    breakPos = pos;
+
                 } else {
-                    pos = breakPos;
+                    // locate the previous space on the line
+                    int spacePos = pos - 1;
+                    while (spacePos > lineStartPos) {
+                        if (text.charAt(spacePos) == ' ')
+                            break;
+                        spacePos--;
+                    }
+
+                    // if space was found, it's the break position
+                    if (spacePos > lineStartPos) {
+                        breakPos = spacePos;
+
+                    } else {
+                        // if no space was found, forcibly break word
+                        if (pos > lineStartPos)
+                            breakPos = pos;
+                        else
+                            breakPos = lineStartPos + 1; // at least one character
+                    }
                 }
 
-                lineStartPos = pos;
+                // add line to result
+                addResultLine(lines, text, lineStartPos, breakPos);
+
+                // setup start of new line
+                lineStartPos = breakPos;
+                if (ch == '\n') {
+                    lineStartPos = breakPos + 1;
+                    addEmptyLine = true;
+                }
+                pos = lineStartPos;
                 lineWidth = 0;
 
             } else {
+                // no line break needed; progress one character
                 pos++;
             }
         }
 
+        // complete the last line
         if (pos > lineStartPos) {
-            // trim trailing spaces and add to result
-            int end = trimTrailingWhitepsace(text, lineStartPos, pos);
-            lines.add(text.substring(lineStartPos, end));
+            addResultLine(lines, text, lineStartPos, pos);
         } else if (addEmptyLine) {
             lines.add("");
         }
@@ -129,47 +153,20 @@ public class FontMetrics {
         return lines.toArray(new String[lines.size()]);
     }
 
-    private static int findBreakPos(String text, int pos, int lineStartPos) {
-        int breakPos;
-        // locate last space
-        int spacePos = pos - 1;
-        while (spacePos > lineStartPos) {
-            if (text.charAt(spacePos) == ' ')
-                break;
-            spacePos--;
-        }
-
-        // if space found...
-        if (spacePos > lineStartPos) {
-            breakPos = spacePos;
-        } else {
-            // forcibly break word
-            if (pos > lineStartPos)
-                breakPos = pos;
-            else
-                breakPos = lineStartPos + 1; // at least one character
-        }
-        return breakPos;
-    }
-
-    private static int skipWhitespaceOnLine(String text, int pos) {
-        int len = text.length();
-        while (pos < len) {
-            char ch = text.charAt(pos);
-            if (ch != ' ') {
-                if (ch == '\n')
-                    pos++;
-                break;
-            }
-            pos++;
-        }
-        return pos;
-    }
-
-    private static int trimTrailingWhitepsace(String text, int lineStart, int end) {
-        while (end > lineStart && text.charAt(end - 1) == ' ')
+    /**
+     * Add the specified text range to the resulting lines.
+     * <p>
+     *     Trim trailing white space
+     * </p>
+     * @param lines resulting lines array
+     * @param text text
+     * @param start start of text range (including)
+     * @param end end of text range (excluding)
+     */
+    private static void addResultLine(ArrayList<String> lines, String text, int start, int end) {
+        while (end > start && text.charAt(end - 1) == ' ')
             end--;
-        return end;
+        lines.add(text.substring(start, end));
     }
 
 
