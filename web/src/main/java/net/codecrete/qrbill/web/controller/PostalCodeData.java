@@ -187,7 +187,7 @@ public class PostalCodeData {
                  ZipInputStream zis = new ZipInputStream(in)) {
                 zis.getNextEntry();
 
-                try (InputStreamReader reader = new InputStreamReader(zis, StandardCharsets.UTF_8);
+                try (InputStreamReader reader = new InputStreamReader(zis, StandardCharsets.ISO_8859_1);
                      BufferedReader lineReader = new BufferedReader(reader)) {
 
                     lineReader.readLine();

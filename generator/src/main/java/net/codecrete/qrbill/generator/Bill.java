@@ -16,9 +16,6 @@ public class Bill {
 
     /**
      * QR bill language
-     * <p>
-     *     Intentially in lowercase.
-     * </p>
      */
     public enum Language {
         /** German */

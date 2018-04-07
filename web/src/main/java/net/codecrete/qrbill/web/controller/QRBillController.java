@@ -319,7 +319,8 @@ public class QRBillController {
         }
 
         Bill bill = QRBill.decodeQrCodeText(payload.getQrText());
-        bill.setLanguage(Bill.Language.valueOf(payload.getLanguage()));
+        String lang = payload.getLanguage().toUpperCase(Locale.US);
+        bill.setLanguage(Bill.Language.valueOf(lang));
         return bill;
     }
 }
