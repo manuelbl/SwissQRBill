@@ -16,6 +16,10 @@ import org.apache.pdfbox.util.Matrix;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+
+/**
+ * PDF graphics generator
+ */
 public class PDFGenerator implements GraphicsGenerator {
 
     private static final double MM_TO_PT = 72 / 25.4;
@@ -28,7 +32,16 @@ public class PDFGenerator implements GraphicsGenerator {
     private double lastLineWidth = 1;
     private boolean hasSavedGraphicsState = false;
 
-    public PDFGenerator(double width, double height) throws IOException {
+
+    /**
+     * Creates a new instance of the graphics generator
+     */
+    public PDFGenerator() {
+    }
+
+    @Override
+    public void setupPage(double width, double height) throws IOException
+    {
         document = new PDDocument();
         pageHeight = (float)(height * MM_TO_PT);
         PDPage page = new PDPage(new PDRectangle((float) (width * MM_TO_PT), pageHeight));

@@ -183,9 +183,10 @@ public class QRBill {
                 break;
         }
 
-        try (GraphicsGenerator g = createGraphicsGenerator(drawingWidth, drawingHeight)) {
+        try (GraphicsGenerator g = createGraphicsGenerator()) {
 
             graphics = g;
+            graphics.setupPage(drawingWidth, drawingHeight);
             switch (billFormat) {
                 case QR_CODE_ONLY:
                     drawQRCodeOnly();
@@ -212,14 +213,14 @@ public class QRBill {
         }
     }
 
-    private GraphicsGenerator createGraphicsGenerator(double width, double height) throws IOException {
+    private GraphicsGenerator createGraphicsGenerator() throws IOException {
         GraphicsGenerator generator;
         switch (graphicsFormat) {
             case SVG:
-                generator = new SVGGenerator(width, height);
+                generator = new SVGGenerator();
                 break;
             case PDF:
-                generator = new PDFGenerator(width, height);
+                generator = new PDFGenerator();
                 break;
             default:
                 generator = null;

@@ -20,13 +20,21 @@ public class SVGGenerator implements GraphicsGenerator {
 
     private ByteArrayOutputStream buffer;
     private Writer stream;
-    private boolean isInGroup = false;
+    private boolean isInGroup;
     private boolean isFirstMoveInPath;
     private double lastPositionX;
     private double lastPositionY;
     private int approxPathLength;
 
-    public SVGGenerator(double width, double height) throws IOException {
+
+    /**
+     * Creates a new instance
+     */
+    public SVGGenerator() {
+    }
+
+
+    public void setupPage(double width, double height) throws IOException {
         buffer = new ByteArrayOutputStream();
         stream = new OutputStreamWriter(buffer, StandardCharsets.UTF_8);
         stream.write(

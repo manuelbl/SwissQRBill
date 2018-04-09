@@ -11,11 +11,42 @@ import java.io.IOException;
 
 /**
  * Common interface implemented by graphics generators
+ * <p>
+ *     The coordinate system is initialized by {@code setupPage}.
+ *     It's origin is initially in the bottom left corner of the pages and
+ *     extends in x-direction to the right and in y-direction
+ *     to the top.
+ * </p>
+ * <p>
+ *     All text has to be in the font Helvetica. Arial should also do
+ *     as the font metrics are similar enough and advanced text placing
+ *     such a justified text is not used.
+ * </p>
+ * <p>
+ *     A graphics generator may only be used to generate a single page.
+ *     After the result has been retrieved, the instance must nob be
+ *     used anymore.
+ * </p>
  */
 public interface GraphicsGenerator extends Closeable {
 
     /**
+     * Sets up the page
+     * <p>
+     *     The page (and graphics context) is not valid until
+     *     this method has been called.
+     * </p>
+     * @param width width of page (in mm)
+     * @param height height of page (in mm)
+     */
+    void setupPage(double width, double height) throws IOException;
+
+    /**
      * Sets a translation and a scale factor for the subsequent operations
+     * <p>
+     *     Before a new translation is applied, the coordinate system is
+     *     reset to it's original state after page setup (see {@code setupPage}).
+     * </p>
      * @param translateX translation in x direction (in mm)
      * @param translateY translation in y direction (in mm)
      * @param scale scale fator (1.0 = no scaling)
@@ -25,6 +56,10 @@ public interface GraphicsGenerator extends Closeable {
 
     /**
      * Adds text to the graphics.
+     * <p>
+     *     The text position refers to the left most point
+     *     on the text's baseline.
+     * </p>
      * @param text the text
      * @param x x position of the text's start (in mm)
      * @param y y position of the text's top (in mm)
@@ -41,6 +76,11 @@ public interface GraphicsGenerator extends Closeable {
      *     would exceed the specified maximum length of a text line. Newlines can be
      *     used to force a line break.
      * </p>
+     * <p>
+     *     The text position refers to the left most point
+     *     on the baseline of the first text line. Additional
+     *     lines then follow below.
+     * </p>
      * @param text the text
      * @param x x position of the text's start (in mm)
      * @param y y position of the text's top (in mm)
@@ -53,6 +93,11 @@ public interface GraphicsGenerator extends Closeable {
 
     /**
      * Adds several lines of text to the graphics.
+     * <p>
+     *     The text position refers to the left most point
+     *     on the baseline of the first text line. Additional
+     *     lines then follow below.
+     * </p>
      * @param lines the text lines
      * @param x x position of the text's start (in mm)
      * @param y y position of the text's top (in mm)
@@ -110,6 +155,9 @@ public interface GraphicsGenerator extends Closeable {
 
     /**
      * Returns the generated graphics as a byte array
+     * <p>
+     *     After this method was called, the page is no longer valid.
+     * </p>
      * @return the byte array
      * @throws IOException thrown if the graphics cannot be generated
      */
