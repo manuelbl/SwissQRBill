@@ -36,21 +36,12 @@ public class FontMetrics {
     }
 
     /**
-     * Extra space between descender of text line and ascender of next line.
-     * @param fontSize the font size (in pt)
-     * @return the distance (in mm)
-     */
-    public static double getLeading(int fontSize) {
-        return fontSize * 0.2 * PT_TO_MM;
-    }
-
-    /**
-     * Distance between the baselines of the consecutive text lines.
+     * Distance between the baselines of two consecutive text lines.
      * @param fontSize the font size (in pt)
      * @return the distance (in mm)
      */
     public static double getLineHeight(int fontSize) {
-        return fontSize * 1.2 * PT_TO_MM;
+        return fontSize * PT_TO_MM;
     }
 
     /**

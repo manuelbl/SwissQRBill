@@ -50,13 +50,13 @@ public class QRCode {
     }
 
     /**
-     * Draws the QR code to the specified graphics context. The QR code is always 46 mm by 46 mm.
+     * Draws the QR code to the specified graphics context (canvas). The QR code is always 46 mm by 46 mm.
      * @param graphics graphics context
      * @param offsetX x offset
      * @param offsetY y offset
      * @throws IOException exception thrown in case of error in graphics context
      */
-    void draw(GraphicsGenerator graphics, double offsetX, double offsetY) throws IOException {
+    void draw(Canvas graphics, double offsetX, double offsetY) throws IOException {
         QrCode qrCode = QrCode.encodeText(textBuilder.toString(), QrCode.Ecc.MEDIUM);
 
         boolean[][] modules = copyModules(qrCode);
@@ -80,7 +80,7 @@ public class QRCode {
         graphics.fillPath(0xffffff);
     }
 
-    private void drawModulesPath(GraphicsGenerator graphics, boolean[][] modules) throws IOException {
+    private void drawModulesPath(Canvas graphics, boolean[][] modules) throws IOException {
         // Simple algorithm to reduce the number of drawn rectangles
         int size = modules.length;
         for (int y = 0; y < size; y++) {
@@ -93,7 +93,7 @@ public class QRCode {
     }
 
     // Simple algorithms to reduce the number of rectangles for drawing the QR code and reduce SVG size
-    private void drawLargestRectangle(GraphicsGenerator graphics, boolean[][] modules, int x, int y) throws IOException {
+    private void drawLargestRectangle(Canvas graphics, boolean[][] modules, int x, int y) throws IOException {
         int size = modules.length;
 
         int bestW = 1;
@@ -117,7 +117,7 @@ public class QRCode {
         }
 
         final double unit = 25.4 / 72;
-        graphics.addRectangle(x * unit, y * unit, bestW * unit, bestH * unit);
+        graphics.addRectangle(x * unit, (size - y - bestH) * unit, bestW * unit, bestH * unit);
         clearRectangle(modules, x, y, bestW, bestH);
     }
 

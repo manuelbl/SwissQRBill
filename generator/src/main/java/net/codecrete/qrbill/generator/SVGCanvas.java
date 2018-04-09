@@ -14,9 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.Locale;
 
-public class SVGGenerator implements GraphicsGenerator {
-
-    private static final double MM_TO_PT = 72 / 25.4;
+public class SVGCanvas extends AbstractCanvas {
 
     private ByteArrayOutputStream buffer;
     private Writer stream;
@@ -30,7 +28,7 @@ public class SVGGenerator implements GraphicsGenerator {
     /**
      * Creates a new instance
      */
-    public SVGGenerator() {
+    public SVGCanvas() {
     }
 
 
@@ -49,7 +47,9 @@ public class SVGGenerator implements GraphicsGenerator {
         stream.write(" ");
         stream.write(formatCoordinate(height));
         stream.write("\" xmlns=\"http://www.w3.org/2000/svg\">\n");
-        stream.write("<g font-family=\"Helvetica,Arial\">\n");
+        stream.write("<g font-family=\"Helvetica,Arial\" transform=\"translate(0 ");
+        stream.write(formatCoordinate(height));
+        stream.write(")\">\n");
     }
 
     public void close() throws IOException {
@@ -72,6 +72,7 @@ public class SVGGenerator implements GraphicsGenerator {
     }
 
     public void moveTo(double x, double y) throws IOException {
+        y = -y;
         if (isFirstMoveInPath) {
             stream.write("M");
             stream.write(formatCoordinate(x));
@@ -91,6 +92,7 @@ public class SVGGenerator implements GraphicsGenerator {
     }
 
     public void lineTo(double x, double y) throws IOException {
+        y = -y;
         addPathNewlines(16);
         stream.write("l");
         stream.write(formatCoordinate(x - lastPositionX));
@@ -103,7 +105,7 @@ public class SVGGenerator implements GraphicsGenerator {
 
     public void addRectangle(double x, double y, double width, double height) throws IOException {
         addPathNewlines(40);
-        moveTo(x, y);
+        moveTo(x, y + height);
         stream.write("h");
         stream.write(formatCoordinate(width));
         stream.write("v");
@@ -140,7 +142,7 @@ public class SVGGenerator implements GraphicsGenerator {
     }
 
     public void putText(String text, double x, double y, int fontSize, boolean isBold) throws IOException {
-        y += FontMetrics.getAscender(fontSize);
+        y = -y;
         stream.write("<text x=\"");
         stream.write(formatCoordinate(x));
         stream.write("\" y=\"");
@@ -154,19 +156,6 @@ public class SVGGenerator implements GraphicsGenerator {
         stream.write("</text>\n");
     }
 
-    public int putMultilineText(String text, double x, double y, double maxWidth, int fontSize) throws IOException {
-        String[] lines = FontMetrics.splitLines(text, maxWidth * MM_TO_PT, fontSize);
-        putTextLines(lines, x, y, fontSize);
-        return lines.length;
-    }
-
-    public void putTextLines(String[] lines, double x, double y, int fontSize) throws IOException {
-        for (String line : lines) {
-            putText(line, x, y, fontSize, false);
-            y += FontMetrics.getLineHeight(fontSize);
-        }
-    }
-
     public void setTransformation(double translateX, double translateY, double scale) throws IOException {
         if (isInGroup) {
             stream.write("</g>\n");
@@ -176,7 +165,7 @@ public class SVGGenerator implements GraphicsGenerator {
             stream.write("<g transform=\"translate(");
             stream.write(formatCoordinate(translateX));
             stream.write(" ");
-            stream.write(formatCoordinate(translateY));
+            stream.write(formatCoordinate(-translateY));
             if (scale != 1) {
                 stream.write(") scale(");
                 stream.write(formatNumber(scale));

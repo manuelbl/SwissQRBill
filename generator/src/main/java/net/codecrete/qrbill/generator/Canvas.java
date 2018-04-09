@@ -10,7 +10,7 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * Common interface implemented by graphics generators
+ * Common graphics interface for drawing
  * <p>
  *     The coordinate system is initialized by {@code setupPage}.
  *     It's origin is initially in the bottom left corner of the pages and
@@ -23,12 +23,12 @@ import java.io.IOException;
  *     such a justified text is not used.
  * </p>
  * <p>
- *     A graphics generator may only be used to generate a single page.
- *     After the result has been retrieved, the instance must nob be
+ *     A canvas may only be used to generate a single page.
+ *     After the result has been retrieved, the instance must not be
  *     used anymore.
  * </p>
  */
-public interface GraphicsGenerator extends Closeable {
+public interface Canvas extends Closeable {
 
     /**
      * Sets up the page
@@ -84,12 +84,13 @@ public interface GraphicsGenerator extends Closeable {
      * @param text the text
      * @param x x position of the text's start (in mm)
      * @param y y position of the text's top (in mm)
-     * @param maxWidth maximum length of text line / width of text block (in mm)
      * @param fontSize the font size (in pt)
+     * @param maxWidth maximum length of text line / width of text block (in mm)
+     * @param leading additional vertical space between text lines (in mm)
      * @throws IOException thrown if the graphics cannot be generated
      * @return the number of text lines that were added
      */
-    int putMultilineText(String text, double x, double y, double maxWidth, int fontSize) throws IOException;
+    int putMultilineText(String text, double x, double y, int fontSize, double maxWidth, double leading) throws IOException;
 
     /**
      * Adds several lines of text to the graphics.
@@ -102,9 +103,10 @@ public interface GraphicsGenerator extends Closeable {
      * @param x x position of the text's start (in mm)
      * @param y y position of the text's top (in mm)
      * @param fontSize the font size (in pt)
+     * @param leading additional vertical space between text lines (in mm)
      * @throws IOException thrown if the graphics cannot be generated
      */
-    void putTextLines(String[] lines, double x, double y, int fontSize) throws IOException;
+    void putTextLines(String[] lines, double x, double y, int fontSize, double leading) throws IOException;
 
     /**
      * Starts a path that can be filled or stroked

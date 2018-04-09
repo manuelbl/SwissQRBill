@@ -48,6 +48,8 @@ public class QRBill {
     private static final int FONT_SIZE_TITLE = 11; // pt
     private static final int FONT_SIZE_LABEL = 8; // pt
     private static final int FONT_SIZE_TEXT = 10; // pt
+    private static final double SLIP_WIDTH = 148.5; // mm
+    private static final double SLIP_HEIGHT = 105; // mm
     private static final double HORIZ_BORDER = 8; // mm
     private static final double VERT_BORDER = 8; // mm
     private static final double MIDDLE_SPACING = 5; // mm
@@ -55,15 +57,16 @@ public class QRBill {
     private static final double AMOUNT_WIDTH = 40; // mm (must not be smaller than 40)
     private static final double AMOUNT_HEIGHT = 15; // mm (must not be smaller than 15)
     private static final double RIGHT_COLUMN_WIDTH
-            = 148.5 - 2 * HORIZ_BORDER - MIDDLE_SPACING - LEFT_COLUMN_WIDTH; // mm (must not be smaller than 65)
+            = SLIP_WIDTH - 2 * HORIZ_BORDER - MIDDLE_SPACING - LEFT_COLUMN_WIDTH; // mm (must not be smaller than 65)
     private static final double DEBTOR_HEIGHT = 25; // mm (must no be smaller than 25)
-    private static final double LABEL_TOP_PADDING = 6 * PT_TO_MM;
-    private static final double TEXT_TOP_PADDING = 2 * PT_TO_MM;
+    private static final double PREFERRED_LABEL_PADDING_TOP = 8 * PT_TO_MM;
+    private static final double PREFERRED_TEXT_PADDING_TOP = 5 * PT_TO_MM;
+    private static final double PREFERRED_LEADING = 0.2; // relative to font size
 
 
     private Bill bill;
     private QRCode qrCode;
-    private GraphicsGenerator graphics;
+    private Canvas graphics;
     private BillFormat billFormat;
     private GraphicsFormat graphicsFormat;
 
@@ -75,13 +78,13 @@ public class QRBill {
     private String[] debtor;
     private String dueDate;
 
-    private double labelTopPadding;
-    private double textTopPadding;
-    private double labelLineHeight;
-    private double textLineHeight;
+    private double yPos;
+    private double labelPaddingTop;
+    private double textPaddingTop;
+    private double textLeading;
     private int fontSizeLabel;
     private int fontSizeText;
-    private double rightColumnExtraYOffset;
+    private double rightColumnPaddingTop;
 
 
     /**
@@ -183,25 +186,18 @@ public class QRBill {
                 break;
         }
 
-        try (GraphicsGenerator g = createGraphicsGenerator()) {
+        try (Canvas canvas = createCanvas()) {
 
-            graphics = g;
+            graphics = canvas;
             graphics.setupPage(drawingWidth, drawingHeight);
             switch (billFormat) {
                 case QR_CODE_ONLY:
                     drawQRCodeOnly();
                     break;
-                case A6_LANDSCAPE_SHEET:
-                    drawQRBill(0, 0, false);
-                    break;
-                case A5_LANDSCAPE_SHEET:
-                    drawQRBill(61.5, 43.5, true);
-                    break;
-                case A4_PORTRAIT_SHEET:
-                    drawQRBill(61.5, 192, true);
-                    break;
                 default:
-                    throw new QrBillRuntimeException("Invalid bill format specified");
+                    drawQRBill(drawingWidth - SLIP_WIDTH, 0,
+                            drawingWidth > 148.6 || drawingHeight > 105);
+                    break;
             }
 
             return graphics.getResult();
@@ -213,140 +209,139 @@ public class QRBill {
         }
     }
 
-    private GraphicsGenerator createGraphicsGenerator() throws IOException {
-        GraphicsGenerator generator;
+    private Canvas createCanvas() {
+        Canvas canvas;
         switch (graphicsFormat) {
             case SVG:
-                generator = new SVGGenerator();
+                canvas = new SVGCanvas();
                 break;
             case PDF:
-                generator = new PDFGenerator();
+                canvas = new PDFCanvas();
                 break;
             default:
-                generator = null;
+                canvas = null;
         }
-        return generator;
+        return canvas;
     }
 
     private void drawQRBill(double offsetX, double offsetY, boolean hasBorder) throws IOException {
 
+        // test regular font size
         fontSizeLabel = FONT_SIZE_LABEL;
         fontSizeText = FONT_SIZE_TEXT;
         formatRightColumText();
         double factor = computeSpacing();
 
         if (factor < 0.6) {
+            // go to smaller font size
             fontSizeLabel = FONT_SIZE_LABEL - 1;
             fontSizeText = FONT_SIZE_TEXT - 1;
             formatRightColumText();
             computeSpacing();
         }
 
-        Bill.Language language = bill.getLanguage();
-
         // border
         if (hasBorder) {
             graphics.setTransformation(offsetX, offsetY, 1);
             graphics.startPath();
-            graphics.moveTo(0, 105);
-            graphics.lineTo(0, 0);
-            graphics.lineTo(148.5, 0);
+            graphics.moveTo(0, 0);
+            graphics.lineTo(0, SLIP_HEIGHT);
+            graphics.lineTo(SLIP_WIDTH, SLIP_HEIGHT);
             graphics.strokePath(0.5, 0);
         }
 
         // title section
-        graphics.setTransformation(offsetX + HORIZ_BORDER, offsetY + VERT_BORDER, 1);
-        double yPos = 0;
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_QR_BILL_PAYMENT_PART, language), 0, yPos, FONT_SIZE_TITLE, true);
+        graphics.setTransformation(offsetX + HORIZ_BORDER, offsetY, 1);
+        yPos = SLIP_HEIGHT - VERT_BORDER - FontMetrics.getAscender(FONT_SIZE_TITLE);
+        graphics.putText(MultilingualText.getText(MultilingualText.KEY_QR_BILL_PAYMENT_PART, bill.getLanguage()),
+                0, yPos, FONT_SIZE_TITLE, true);
+        yPos -= FontMetrics.getDescender(FONT_SIZE_TITLE);
+        double upperTextHeight = VERT_BORDER + FontMetrics.getLineHeight(FONT_SIZE_TITLE)
+                + labelPaddingTop + FontMetrics.getLineHeight(fontSizeLabel)
+                + textPaddingTop + FontMetrics.getLineHeight(fontSizeText);
 
         // scheme section
-        yPos += FontMetrics.getLineHeight(FONT_SIZE_TITLE) + labelTopPadding;
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_SUPPORTS, language), 0, yPos, fontSizeLabel, true);
-        yPos += labelLineHeight + textTopPadding;
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_CREDIT_TRANSFER, language), 0, yPos, fontSizeText, false);
+        drawLabelAndText(MultilingualText.KEY_SUPPORTS,
+                MultilingualText.getText(MultilingualText.KEY_CREDIT_TRANSFER, bill.getLanguage()));
+
+        // currency
+        double lowerTextHeight = VERT_BORDER + AMOUNT_HEIGHT
+                + textPaddingTop + FontMetrics.getLineHeight(fontSizeLabel);
+        yPos = lowerTextHeight + labelPaddingTop;
+        drawLabelAndText(MultilingualText.KEY_CURRENCY, bill.getCurrency());
+
+        // amount
+        graphics.setTransformation(offsetX + HORIZ_BORDER + LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, offsetY, 1);
+        yPos = lowerTextHeight + labelPaddingTop;
+        if (bill.getAmount() != null) {
+            drawLabelAndText(MultilingualText.KEY_AMOUNT, formatAmountForDisplay(bill.getAmount()));
+        } else {
+            drawLabel(MultilingualText.KEY_AMOUNT);
+            drawCorners(0, VERT_BORDER, AMOUNT_WIDTH, AMOUNT_HEIGHT);
+        }
 
         // QR code section
-        yPos = FontMetrics.getLineHeight(FONT_SIZE_TITLE) + LABEL_TOP_PADDING + TEXT_TOP_PADDING
-                + labelLineHeight + textLineHeight
-                - FontMetrics.getLeading(fontSizeText);
-        double qrCodeSpacing = (105 - VERT_BORDER * 2 - yPos - AMOUNT_HEIGHT
-                - labelLineHeight - TEXT_TOP_PADDING - QRCode.SIZE) / 2;
-        qrCode.draw(graphics, offsetX + HORIZ_BORDER, offsetY + VERT_BORDER + yPos + qrCodeSpacing);
+        // Vertically center QR code between upper and lower text area
+        double qrCodeSpacing = (SLIP_HEIGHT - upperTextHeight - QRCode.SIZE - lowerTextHeight) / 2;
+        yPos = lowerTextHeight + qrCodeSpacing;
+        qrCode.draw(graphics, offsetX + HORIZ_BORDER, offsetY + yPos);
+        graphics.setTransformation(offsetX + HORIZ_BORDER, offsetY, 1); // restore transformation
 
-        // amount section
-        yPos += 2 * qrCodeSpacing + QRCode.SIZE;
-        graphics.setTransformation(offsetX + HORIZ_BORDER, offsetY + VERT_BORDER + yPos, 1);
-        yPos = 0;
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_CURRENCY, language), 0, yPos, fontSizeLabel, true);
-        yPos += labelLineHeight + textTopPadding;
-        graphics.putText(bill.getCurrency(), 0, yPos, fontSizeText, false);
-
-        yPos = 0;
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_AMOUNT, language), LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, yPos, fontSizeLabel, true);
-        yPos += labelLineHeight + textTopPadding;
-        if (bill.getAmount() == null) {
-            drawCorners(LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, yPos, AMOUNT_WIDTH, AMOUNT_HEIGHT);
-        } else {
-            graphics.putText(formatAmountForDisplay(bill.getAmount()), LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, yPos, fontSizeText, false);
-        }
 
         // information section
-        graphics.setTransformation(offsetX + HORIZ_BORDER + LEFT_COLUMN_WIDTH + MIDDLE_SPACING, offsetY + VERT_BORDER + rightColumnExtraYOffset, 1);
-        yPos = 0;
+        graphics.setTransformation(offsetX + HORIZ_BORDER + LEFT_COLUMN_WIDTH + MIDDLE_SPACING, offsetY, 1);
+        yPos = SLIP_HEIGHT - VERT_BORDER - rightColumnPaddingTop + labelPaddingTop;
 
         // account
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_ACCOUNT, language), 0, yPos, fontSizeLabel, true);
-        yPos += labelLineHeight + textTopPadding;
-        graphics.putText(account, 0, yPos, fontSizeText, false);
-        yPos += textLineHeight + labelTopPadding;
+        drawLabelAndText(MultilingualText.KEY_ACCOUNT, account);
 
         // creditor
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_CREDITOR, language), 0, yPos, fontSizeLabel, true);
-        yPos += labelLineHeight + textTopPadding;
-        graphics.putTextLines(creditor, 0, yPos, fontSizeText);
-        yPos += creditor.length * textLineHeight + labelTopPadding;
+        drawLabelAndTextLines(MultilingualText.KEY_CREDITOR, creditor);
 
         // final creditor
-        if (finalCreditor != null) {
-            graphics.putText(MultilingualText.getText(MultilingualText.KEY_FINAL_CREDITOR, language), 0, yPos, fontSizeLabel, true);
-            yPos += labelLineHeight + textTopPadding;
-            graphics.putTextLines(finalCreditor, 0, yPos, fontSizeText);
-            yPos += finalCreditor.length * textLineHeight + labelTopPadding;
-        }
+        if (finalCreditor != null)
+            drawLabelAndTextLines(MultilingualText.KEY_FINAL_CREDITOR, finalCreditor);
 
         // reference number
-        if (refNo != null) {
-            graphics.putText(MultilingualText.getText(MultilingualText.KEY_REFERENCE_NUMBER, language), 0, yPos, fontSizeLabel, true);
-            yPos += labelLineHeight + textTopPadding;
-            graphics.putText(refNo, 0, yPos, fontSizeText, false);
-            yPos += textLineHeight + labelTopPadding;
-        }
+        if (refNo != null)
+            drawLabelAndText(MultilingualText.KEY_REFERENCE_NUMBER, refNo);
 
         // additional information
-        if (additionalInfo != null) {
-            graphics.putText(MultilingualText.getText(MultilingualText.KEY_ADDITIONAL_INFORMATION, language), 0, yPos, fontSizeLabel, true);
-            yPos += labelLineHeight + textTopPadding;
-            graphics.putTextLines(additionalInfo, 0, yPos, fontSizeText);
-            yPos += additionalInfo.length * textLineHeight + labelTopPadding;
-        }
+        if (additionalInfo != null)
+            drawLabelAndTextLines(MultilingualText.KEY_ADDITIONAL_INFORMATION, additionalInfo);
 
         // debtor
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_DEBTOR, language), 0, yPos, fontSizeLabel, true);
-        yPos += labelLineHeight + textTopPadding;
-        if (debtor == null) {
-            drawCorners(0, yPos, RIGHT_COLUMN_WIDTH, DEBTOR_HEIGHT);
-            yPos += DEBTOR_HEIGHT + labelTopPadding;
+        if (debtor != null) {
+            drawLabelAndTextLines(MultilingualText.KEY_DEBTOR, debtor);
         } else {
-            graphics.putTextLines(debtor, 0, yPos, fontSizeText);
-            yPos += debtor.length * textLineHeight + labelTopPadding;
+            drawLabel(MultilingualText.KEY_DEBTOR);
+            yPos -= textPaddingTop + DEBTOR_HEIGHT;
+            drawCorners(0, yPos, RIGHT_COLUMN_WIDTH, DEBTOR_HEIGHT);
         }
 
         // due date
-        if (dueDate != null) {
-            graphics.putText(MultilingualText.getText(MultilingualText.KEY_DUE_DATE, language), 0, yPos, fontSizeLabel, true);
-            yPos += labelLineHeight + textTopPadding;
-            graphics.putText(dueDate, 0, yPos, fontSizeText, false);
-        }
+        if (dueDate != null)
+            drawLabelAndText(MultilingualText.KEY_DUE_DATE, dueDate);
+    }
+
+    private void drawLabel(String labelKey) throws IOException {
+        yPos -= labelPaddingTop + FontMetrics.getAscender(fontSizeLabel);
+        graphics.putText(MultilingualText.getText(labelKey, bill.getLanguage()),0, yPos, fontSizeLabel, true);
+        yPos -= FontMetrics.getDescender(fontSizeLabel);
+    }
+
+    private void drawLabelAndText(String labelKey, String text) throws IOException {
+        drawLabel(labelKey);
+        yPos -= textPaddingTop + FontMetrics.getAscender(fontSizeText);
+        graphics.putText(text, 0, yPos, fontSizeText, false);
+        yPos -= FontMetrics.getDescender(fontSizeText);
+    }
+
+    private void drawLabelAndTextLines(String labelKey, String[] textLines) throws IOException {
+        drawLabel(labelKey);
+        yPos -= textPaddingTop + FontMetrics.getAscender(fontSizeText);
+        graphics.putTextLines(textLines, 0, yPos, fontSizeText, textLeading);
+        yPos -= FontMetrics.getDescender(fontSizeText) + (textLines.length - 1) * (FontMetrics.getLineHeight(fontSizeText) + textLeading);
     }
 
     private void formatRightColumText() {
@@ -375,15 +370,15 @@ public class QRBill {
 
     private double computeSpacing() {
 
-        int numBlocks = 3;
+        int numLabels = 3;
         if (finalCreditor != null)
-            numBlocks++;
+            numLabels++;
         if (refNo != null)
-            numBlocks++;
+            numLabels++;
         if (additionalInfo != null)
-            numBlocks++;
+            numLabels++;
         if (dueDate != null)
-            numBlocks++;
+            numLabels++;
 
         int numTextLines = 1;
         numTextLines += creditor.length;
@@ -398,41 +393,41 @@ public class QRBill {
         if (dueDate != null)
             numTextLines += 1;
 
+        final int numExtraLines = debtor != null ? numTextLines - numLabels : (numTextLines + 1) - numLabels;
+        final double preferredTextLeading = PREFERRED_LEADING * fontSizeText * PT_TO_MM;
+
         double heightWithoutSpacing =
-                numBlocks * (FontMetrics.getLineHeight(fontSizeLabel) - FontMetrics.getLeading(fontSizeLabel))
-                + numTextLines * (FontMetrics.getLineHeight(fontSizeText) - FontMetrics.getLeading(fontSizeText))
+                numLabels * FontMetrics.getLineHeight(fontSizeLabel)
+                + numTextLines * FontMetrics.getLineHeight(fontSizeText)
                 + (debtor == null ? DEBTOR_HEIGHT : 0);
-        double uncompressedSpacing = numBlocks * TEXT_TOP_PADDING + (numBlocks - 1) * LABEL_TOP_PADDING
-                + numBlocks * FontMetrics.getLeading(fontSizeLabel)
-                + (numTextLines - 1) * FontMetrics.getLeading(fontSizeText);
+        double uncompressedSpacing =
+                (numLabels - 1) * PREFERRED_LABEL_PADDING_TOP
+                + numLabels * PREFERRED_TEXT_PADDING_TOP
+                + numExtraLines * preferredTextLeading;
 
         double regularHeight = heightWithoutSpacing + uncompressedSpacing;
         double factor = 1;
-        if (regularHeight <= 105 - 2 * VERT_BORDER) {
+        if (regularHeight <= SLIP_HEIGHT - 2 * VERT_BORDER) {
             // text fits without compressed spacing
-            textTopPadding = TEXT_TOP_PADDING;
-            labelTopPadding = LABEL_TOP_PADDING;
-            labelLineHeight = FontMetrics.getLineHeight(fontSizeLabel);
-            textLineHeight = FontMetrics.getLineHeight(fontSizeText);
+            labelPaddingTop = PREFERRED_LABEL_PADDING_TOP;
+            textPaddingTop = PREFERRED_TEXT_PADDING_TOP;
+            textLeading = preferredTextLeading;
 
-            double titleHeight = FontMetrics.getLineHeight(FONT_SIZE_TITLE) + LABEL_TOP_PADDING;
-            if (regularHeight <= 105 - 2 * VERT_BORDER - titleHeight) {
+            double titleHeight = FontMetrics.getLineHeight(FONT_SIZE_TITLE) + labelPaddingTop;
+            if (regularHeight <= SLIP_HEIGHT - 2 * VERT_BORDER - titleHeight) {
                 // align right column with "Supports" line
-                rightColumnExtraYOffset = titleHeight;
+                rightColumnPaddingTop = titleHeight;
             } else {
                 // align right column at the top
-                rightColumnExtraYOffset = 0;
+                rightColumnPaddingTop = 0;
             }
         } else {
             // compressed spacing
-            double remainingSpacing = 105 - 2 * VERT_BORDER - heightWithoutSpacing;
+            double remainingSpacing = SLIP_HEIGHT - 2 * VERT_BORDER - heightWithoutSpacing;
             factor = remainingSpacing / uncompressedSpacing;
-            textTopPadding = TEXT_TOP_PADDING * factor;
-            labelTopPadding = LABEL_TOP_PADDING * factor;
-            labelLineHeight = FontMetrics.getLineHeight(fontSizeLabel)
-                    - (1 - factor) * FontMetrics.getLeading(fontSizeLabel);
-            textLineHeight = FontMetrics.getLineHeight(fontSizeText)
-                    - (1 - factor) * FontMetrics.getLeading(fontSizeText);
+            labelPaddingTop = factor * PREFERRED_LABEL_PADDING_TOP;
+            textPaddingTop = factor * PREFERRED_TEXT_PADDING_TOP;
+            textLeading = factor * preferredTextLeading;
         }
 
         return factor;

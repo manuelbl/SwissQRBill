@@ -20,13 +20,10 @@ import java.io.IOException;
 /**
  * PDF graphics generator
  */
-public class PDFGenerator implements GraphicsGenerator {
-
-    private static final double MM_TO_PT = 72 / 25.4;
+public class PDFCanvas extends AbstractCanvas {
 
     private PDDocument document;
     private PDPageContentStream contentStream;
-    private float pageHeight;
     private int lastStrokingColor = 0;
     private int lastNonStrokingColor = 0;
     private double lastLineWidth = 1;
@@ -36,15 +33,14 @@ public class PDFGenerator implements GraphicsGenerator {
     /**
      * Creates a new instance of the graphics generator
      */
-    public PDFGenerator() {
+    public PDFCanvas() {
     }
 
     @Override
     public void setupPage(double width, double height) throws IOException
     {
         document = new PDDocument();
-        pageHeight = (float)(height * MM_TO_PT);
-        PDPage page = new PDPage(new PDRectangle((float) (width * MM_TO_PT), pageHeight));
+        PDPage page = new PDPage(new PDRectangle((float)(width * MM_TO_PT), (float)(height * MM_TO_PT)));
         document.addPage(page);
         contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.OVERWRITE, true);
     }
@@ -64,7 +60,7 @@ public class PDFGenerator implements GraphicsGenerator {
         contentStream.saveGraphicsState();
         hasSavedGraphicsState = true;
         Matrix matrix = new Matrix();
-        matrix.translate((float)translateX, (float)(pageHeight - translateY));
+        matrix.translate((float)translateX, (float)translateY);
         matrix.scale((float)scale, (float)scale);
         contentStream.transform(matrix);
     }
@@ -72,8 +68,7 @@ public class PDFGenerator implements GraphicsGenerator {
     @Override
     public void putText(String text, double x, double y, int fontSize, boolean isBold) throws IOException {
         x *= MM_TO_PT;
-        y *= -MM_TO_PT;
-        y -= FontMetrics.getAscender(fontSize) * MM_TO_PT;
+        y *= MM_TO_PT;
         contentStream.setFont(isBold ? PDType1Font.HELVETICA_BOLD : PDType1Font.HELVETICA, fontSize);
         contentStream.beginText();
         contentStream.newLineAtOffset((float)x, (float)y);
@@ -82,16 +77,10 @@ public class PDFGenerator implements GraphicsGenerator {
     }
 
     @Override
-    public int putMultilineText(String text, double x, double y, double maxWidth, int fontSize) throws IOException {
-        String[] lines = FontMetrics.splitLines(text, maxWidth * MM_TO_PT, fontSize);
-        putTextLines(lines, x, y, fontSize);
-        return lines.length;
-    }
-
-    @Override
-    public void putTextLines(String[] lines, double x, double y, int fontSize) throws IOException {
-        y *= -MM_TO_PT;
-        y -= FontMetrics.getAscender(fontSize) * MM_TO_PT;
+    public void putTextLines(String[] lines, double x, double y, int fontSize, double leading) throws IOException {
+        x *= MM_TO_PT;
+        y *= MM_TO_PT;
+        float lineHeight = (float)((FontMetrics.getLineHeight(fontSize) + leading) * MM_TO_PT);
         contentStream.setFont(PDType1Font.HELVETICA, fontSize);
         contentStream.beginText();
         contentStream.newLineAtOffset((float)x, (float)y);
@@ -100,7 +89,7 @@ public class PDFGenerator implements GraphicsGenerator {
             if (isFirstLine) {
                 isFirstLine = false;
             } else {
-                contentStream.newLineAtOffset(0, (float)(-FontMetrics.getLineHeight(fontSize) * MM_TO_PT));
+                contentStream.newLineAtOffset(0, -lineHeight);
             }
             contentStream.showText(line);
         }
@@ -115,23 +104,23 @@ public class PDFGenerator implements GraphicsGenerator {
     @Override
     public void moveTo(double x, double y) throws IOException {
         x *= MM_TO_PT;
-        y *= -MM_TO_PT;
+        y *= MM_TO_PT;
         contentStream.moveTo((float)x, (float)y);
     }
 
     @Override
     public void lineTo(double x, double y) throws IOException {
         x *= MM_TO_PT;
-        y *= -MM_TO_PT;
+        y *= MM_TO_PT;
         contentStream.lineTo((float)x, (float)y);
     }
 
     @Override
     public void addRectangle(double x, double y, double width, double height) throws IOException {
         x *= MM_TO_PT;
-        y *= -MM_TO_PT;
+        y *= MM_TO_PT;
         width *= MM_TO_PT;
-        height *= -MM_TO_PT;
+        height *= MM_TO_PT;
         contentStream.addRect((float)x, (float)y, (float)width, (float)height);
     }
 
