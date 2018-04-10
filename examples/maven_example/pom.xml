@@ -18,7 +18,7 @@
         <dependency>
             <groupId>net.codecrete.qrbill</groupId>
             <artifactId>qrbill-generator</artifactId>
-            <version>0.9.1</version>
+            <version>0.9.2</version>
         </dependency>
     </dependencies>
 
@@ -26,6 +26,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>

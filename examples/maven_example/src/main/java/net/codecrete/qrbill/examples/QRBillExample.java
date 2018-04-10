@@ -22,7 +22,7 @@ public class QRBillExample {
 
         // Setup bill
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.fr);
+        bill.setLanguage(Bill.Language.FR);
         bill.setAccount("CH4431999123000889012");
         bill.setAmount(199.95);
         bill.setCurrency("CHF");
@@ -62,7 +62,7 @@ public class QRBillExample {
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
 
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6LandscapeSheet, QRBill.GraphicsFormat.SVG);
+        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.SVG);
 
         Path path = Paths.get("qrbill.svg");
         try {
