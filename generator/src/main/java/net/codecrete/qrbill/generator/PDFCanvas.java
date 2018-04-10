@@ -34,6 +34,7 @@ public class PDFCanvas extends AbstractCanvas {
      * Creates a new instance of the graphics generator
      */
     public PDFCanvas() {
+        // no further initialization needed here
     }
 
     @Override

@@ -29,6 +29,7 @@ public class SVGCanvas extends AbstractCanvas {
      * Creates a new instance
      */
     public SVGCanvas() {
+        // no further initialization needed here
     }
 
 

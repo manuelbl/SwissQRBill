@@ -15,7 +15,7 @@ import java.util.Locale;
 
 
 /**
- * Generates Swiss QR bills.
+ * Generates Swiss QR bill payment slip.
  */
 public class QRBill {
 
@@ -58,7 +58,7 @@ public class QRBill {
     private static final double AMOUNT_HEIGHT = 15; // mm (must not be smaller than 15)
     private static final double RIGHT_COLUMN_WIDTH
             = SLIP_WIDTH - 2 * HORIZ_BORDER - MIDDLE_SPACING - LEFT_COLUMN_WIDTH; // mm (must not be smaller than 65)
-    private static final double DEBTOR_HEIGHT = 25; // mm (must no be smaller than 25)
+    private static final double DEBTOR_HEIGHT = 25; // mm (must not be smaller than 25)
     private static final double PREFERRED_LABEL_PADDING_TOP = 8 * PT_TO_MM;
     private static final double PREFERRED_TEXT_PADDING_TOP = 5 * PT_TO_MM;
     private static final double PREFERRED_LEADING = 0.2; // relative to font size
@@ -104,7 +104,7 @@ public class QRBill {
     }
 
     /**
-     * Generates a QR bill.
+     * Generates a QR bill payment slip.
      * <p>
      *     If the bill data does not validate, a {@link QRBillValidationError} is thrown,
      *     which contains the validation result.
@@ -161,11 +161,17 @@ public class QRBill {
     }
 
 
+    /**
+     * Generates the output as a byte array
+     *
+     * @return byte array containing the binary data in the selected format
+     */
     private byte[] generateOutput() {
 
         double drawingWidth;
         double drawingHeight;
 
+        // define page size
         switch (billFormat) {
             case QR_CODE_ONLY:
                 drawingWidth = QRCode.SIZE;
@@ -186,18 +192,18 @@ public class QRBill {
                 break;
         }
 
+        // initialize canvas
         try (Canvas canvas = createCanvas()) {
 
             graphics = canvas;
             graphics.setupPage(drawingWidth, drawingHeight);
-            switch (billFormat) {
-                case QR_CODE_ONLY:
-                    drawQRCodeOnly();
-                    break;
-                default:
-                    drawQRBill(drawingWidth - SLIP_WIDTH, 0,
-                            drawingWidth > 148.6 || drawingHeight > 105);
-                    break;
+
+            // generate
+            if (billFormat == BillFormat.QR_CODE_ONLY) {
+                qrCode.draw(graphics, 0, 0);
+            } else {
+                drawQRBill(drawingWidth - SLIP_WIDTH, 0,
+                        drawingWidth > 148.6 || drawingHeight > 105);
             }
 
             return graphics.getResult();
@@ -219,24 +225,41 @@ public class QRBill {
                 canvas = new PDFCanvas();
                 break;
             default:
-                canvas = null;
+                throw new QrBillRuntimeException("Invalid graphics format specified");
         }
         return canvas;
     }
 
     private void drawQRBill(double offsetX, double offsetY, boolean hasBorder) throws IOException {
 
+        /*
+            Intro to layout:
+            - Main title, labels and remaining text use separate font weight and size.
+            - Depending on the text that needs to fit:
+              - spacing is reduced
+              - if spacing reduction is not sufficient, font size is reduced
+              - even with smaller font size, spacing might still need to be reduced
+            - There is spacing is above labels (labelPaddingTop), spacing above text (textPaddingTop)
+              and leading between lines of multi-line text blocks (creditors and debitors mainly).
+            - If sufficient space is available (few text lines), then the right column starts at
+              the same vertical position as the "Supports" label in the left column. Otherwise it
+              starts at the top (same as main title).
+            - In the left column, the title and the first label/text part is aligned at the top
+              and the currency and amount are aligned at the bottom. The QR code is then vertically
+              centered in-between.
+         */
+
         // test regular font size
         fontSizeLabel = FONT_SIZE_LABEL;
         fontSizeText = FONT_SIZE_TEXT;
-        formatRightColumText();
+        prepareRightColumnText();
         double factor = computeSpacing();
 
         if (factor < 0.6) {
             // go to smaller font size
             fontSizeLabel = FONT_SIZE_LABEL - 1;
             fontSizeText = FONT_SIZE_TEXT - 1;
-            formatRightColumText();
+            prepareRightColumnText();
             computeSpacing();
         }
 
@@ -287,7 +310,6 @@ public class QRBill {
         qrCode.draw(graphics, offsetX + HORIZ_BORDER, offsetY + yPos);
         graphics.setTransformation(offsetX + HORIZ_BORDER, offsetY, 1); // restore transformation
 
-
         // information section
         graphics.setTransformation(offsetX + HORIZ_BORDER + LEFT_COLUMN_WIDTH + MIDDLE_SPACING, offsetY, 1);
         yPos = SLIP_HEIGHT - VERT_BORDER - rightColumnPaddingTop + labelPaddingTop;
@@ -324,12 +346,14 @@ public class QRBill {
             drawLabelAndText(MultilingualText.KEY_DUE_DATE, dueDate);
     }
 
+    // Draws a label at (0, yPos) and advances vertically
     private void drawLabel(String labelKey) throws IOException {
         yPos -= labelPaddingTop + FontMetrics.getAscender(fontSizeLabel);
         graphics.putText(MultilingualText.getText(labelKey, bill.getLanguage()),0, yPos, fontSizeLabel, true);
         yPos -= FontMetrics.getDescender(fontSizeLabel);
     }
 
+    // Draws a label and a single line of text at (0, yPos) and advances vertically
     private void drawLabelAndText(String labelKey, String text) throws IOException {
         drawLabel(labelKey);
         yPos -= textPaddingTop + FontMetrics.getAscender(fontSizeText);
@@ -337,6 +361,7 @@ public class QRBill {
         yPos -= FontMetrics.getDescender(fontSizeText);
     }
 
+    // Draws a label and a multiple lines of text at (0, yPos) and advances vertically
     private void drawLabelAndTextLines(String labelKey, String[] textLines) throws IOException {
         drawLabel(labelKey);
         yPos -= textPaddingTop + FontMetrics.getAscender(fontSizeText);
@@ -344,7 +369,8 @@ public class QRBill {
         yPos -= FontMetrics.getDescender(fontSizeText) + (textLines.length - 1) * (FontMetrics.getLineHeight(fontSizeText) + textLeading);
     }
 
-    private void formatRightColumText() {
+    // Prepare the text in the right column (mainly formatting and line breaking)
+    private void prepareRightColumnText() {
         account = formatIBANForDisplay(bill.getAccount());
         creditor = FontMetrics.splitLines(formatPersonForDisplay(bill.getCreditor()), RIGHT_COLUMN_WIDTH * MM_TO_PT, fontSizeText);
         finalCreditor = null;
@@ -368,30 +394,31 @@ public class QRBill {
             dueDate = formatDateForDisplay(bill.getDueDate());
     }
 
+    // Compute the padding and leading for the given font size
     private double computeSpacing() {
-
         int numLabels = 3;
-        if (finalCreditor != null)
-            numLabels++;
-        if (refNo != null)
-            numLabels++;
-        if (additionalInfo != null)
-            numLabels++;
-        if (dueDate != null)
-            numLabels++;
-
         int numTextLines = 1;
+
         numTextLines += creditor.length;
-        if (finalCreditor != null)
+        if (finalCreditor != null) {
+            numLabels++;
             numTextLines += finalCreditor.length;
-        if (refNo != null)
+        }
+        if (refNo != null) {
+            numLabels++;
             numTextLines += 1;
-        if (additionalInfo != null)
+        }
+        if (additionalInfo != null) {
+            numLabels++;
             numTextLines += additionalInfo.length;
-        if (debtor != null)
+        }
+        if (debtor != null) {
             numTextLines += debtor.length;
-        if (dueDate != null)
+        }
+        if (dueDate != null) {
+            numLabels++;
             numTextLines += 1;
+        }
 
         final int numExtraLines = debtor != null ? numTextLines - numLabels : (numTextLines + 1) - numLabels;
         final double preferredTextLeading = PREFERRED_LEADING * fontSizeText * PT_TO_MM;
@@ -406,7 +433,6 @@ public class QRBill {
                 + numExtraLines * preferredTextLeading;
 
         double regularHeight = heightWithoutSpacing + uncompressedSpacing;
-        double factor = 1;
         if (regularHeight <= SLIP_HEIGHT - 2 * VERT_BORDER) {
             // text fits without compressed spacing
             labelPaddingTop = PREFERRED_LABEL_PADDING_TOP;
@@ -421,20 +447,16 @@ public class QRBill {
                 // align right column at the top
                 rightColumnPaddingTop = 0;
             }
-        } else {
-            // compressed spacing
-            double remainingSpacing = SLIP_HEIGHT - 2 * VERT_BORDER - heightWithoutSpacing;
-            factor = remainingSpacing / uncompressedSpacing;
-            labelPaddingTop = factor * PREFERRED_LABEL_PADDING_TOP;
-            textPaddingTop = factor * PREFERRED_TEXT_PADDING_TOP;
-            textLeading = factor * preferredTextLeading;
+            return 1;
         }
 
+        // compressed spacing
+        double remainingSpacing = SLIP_HEIGHT - 2 * VERT_BORDER - heightWithoutSpacing;
+        double factor = remainingSpacing / uncompressedSpacing;
+        labelPaddingTop = factor * PREFERRED_LABEL_PADDING_TOP;
+        textPaddingTop = factor * PREFERRED_TEXT_PADDING_TOP;
+        textLeading = factor * preferredTextLeading;
         return factor;
-    }
-
-    private void drawQRCodeOnly() throws IOException {
-        qrCode.draw(graphics, 0, 0);
     }
 
     private void drawCorners(double x, double y, double width, double height) throws IOException {
@@ -461,7 +483,6 @@ public class QRBill {
 
         graphics.strokePath(1, 0);
     }
-
 
 
     private static DecimalFormat amountDisplayFormat;
