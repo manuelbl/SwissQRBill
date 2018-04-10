@@ -68,7 +68,6 @@ public class QRBill {
     private QRCode qrCode;
     private Canvas graphics;
     private BillFormat billFormat;
-    private GraphicsFormat graphicsFormat;
 
     private String account;
     private String[] creditor;
@@ -103,6 +102,7 @@ public class QRBill {
         return result;
     }
 
+
     /**
      * Generates a QR bill payment slip.
      * <p>
@@ -110,11 +110,44 @@ public class QRBill {
      *     which contains the validation result.
      * </p>
      * @param bill the bill data
-     * @param billFormat the bill's output format
-     * @param graphicsFormat the bill's output size
+     * @param billFormat the bill's output size
+     * @param graphicsFormat the bill's output format
      * @return the generated QR bill (as a byte array)
      */
     public static byte[] generate(Bill bill, BillFormat billFormat, GraphicsFormat graphicsFormat) {
+        try (Canvas canvas = createCanvas(graphicsFormat)) {
+            return validateAndGenerate(bill, billFormat, canvas);
+        } catch (IOException e) {
+            throw new QrBillRuntimeException(e);
+        }
+    }
+
+
+    /**
+     * Generates a QR bill payment slip using the specified canvas.
+     * <p>
+     *     If the bill data does not validate, a {@link QRBillValidationError} is thrown,
+     *     which contains the validation result.
+     * </p>
+     * <p>
+     *     The canvas will be initialized with {@code Canvas#setupPage} and it will
+     *     be closed before returning the generated QR bill
+     * </p>
+     * @param bill the bill data
+     * @param billFormat the bill's output size
+     * @param canvas the canvas to draw to
+     * @return the generated QR bill (as a byte array)
+     */
+    public static byte[] generate(Bill bill, BillFormat billFormat, Canvas canvas) {
+        try {
+            return validateAndGenerate(bill, billFormat, canvas);
+        } catch (IOException e) {
+            throw new QrBillRuntimeException(e);
+        }
+    }
+
+
+    private static byte[] validateAndGenerate(Bill bill, BillFormat billFormat, Canvas canvas) throws IOException {
         ValidationResult result = new ValidationResult();
         Validator validator = new Validator(bill, result);
         Bill cleanedBill = validator.validate();
@@ -125,8 +158,7 @@ public class QRBill {
         qrBill.bill = cleanedBill;
         qrBill.qrCode = new QRCode(cleanedBill);
         qrBill.billFormat = billFormat;
-        qrBill.graphicsFormat = graphicsFormat;
-        return qrBill.generateOutput();
+        return qrBill.generateOutput(canvas);
     }
 
 
@@ -164,9 +196,10 @@ public class QRBill {
     /**
      * Generates the output as a byte array
      *
+     * @param canvas the canvas to draw to
      * @return byte array containing the binary data in the selected format
      */
-    private byte[] generateOutput() {
+    private byte[] generateOutput(Canvas canvas) throws IOException {
 
         double drawingWidth;
         double drawingHeight;
@@ -192,9 +225,7 @@ public class QRBill {
                 break;
         }
 
-        // initialize canvas
-        try (Canvas canvas = createCanvas()) {
-
+        try {
             graphics = canvas;
             graphics.setupPage(drawingWidth, drawingHeight);
 
@@ -203,19 +234,17 @@ public class QRBill {
                 qrCode.draw(graphics, 0, 0);
             } else {
                 drawQRBill(drawingWidth - SLIP_WIDTH, 0,
-                        drawingWidth > 148.6 || drawingHeight > 105);
+                        drawingWidth > 148.5 || drawingHeight > 105);
             }
 
             return graphics.getResult();
 
-        } catch (IOException e) {
-            throw new QrBillRuntimeException(e);
         } finally {
             graphics = null;
         }
     }
 
-    private Canvas createCanvas() {
+    private static Canvas createCanvas(GraphicsFormat graphicsFormat) {
         Canvas canvas;
         switch (graphicsFormat) {
             case SVG:
@@ -556,7 +585,7 @@ public class QRBill {
             int n = t + (len - t - 1) % 4 + 1;
             if (t != 0)
                 sb.append(" ");
-            sb.append(refNo.substring(t, n));
+            sb.append(refNo, t, n);
             t = n;
         }
 

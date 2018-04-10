@@ -98,7 +98,7 @@ public class PDFCanvas extends AbstractCanvas {
     }
 
     @Override
-    public void startPath() throws IOException {
+    public void startPath() {
         // path is start implicitly
     }
 
