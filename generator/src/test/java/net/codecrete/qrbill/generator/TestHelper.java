@@ -7,6 +7,7 @@
 package net.codecrete.qrbill.generator;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -31,13 +32,17 @@ public class TestHelper {
             assertArrayEquals(expectedContent, actualContent);
 
         } catch (AssertionError e) {
-            saveActualFile(actualContent, fileExtension);
+            saveActualFile(actualContent, expectedFileName);
             throw e;
         }
+
+        deleteActualFile(expectedFileName);
     }
 
     private static byte[] loadReferenceFile(String filename) {
         try (InputStream is = QRCodeTest.class.getResourceAsStream("/" + filename)) {
+            if (is == null)
+                throw new FileNotFoundException(filename);
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             byte[] chunk = new byte[8192];
             while (true) {
@@ -52,10 +57,20 @@ public class TestHelper {
         }
     }
 
-    private static void saveActualFile(byte[] data, String fileExtension) {
-        Path file = Paths.get("actual" + fileExtension);
+    private static void saveActualFile(byte[] data, String expectedFileName) {
+        Path file = Paths.get("actual_" + expectedFileName);
         try (OutputStream os = Files.newOutputStream(file, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
             os.write(data);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void deleteActualFile(String expectedFileName) {
+        Path file = Paths.get("actual_" + expectedFileName);
+        try {
+            if (Files.exists(file))
+                Files.delete(file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
