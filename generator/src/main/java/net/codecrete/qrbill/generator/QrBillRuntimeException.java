@@ -11,7 +11,9 @@ package net.codecrete.qrbill.generator;
  */
 public class QrBillRuntimeException extends RuntimeException {
 
-    /**
+    private static final long serialVersionUID = 6512029854952325813L;
+
+	/**
      * Constructs a new runtime exception with the specified detail message.
      * @param message detail message
      */

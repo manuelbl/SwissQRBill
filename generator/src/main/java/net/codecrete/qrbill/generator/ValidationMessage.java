@@ -13,7 +13,9 @@ import java.io.Serializable;
  */
 public class ValidationMessage implements Serializable {
 
-    /**
+    private static final long serialVersionUID = -243381506848710081L;
+
+	/**
      * Type of validatin message
      */
     public enum Type {

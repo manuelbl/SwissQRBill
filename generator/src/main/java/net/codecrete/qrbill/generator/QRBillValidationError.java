@@ -11,7 +11,9 @@ package net.codecrete.qrbill.generator;
  */
 public class QRBillValidationError extends RuntimeException {
 
-    private final ValidationResult validationResult;
+    private static final long serialVersionUID = -959460901342010774L;
+    
+	private final ValidationResult validationResult;
 
     /**
      * Constructs a new instance with the specified validation result.

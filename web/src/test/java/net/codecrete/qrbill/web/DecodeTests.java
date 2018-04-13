@@ -6,12 +6,8 @@
 //
 package net.codecrete.qrbill.web;
 
-import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.QRCode;
-import net.codecrete.qrbill.web.api.QrBill;
 import net.codecrete.qrbill.web.api.QrCodeInformation;
 import net.codecrete.qrbill.web.api.ValidationResponse;
-import net.codecrete.qrbill.web.controller.QRBillController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

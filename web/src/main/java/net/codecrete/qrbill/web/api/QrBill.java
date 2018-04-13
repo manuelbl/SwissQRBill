@@ -7,7 +7,6 @@
 package net.codecrete.qrbill.web.api;
 
 import net.codecrete.qrbill.generator.Bill;
-import org.apache.tomcat.jni.Local;
 
 import java.time.LocalDate;
 import java.util.Locale;

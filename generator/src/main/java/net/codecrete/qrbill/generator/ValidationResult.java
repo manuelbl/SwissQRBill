@@ -18,7 +18,9 @@ import static net.codecrete.qrbill.generator.ValidationMessage.Type;
  */
 public class ValidationResult implements Serializable {
 
-    private static final List<ValidationMessage> EMPTY_LIST = Collections.emptyList();
+    private static final long serialVersionUID = -791181851684443602L;
+
+	private static final List<ValidationMessage> EMPTY_LIST = Collections.emptyList();
 
     private List<ValidationMessage> validationMessages;
 
