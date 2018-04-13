@@ -4,7 +4,7 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-package net.codecrete.qrbill.generator;
+package net.codecrete.qrbill.ext;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -15,6 +15,9 @@ import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
+
+import net.codecrete.qrbill.generator.AbstractCanvas;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
@@ -24,6 +27,15 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
 
+
+/**
+ * Canvas for generating PNG files.
+ * <p>
+ * PNGs are not an optimal file format for QR bills.
+ * Vector formats such a SVG or PDF are of better
+ * quality and use far less processing power to generate.
+ * </p>
+ */
 public class PNGCanvas  extends AbstractCanvas {
 
     private int resolution;
@@ -35,6 +47,10 @@ public class PNGCanvas  extends AbstractCanvas {
 
     /**
      * Creates a new instance
+     * <p>
+     * It is recommended to use at least 144 dpi for
+     * a readable result.
+     * </p>
      * @param resolution resolution of the result (in dpi)
      */
     public PNGCanvas(int resolution) {
@@ -45,21 +61,32 @@ public class PNGCanvas  extends AbstractCanvas {
 
     @Override
     public void setupPage(double width, double height) {
+        // create image
         int w = (int)(width * coordinateScale + 0.5);
         int h = (int)(height * coordinateScale + 0.5);
         image = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
+
+        // create graphics context
         graphics = image.createGraphics();
+
+        // clear background
         graphics.setColor(new Color(0xffffff));
         graphics.fillRect(0, 0, w, h);
+
+        // enable high quality output
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+
+        // initialize transformation
         setTransformation(0, 0, 1);
     }
 
     @Override
     public void setTransformation(double translateX, double translateY, double scale) {
+        // Our coorinate system extends from the bottom up. Java Graphics2D's system extends
+        // from the top down. So Y coordinates need to be treated specially.
         translateX *= coordinateScale;
         translateY *= coordinateScale;
         AffineTransform at
@@ -142,6 +169,9 @@ public class PNGCanvas  extends AbstractCanvas {
     }
 
 
+    /**
+     * Saves image as PDF and stores meta data to indicate the resolution.
+     */
     private static void createPNG(BufferedImage image, OutputStream os, int resolution) throws IOException {
 
         for (Iterator<ImageWriter> iw = ImageIO.getImageWritersByFormatName("png"); iw.hasNext();) {
@@ -165,6 +195,10 @@ public class PNGCanvas  extends AbstractCanvas {
     private static final String pngNativeMetadataFormat = "javax_imageio_png_1.0";
     private static final String pngStandardMetadataFormat = "javax_imageio_1.0";
 
+
+    /**
+     * Add meta data to specify the resolution
+     */
     private static void addDpiMetadata(IIOMetadata metadata, int dpi) throws IIOInvalidTreeException {
 
         // native metadata format ("pHYs")
