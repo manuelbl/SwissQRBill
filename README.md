@@ -24,7 +24,7 @@ is convenient for the payer and payee.
 
 The Swiss QR bill library:
 
-- generates PDF and SVG files
+- generates PDF, SVG and PNG files
 - generates A6, A5 and A4 sheets and QR code only
 - multilingual: German, French, Italian, English
 - validates the invoice data and provides detailed validation information
@@ -45,12 +45,12 @@ If you are using *Maven*, add the below dependency to your `pom.xml`:
     <dependency>
         <groupId>net.codecrete.qrbill</groupId>
         <artifactId>qrbill-generator</artifactId>
-        <version>0.9.2</version>
+        <version>0.9.3</version>
     </dependency>
 
 If you are using *Gradle*, add the below dependency to your *build.gradle* file:
 
-    compile group: 'net.codecrete.qrbill', name: 'qrbill-generator', version: '0.9.2'
+    compile group: 'net.codecrete.qrbill', name: 'qrbill-generator', version: '0.9.3'
 
 To generate a QR bill, you first fill in the `Bill` data structure and then call `QRBill.generate`:
 
@@ -72,7 +72,7 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
 
             // Setup bill
             Bill bill = new Bill();
-            bill.setLanguage(Bill.Language.fr);
+            bill.setLanguage(Bill.Language.FR);
             bill.setAccount("CH4431999123000889012");
             bill.setAmount(199.95);
             bill.setCurrency("CHF");
@@ -112,7 +112,7 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
             debtor.setCountryCode("CH");
             bill.setDebtor(debtor);
 
-            byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6LandscapeSheet, QRBill.GraphicsFormat.SVG);
+            byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.SVG);
 
             Path path = Paths.get("qrbill.svg");
             try {
