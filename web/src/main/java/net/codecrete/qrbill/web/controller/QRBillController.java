@@ -131,7 +131,7 @@ public class QRBillController {
      * @return the generated bill if the data is valid; a list of validation messages otherwise
      */
     @RequestMapping(value = "/bill/svg/{format}", method = RequestMethod.POST)
-    public ResponseEntity generateSvgBillPost(@RequestBody QrBill bill, @PathVariable("format") String format) {
+    public ResponseEntity<Object> generateSvgBillPost(@RequestBody QrBill bill, @PathVariable("format") String format) {
         return generateBill(bill, format, GraphicsFormat.SVG);
     }
 
@@ -142,7 +142,7 @@ public class QRBillController {
      * @return the generated bill
      */
     @RequestMapping(value = "/bill/svg/{format}/{id}", method = RequestMethod.GET)
-    public ResponseEntity generateSvgBillGet(@PathVariable("id") String billId, @PathVariable("format") String format) {
+    public ResponseEntity<Object> generateSvgBillGet(@PathVariable("id") String billId, @PathVariable("format") String format) {
         return generateBillFromID(billId, format, GraphicsFormat.SVG);
     }
 
@@ -153,7 +153,7 @@ public class QRBillController {
      * @return the generated bill if the data is valid; a list of validation messages otherwise
      */
     @RequestMapping(value = "/bill/pdf/{format}", method = RequestMethod.POST)
-    public ResponseEntity generatePdfBill(@RequestBody QrBill bill, @PathVariable("format") String format) {
+    public ResponseEntity<Object> generatePdfBill(@RequestBody QrBill bill, @PathVariable("format") String format) {
         return generateBill(bill, format, GraphicsFormat.PDF);
     }
 
@@ -164,12 +164,12 @@ public class QRBillController {
      * @return the generated bill
      */
     @RequestMapping(value = "/bill/pdf/{format}/{id}", method = RequestMethod.GET)
-    public ResponseEntity generatePdfBillGet(@PathVariable("id") String billId, @PathVariable("format") String format) {
+    public ResponseEntity<Object> generatePdfBillGet(@PathVariable("id") String billId, @PathVariable("format") String format) {
         return generateBillFromID(billId, format, GraphicsFormat.PDF);
     }
 
 
-    private ResponseEntity generateBill(QrBill bill, String format, GraphicsFormat graphicsFormat) {
+    private ResponseEntity<Object> generateBill(QrBill bill, String format, GraphicsFormat graphicsFormat) {
         BillFormat billFormat = getBillFormat(format);
         if (billFormat == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -185,7 +185,7 @@ public class QRBillController {
         }
     }
 
-    private ResponseEntity generateBillFromID(String billId, String format, GraphicsFormat graphicsFormat) {
+    private ResponseEntity<Object> generateBillFromID(String billId, String format, GraphicsFormat graphicsFormat) {
         BillFormat billFormat = getBillFormat(format);
         if (billFormat == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
