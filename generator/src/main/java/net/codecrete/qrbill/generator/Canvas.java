@@ -38,6 +38,7 @@ public interface Canvas extends Closeable {
      * </p>
      * @param width width of page (in mm)
      * @param height height of page (in mm)
+     * @throws IOException thrown if graphics cannot be generated
      */
     void setupPage(double width, double height) throws IOException;
 
