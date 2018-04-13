@@ -5,6 +5,24 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Debug (Launch) Web",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "net.codecrete.qrbill.web.Application",
+            "projectName": "web",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Attach)",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 0
+        },
+        {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
