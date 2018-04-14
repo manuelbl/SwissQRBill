@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.QRBillValidationError;
-import net.codecrete.qrbill.generator.QRCode;
 import net.codecrete.qrbill.generator.ValidationResult;
 import net.codecrete.qrbill.generator.Validator;
 import net.codecrete.qrbill.web.api.QrBill;
@@ -77,8 +76,7 @@ public class QRBillController {
 
         // generate QR code text and bill ID
         if (!result.hasErrors()) {
-            QRCode qrCode = new QRCode(validatedBill);
-            String qrCodeText = qrCode.getText();
+            String qrCodeText = QRBill.generateQrCodeText(validatedBill);
             response.setQrCodeText(qrCodeText);
             response.setBillID(generateID(qrCodeText, validatedBill.getLanguage().name()));
         }
@@ -115,8 +113,7 @@ public class QRBillController {
 
         // generate QR code text and bill ID
         if (!result.hasErrors()) {
-            QRCode qrCode = new QRCode(validatedBill);
-            String qrCodeText = qrCode.getText();
+            String qrCodeText = QRBill.generateQrCodeText(validatedBill);
             response.setQrCodeText(qrCodeText);
             response.setBillID(generateID(qrCodeText, validatedBill.getLanguage().name()));
         }
