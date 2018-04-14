@@ -8,6 +8,10 @@ package net.codecrete.qrbill.generator;
 
 import java.io.IOException;
 
+import net.codecrete.qrbill.canvas.Canvas;
+import net.codecrete.qrbill.canvas.PDFCanvas;
+import net.codecrete.qrbill.canvas.SVGCanvas;
+
 
 /**
  * Generates Swiss QR bill payment slip.

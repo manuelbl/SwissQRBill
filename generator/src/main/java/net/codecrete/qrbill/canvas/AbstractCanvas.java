@@ -4,7 +4,7 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-package net.codecrete.qrbill.generator;
+package net.codecrete.qrbill.canvas;
 
 import java.io.IOException;
 

@@ -4,7 +4,7 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-package net.codecrete.qrbill.generator;
+package net.codecrete.qrbill.canvas;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -28,8 +28,6 @@ import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
-
-import net.codecrete.qrbill.generator.AbstractCanvas;
 
 
 /**

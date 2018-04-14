@@ -9,6 +9,8 @@ package net.codecrete.qrbill.generator;
 import org.junit.Assert;
 import org.junit.Test;
 
+import net.codecrete.qrbill.canvas.FontMetrics;
+
 public class FontMetricsTest {
 
     @Test

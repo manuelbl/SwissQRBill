@@ -7,6 +7,7 @@
 package net.codecrete.qrbill.generator;
 
 import net.codecrete.io.nayuki.qrcodegen.QrCode;
+import net.codecrete.qrbill.canvas.Canvas;
 
 import java.io.IOException;
 import java.text.DecimalFormat;

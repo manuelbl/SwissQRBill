@@ -13,6 +13,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import net.codecrete.qrbill.canvas.Canvas;
+import net.codecrete.qrbill.canvas.FontMetrics;
+
 
 /**
  * Layouting and drawing of QR bill payment slip

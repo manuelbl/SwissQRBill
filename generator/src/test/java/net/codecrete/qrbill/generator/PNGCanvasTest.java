@@ -8,7 +8,7 @@ package net.codecrete.qrbill.generator;
 
 import org.junit.Test;
 
-import net.codecrete.qrbill.generator.PNGCanvas;
+import net.codecrete.qrbill.canvas.PNGCanvas;
 
 public class PNGCanvasTest {
 
