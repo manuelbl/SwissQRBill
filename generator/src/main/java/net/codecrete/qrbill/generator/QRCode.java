@@ -25,7 +25,7 @@ import static net.codecrete.qrbill.generator.ValidationMessage.*;
  *     Also provides functions to generate and decode the string embedded in the QR code.
  * </p>
  */
-public class QRCode {
+class QRCode {
     static final double SIZE = 46; // mm
     private static final String CRLF = "\r\n";
 
@@ -36,7 +36,7 @@ public class QRCode {
      * Creates an instance of the QR code for the specified bill data.
      * @param bill bill data
      */
-    public QRCode(Bill bill) {
+    QRCode(Bill bill) {
         this.bill = bill;
         createQRCodeText();
     }
@@ -45,7 +45,7 @@ public class QRCode {
      * Gets the text embedded in the QR code (according to the data structure defined by SIX)
      * @return QR code text
      */
-    public String getText() {
+    String getText() {
         return textBuilder.toString();
     }
 
