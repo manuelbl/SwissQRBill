@@ -57,7 +57,7 @@ class PaymentValidation {
             result.cleanedString = null;
     }
 
-    static private void cleanValue(String value, CleaningResult result, boolean isNormalized) {
+    private static void cleanValue(String value, CleaningResult result, boolean isNormalized) {
 
         /* This code has cognitive complexity 30. Deal with it. */
 
