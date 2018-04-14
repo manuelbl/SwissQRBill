@@ -6,13 +6,17 @@
 //
 package net.codecrete.qrbill.generator;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Address of creditor, final creditor or debtor.
  */
-public class Address {
-    private String name;
+public class Address implements Serializable {
+    
+    private static final long serialVersionUID = -8833174154173397772L;
+    
+	private String name;
     private String street;
     private String houseNo;
     private String postalCode;

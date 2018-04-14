@@ -6,15 +6,18 @@
 //
 package net.codecrete.qrbill.generator;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * QR bill data
  */
-public class Bill {
+public class Bill implements Serializable {
 
-    /**
+    private static final long serialVersionUID = -8104086304378262190L;
+
+	/**
      * QR bill language
      */
     public enum Language {
