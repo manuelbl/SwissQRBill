@@ -192,7 +192,7 @@ public class PNGCanvas  extends AbstractCanvas {
                 break;
         }
 
-        if (writer == null || writeParam == null || metadata == null)
+        if (writer == null || writeParam == null)
             throw new QrBillRuntimeException("No valid PNG writer found");
 
         addDpiMetadata(metadata, resolution);
@@ -216,13 +216,13 @@ public class PNGCanvas  extends AbstractCanvas {
         double pixelsPerMeter = dpi / 25.4 * 1000;
         String pixelsPerMeterString = Integer.toString((int)(pixelsPerMeter + 0.5));
 
-        IIOMetadataNode phys_node = new IIOMetadataNode("pHYs");
-        phys_node.setAttribute("pixelsPerUnitXAxis", pixelsPerMeterString);
-        phys_node.setAttribute("pixelsPerUnitYAxis", pixelsPerMeterString);
-        phys_node.setAttribute("unitSpecifier", "meter");
+        IIOMetadataNode physNode = new IIOMetadataNode("pHYs");
+        physNode.setAttribute("pixelsPerUnitXAxis", pixelsPerMeterString);
+        physNode.setAttribute("pixelsPerUnitYAxis", pixelsPerMeterString);
+        physNode.setAttribute("unitSpecifier", "meter");
 
         IIOMetadataNode root = new IIOMetadataNode(metadata.getNativeMetadataFormatName());
-        root.appendChild(phys_node);
+        root.appendChild(physNode);
         metadata.mergeTree(metadata.getNativeMetadataFormatName(), root);
 
         // standard metadata format
