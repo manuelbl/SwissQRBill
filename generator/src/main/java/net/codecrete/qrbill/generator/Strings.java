@@ -13,6 +13,11 @@ package net.codecrete.qrbill.generator;
  */
 class Strings {
 
+
+    private Strings() {
+        // Do not create instances
+    }
+
     /**
      * Returns string with leading and trailing whitespace removed
      * <p>

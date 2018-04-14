@@ -29,6 +29,8 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
 
+import net.codecrete.qrbill.generator.QrBillRuntimeException;
+
 
 /**
  * Canvas for generating PNG files.
@@ -58,7 +60,7 @@ public class PNGCanvas  extends AbstractCanvas {
     public PNGCanvas(int resolution) {
         this.resolution = resolution;
         coordinateScale = (float)(resolution / 25.4);
-        fontScale = (float)(resolution / 72);
+        fontScale = (float)(resolution / 72.0);
     }
 
     @Override
@@ -156,8 +158,9 @@ public class PNGCanvas  extends AbstractCanvas {
         graphics.dispose();
         graphics = null;
         ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+        // Instead of ImageIO.write(image, "png", os)
         createPNG(image, os, resolution);
-        //ImageIO.write(image, "png", os);
         return os.toByteArray();
     }
 
@@ -176,26 +179,32 @@ public class PNGCanvas  extends AbstractCanvas {
      */
     private static void createPNG(BufferedImage image, OutputStream os, int resolution) throws IOException {
 
+        ImageWriter writer = null;
+        ImageWriteParam writeParam = null;
+        IIOMetadata metadata = null;
+
         for (Iterator<ImageWriter> iw = ImageIO.getImageWritersByFormatName("png"); iw.hasNext();) {
-            ImageWriter writer = iw.next();
-            ImageWriteParam writeParam = writer.getDefaultWriteParam();
+            writer = iw.next();
+            writeParam = writer.getDefaultWriteParam();
             ImageTypeSpecifier typeSpecifier = ImageTypeSpecifier.createFromBufferedImageType(image.getType());
-            IIOMetadata metadata = writer.getDefaultImageMetadata(typeSpecifier, writeParam);
-            if (metadata.isReadOnly() || !metadata.isStandardMetadataFormatSupported())
-                continue;
+            metadata = writer.getDefaultImageMetadata(typeSpecifier, writeParam);
+            if (!metadata.isReadOnly() && metadata.isStandardMetadataFormatSupported())
+                break;
+        }
 
-            addDpiMetadata(metadata, resolution);
+        if (writer == null || writeParam == null || metadata == null)
+            throw new QrBillRuntimeException("No valid PNG writer found");
 
-            try (ImageOutputStream stream = ImageIO.createImageOutputStream(os)) {
-                writer.setOutput(stream);
-                writer.write(metadata, new IIOImage(image, null, metadata), writeParam);
-            }
-            break;
+        addDpiMetadata(metadata, resolution);
+
+        try (ImageOutputStream stream = ImageIO.createImageOutputStream(os)) {
+            writer.setOutput(stream);
+            writer.write(metadata, new IIOImage(image, null, metadata), writeParam);
         }
     }
+    
 
-    private static final String pngNativeMetadataFormat = "javax_imageio_png_1.0";
-    private static final String pngStandardMetadataFormat = "javax_imageio_1.0";
+    private static final String PNG_STANDARD_METADATA_FORMAT = "javax_imageio_1.0";
 
 
     /**
@@ -207,14 +216,14 @@ public class PNGCanvas  extends AbstractCanvas {
         double pixelsPerMeter = dpi / 25.4 * 1000;
         String pixelsPerMeterString = Integer.toString((int)(pixelsPerMeter + 0.5));
 
-        IIOMetadataNode pHYs_node = new IIOMetadataNode("pHYs");
-        pHYs_node.setAttribute("pixelsPerUnitXAxis", pixelsPerMeterString);
-        pHYs_node.setAttribute("pixelsPerUnitYAxis", pixelsPerMeterString);
-        pHYs_node.setAttribute("unitSpecifier", "meter");
+        IIOMetadataNode phys_node = new IIOMetadataNode("pHYs");
+        phys_node.setAttribute("pixelsPerUnitXAxis", pixelsPerMeterString);
+        phys_node.setAttribute("pixelsPerUnitYAxis", pixelsPerMeterString);
+        phys_node.setAttribute("unitSpecifier", "meter");
 
-        IIOMetadataNode root = new IIOMetadataNode(pngNativeMetadataFormat);
-        root.appendChild(pHYs_node);
-        metadata.mergeTree(pngNativeMetadataFormat, root);
+        IIOMetadataNode root = new IIOMetadataNode(metadata.getNativeMetadataFormatName());
+        root.appendChild(phys_node);
+        metadata.mergeTree(metadata.getNativeMetadataFormatName(), root);
 
         // standard metadata format
         double pixelsPerMM = dpi / 25.4;
@@ -230,9 +239,9 @@ public class PNGCanvas  extends AbstractCanvas {
         dimension.appendChild(horizontalPixelSize);
         dimension.appendChild(verticalPixelSize);
 
-        root = new IIOMetadataNode(pngStandardMetadataFormat);
+        root = new IIOMetadataNode(PNG_STANDARD_METADATA_FORMAT);
         root.appendChild(dimension);
-        metadata.mergeTree(pngStandardMetadataFormat, root);
+        metadata.mergeTree(PNG_STANDARD_METADATA_FORMAT, root);
     }
 
 }

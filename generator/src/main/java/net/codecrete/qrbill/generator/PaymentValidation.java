@@ -15,6 +15,10 @@ import java.text.Normalizer;
  */
 class PaymentValidation {
 
+    private PaymentValidation() {
+        // Do not create instances
+    }
+
     /** Result of cleaning a string value */
     static class CleaningResult {
         /** Cleaned string */
@@ -55,7 +59,7 @@ class PaymentValidation {
 
     static private void cleanValue(String value, CleaningResult result, boolean isNormalized) {
 
-        /* This code has cognitive complexity 31. Deal with it. */
+        /* This code has cognitive complexity 30. Deal with it. */
 
         if (value == null)
             return;
