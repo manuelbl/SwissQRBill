@@ -59,9 +59,8 @@ public class QRBillController {
     @ResponseBody
     public ValidationResponse validate(@RequestBody QrBill bill) {
         // Validate data
-        ValidationResult result = new ValidationResult();
-        Validator validator = new Validator(QrBill.toGeneratorBill(bill), result);
-        Bill validatedBill = validator.validate();
+        ValidationResult result = Validator.validate(QrBill.toGeneratorBill(bill));
+        Bill validatedBill = result.getCleanedBill();
 
         ValidationResponse response = new ValidationResponse();
         response.setValid(result.isValid());
@@ -96,9 +95,8 @@ public class QRBillController {
         Bill bill = QRBill.decodeQrCodeText(info.getQrCodeText());
 
         // Validate data
-        ValidationResult result = new ValidationResult();
-        Validator validator = new Validator(bill, result);
-        Bill validatedBill = validator.validate();
+        ValidationResult result = Validator.validate(bill);
+        Bill validatedBill = result.getCleanedBill();
 
         ValidationResponse response = new ValidationResponse();
         response.setValid(result.isValid());

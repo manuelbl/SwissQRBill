@@ -53,10 +53,7 @@ public class QRBill {
      * @return validation result
      */
     public static ValidationResult validate(Bill bill) {
-        ValidationResult result = new ValidationResult();
-        Validator validator = new Validator(bill, result);
-        validator.validate();
-        return result;
+        return Validator.validate(bill);
     }
 
 
@@ -105,9 +102,8 @@ public class QRBill {
 
 
     private static byte[] validateAndGenerate(Bill bill, BillFormat billFormat, Canvas canvas) throws IOException {
-        ValidationResult result = new ValidationResult();
-        Validator validator = new Validator(bill, result);
-        Bill cleanedBill = validator.validate();
+        ValidationResult result = Validator.validate(bill);
+        Bill cleanedBill = result.getCleanedBill();
         if (result.hasErrors())
             throw new QRBillValidationError(result);
 
@@ -129,9 +125,8 @@ public class QRBill {
      * @return the QR code text
      */
     public static String generateQrCodeText(Bill bill) {
-        ValidationResult result = new ValidationResult();
-        Validator validator = new Validator(bill, result);
-        Bill cleanedBill = validator.validate();
+        ValidationResult result = Validator.validate(bill);
+        Bill cleanedBill = result.getCleanedBill();
         if (result.hasErrors())
             throw new QRBillValidationError(result);
 

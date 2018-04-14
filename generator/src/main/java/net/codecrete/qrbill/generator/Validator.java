@@ -31,13 +31,25 @@ public class Validator {
     private Bill billOut;
     private ValidationResult validationResult;
 
-    public Validator(Bill bill, ValidationResult result) {
-        billIn = bill;
-        billOut = new Bill();
-        validationResult = result;
+
+    /**
+     * Validates the QR bill data and returns the validation messages (if any) and the cleaned bill data.
+     * 
+     * @param bill bill data to validate
+     * @return validation result
+     */
+    public static ValidationResult validate(Bill bill) {
+        Validator validator = new Validator(bill);
+        return validator.validateBill();
     }
 
-    public Bill validate() {
+    private Validator(Bill bill) {
+        billIn = bill;
+        billOut = new Bill();
+        validationResult = new ValidationResult();
+    }
+
+    private ValidationResult validateBill() {
 
         billOut.setLanguage(billIn.getLanguage());
         billOut.setVersion(billIn.getVersion());
@@ -52,7 +64,8 @@ public class Validator {
         validateDebtor();
         validateDueDate();
 
-        return billOut;
+        validationResult.setCleanedBill(billOut);
+        return validationResult;
     }
 
     private void validateCurrency() {

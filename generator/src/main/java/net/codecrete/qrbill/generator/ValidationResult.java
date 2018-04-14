@@ -19,10 +19,11 @@ import static net.codecrete.qrbill.generator.ValidationMessage.Type;
 public class ValidationResult implements Serializable {
 
     private static final long serialVersionUID = -791181851684443602L;
-
 	private static final List<ValidationMessage> EMPTY_LIST = Collections.emptyList();
 
     private List<ValidationMessage> validationMessages;
+    private Bill cleanedBill;
+
 
     /**
      * Gets the list of validation messages
@@ -102,4 +103,20 @@ public class ValidationResult implements Serializable {
             validationMessages = new ArrayList<>();
         validationMessages.add(message);
     }
+
+	/**
+     * Gets the cleaned bill data
+	 * @return the cleand bill data
+	 */
+	public Bill getCleanedBill() {
+		return cleanedBill;
+	}
+
+	/**
+     * Sets the cleaned bill data
+	 * @param cleanedBill the cleand bill data
+	 */
+	public void setCleanedBill(Bill cleanedBill) {
+		this.cleanedBill = cleanedBill;
+	}
 }

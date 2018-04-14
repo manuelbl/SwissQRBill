@@ -519,9 +519,8 @@ public class ValidationTest {
     }
 
     private void validate() {
-        result = new ValidationResult();
-        Validator validator = new Validator(bill, result);
-        validatedBill = validator.validate();
+        result = Validator.validate(bill);
+        validatedBill = result.getCleanedBill();
     }
 
     private void assertNoMessages() {
