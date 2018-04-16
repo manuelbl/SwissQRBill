@@ -17,16 +17,27 @@ import net.codecrete.qrbill.generator.ValidationMessage.Type;
  */
 public class Validator {
 
+    /** Validation message key: currency must be "CHF" or "EUR" */
     public static final String KEY_CURRENCY_IS_CHF_OR_EUR = "currency_is_chf_or_eur";
+    /** Validation message key: amount must be between 0.01 and 999999999.99 */
     public static final String KEY_AMOUNT_IS_IN_VALID_RANGE = "amount_in_valid_range";
+    /** Validation message key: IBAN must be from bank in Switzerland or Liechtenstein */
     public static final String KEY_ACCOUNT_IS_CH_LI_IBAN = "account_is_ch_li_iban";
+    /** Validation message key: IBAN number must have valid format and check digit */
     public static final String KEY_ACCOUNT_IS_VALID_IBAN = "account_is_valid_iban";
+    /** Validation message key: ISO 11649 reference number must have valid format and check digit */
     public static final String KEY_VALID_ISO11649_CREDITOR_REF = "valid_iso11649_creditor_ref";
+    /** Validation message key: QR reference number must have valid format and check digit */
     public static final String KEY_VALID_QR_REF_NO = "valid_qr_ref_no";
+    /** Validation message key: Reference number is mandatory for IBANs with QR-IID */
     public static final String KEY_MANDATORY_FOR_QR_IBAN = "mandatory_for_qr_iban";
+    /** Validation message key: Field is mandatory */
     public static final String KEY_FIELD_IS_MANDATORY = "field_is_mandatory";
+    /** Validation message key: Country code must consist of two letters */
     public static final String KEY_VALID_COUNTRY_CODE = "valid_country_code";
+    /** Validation message key: Field has been clipped to not exceed the maximum length */
     public static final String KEY_FIELD_CLIPPED = "field_clipped";
+    /** Validation message key: Unsupported characters have been replaced */
     public static final String KEY_REPLACED_UNSUPPORTED_CHARACTERS = "replaced_unsupported_characters";
 
     private Bill billIn;
@@ -107,7 +118,6 @@ public class Validator {
                 } else if (account.length() != 21) {
                     validationResult.addMessage(Type.ERROR, Bill.FIELD_ACCOUNT, KEY_ACCOUNT_IS_VALID_IBAN);
                 } else {
-                    // TODO specific Swiss IBAN validation
                     billOut.setAccount(account);
                     isQRBillIBAN = account.charAt(4) == '3' && (account.charAt(5) == '0' || account.charAt(5) == '1');
                 }
