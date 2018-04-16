@@ -148,4 +148,11 @@ public class EncodedTextTest {
                 QRBill.encodeQrCodeText(bill));
     }
 
+    @Test(expected = QRBillValidationError.class)
+    public void createText5() {
+        Bill bill = SampleData.getExample4();
+        bill.setAmount(0.0);
+        QRBill.encodeQrCodeText(bill);
+    }
+
 }

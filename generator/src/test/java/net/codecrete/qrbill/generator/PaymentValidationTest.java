@@ -40,6 +40,16 @@ public class PaymentValidationTest {
     }
 
     @Test
+    public void invalidChar3() {
+        assertFalse(PaymentValidation.isValidIBAN("1E67500700100093008102"));
+    }
+
+    @Test
+    public void invalidChar4() {
+        assertFalse(PaymentValidation.isValidIBAN("DE6B500700100093008102"));
+    }
+
+    @Test
     public void invalidCheckDigit() {
         assertFalse(PaymentValidation.isValidIBAN("DE67-5007-0010-0093-0081-03"));
     }
@@ -68,4 +78,40 @@ public class PaymentValidationTest {
     public void invalidCheckDigitQRReference() {
         assertFalse(PaymentValidation.isValidQRReferenceNo("210000000003139471430009016"));
     }
+
+    @Test
+    public void validISO11649Reference() {
+        assertTrue(PaymentValidation.isValidISO11649ReferenceNo("RF18000000000539007547034"));
+    }
+
+    @Test
+    public void invalidLengthISO11649Reference1() {
+        assertFalse(PaymentValidation.isValidISO11649ReferenceNo("RF18"));
+    }
+
+    @Test
+    public void invalidLengthISO11649Reference2() {
+        assertFalse(PaymentValidation.isValidISO11649ReferenceNo("RF1800000000000539007547034"));
+    }
+
+    @Test
+    public void invalidCharsISO11649Reference1() {
+        assertFalse(PaymentValidation.isValidISO11649ReferenceNo("RF18 0000 0000 0539 0075 4703 4"));
+    }
+
+    @Test
+    public void invalidCharsISO11649Reference2() {
+        assertFalse(PaymentValidation.isValidISO11649ReferenceNo("RF18000.00000539.07547034"));
+    }
+
+    @Test
+    public void invalidCharsISO11649Reference3() {
+        assertFalse(PaymentValidation.isValidISO11649ReferenceNo("RFAB000000000539007547034"));
+    }
+
+    @Test
+    public void invalidCheckDigitISO11649Reference() {
+        assertFalse(PaymentValidation.isValidISO11649ReferenceNo("RF18000000000539007547033"));
+    }
+
 }
