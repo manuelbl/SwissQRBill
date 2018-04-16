@@ -396,7 +396,7 @@ class PaymentPartLayout {
         StringBuilder sb = new StringBuilder();
         int t = 0;
         while (t < len) {
-            int n = t + (len - t - 1) % 4 + 1;
+            int n = t + (len - t - 1) % 5 + 1;
             if (t != 0)
                 sb.append(" ");
             sb.append(refNo, t, n);
