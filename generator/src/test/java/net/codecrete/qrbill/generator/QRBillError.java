@@ -15,7 +15,7 @@ import net.codecrete.qrbill.canvas.AbstractCanvas;
 
 public class QRBillError {
 
-    @Test(expected = QRBillRuntimeException.class)
+    @Test(expected = QRBillUnexpectedException.class)
     public void testQrBillRuntimeException() {
         Bill bill = SampleData.getExample1();
         FailingCanvas canvas = new FailingCanvas();

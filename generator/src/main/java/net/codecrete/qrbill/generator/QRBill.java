@@ -105,7 +105,7 @@ public class QRBill {
         try (Canvas canvas = createCanvas(graphicsFormat)) {
             return validateAndGenerate(bill, billFormat, canvas);
         } catch (IOException e) {
-            throw new QRBillRuntimeException(e);
+            throw new QRBillUnexpectedException(e);
         }
     }
 
@@ -129,7 +129,7 @@ public class QRBill {
         try (Canvas c = canvas) {
             return validateAndGenerate(bill, billFormat, c);
         } catch (IOException e) {
-            throw new QRBillRuntimeException(e);
+            throw new QRBillUnexpectedException(e);
         }
     }
 
@@ -244,7 +244,7 @@ public class QRBill {
                 canvas = new PDFCanvas();
                 break;
             default:
-                throw new QRBillRuntimeException("Invalid graphics format specified");
+                throw new QRBillUnexpectedException("Invalid graphics format specified");
         }
         return canvas;
     }

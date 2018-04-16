@@ -29,8 +29,6 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
 
-import net.codecrete.qrbill.generator.QRBillRuntimeException;
-
 
 /**
  * Canvas for generating PNG files.
@@ -193,7 +191,7 @@ public class PNGCanvas  extends AbstractCanvas {
         }
 
         if (writer == null || writeParam == null)
-            throw new QRBillRuntimeException("No valid PNG writer found");
+            throw new net.codecrete.qrbill.generator.QRBillUnexpectedException("No valid PNG writer found");
 
         addDpiMetadata(metadata, resolution);
 
