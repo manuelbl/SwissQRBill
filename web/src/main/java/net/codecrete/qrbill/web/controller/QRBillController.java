@@ -11,7 +11,6 @@ import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.QRBillValidationError;
 import net.codecrete.qrbill.generator.ValidationResult;
-import net.codecrete.qrbill.generator.Validator;
 import net.codecrete.qrbill.web.api.QrBill;
 import net.codecrete.qrbill.web.api.QrCodeInformation;
 import net.codecrete.qrbill.web.api.ValidationMessage;
@@ -59,7 +58,7 @@ public class QRBillController {
     @ResponseBody
     public ValidationResponse validate(@RequestBody QrBill bill) {
         // Validate data
-        ValidationResult result = Validator.validate(QrBill.toGeneratorBill(bill));
+        ValidationResult result = QRBill.validate(QrBill.toGeneratorBill(bill));
         Bill validatedBill = result.getCleanedBill();
 
         ValidationResponse response = new ValidationResponse();
@@ -75,7 +74,7 @@ public class QRBillController {
 
         // generate QR code text and bill ID
         if (!result.hasErrors()) {
-            String qrCodeText = QRBill.generateQrCodeText(validatedBill);
+            String qrCodeText = QRBill.encodeQrCodeText(validatedBill);
             response.setQrCodeText(qrCodeText);
             response.setBillID(generateID(qrCodeText, validatedBill.getLanguage().name()));
         }
@@ -95,7 +94,7 @@ public class QRBillController {
         Bill bill = QRBill.decodeQrCodeText(info.getQrCodeText());
 
         // Validate data
-        ValidationResult result = Validator.validate(bill);
+        ValidationResult result = QRBill.validate(bill);
         Bill validatedBill = result.getCleanedBill();
 
         ValidationResponse response = new ValidationResponse();
@@ -111,7 +110,7 @@ public class QRBillController {
 
         // generate QR code text and bill ID
         if (!result.hasErrors()) {
-            String qrCodeText = QRBill.generateQrCodeText(validatedBill);
+            String qrCodeText = QRBill.encodeQrCodeText(validatedBill);
             response.setQrCodeText(qrCodeText);
             response.setBillID(generateID(qrCodeText, validatedBill.getLanguage().name()));
         }

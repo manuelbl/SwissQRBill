@@ -15,30 +15,7 @@ import net.codecrete.qrbill.generator.ValidationMessage.Type;
 /**
  * Validates and cleans QR bill data.
  */
-public class Validator {
-
-    /** Validation message key: currency must be "CHF" or "EUR" */
-    public static final String KEY_CURRENCY_IS_CHF_OR_EUR = "currency_is_chf_or_eur";
-    /** Validation message key: amount must be between 0.01 and 999999999.99 */
-    public static final String KEY_AMOUNT_IS_IN_VALID_RANGE = "amount_in_valid_range";
-    /** Validation message key: IBAN must be from bank in Switzerland or Liechtenstein */
-    public static final String KEY_ACCOUNT_IS_CH_LI_IBAN = "account_is_ch_li_iban";
-    /** Validation message key: IBAN number must have valid format and check digit */
-    public static final String KEY_ACCOUNT_IS_VALID_IBAN = "account_is_valid_iban";
-    /** Validation message key: ISO 11649 reference number must have valid format and check digit */
-    public static final String KEY_VALID_ISO11649_CREDITOR_REF = "valid_iso11649_creditor_ref";
-    /** Validation message key: QR reference number must have valid format and check digit */
-    public static final String KEY_VALID_QR_REF_NO = "valid_qr_ref_no";
-    /** Validation message key: Reference number is mandatory for IBANs with QR-IID */
-    public static final String KEY_MANDATORY_FOR_QR_IBAN = "mandatory_for_qr_iban";
-    /** Validation message key: Field is mandatory */
-    public static final String KEY_FIELD_IS_MANDATORY = "field_is_mandatory";
-    /** Validation message key: Country code must consist of two letters */
-    public static final String KEY_VALID_COUNTRY_CODE = "valid_country_code";
-    /** Validation message key: Field has been clipped to not exceed the maximum length */
-    public static final String KEY_FIELD_CLIPPED = "field_clipped";
-    /** Validation message key: Unsupported characters have been replaced */
-    public static final String KEY_REPLACED_UNSUPPORTED_CHARACTERS = "replaced_unsupported_characters";
+class Validator {
 
     private Bill billIn;
     private Bill billOut;
@@ -51,7 +28,7 @@ public class Validator {
      * @param bill bill data to validate
      * @return validation result
      */
-    public static ValidationResult validate(Bill bill) {
+    static ValidationResult validate(Bill bill) {
         Validator validator = new Validator(bill);
         return validator.validateBill();
     }
@@ -86,7 +63,7 @@ public class Validator {
         if (validateMandatory(currency, Bill.FIELD_CURRENCY)) {
             currency = currency.toUpperCase(Locale.US);
             if (!"CHF".equals(currency) && !"EUR".equals(currency)) {
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_CURRENCY, KEY_CURRENCY_IS_CHF_OR_EUR);
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_CURRENCY, QRBill.KEY_CURRENCY_IS_CHF_OR_EUR);
             } else {
                 billOut.setCurrency(currency);
             }
@@ -100,7 +77,7 @@ public class Validator {
         } else {
             amount = Math.round(amount * 100) / 100.0; // round to multiple of 0.01
             if (amount < 0.01 || amount > 999999999.99) {
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_AMOUNT, KEY_AMOUNT_IS_IN_VALID_RANGE);
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_AMOUNT, QRBill.KEY_AMOUNT_IS_IN_VALID_RANGE);
             } else {
                 billOut.setAmount(amount);
             }
@@ -114,9 +91,9 @@ public class Validator {
             account = Strings.whiteSpaceRemoved(account).toUpperCase(Locale.US);
             if (validateIBAN(account, Bill.FIELD_ACCOUNT)) {
                 if (!account.startsWith("CH") && !account.startsWith("LI")) {
-                    validationResult.addMessage(Type.ERROR, Bill.FIELD_ACCOUNT, KEY_ACCOUNT_IS_CH_LI_IBAN);
+                    validationResult.addMessage(Type.ERROR, Bill.FIELD_ACCOUNT, QRBill.KEY_ACCOUNT_IS_CH_LI_IBAN);
                 } else if (account.length() != 21) {
-                    validationResult.addMessage(Type.ERROR, Bill.FIELD_ACCOUNT, KEY_ACCOUNT_IS_VALID_IBAN);
+                    validationResult.addMessage(Type.ERROR, Bill.FIELD_ACCOUNT, QRBill.KEY_ACCOUNT_IS_VALID_IBAN);
                 } else {
                     billOut.setAccount(account);
                     isQRBillIBAN = account.charAt(4) == '3' && (account.charAt(5) == '0' || account.charAt(5) == '1');
@@ -141,14 +118,14 @@ public class Validator {
 
         if (referenceNo == null) {
             if (isQRBillIBAN)
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, KEY_MANDATORY_FOR_QR_IBAN);
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, QRBill.KEY_MANDATORY_FOR_QR_IBAN);
             return;
         }
 
         referenceNo = Strings.whiteSpaceRemoved(referenceNo);
         if (referenceNo.startsWith("RF")) {
             if (!PaymentValidation.isValidISO11649ReferenceNo(referenceNo)) {
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, KEY_VALID_ISO11649_CREDITOR_REF);
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, QRBill.KEY_VALID_ISO11649_CREDITOR_REF);
             } else {
                 billOut.setReferenceNo(referenceNo);
             }
@@ -156,7 +133,7 @@ public class Validator {
             if (referenceNo.length() < 27)
                 referenceNo = "00000000000000000000000000".substring(0, 27 - referenceNo.length()) + referenceNo;
             if (!PaymentValidation.isValidQRReferenceNo(referenceNo))
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, KEY_VALID_QR_REF_NO);
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, QRBill.KEY_VALID_QR_REF_NO);
             else
                 billOut.setReferenceNo(referenceNo);
         }
@@ -181,10 +158,10 @@ public class Validator {
         Address addressOut = cleanedPerson(addressIn, fieldRoot);
         if (addressOut == null) {
             if (mandatory) {
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_NAME, KEY_FIELD_IS_MANDATORY);
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_POSTAL_CODE, KEY_FIELD_IS_MANDATORY);
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_TOWN, KEY_FIELD_IS_MANDATORY);
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE, KEY_FIELD_IS_MANDATORY);
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_NAME, QRBill.KEY_FIELD_IS_MANDATORY);
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_POSTAL_CODE, QRBill.KEY_FIELD_IS_MANDATORY);
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_TOWN, QRBill.KEY_FIELD_IS_MANDATORY);
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE, QRBill.KEY_FIELD_IS_MANDATORY);
             }
             return null;
         }
@@ -206,14 +183,14 @@ public class Validator {
         if (addressOut.getCountryCode() != null
             && (addressOut.getCountryCode().length() != 2
                     || !PaymentValidation.isAlphaNumeric(addressOut.getCountryCode())))
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE, KEY_VALID_COUNTRY_CODE);
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE, QRBill.KEY_VALID_COUNTRY_CODE);
 
         return addressOut;
     }
 
     private boolean validateIBAN(String iban, String field) {
         if (!PaymentValidation.isValidIBAN(iban)) {
-            validationResult.addMessage(Type.ERROR, field, KEY_ACCOUNT_IS_VALID_IBAN);
+            validationResult.addMessage(Type.ERROR, field, QRBill.KEY_ACCOUNT_IS_VALID_IBAN);
             return false;
         }
         return true;
@@ -240,7 +217,7 @@ public class Validator {
 
     private boolean validateMandatory(String value, String field) {
         if (Strings.isNullOrEmpty(value)) {
-            validationResult.addMessage(Type.ERROR, field, KEY_FIELD_IS_MANDATORY);
+            validationResult.addMessage(Type.ERROR, field, QRBill.KEY_FIELD_IS_MANDATORY);
             return false;
         }
 
@@ -249,7 +226,7 @@ public class Validator {
 
     private boolean validateMandatory(String value, String fieldRoot, String subfield) {
         if (Strings.isNullOrEmpty(value)) {
-            validationResult.addMessage(Type.ERROR, fieldRoot + subfield, KEY_FIELD_IS_MANDATORY);
+            validationResult.addMessage(Type.ERROR, fieldRoot + subfield, QRBill.KEY_FIELD_IS_MANDATORY);
             return false;
         }
 
@@ -258,7 +235,7 @@ public class Validator {
 
     private String clippedValue(String value, int maxLength, String field) {
         if (value != null && value.length() > maxLength) {
-            validationResult.addMessage(Type.WARNING, field, KEY_FIELD_CLIPPED, new String[] { Integer.toString(maxLength) });
+            validationResult.addMessage(Type.WARNING, field, QRBill.KEY_FIELD_CLIPPED, new String[] { Integer.toString(maxLength) });
             return value.substring(0, maxLength);
         }
 
@@ -267,7 +244,7 @@ public class Validator {
 
     private String clippedValue(String value, int maxLength, String fieldRoot, String subfield) {
         if (value != null && value.length() > maxLength) {
-            validationResult.addMessage(Type.WARNING, fieldRoot + subfield, KEY_FIELD_CLIPPED, new String[] { Integer.toString(maxLength) });
+            validationResult.addMessage(Type.WARNING, fieldRoot + subfield, QRBill.KEY_FIELD_CLIPPED, new String[] { Integer.toString(maxLength) });
             return value.substring(0, maxLength);
         }
 
@@ -279,7 +256,7 @@ public class Validator {
         CleaningResult result = new CleaningResult();
         PaymentValidation.cleanValue(value, result);
         if (result.replacedUnsupportedChars)
-            validationResult.addMessage(Type.WARNING, fieldRoot + subfield, KEY_REPLACED_UNSUPPORTED_CHARACTERS);
+            validationResult.addMessage(Type.WARNING, fieldRoot + subfield, QRBill.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         return result.cleanedString;
     }
 }

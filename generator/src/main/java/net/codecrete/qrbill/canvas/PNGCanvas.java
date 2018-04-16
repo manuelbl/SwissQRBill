@@ -29,7 +29,7 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
 
-import net.codecrete.qrbill.generator.QrBillRuntimeException;
+import net.codecrete.qrbill.generator.QRBillRuntimeException;
 
 
 /**
@@ -193,7 +193,7 @@ public class PNGCanvas  extends AbstractCanvas {
         }
 
         if (writer == null || writeParam == null)
-            throw new QrBillRuntimeException("No valid PNG writer found");
+            throw new QRBillRuntimeException("No valid PNG writer found");
 
         addDpiMetadata(metadata, resolution);
 

@@ -21,10 +21,11 @@ import static org.junit.Assert.assertArrayEquals;
 public class TestHelper {
 
     public static void assertFileContentsEqual(byte[] actualContent, String expectedFileName) {
-        byte[] expectedContent = loadReferenceFile(expectedFileName);
-        String fileExtension = expectedFileName.substring(expectedFileName.lastIndexOf('.'));
 
         try {
+            byte[] expectedContent = loadReferenceFile(expectedFileName);
+            String fileExtension = expectedFileName.substring(expectedFileName.lastIndexOf('.'));
+
             if (fileExtension.equals(".pdf")) {
                 clearPdfID(expectedContent);
                 clearPdfID(actualContent);
@@ -34,12 +35,15 @@ public class TestHelper {
         } catch (AssertionError e) {
             saveActualFile(actualContent, expectedFileName);
             throw e;
+        } catch (IOException e) {
+            saveActualFile(actualContent, expectedFileName);
+            throw new RuntimeException(e);
         }
 
         deleteActualFile(expectedFileName);
     }
 
-    private static byte[] loadReferenceFile(String filename) {
+    private static byte[] loadReferenceFile(String filename) throws IOException {
         try (InputStream is = QRCodeTest.class.getResourceAsStream("/" + filename)) {
             if (is == null)
                 throw new FileNotFoundException(filename);
@@ -52,8 +56,6 @@ public class TestHelper {
                 buffer.write(chunk, 0, len);
             }
             return buffer.toByteArray();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 

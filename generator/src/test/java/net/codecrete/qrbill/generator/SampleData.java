@@ -13,7 +13,7 @@ public class SampleData {
     public static Bill getExample1() {
         Bill bill = new Bill();
         bill.setLanguage(Bill.Language.EN);
-        bill.setAccount("CH4431999123000889012");
+        bill.setAccount("CH44 3199 9123 0008  89012");
         Address creditor = new Address();
         creditor.setName("Robert Schneider AG");
         creditor.setStreet("Rue du Lac");
@@ -24,7 +24,7 @@ public class SampleData {
         bill.setCreditor(creditor);
         Address finalCreditor = new Address();
         finalCreditor.setName("Robert Schneider Services Switzerland AG");
-        finalCreditor.setStreet("Rue du Lac");
+        finalCreditor.setStreet("Rue du Lac ");
         finalCreditor.setHouseNo("1268/3/1");
         finalCreditor.setPostalCode("2501");
         finalCreditor.setTown("Biel");
@@ -38,10 +38,10 @@ public class SampleData {
         debtor.setStreet("Grosse Marktgasse");
         debtor.setHouseNo("28");
         debtor.setPostalCode("9400");
-        debtor.setTown("Rorschach");
+        debtor.setTown(" Rorschach");
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
-        bill.setReferenceNo("210000000003139471430009017");
+        bill.setReferenceNo("210000 000 00313 9471430009017");
         bill.setAdditionalInfo("Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
         return bill;
     }

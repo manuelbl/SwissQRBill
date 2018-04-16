@@ -27,16 +27,6 @@ import static net.codecrete.qrbill.generator.ValidationMessage.*;
  * </p>
  */
 class QRCode {
-    /** Validation message key: Valid data structure starts with "SPC" and consists of 28 to 30 lines of text */
-    public static final String KEY_VALID_DATA_STRUCTURE = "valid_data_structure";
-    /** Validation message key: Version 01.00 is supported only */
-    public static final String KEY_SUPPORTED_VERSION = "supported_version";
-    /** Validation message key: Coding type 1 is supported only */
-    public static final String KEY_SUPPORTED_CODING_TYPE = "supported_coding_type";
-    /** Validation message key: Valid number required (nnnnn.nn) */
-    public static final String KEY_VALID_NUMBER = "valid_number";
-    /** Validation message key: Valid date required (YYYY-MM_DD) */
-    public static final String KEY_VALID_DATE = "valid_date";
     
 	static final double SIZE = 46; // mm
     private static final String CRLF = "\r\n";
@@ -46,6 +36,9 @@ class QRCode {
 
     /**
      * Creates an instance of the QR code for the specified bill data.
+     * <p>
+     * The bill data must have been validated and cleaned.
+     * </p>
      * @param bill bill data
      */
     QRCode(Bill bill) {
@@ -244,13 +237,13 @@ class QRCode {
     public static Bill decodeQRCodeText(String text) {
         String[] lines = splitLines(text);
         if (lines.length < 28 || lines.length > 30)
-            throwSingleValidationError(Bill.FIELD_QR_TYPE, KEY_VALID_DATA_STRUCTURE);
+            throwSingleValidationError(Bill.FIELD_QR_TYPE, QRBill.KEY_VALID_DATA_STRUCTURE);
         if (!"SPC".equals(lines[0]))
-            throwSingleValidationError(Bill.FIELD_QR_TYPE, KEY_VALID_DATA_STRUCTURE);
+            throwSingleValidationError(Bill.FIELD_QR_TYPE, QRBill.KEY_VALID_DATA_STRUCTURE);
         if (!"0100".equals(lines[1]))
-            throwSingleValidationError(Bill.FIELD_VERSION, KEY_SUPPORTED_VERSION);
+            throwSingleValidationError(Bill.FIELD_VERSION, QRBill.KEY_SUPPORTED_VERSION);
         if (!"1".equals(lines[2]))
-            throwSingleValidationError(Bill.FIELD_CODING_TYPE, KEY_SUPPORTED_CODING_TYPE);
+            throwSingleValidationError(Bill.FIELD_CODING_TYPE, QRBill.KEY_SUPPORTED_CODING_TYPE);
 
         Bill bill = new Bill();
         bill.setVersion(Bill.Version.V1_0);
@@ -265,7 +258,7 @@ class QRCode {
             try {
                 bill.setAmount(Double.valueOf(lines[16]));
             } catch (NumberFormatException nfe) {
-                throwSingleValidationError(Bill.FIELD_AMOUNT, KEY_VALID_NUMBER);
+                throwSingleValidationError(Bill.FIELD_AMOUNT, QRBill.KEY_VALID_NUMBER);
             }
         } else {
             bill.setAmount(null);
@@ -277,7 +270,7 @@ class QRCode {
             try {
                 bill.setDueDate(LocalDate.parse(lines[18], DateTimeFormatter.ISO_LOCAL_DATE));
             } catch (DateTimeParseException dtpe) {
-                throwSingleValidationError(Bill.FIELD_DUE_DATE, KEY_VALID_DATE);
+                throwSingleValidationError(Bill.FIELD_DUE_DATE, QRBill.KEY_VALID_DATE);
             }
         } else {
             bill.setDueDate(null);

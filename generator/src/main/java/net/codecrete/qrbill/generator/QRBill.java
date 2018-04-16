@@ -18,6 +18,39 @@ import net.codecrete.qrbill.canvas.SVGCanvas;
  */
 public class QRBill {
 
+    /** Validation message key: currency must be "CHF" or "EUR" */
+    public static final String KEY_CURRENCY_IS_CHF_OR_EUR = "currency_is_chf_or_eur";
+    /** Validation message key: amount must be between 0.01 and 999999999.99 */
+    public static final String KEY_AMOUNT_IS_IN_VALID_RANGE = "amount_in_valid_range";
+    /** Validation message key: IBAN must be from bank in Switzerland or Liechtenstein */
+    public static final String KEY_ACCOUNT_IS_CH_LI_IBAN = "account_is_ch_li_iban";
+    /** Validation message key: IBAN number must have valid format and check digit */
+    public static final String KEY_ACCOUNT_IS_VALID_IBAN = "account_is_valid_iban";
+    /** Validation message key: ISO 11649 reference number must have valid format and check digit */
+    public static final String KEY_VALID_ISO11649_CREDITOR_REF = "valid_iso11649_creditor_ref";
+    /** Validation message key: QR reference number must have valid format and check digit */
+    public static final String KEY_VALID_QR_REF_NO = "valid_qr_ref_no";
+    /** Validation message key: Reference number is mandatory for IBANs with QR-IID */
+    public static final String KEY_MANDATORY_FOR_QR_IBAN = "mandatory_for_qr_iban";
+    /** Validation message key: Field is mandatory */
+    public static final String KEY_FIELD_IS_MANDATORY = "field_is_mandatory";
+    /** Validation message key: Country code must consist of two letters */
+    public static final String KEY_VALID_COUNTRY_CODE = "valid_country_code";
+    /** Validation message key: Field has been clipped to not exceed the maximum length */
+    public static final String KEY_FIELD_CLIPPED = "field_clipped";
+    /** Validation message key: Unsupported characters have been replaced */
+    public static final String KEY_REPLACED_UNSUPPORTED_CHARACTERS = "replaced_unsupported_characters";
+    /** Validation message key: Valid data structure starts with "SPC" and consists of 28 to 30 lines of text */
+    public static final String KEY_VALID_DATA_STRUCTURE = "valid_data_structure";
+    /** Validation message key: Version 01.00 is supported only */
+    public static final String KEY_SUPPORTED_VERSION = "supported_version";
+    /** Validation message key: Coding type 1 is supported only */
+    public static final String KEY_SUPPORTED_CODING_TYPE = "supported_coding_type";
+    /** Validation message key: Valid number required (nnnnn.nn) */
+    public static final String KEY_VALID_NUMBER = "valid_number";
+    /** Validation message key: Valid date required (YYYY-MM_DD) */
+    public static final String KEY_VALID_DATE = "valid_date";
+
     /**
      * Graphics format of generated QR bill.
      */
@@ -44,10 +77,10 @@ public class QRBill {
 
 
     /**
-     * Validates the bill data.
+     * Validates and cleans the bill data.
      * <p>
      *     The validation result contains the error and warning
-     *     messages (if any).
+     *     messages (if any) and the cleaned bill data.
      * </p>
      * @param bill bill data
      * @return validation result
@@ -72,7 +105,7 @@ public class QRBill {
         try (Canvas canvas = createCanvas(graphicsFormat)) {
             return validateAndGenerate(bill, billFormat, canvas);
         } catch (IOException e) {
-            throw new QrBillRuntimeException(e);
+            throw new QRBillRuntimeException(e);
         }
     }
 
@@ -96,7 +129,7 @@ public class QRBill {
         try (Canvas c = canvas) {
             return validateAndGenerate(bill, billFormat, c);
         } catch (IOException e) {
-            throw new QrBillRuntimeException(e);
+            throw new QRBillRuntimeException(e);
         }
     }
 
@@ -116,15 +149,18 @@ public class QRBill {
 
 
     /**
-     * Generates the text that is embedded in the QR code.
+     * Encodes the text embedded in the QR code from the specified bill data.
+     * <p>
+     *     The specified bill data is first validated and cleaned.
+     * </p>
      * <p>
      *     If the bill data does not validate, a {@link QRBillValidationError} is thrown,
      *     which contains the validation result.
      * </p>
-     * @param bill the bill data
+     * @param bill the bill data to encode
      * @return the QR code text
      */
-    public static String generateQrCodeText(Bill bill) {
+    public static String encodeQrCodeText(Bill bill) {
         ValidationResult result = Validator.validate(bill);
         Bill cleanedBill = result.getCleanedBill();
         if (result.hasErrors())
@@ -208,7 +244,7 @@ public class QRBill {
                 canvas = new PDFCanvas();
                 break;
             default:
-                throw new QrBillRuntimeException("Invalid graphics format specified");
+                throw new QRBillRuntimeException("Invalid graphics format specified");
         }
         return canvas;
     }
