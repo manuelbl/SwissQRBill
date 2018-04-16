@@ -99,10 +99,10 @@ public class Validator {
             billOut.setAmount(null);
         } else {
             amount = Math.round(amount * 100) / 100.0; // round to multiple of 0.01
-            if (billIn.getAmount() < 0.01 || billIn.getAmount() > 999999999.99) {
+            if (amount < 0.01 || amount > 999999999.99) {
                 validationResult.addMessage(Type.ERROR, Bill.FIELD_AMOUNT, KEY_AMOUNT_IS_IN_VALID_RANGE);
             } else {
-                billOut.setAmount(billIn.getAmount());
+                billOut.setAmount(amount);
             }
         }
     }
