@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "examples/maven_example"
+		},
+		{
+			"path": "examples/perftest"
 		}
 	],
 	"settings": {
