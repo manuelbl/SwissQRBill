@@ -40,12 +40,12 @@ export class BillData implements OnInit {
     // The below validations are only for a quick feedback. The real validation is performed server-side and
     // only server-side messages are displayed.
     this.billForm = new FormGroup({
-      account: new FormControl(this.bill.account, { validators: [Validators.required, Validators.pattern('[A-Z0-9 ]{5,26}')]}),
+      account: new FormControl(this.bill.account, { validators: [Validators.required, Validators.pattern('[A-Za-z0-9 ]{5,30}')]}),
       creditor: new FormGroup({
         name: new FormControl(this.bill.creditor.name, { validators: Validators.required}),
         street: new FormControl(this.bill.creditor.street),
         houseNo: new FormControl(this.bill.creditor.houseNo),
-        countryCode: new FormControl(this.bill.creditor.countryCode, { validators: [Validators.required, Validators.pattern('[A-Z]{2}')]}),
+        countryCode: new FormControl(this.bill.creditor.countryCode, { validators: [Validators.required, Validators.pattern('[A-Za-z]{2}')]}),
         postalCode: new FormControl(this.bill.creditor.postalCode, { validators: Validators.required}),
         town: new FormControl(this.bill.creditor.town, { validators: Validators.required})
       }),
@@ -53,13 +53,13 @@ export class BillData implements OnInit {
         name: new FormControl(this.bill.finalCreditor.name),
         street: new FormControl(this.bill.finalCreditor.street),
         houseNo: new FormControl(this.bill.finalCreditor.houseNo),
-        countryCode: new FormControl(this.bill.finalCreditor.countryCode, { validators: Validators.pattern('[A-Z]{2}')}),
+        countryCode: new FormControl(this.bill.finalCreditor.countryCode, { validators: Validators.pattern('[A-Za-z]{2}')}),
         postalCode: new FormControl(this.bill.finalCreditor.postalCode),
         town: new FormControl(this.bill.finalCreditor.town)
       }),
-      currency: new FormControl(this.bill.currency, { validators: [Validators.required, Validators.pattern('[A-Z]{3}')]}),
+      currency: new FormControl(this.bill.currency, { validators: [Validators.required, Validators.pattern('[A-Za-z]{3}')]}),
       amount: new FormControl(this.bill.amount, { validators: [Validators.min(0.01), Validators.max(999999999.99)]}),
-      referenceNo: new FormControl(this.bill.referenceNo),
+      referenceNo: new FormControl(this.bill.referenceNo, { validators: [Validators.pattern('[A-Za-z0-9 ]{5,40}')]}),
       additionalInfo: new FormControl(this.bill.additionalInfo),
       language: new FormControl(this.bill.language),
       outputSize: new FormControl(this.outputSize),
@@ -67,7 +67,7 @@ export class BillData implements OnInit {
         name: new FormControl(this.bill.debtor.name),
         street: new FormControl(this.bill.debtor.street),
         houseNo: new FormControl(this.bill.debtor.houseNo),
-        countryCode: new FormControl(this.bill.debtor.countryCode, { validators: Validators.pattern('[A-Z]{2}')}),
+        countryCode: new FormControl(this.bill.debtor.countryCode, { validators: Validators.pattern('[A-Za-z]{2}')}),
         postalCode: new FormControl(this.bill.debtor.postalCode),
         town: new FormControl(this.bill.debtor.town)
       }),
