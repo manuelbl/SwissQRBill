@@ -11,6 +11,17 @@
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopOnEntry": false,
+            "mainClass": "",
+            "projectName": "generator",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch) Web",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
             "mainClass": "net.codecrete.qrbill.web.Application",
             "projectName": "web",
             "args": ""

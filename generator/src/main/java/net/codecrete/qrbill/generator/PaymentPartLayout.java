@@ -355,7 +355,9 @@ class PaymentPartLayout {
         sb.append(" ");
         sb.append(iban, 12, 16);
         sb.append(" ");
-        sb.append(iban, 16, 21);
+        sb.append(iban, 16, 20);
+        sb.append(" ");
+        sb.append(iban, 20, 21);
         return sb.toString();
     }
 
