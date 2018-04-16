@@ -20,7 +20,7 @@ import net.codecrete.qrbill.canvas.FontMetrics;
 /**
  * Layouting and drawing of QR bill payment slip
  */
-class PaymentSlipLayout {
+class PaymentPartLayout {
 
     private static final double PT_TO_MM = 25.4 / 72;
     private static final double MM_TO_PT = 72 / 25.4;
@@ -64,7 +64,7 @@ class PaymentSlipLayout {
     private double rightColumnPaddingTop;
 
 
-    PaymentSlipLayout(Bill bill, Canvas graphics) {
+    PaymentPartLayout(Bill bill, Canvas graphics) {
         this.bill = bill;
         this.qrCode = new QRCode(bill);
         this.graphics = graphics;

@@ -14,7 +14,7 @@ import net.codecrete.qrbill.canvas.SVGCanvas;
 
 
 /**
- * Generates Swiss QR bill payment slip.
+ * Generates Swiss QR bill payment part.
  */
 public class QRBill {
 
@@ -91,7 +91,7 @@ public class QRBill {
 
 
     /**
-     * Generates a QR bill payment slip.
+     * Generates a QR bill payment part.
      * <p>
      *     If the bill data does not validate, a {@link QRBillValidationError} is thrown,
      *     which contains the validation result.
@@ -111,7 +111,7 @@ public class QRBill {
 
 
     /**
-     * Generates a QR bill payment slip using the specified canvas.
+     * Generates a QR bill payment part using the specified canvas.
      * <p>
      *     If the bill data does not validate, a {@link QRBillValidationError} is thrown,
      *     which contains the validation result.
@@ -143,7 +143,7 @@ public class QRBill {
         if (billFormat == BillFormat.QR_CODE_ONLY) {
             return generateQRCode(cleanedBill, canvas);
         } else {
-            return generatePaymentSlip(cleanedBill, billFormat, canvas);
+            return generatePaymentPart(cleanedBill, billFormat, canvas);
         }
     }
 
@@ -182,14 +182,14 @@ public class QRBill {
 
 
     /**
-     * Generates the payment slip as a byte array
+     * Generates the payment part as a byte array
      *
      * @param bill the cleaned bill data
      * @param billFormat the output size
      * @param canvas the canvas to draw to
      * @return byte array containing the binary data in the selected format
      */
-    private static byte[] generatePaymentSlip(Bill bill, BillFormat billFormat, Canvas canvas) throws IOException {
+    private static byte[] generatePaymentPart(Bill bill, BillFormat billFormat, Canvas canvas) throws IOException {
 
         double drawingWidth;
         double drawingHeight;
@@ -212,14 +212,14 @@ public class QRBill {
         }
 
         canvas.setupPage(drawingWidth, drawingHeight);
-        PaymentSlipLayout layout = new PaymentSlipLayout(bill, canvas);
+        PaymentPartLayout layout = new PaymentPartLayout(bill, canvas);
         layout.draw(drawingWidth - 148.5, 0, drawingWidth > 148.5 || drawingHeight > 105);
         return canvas.getResult();
     }
 
 
     /**
-     * Generate the payment slip only
+     * Generate the QR code only
      * 
      * @param bill the bill data
      * @param canvas the canvas to draw to
