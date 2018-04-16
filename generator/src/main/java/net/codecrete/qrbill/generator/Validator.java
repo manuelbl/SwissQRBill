@@ -6,6 +6,8 @@
 //
 package net.codecrete.qrbill.generator;
 
+import java.util.Locale;
+
 import net.codecrete.qrbill.generator.PaymentValidation.CleaningResult;
 import net.codecrete.qrbill.generator.ValidationMessage.Type;
 
@@ -15,17 +17,17 @@ import net.codecrete.qrbill.generator.ValidationMessage.Type;
  */
 public class Validator {
 
-    private static final String KEY_CURRENCY_IS_CHF_OR_EUR = "currency_is_chf_or_eur";
-    private static final String KEY_AMOUNT_IS_IN_VALID_RANGE = "amount_in_valid_range";
-    private static final String KEY_ACCOUNT_IS_CH_LI_IBAN = "account_is_ch_li_iban";
-    private static final String KEY_ACCOUNT_IS_VALID_IBAN = "account_is_valid_iban";
-    private static final String KEY_VALID_ISO11649_CREDITOR_REF = "valid_iso11649_creditor_ref";
-    private static final String KEY_VALID_QR_REF_NO = "valid_qr_ref_no";
-    private static final String KEY_MANDATORY_FOR_QR_IBAN = "mandatory_for_qr_iban";
-    private static final String KEY_FIELD_IS_MANDATORY = "field_is_mandatory";
-    private static final String KEY_VALID_COUNTRY_CODE = "valid_country_code";
-    private static final String KEY_FIELD_CLIPPED = "field_clipped";
-    private static final String KEY_REPLACED_UNSUPPORTED_CHARACTERS = "replaced_unsupported_characters";
+    public static final String KEY_CURRENCY_IS_CHF_OR_EUR = "currency_is_chf_or_eur";
+    public static final String KEY_AMOUNT_IS_IN_VALID_RANGE = "amount_in_valid_range";
+    public static final String KEY_ACCOUNT_IS_CH_LI_IBAN = "account_is_ch_li_iban";
+    public static final String KEY_ACCOUNT_IS_VALID_IBAN = "account_is_valid_iban";
+    public static final String KEY_VALID_ISO11649_CREDITOR_REF = "valid_iso11649_creditor_ref";
+    public static final String KEY_VALID_QR_REF_NO = "valid_qr_ref_no";
+    public static final String KEY_MANDATORY_FOR_QR_IBAN = "mandatory_for_qr_iban";
+    public static final String KEY_FIELD_IS_MANDATORY = "field_is_mandatory";
+    public static final String KEY_VALID_COUNTRY_CODE = "valid_country_code";
+    public static final String KEY_FIELD_CLIPPED = "field_clipped";
+    public static final String KEY_REPLACED_UNSUPPORTED_CHARACTERS = "replaced_unsupported_characters";
 
     private Bill billIn;
     private Bill billOut;
@@ -71,7 +73,7 @@ public class Validator {
     private void validateCurrency() {
         String currency = Strings.trimmed(billIn.getCurrency());
         if (validateMandatory(currency, Bill.FIELD_CURRENCY)) {
-            currency = currency.toUpperCase();
+            currency = currency.toUpperCase(Locale.US);
             if (!"CHF".equals(currency) && !"EUR".equals(currency)) {
                 validationResult.addMessage(Type.ERROR, Bill.FIELD_CURRENCY, KEY_CURRENCY_IS_CHF_OR_EUR);
             } else {
@@ -84,10 +86,13 @@ public class Validator {
         Double amount = billIn.getAmount();
         if (amount == null) {
             billOut.setAmount(null);
-        } else if (billIn.getAmount() < 0.01 || billIn.getAmount() > 999999999.99) {
-            validationResult.addMessage(Type.ERROR, Bill.FIELD_AMOUNT, KEY_AMOUNT_IS_IN_VALID_RANGE);
         } else {
-            billOut.setAmount(billIn.getAmount());
+            amount = Math.round(amount * 100) / 100.0; // round to multiple of 0.01
+            if (billIn.getAmount() < 0.01 || billIn.getAmount() > 999999999.99) {
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_AMOUNT, KEY_AMOUNT_IS_IN_VALID_RANGE);
+            } else {
+                billOut.setAmount(billIn.getAmount());
+            }
         }
     }
 
@@ -95,7 +100,7 @@ public class Validator {
         boolean isQRBillIBAN = false;
         String account = Strings.trimmed(billIn.getAccount());
         if (validateMandatory(account, Bill.FIELD_ACCOUNT)) {
-            account = Strings.whiteSpaceRemoved(account).toUpperCase();
+            account = Strings.whiteSpaceRemoved(account).toUpperCase(Locale.US);
             if (validateIBAN(account, Bill.FIELD_ACCOUNT)) {
                 if (!account.startsWith("CH") && !account.startsWith("LI")) {
                     validationResult.addMessage(Type.ERROR, Bill.FIELD_ACCOUNT, KEY_ACCOUNT_IS_CH_LI_IBAN);
@@ -173,6 +178,9 @@ public class Validator {
             }
             return null;
         }
+
+        if (addressOut.getCountryCode() != null)
+            addressOut.setCountryCode(addressOut.getCountryCode().toUpperCase(Locale.US));
 
         validateMandatory(addressOut.getName(), fieldRoot, Bill.SUBFIELD_NAME);
         validateMandatory(addressOut.getPostalCode(), fieldRoot, Bill.SUBFIELD_POSTAL_CODE);

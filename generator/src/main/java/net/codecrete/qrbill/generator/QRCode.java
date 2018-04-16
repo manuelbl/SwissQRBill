@@ -27,7 +27,13 @@ import static net.codecrete.qrbill.generator.ValidationMessage.*;
  * </p>
  */
 class QRCode {
-    static final double SIZE = 46; // mm
+    public static final String VALID_DATE = "valid_date";
+	public static final String VALID_NUMBER = "valid_number";
+	public static final String SUPPORTED_CODING_TYPE = "supported_coding_type";
+	public static final String SUPPORTED_VERSION = "supported_version";
+    public static final String VALID_DATA_STRUCTURE = "valid_data_structure";
+    
+	static final double SIZE = 46; // mm
     private static final String CRLF = "\r\n";
 
     private Bill bill;
@@ -233,13 +239,13 @@ class QRCode {
     public static Bill decodeQRCodeText(String text) {
         String[] lines = splitLines(text);
         if (lines.length < 28 || lines.length > 30)
-            throwSingleValidationError(Bill.FIELD_QR_TYPE, "valid_data_structure");
+            throwSingleValidationError(Bill.FIELD_QR_TYPE, VALID_DATA_STRUCTURE);
         if (!"SPC".equals(lines[0]))
-            throwSingleValidationError(Bill.FIELD_QR_TYPE, "valid_data_structure");
+            throwSingleValidationError(Bill.FIELD_QR_TYPE, VALID_DATA_STRUCTURE);
         if (!"0100".equals(lines[1]))
-            throwSingleValidationError(Bill.FIELD_VERSION, "supported_version");
+            throwSingleValidationError(Bill.FIELD_VERSION, SUPPORTED_VERSION);
         if (!"1".equals(lines[2]))
-            throwSingleValidationError(Bill.FIELD_CODING_TYPE, "supported_coding_type");
+            throwSingleValidationError(Bill.FIELD_CODING_TYPE, SUPPORTED_CODING_TYPE);
 
         Bill bill = new Bill();
         bill.setVersion(Bill.Version.V1_0);
@@ -254,7 +260,7 @@ class QRCode {
             try {
                 bill.setAmount(Double.valueOf(lines[16]));
             } catch (NumberFormatException nfe) {
-                throwSingleValidationError(Bill.FIELD_AMOUNT, "valid_number");
+                throwSingleValidationError(Bill.FIELD_AMOUNT, VALID_NUMBER);
             }
         } else {
             bill.setAmount(null);
@@ -266,7 +272,7 @@ class QRCode {
             try {
                 bill.setDueDate(LocalDate.parse(lines[18], DateTimeFormatter.ISO_LOCAL_DATE));
             } catch (DateTimeParseException dtpe) {
-                throwSingleValidationError(Bill.FIELD_DUE_DATE, "valid_date");
+                throwSingleValidationError(Bill.FIELD_DUE_DATE, VALID_DATE);
             }
         } else {
             bill.setDueDate(null);
