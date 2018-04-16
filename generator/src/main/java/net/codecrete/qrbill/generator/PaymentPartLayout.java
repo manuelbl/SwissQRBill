@@ -347,17 +347,17 @@ class PaymentPartLayout {
 
     private static String formatIBANForDisplay(String iban) {
         StringBuilder sb = new StringBuilder(25);
-        sb.append(iban, 0, 4);
-        sb.append(" ");
-        sb.append(iban, 4, 8);
-        sb.append(" ");
-        sb.append(iban, 8, 12);
-        sb.append(" ");
-        sb.append(iban, 12, 16);
-        sb.append(" ");
-        sb.append(iban, 16, 20);
-        sb.append(" ");
-        sb.append(iban, 20, 21);
+        int len = iban.length();
+
+        // groups of 4 letters/digits, starting in the front
+        for (int pos = 0; pos < len; pos += 4) {
+            int endPos = pos + 4;
+            if (endPos > len)
+                endPos = len;
+            sb.append(iban, pos, endPos);
+            if (endPos != len)
+                sb.append(' ');
+        }
         return sb.toString();
     }
 
@@ -391,8 +391,10 @@ class PaymentPartLayout {
         if (len == 0)
             return null;
         if (refNo.startsWith("RF"))
-            return refNo;
+            // same format as IBAN
+            return formatIBANForDisplay(refNo);
 
+        // groups of 5 digits, starting at the end
         StringBuilder sb = new StringBuilder();
         int t = 0;
         while (t < len) {
