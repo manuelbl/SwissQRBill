@@ -6,27 +6,7 @@
 //
 package net.codecrete.qrbill.web.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.QRBill;
-import net.codecrete.qrbill.generator.QRBillValidationError;
-import net.codecrete.qrbill.generator.ValidationResult;
-import net.codecrete.qrbill.web.api.QrBill;
-import net.codecrete.qrbill.web.api.QrCodeInformation;
-import net.codecrete.qrbill.web.api.ValidationMessage;
-import net.codecrete.qrbill.web.api.ValidationResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import static net.codecrete.qrbill.generator.QRBill.generate;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -40,13 +20,45 @@ import java.util.Locale;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
-import static net.codecrete.qrbill.generator.QRBill.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.QRBill;
+import net.codecrete.qrbill.generator.QRBill.BillFormat;
+import net.codecrete.qrbill.generator.QRBill.GraphicsFormat;
+import net.codecrete.qrbill.generator.QRBillValidationError;
+import net.codecrete.qrbill.generator.ValidationResult;
+import net.codecrete.qrbill.web.api.QrBill;
+import net.codecrete.qrbill.web.api.QrCodeInformation;
+import net.codecrete.qrbill.web.api.ValidationMessage;
+import net.codecrete.qrbill.web.api.ValidationResponse;
 
 @RestController
 public class QRBillController {
 
-    @Autowired
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
+
+    /**
+     * Creates an instance.
+     * <p>
+     * Single constructor for Spring dependency injection.
+     * </p>
+     */
+    public QRBillController(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     /**
      * Validates the QR bill data

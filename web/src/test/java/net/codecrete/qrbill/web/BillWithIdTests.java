@@ -6,8 +6,11 @@
 //
 package net.codecrete.qrbill.web;
 
-import net.codecrete.qrbill.web.api.QrBill;
-import net.codecrete.qrbill.web.api.ValidationResponse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.nio.charset.StandardCharsets;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +18,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.nio.charset.StandardCharsets;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import net.codecrete.qrbill.web.api.QrBill;
+import net.codecrete.qrbill.web.api.ValidationResponse;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BillWithIdTests {
 
     @Autowired
-    private TestRestTemplate restTemplate = new TestRestTemplate();
+    private TestRestTemplate restTemplate;
 
     @Test
     public void okTest1() {

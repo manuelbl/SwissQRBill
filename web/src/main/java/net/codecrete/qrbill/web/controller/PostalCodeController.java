@@ -6,21 +6,29 @@
 //
 package net.codecrete.qrbill.web.controller;
 
-import net.codecrete.qrbill.web.api.PostalCode;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import net.codecrete.qrbill.web.api.PostalCode;
 
 @RestController
 public class PostalCodeController {
 
-    @Autowired
-    private PostalCodeData postalCodeData;
+    private final PostalCodeData postalCodeData;
 
+    /**
+     * Creates an instance.
+     * <p>
+     * Single constructor for Spring dependency injection.
+     * </p>
+     */
+    public PostalCodeController(PostalCodeData postalCodeData) {
+        this.postalCodeData = postalCodeData;
+    }
 
     @RequestMapping(value = "/postal-codes/suggest")
     @ResponseBody
