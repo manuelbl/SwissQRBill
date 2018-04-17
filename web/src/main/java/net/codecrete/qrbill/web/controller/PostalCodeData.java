@@ -52,7 +52,7 @@ public class PostalCodeData {
         int index = binarySearchForPostalCode(sortedByPostalCode, substring);
         List<PostalCode> result = new ArrayList<>();
         int arrayLen = sortedByPostalCode.length;
-        while (index < arrayLen && sortedByPostalCode[index].postalCode.startsWith(substring)
+        while (index < arrayLen && sortedByPostalCode[index].code.startsWith(substring)
                 && result.size() < MAX_SUGGESTED_ITEMS) {
             result.add(sortedByPostalCode[index]);
             index++;
@@ -63,7 +63,7 @@ public class PostalCodeData {
 
         // Search for postal codes containing the substring
         for (PostalCode pc : sortedByPostalCode) {
-            if (pc.postalCode.contains(substring) && !result.contains(pc)) {
+            if (pc.code.contains(substring) && !result.contains(pc)) {
                 result.add(pc);
                 if (result.size() >= MAX_SUGGESTED_ITEMS)
                     break;
@@ -128,7 +128,7 @@ public class PostalCodeData {
 
         while (lower < upper) {
             int mid = (lower + upper) >>> 1;
-            String midValue = a[mid].postalCode;
+            String midValue = a[mid].code;
             int cmp = midValue.compareTo(postalCode);
 
             if (cmp < 0)
@@ -220,7 +220,7 @@ public class PostalCodeData {
     private void setupSortedArrays(List<PostalCode> postalCodeList) {
         sortedByPostalCode = new PostalCode[postalCodeList.size()];
         sortedByPostalCode = postalCodeList.toArray(sortedByPostalCode);
-        Arrays.sort(sortedByPostalCode, Comparator.comparing(pc -> pc.postalCode));
+        Arrays.sort(sortedByPostalCode, Comparator.comparing(pc -> pc.code));
 
         sortedByTown = new PostalCode[postalCodeList.size()];
         sortedByTown = postalCodeList.toArray(sortedByTown);
@@ -230,12 +230,12 @@ public class PostalCodeData {
 
     public static class PostalCode {
 
-        public String postalCode;
-        public String town;
-        String townLowercase;
+        public final String code;
+        public final String town;
+        private final String townLowercase;
 
-        PostalCode(String postalCode, String town) {
-            this.postalCode = postalCode;
+        PostalCode(String code, String town) {
+            this.code = code;
             this.town = town;
             this.townLowercase = town.toLowerCase(Locale.FRENCH);
         }

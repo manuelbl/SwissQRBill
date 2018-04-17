@@ -69,29 +69,8 @@ public class QRBillController {
     @RequestMapping(value = "/bill/validate", method = RequestMethod.POST)
     @ResponseBody
     public ValidationResponse validate(@RequestBody QrBill bill) {
-        // Validate data
         ValidationResult result = QRBill.validate(QrBill.toGeneratorBill(bill));
-        Bill validatedBill = result.getCleanedBill();
-
-        ValidationResponse response = new ValidationResponse();
-        response.setValid(result.isValid());
-
-        // Generate localized messages
-        if (result.hasMessages()) {
-            List<ValidationMessage> messages = ValidationMessage.fromList(result.getValidationMessages());
-            addLocalMessages(messages);
-            response.setValidationMessages(messages);
-        }
-        response.setValidatedBill(QrBill.from(validatedBill));
-
-        // generate QR code text and bill ID
-        if (!result.hasErrors()) {
-            String qrCodeText = QRBill.encodeQrCodeText(validatedBill);
-            response.setQrCodeText(qrCodeText);
-            response.setBillID(generateID(qrCodeText, validatedBill.getLanguage().name()));
-        }
-
-        return response;
+        return createValidationResponse(result);
     }
 
     /**
@@ -104,9 +83,12 @@ public class QRBillController {
     @ResponseBody
     public ValidationResponse decodeQRCodeText(@RequestBody QrCodeInformation info) {
         Bill bill = QRBill.decodeQrCodeText(info.getQrCodeText());
-
-        // Validate data
         ValidationResult result = QRBill.validate(bill);
+        return createValidationResponse(result);
+    }
+
+    private ValidationResponse createValidationResponse(ValidationResult result) {
+        // Get validated data
         Bill validatedBill = result.getCleanedBill();
 
         ValidationResponse response = new ValidationResponse();

@@ -31,7 +31,7 @@ public class PostalCodeDataTests {
     public void getPostalCodeMatch() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "8302");
         assertEquals(1, result.size());
-        assertEquals("8302", result.get(0).postalCode);
+        assertEquals("8302", result.get(0).code);
         assertEquals("Kloten", result.get(0).town);
     }
 
@@ -42,10 +42,10 @@ public class PostalCodeDataTests {
         String previousCode = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertEquals("Zürich", pc.town);
-            assertTrue("8000".compareTo(pc.postalCode) <= 0);
-            assertTrue("8099".compareTo(pc.postalCode) >= 0);
-            assertTrue(previousCode.compareTo(pc.postalCode) < 0);
-            previousCode = pc.postalCode;
+            assertTrue("8000".compareTo(pc.code) <= 0);
+            assertTrue("8099".compareTo(pc.code) >= 0);
+            assertTrue(previousCode.compareTo(pc.code) < 0);
+            previousCode = pc.code;
         }
     }
 
@@ -56,10 +56,10 @@ public class PostalCodeDataTests {
         String previousCode = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertEquals("Zürich", pc.town);
-            assertTrue("8000".compareTo(pc.postalCode) <= 0);
-            assertTrue("8099".compareTo(pc.postalCode) >= 0);
-            assertTrue(previousCode.compareTo(pc.postalCode) < 0);
-            previousCode = pc.postalCode;
+            assertTrue("8000".compareTo(pc.code) <= 0);
+            assertTrue("8099".compareTo(pc.code) >= 0);
+            assertTrue(previousCode.compareTo(pc.code) < 0);
+            previousCode = pc.code;
         }
     }
 
@@ -70,7 +70,7 @@ public class PostalCodeDataTests {
         String previousTown = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertTrue(pc.town.toLowerCase(Locale.FRENCH).contains("dorf"));
-            assertNotNull(pc.postalCode);
+            assertNotNull(pc.code);
             if (previousTown.startsWith("Dorf") && !pc.town.startsWith("Dorf"))
                 previousTown = ""; // Reset between "Dorf...." towns and "...dorf..." towns
             assertTrue(String.format("%s alphabetically before %s", previousTown, pc.town),
@@ -86,12 +86,12 @@ public class PostalCodeDataTests {
         String previousCode = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertNotNull(pc.town);
-            assertTrue(pc.postalCode.contains("203"));
-            if (previousCode.startsWith("203") && !pc.postalCode.startsWith("203"))
+            assertTrue(pc.code.contains("203"));
+            if (previousCode.startsWith("203") && !pc.code.startsWith("203"))
                 previousCode = "";
-            assertTrue(String.format("%s <= %s", previousCode, pc.postalCode),
-                    previousCode.compareTo(pc.postalCode) <= 0);
-            previousCode = pc.postalCode;
+            assertTrue(String.format("%s <= %s", previousCode, pc.code),
+                    previousCode.compareTo(pc.code) <= 0);
+            previousCode = pc.code;
         }
     }
 
@@ -102,10 +102,10 @@ public class PostalCodeDataTests {
         String previousCode = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertNotNull(pc.town);
-            assertTrue(pc.postalCode.startsWith("880"));
-            assertTrue(String.format("%s <= %s", previousCode, pc.postalCode),
-                    previousCode.compareTo(pc.postalCode) <= 0);
-            previousCode = pc.postalCode;
+            assertTrue(pc.code.startsWith("880"));
+            assertTrue(String.format("%s <= %s", previousCode, pc.code),
+                    previousCode.compareTo(pc.code) <= 0);
+            previousCode = pc.code;
         }
     }
 
@@ -116,7 +116,7 @@ public class PostalCodeDataTests {
         String previousTown = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertTrue(pc.town.startsWith("Rickenbach"));
-            assertNotNull(pc.postalCode);
+            assertNotNull(pc.code);
             assertTrue(String.format("%s alphabetically before %s", previousTown, pc.town),
                     previousTown.compareTo(pc.town.toLowerCase(Locale.FRENCH)) <= 0);
             previousTown = pc.town.toLowerCase(Locale.FRENCH);

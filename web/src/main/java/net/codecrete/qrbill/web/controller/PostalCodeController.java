@@ -42,7 +42,7 @@ public class PostalCodeController {
         PostalCode[] postalCodes = new PostalCode[len];
         for (int i = 0; i < len; i++) {
             PostalCode pc = new PostalCode();
-            pc.setPostalCode(postalCodeList.get(i).postalCode);
+            pc.setPostalCode(postalCodeList.get(i).code);
             pc.setTown(postalCodeList.get(i).town);
             postalCodes[i] = pc;
         }

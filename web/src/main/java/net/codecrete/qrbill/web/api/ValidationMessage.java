@@ -91,9 +91,6 @@ public class ValidationMessage {
     }
 
     public static List<ValidationMessage> fromList(List<net.codecrete.qrbill.generator.ValidationMessage> list) {
-        if (list == null)
-            return null;
-
         List<ValidationMessage> msgList = new ArrayList<>(list.size());
         for (net.codecrete.qrbill.generator.ValidationMessage msg: list) {
             msgList.add(from(msg));
@@ -107,6 +104,6 @@ public class ValidationMessage {
             return Type.Error;
         if ("WARNING".equals(name))
             return Type.Warning;
-        throw new RuntimeException("Invalid message type");
+        return null;
     }
 }
