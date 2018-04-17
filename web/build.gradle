@@ -7,9 +7,14 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.sonarqube" version "2.6.2"
+}
+
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
 
 
 sourceCompatibility = 1.8
@@ -27,4 +32,7 @@ dependencies {
     compile project(':generator')
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+}
+
+sonarqube {
 }
