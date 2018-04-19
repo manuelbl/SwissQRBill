@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 public class SVGCanvas extends AbstractCanvas {
@@ -181,7 +182,7 @@ public class SVGCanvas extends AbstractCanvas {
         return buffer.toByteArray();
     }
 
-    private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("#.###");
+    private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.UK));
 
     private static String formatNumber(double value) {
         return NUMBER_FORMAT.format(value);
