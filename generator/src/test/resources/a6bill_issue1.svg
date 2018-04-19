@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="148.5mm" height="105mm" version="1.1" viewBox="0 0 420.945 297.638" xmlns="http://www.w3.org/2000/svg">
+<g font-family="Helvetica,Arial" transform="translate(0 297.638)">
+<g transform="translate(22.677 -0)">
+<text x="0" y="-266.161" font-size="11" font-weight="bold">Section paiement QR-facture</text>
+<text x="0" y="-249.561" font-size="8" font-weight="bold">Support</text>
+<text x="0" y="-234.961" font-size="10">Virement</text>
+<text x="0" y="-71.797" font-size="8" font-weight="bold">Monnaie</text>
+<text x="0" y="-57.197" font-size="10">CHF</text>
+</g>
+<g transform="translate(68.031 -0)">
+<text x="0" y="-71.797" font-size="8" font-weight="bold">Montant</text>
+<text x="0" y="-57.197" font-size="10">199.95</text>
+</g>
+<g transform="translate(22.677 -90.382) scale(1.89)">
+<path d="M0,-69h7v1h-7zm9,0h1v1h-1zm4,0h1v1h-1zm2,0h1v5h-1zm1,0h1v1h-1zm3,0h1v5h-1z
+m2,0h7v1h-7zm8,0h1v1h-1zm4,0h1v1h-1zm2,0h1v1h-1zm6,0h3v1h-3zm5,0h1v1h-1z
+m3,0h1v1h-1zm4,0h4v1h-4zm5,0h3v1h-3zm4,0h7v1h-7zm-62,1h1v6h-1zm6,0h1v6h-1z
+m4,0h1v1h-1zm2,0h1v1h-1zm5,0h2v1h-2zm5,0h1v7h-1zm2,0h1v4h-1zm1,0h2v1h-2z
+m3,0h1v1h-1zm2,0h1v1h-1zm6,0h1v8h-1zm4,0h2v1h-2zm5,0h1v1h-1zm2,0h1v1h-1z
+m3,0h2v3h-2zm2,0h1v1h-1zm5,0h1v2h-1zm5,0h1v6h-1zm6,0h1v6h-1zm-66,1h3v3h-3z
+m6,0h2v3h-2zm3,0h1v1h-1zm2,0h2v1h-2zm5,0h1v2h-1zm2,0h1v6h-1zm6,0h1v2h-1z
+m3,0h1v1h-1zm3,0h2v1h-2zm3,0h1v1h-1zm4,0h1v1h-1zm3,0h1v1h-1zm2,0h1v1h-1z
+m4,0h1v3h-1zm6,0h3v1h-3zm4,0h1v1h-1zm6,0h3v3h-3zm-48,1h2v1h-2zm5,0h1v3h-1z
+m2,0h1v1h-1zm2,0h1v1h-1zm3,0h1v1h-1zm2,0h1v4h-1zm8,0h1v1h-1zm3,0h1v2h-1z
+m4,0h1v2h-1zm8,0h1v1h-1zm7,0h1v2h-1zm-49,1h1v2h-1zm16,0h1v2h-1zm4,0h5v1h-5z
+m6,0h1v1h-1zm2,0h1v2h-1zm3,0h1v3h-1zm1,0h1v1h-1zm6,0h1v1h-1zm5,0h2v1h-2z
+m4,0h1v5h-1zm-50,1h1v3h-1zm2,0h1v2h-1zm6,0h2v1h-2zm7,0h1v1h-1zm5,0h1v4h-1z
+m3,0h2v1h-2zm7,0h1v2h-1zm8,0h1v2h-1zm6,0h1v2h-1zm3,0h1v1h-1zm-54,1h5v1h-5z
+m11,0h1v1h-1zm2,0h1v2h-1zm2,0h1v1h-1zm2,0h1v3h-1zm6,0h1v5h-1zm2,0h1v1h-1z
+m6,0h1v5h-1zm2,0h1v1h-1zm6,0h1v2h-1zm4,0h1v2h-1zm4,0h1v1h-1zm2,0h1v1h-1z
+m4,0h1v1h-1zm2,0h1v2h-1zm4,0h1v1h-1zm3,0h5v1h-5zm-54,1h1v1h-1zm4,0h1v1h-1z
+m10,0h1v2h-1zm2,0h1v1h-1zm2,0h1v2h-1zm2,0h1v2h-1zm8,0h1v3h-1zm2,0h1v1h-1z
+m2,0h1v1h-1zm4,0h1v2h-1zm6,0h1v1h-1zm8,0h1v2h-1zm-59,1h1v4h-1zm2,0h5v1h-5z
+m9,0h1v4h-1zm1,0h1v1h-1zm3,0h3v2h-3zm4,0h1v1h-1zm2,0h1v3h-1zm9,0h2v1h-2z
+m3,0h1v4h-1zm1,0h2v1h-2zm4,0h1v1h-1zm5,0h1v1h-1zm4,0h4v1h-4zm5,0h4v1h-4z
+m10,0h5v1h-5zm-57,1h1v2h-1zm8,0h1v4h-1zm9,0h1v3h-1zm3,0h1v1h-1zm6,0h1v2h-1z
+m8,0h1v4h-1zm1,0h2v1h-2zm4,0h1v1h-1zm3,0h1v1h-1zm2,0h1v2h-1zm2,0h2v1h-2z
+m3,0h3v1h-3zm6,0h2v1h-2zm4,0h2v1h-2zm-63,1h1v4h-1zm3,0h1v1h-1zm2,0h2v1h-2z
+m9,0h1v1h-1zm2,0h1v3h-1zm1,0h1v1h-1zm5,0h1v1h-1zm6,0h2v2h-2zm6,0h2v1h-2z
+m3,0h1v3h-1zm4,0h1v1h-1zm3,0h1v1h-1zm3,0h1v4h-1zm2,0h1v3h-1zm2,0h1v1h-1z
+m6,0h1v3h-1zm4,0h2v2h-2zm-55,1h2v1h-2zm5,0h1v1h-1zm2,0h1v1h-1zm5,0h1v1h-1z
+m6,0h1v2h-1zm3,0h1v2h-1zm7,0h1v1h-1zm5,0h1v1h-1zm4,0h1v1h-1zm2,0h1v1h-1z
+m5,0h1v4h-1zm3,0h1v1h-1zm3,0h1v7h-1zm4,0h1v2h-1zm4,0h3v1h-3zm-60,1h1v4h-1z
+m1,0h1v1h-1zm3,0h1v1h-1zm7,0h1v1h-1zm2,0h1v1h-1zm5,0h2v2h-2zm7,0h3v1h-3z
+m4,0h1v1h-1zm2,0h1v8h-1zm5,0h3v1h-3zm4,0h1v5h-1zm14,0h1v1h-1zm8,0h2v1h-2z
+m-64,1h2v2h-2zm4,0h2v1h-2zm5,0h1v1h-1zm3,0h1v1h-1zm4,0h3v1h-3zm8,0h1v1h-1z
+m6,0h1v2h-1zm2,0h1v2h-1zm2,0h1v3h-1zm5,0h1v1h-1zm5,0h1v3h-1zm7,0h1v2h-1z
+m6,0h1v1h-1zm3,0h1v4h-1zm2,0h2v1h-2zm3,0h1v1h-1zm-62,1h1v1h-1zm2,0h1v2h-1z
+m5,0h1v2h-1zm3,0h1v2h-1zm2,0h1v2h-1zm2,0h2v3h-2zm4,0h1v4h-1zm7,0h2v1h-2z
+m10,0h1v1h-1zm2,0h2v1h-2zm6,0h2v2h-2zm3,0h1v2h-1zm12,0h1v1h-1zm2,0h2v1h-2z
+m-65,1h1v1h-1zm8,0h1v1h-1zm3,0h1v1h-1zm2,0h2v3h-2zm3,0h1v1h-1zm5,0h2v1h-2z
+m4,0h3v2h-3zm3,0h2v1h-2zm9,0h1v3h-1zm2,0h1v1h-1zm6,0h1v2h-1zm14,0h1v1h-1z
+m6,0h1v1h-1zm-64,1h1v1h-1zm2,0h1v2h-1zm2,0h2v1h-2zm5,0h1v2h-1zm14,0h1v2h-1z
+m5,0h1v1h-1zm2,0h2v3h-2zm7,0h1v1h-1zm4,0h1v2h-1zm5,0h1v3h-1zm1,0h1v1h-1z
+m5,0h3v1h-3zm5,0h1v4h-1zm2,0h2v1h-2zm4,0h1v2h-1zm2,0h2v1h-2zm-67,1h1v1h-1z
+m7,0h1v3h-1zm2,0h1v2h-1zm3,0h2v3h-2zm5,0h1v1h-1zm2,0h1v1h-1zm3,0h1v2h-1z
+m4,0h2v1h-2zm3,0h1v1h-1zm8,0h1v1h-1zm4,0h2v2h-2zm3,0h1v1h-1zm8,0h3v1h-3z
+m4,0h1v3h-1zm4,-0h1v5h-1zm6,0h1v3h-1zm2,0h1v1h-1zm-67,1h1v1h-1zm2,0h1v3h-1z
+m3,0h1v1h-1zm2,0h1v3h-1zm7,0h1v2h-1zm6,0h1v3h-1zm2,0h1v2h-1zm7,0h2v1h-2z
+m4,0h1v1h-1zm5,0h1v1h-1zm6,0h2v1h-2zm4,0h2v1h-2zm6,0h1v1h-1zm3,0h1v1h-1z
+m3,0h2v1h-2zm3,0h1v2h-1zm3,0h1v2h-1zm-63,1h1v1h-1zm10,0h1v2h-1zm4,0h2v1h-2z
+m7,0h2v1h-2zm4,0h1v2h-1zm2,0h1v1h-1zm14,0h1v1h-1zm2,0h1v2h-1zm4,0h1v6h-1z
+m1,0h1v1h-1zm2,-0h1v4h-1zm9,0h1v9h-1zm-63,1h1v1h-1zm2,0h1v1h-1zm4,0h1v1h-1z
+m3,0h3v1h-3zm8,-0h1v3h-1zm2,0h1v4h-1zm3,0h1v1h-1zm2,0h1v4h-1zm3,0h2v1h-2z
+m3,0h1v1h-1zm4,-0h1v3h-1zm4,0h2v1h-2zm4,0h1v6h-1zm6,-0h1v3h-1zm2,0h1v1h-1z
+m3,0h1v1h-1zm2,-0h1v2h-1zm2,0h1v3h-1zm4,0h2v1h-2zm4,0h1v5h-1zm3,-0h1v2h-1z
+m-64,1h2v1h-2zm5,0h1v1h-1zm3,0h1v2h-1zm6,0h1v2h-1zm5,0h1v1h-1zm8,0h1v2h-1z
+m2,0h1v2h-1zm3,0h1v3h-1zm7,0h1v3h-1zm2,0h1v4h-1zm4,-0h1v1h-1zm7,0h1v1h-1z
+m8,0h1v1h-1zm3,0h1v1h-1zm-67,1h1v1h-1zm3,0h2v1h-2zm3,0h1v1h-1zm4,0h1v2h-1z
+m4,0h1v2h-1zm2,-0h1v1h-1zm5,0h2v2h-2zm6,-0h2v1h-2zm3,0h1v1h-1zm2,0h1v1h-1z
+m5,0h3v1h-3zm7,0h1v2h-1zm3,-0h1v1h-1zm3,0h1v2h-1zm3,0h1v3h-1zm5,0h1v2h-1z
+m8,0h1v3h-1zm-64,1h1v2h-1zm6,0h1v3h-1zm12,0h1v4h-1zm3,0h1v1h-1zm2,0h1v1h-1z
+m3,0h1v2h-1zm7,-0h1v6h-1zm4,0h1v2h-1zm7,0h1v2h-1zm3,0h1v2h-1zm6,0h1v5h-1z
+m1,0h1v1h-1zm4,0h1v1h-1zm4,0h1v1h-1zm4,0h1v1h-1zm-68,1h1v2h-1zm4,0h3v1h-3z
+m5,0h1v2h-1zm6,0h2v2h-2zm11,0h1v3h-1zm4,0h2v1h-2zm11,0h1v2h-1zm6,0h2v3h-2z
+m7,0h1v3h-1zm5,0h1v2h-1zm3,0h1v1h-1zm5,0h1v1h-1zm-60,1h1v2h-1zm3,0h2v1h-2z
+m3,0h1v3h-1zm1,0h1v1h-1zm3,0h1v1h-1zm5,0h1v1h-1zm3,-0h1v5h-1zm2,0h1v1h-1z
+m2,0h1v1h-1zm5,0h1v1h-1zm3,0h1v1h-1zm6,0h1v1h-1zm14,-0h1v4h-1zm3,0h2v1h-2z
+m4,0h1v1h-1zm-60,1h1v2h-1zm2,0h1v1h-1zm6,0h1v1h-1zm4,0h1v1h-1zm2,-0h1v3h-1z
+m1,0h1v1h-1zm4,0h2v1h-2zm9,0h1v1h-1zm4,-0h1v3h-1zm2,0h1v3h-1zm2,0h1v2h-1z
+m12,0h1v1h-1zm10,-0h1v3h-1zm-61,1h1v1h-1zm8,0h3v1h-3zm6,0h1v1h-1zm2,0h1v1h-1z
+m5,-0h1v4h-1zm2,0h1v1h-1zm3,0h1v1h-1zm2,0h3v1h-3zm4,-0h1v2h-1zm4,0h1v2h-1z
+m2,0h1v1h-1zm4,0h1v1h-1zm13,0h1v1h-1zm4,0h2v1h-2zm4,0h4v1h-4zm-64,1h1v2h-1z
+m2,0h1v1h-1zm3,0h5v1h-5zm9,0h1v3h-1zm5,0h2v3h-2zm2,0h1v1h-1zm5,0h1v1h-1z
+m2,0h1v1h-1zm2,0h2v1h-2zm11,0h2v2h-2zm7,0h2v1h-2zm6,0h1v2h-1zm4,0h2v1h-2z
+m3,0h1v1h-1zm4,0h4v1h-4zm-64,1h1v1h-1zm3,0h2v2h-2zm4,0h1v10h-1zm5,0h1v4h-1z
+m11,0h1v3h-1zm3,0h1v1h-1zm16,0h1v1h-1zm2,0h1v2h-1zm6,0h1v4h-1zm2,0h1v1h-1z
+m2,0h1v1h-1zm5,0h1v1h-1zm4,0h1v2h-1zm4,0h1v1h-1zm-66,1h2v2h-2zm4,0h2v1h-2z
+m3,0h1v1h-1zm6,0h3v1h-3zm8,0h1v1h-1zm23,0h1v2h-1zm2,0h2v1h-2zm10,0h1v1h-1z
+m3,0h2v1h-2zm5,0h1v2h-1zm-66,1h1v3h-1zm12,0h1v3h-1zm14,0h2v1h-2zm14,0h2v1h-2z
+m7,0h1v1h-1zm3,0h1v2h-1zm4,0h3v1h-3zm9,0h1v2h-1zm4,0h1v1h-1zm-66,1h1v7h-1z
+m2,0h5v1h-5zm6,0h1v2h-1zm2,0h1v1h-1zm4,0h3v1h-3zm10,0h1v1h-1zm16,0h3v2h-3z
+m7,0h1v2h-1zm6,0h1v2h-1zm3,0h2v1h-2zm3,0h1v5h-1zm1,0h2v1h-2zm3,0h1v5h-1z
+m-60,1h1v4h-1zm12,0h1v3h-1zm3,0h3v2h-3zm8,0h1v1h-1zm17,0h2v1h-2zm5,0h1v1h-1z
+m6,0h2v2h-2zm2,0h1v1h-1zm8,0h4v1h-4zm-63,1h1v6h-1zm4,0h1v1h-1zm7,0h1v1h-1z
+m4,0h1v3h-1zm5,0h2v1h-2zm4,0h1v1h-1zm16,0h1v2h-1zm3,0h1v2h-1zm7,0h2v2h-2z
+m6,0h1v1h-1zm4,0h1v1h-1zm4,0h1v2h-1zm-66,1h1v2h-1zm9,0h1v1h-1zm5,0h2v1h-2z
+m4,0h2v2h-2zm6,0h1v3h-1zm3,0h1v1h-1zm17,0h1v1h-1zm3,0h3v1h-3zm4,0h1v1h-1z
+m3,0h1v3h-1zm2,0h2v1h-2zm9,0h1v1h-1zm2,0h1v3h-1zm-62,1h3v1h-3zm15,0h2v1h-2z
+m5,0h1v1h-1zm3,0h1v1h-1zm15,0h1v3h-1zm5,0h1v5h-1zm5,0h1v5h-1zm2,0h1v2h-1z
+m2,0h3v1h-3zm4,0h3v1h-3zm-54,1h1v2h-1zm3,0h1v1h-1zm2,0h1v1h-1zm2,0h2v1h-2z
+m4,0h1v2h-1zm3,0h1v1h-1zm2,0h1v5h-1zm3,0h2v2h-2zm15,0h2v1h-2zm4,0h1v1h-1z
+m2,0h1v1h-1zm2,0h1v1h-1zm8,0h1v1h-1zm9,0h1v3h-1zm2,0h1v1h-1zm-65,1h1v1h-1z
+m2,0h2v1h-2zm6,0h1v2h-1zm2,0h1v1h-1zm2,0h1v2h-1zm2,0h1v1h-1zm5,0h1v3h-1z
+m3,0h1v1h-1zm15,0h1v2h-1zm4,0h1v2h-1zm6,0h1v1h-1zm6,0h1v2h-1zm2,0h4v1h-4z
+m5,0h1v2h-1zm2,0h1v2h-1zm-49,1h1v3h-1zm3,0h1v2h-1zm2,0h1v5h-1zm6,0h1v3h-1z
+m14,0h1v4h-1zm10,0h1v2h-1zm4,0h1v1h-1zm2,0h3v1h-3zm4,0h1v1h-1zm6,0h1v1h-1z
+m-64,1h2v1h-2zm3,0h1v1h-1zm2,0h1v3h-1zm2,0h1v1h-1zm2,0h2v2h-2zm6,0h1v3h-1z
+m2,0h1v2h-1zm6,0h1v3h-1zm4,0h1v3h-1zm2,0h2v1h-2zm4,0h2v2h-2zm3,0h1v2h-1z
+m4,0h1v2h-1zm2,0h1v2h-1zm2,0h1v2h-1zm3,0h1v1h-1zm10,0h1v3h-1zm2,0h1v2h-1z
+m2,0h1v1h-1zm4,0h1v2h-1zm-67,1h1v1h-1zm3,0h1v6h-1zm3,0h1v1h-1zm2,0h1v2h-1z
+m2,0h1v1h-1zm3,0h1v2h-1zm3,0h1v2h-1zm14,0h1v1h-1zm2,0h1v4h-1zm9,0h1v6h-1z
+m7,0h1v1h-1zm5,0h1v1h-1zm2,0h1v1h-1zm3,0h1v1h-1zm4,0h1v7h-1zm-61,1h2v1h-2z
+m3,0h2v1h-2zm5,0h1v2h-1zm2,0h1v1h-1zm13,0h1v2h-1zm9,0h1v1h-1zm2,0h1v1h-1z
+m2,0h1v1h-1zm6,0h1v1h-1zm2,0h1v1h-1zm2,0h1v1h-1zm2,0h2v1h-2zm3,0h1v3h-1z
+m4,0h1v3h-1zm1,0h1v1h-1zm9,0h1v2h-1zm-66,1h1v1h-1zm2,0h1v1h-1zm10,0h1v6h-1z
+m2,0h2v1h-2zm7,0h3v2h-3zm6,0h2v2h-2zm7,0h1v1h-1zm10,0h1v1h-1zm2,-0h1v3h-1z
+m2,0h1v3h-1zm7,0h1v1h-1zm3,0h1v1h-1zm2,0h2v1h-2zm4,0h2v1h-2zm-65,1h1v1h-1z
+m2,0h1v3h-1zm3,0h5v1h-5zm11,-0h1v2h-1zm2,0h2v1h-2zm8,0h2v1h-2zm4,0h3v1h-3z
+m7,0h1v3h-1zm4,0h1v1h-1zm2,0h1v1h-1zm5,0h1v1h-1zm2,0h2v1h-2zm4,-0h2v2h-2z
+m4,0h1v1h-1zm2,0h1v4h-1zm1,0h1v1h-1zm5,0h1v1h-1zm-65,1h1v1h-1zm2,0h1v1h-1z
+m2,0h1v1h-1zm2,0h3v2h-3zm7,0h1v3h-1zm3,0h1v2h-1zm4,0h1v6h-1zm4,-0h1v1h-1z
+m9,0h2v2h-2zm5,0h2v3h-2zm5,0h1v3h-1zm12,-0h1v1h-1zm6,0h1v1h-1zm3,0h1v1h-1z
+m-59,1h1v1h-1zm5,0h2v1h-2zm7,0h1v1h-1zm2,0h1v1h-1zm7,0h1v2h-1zm3,-0h1v3h-1z
+m2,0h1v1h-1zm6,0h1v1h-1zm3,0h1v1h-1zm4,0h1v1h-1zm3,-0h1v5h-1zm2,0h2v1h-2z
+m3,-0h1v3h-1zm5,0h1v4h-1zm1,0h1v1h-1zm-59,1h2v2h-2zm3,0h1v1h-1zm2,-0h1v2h-1z
+m2,0h2v1h-2zm3,0h2v1h-2zm5,-0h1v2h-1zm7,0h3v1h-3zm6,-0h1v2h-1zm5,0h2v1h-2z
+m3,0h1v1h-1zm10,0h1v1h-1zm5,0h2v1h-2zm4,0h2v1h-2zm11,0h2v1h-2zm-64,1h1v3h-1z
+m4,0h1v1h-1zm2,0h1v1h-1zm4,0h1v2h-1zm4,0h1v1h-1zm2,0h1v3h-1zm2,0h1v2h-1z
+m6,0h1v1h-1zm3,0h1v1h-1zm3,0h1v1h-1zm2,0h1v1h-1zm4,0h1v1h-1zm3,0h3v1h-3z
+m9,0h1v1h-1zm4,0h1v6h-1zm3,-0h1v1h-1zm10,0h1v1h-1zm-66,1h1v1h-1zm2,0h1v1h-1z
+m6,0h1v5h-1zm2,0h1v1h-1zm3,0h1v2h-1zm3,0h1v5h-1zm5,0h1v3h-1zm3,0h1v1h-1z
+m2,0h1v2h-1zm4,0h1v1h-1zm2,0h1v4h-1zm2,0h1v4h-1zm1,0h2v1h-2zm6,0h1v1h-1z
+m2,0h2v1h-2zm3,0h1v1h-1zm5,0h1v1h-1zm9,0h2v1h-2zm5,0h1v3h-1zm-60,1h1v1h-1z
+m2,0h1v1h-1zm5,0h1v1h-1zm2,0h1v1h-1zm8,0h2v1h-2zm5,0h1v3h-1zm4,0h1v2h-1z
+m9,0h1v1h-1zm4,0h1v1h-1zm4,0h3v1h-3zm8,0h1v2h-1zm2,0h1v2h-1zm2,0h1v1h-1z
+m6,0h1v1h-1zm-67,1h2v1h-2zm3,0h1v1h-1zm2,0h1v1h-1zm2,0h1v1h-1zm5,0h1v1h-1z
+m4,0h1v1h-1zm3,0h1v2h-1zm6,0h1v6h-1zm4,-0h2v1h-2zm7,0h1v1h-1zm4,0h1v1h-1z
+m2,0h1v1h-1zm5,0h1v1h-1zm4,0h1v1h-1zm4,0h1v1h-1zm5,0h1v1h-1zm2,0h1v3h-1z
+m2,0h1v1h-1zm-63,1h2v1h-2zm5,0h1v1h-1zm4,0h2v1h-2zm3,0h1v1h-1zm7,0h1v5h-1z
+m6,0h1v6h-1zm4,0h1v1h-1zm7,0h1v1h-1zm2,0h1v1h-1zm4,0h1v1h-1zm5,0h3v1h-3z
+m5,0h1v2h-1zm10,0h1v1h-1zm2,0h1v3h-1zm-62,1h2v2h-2zm2,0h1v1h-1zm3,0h1v1h-1z
+m3,0h1v6h-1zm3,0h1v3h-1zm2,0h1v1h-1zm8,0h1v3h-1zm10,0h1v2h-1zm2,0h1v1h-1z
+m5,0h1v4h-1zm1,0h1v1h-1zm2,0h1v2h-1zm3,0h1v5h-1zm1,0h1v2h-1zm3,0h2v2h-2z
+m4,0h1v1h-1zm2,0h1v1h-1zm3,0h1v2h-1zm6,0h1v1h-1zm2,0h1v1h-1zm-68,1h2v3h-2z
+m6,0h1v1h-1zm15,0h1v5h-1zm1,0h1v1h-1zm5,0h1v1h-1zm3,0h1v1h-1zm2,0h1v14h-1z
+m5,0h1v1h-1zm2,0h2v1h-2zm7,0h1v2h-1zm3,0h2v3h-2zm9,0h1v1h-1zm3,0h1v3h-1z
+m3,0h1v1h-1zm3,0h1v4h-1zm-65,1h2v1h-2zm3,0h1v1h-1zm2,0h1v3h-1zm2,0h2v1h-2z
+m7,0h2v1h-2zm7,0h1v4h-1zm6,0h1v2h-1zm4,0h1v1h-1zm3,0h1v10h-1zm3,0h1v1h-1z
+m13,0h2v1h-2zm4,0h2v1h-2zm3,0h1v1h-1zm4,0h1v3h-1zm3,0h1v1h-1zm-62,1h1v1h-1z
+m2,0h1v1h-1zm16,0h1v1h-1zm5,0h2v1h-2zm3,0h2v1h-2zm5,0h1v1h-1zm2,0h2v1h-2z
+m3,0h1v3h-1zm2,0h1v3h-1zm6,0h1v2h-1zm3,0h1v1h-1zm4,0h1v2h-1zm2,0h1v1h-1z
+m8,0h1v1h-1zm-64,1h2v1h-2zm11,0h2v1h-2zm3,0h2v1h-2zm4,0h1v1h-1zm12,0h1v1h-1z
+m2,0h2v1h-2zm6,0h1v1h-1zm4,0h3v1h-3zm6,-0h1v2h-1zm4,0h1v1h-1zm3,0h1v1h-1z
+m3,0h2v1h-2zm7,0h1v1h-1zm2,0h1v1h-1zm-68,1h1v3h-1zm2,-0h1v1h-1zm2,0h3v1h-3z
+m4,0h3v1h-3zm5,0h1v2h-1zm3,0h1v1h-1zm2,0h1v1h-1zm2,0h1v3h-1zm4,0h1v3h-1z
+m3,-0h1v2h-1zm10,0h2v1h-2zm6,0h1v2h-1zm2,0h1v3h-1zm5,0h2v3h-2zm4,-0h1v1h-1z
+m10,0h2v1h-2zm-54,1h1v5h-1zm2,0h1v1h-1zm7,0h1v4h-1zm6,-0h2v1h-2zm3,0h1v2h-1z
+m2,0h1v6h-1zm3,-0h1v2h-1zm2,0h1v2h-1zm2,0h1v1h-1zm2,0h1v4h-1zm2,-0h1v1h-1z
+m3,0h1v1h-1zm12,0h5v1h-5zm7,0h1v2h-1zm2,0h2v2h-2zm3,0h1v1h-1zm-65,1h2v1h-2z
+m3,0h2v1h-2zm5,0h1v1h-1zm6,0h1v1h-1zm4,0h2v1h-2zm4,0h1v1h-1zm9,0h1v1h-1z
+m13,0h2v2h-2zm8,0h1v1h-1zm2,0h2v1h-2zm3,0h1v5h-1zm1,0h2v1h-2zm3,0h1v6h-1z
+m-56,1h2v1h-2zm4,0h1v2h-1zm6,0h1v4h-1zm3,0h1v1h-1zm2,0h1v1h-1zm4,0h1v3h-1z
+m4,0h1v2h-1zm6,0h1v2h-1zm3,0h5v1h-5zm9,0h1v1h-1zm5,0h1v1h-1zm3,0h1v1h-1z
+m9,0h1v1h-1zm-66,1h7v1h-7zm11,0h1v1h-1zm2,0h1v4h-1zm9,0h1v1h-1zm2,0h1v1h-1z
+m2,0h1v1h-1zm2,0h1v3h-1zm6,0h1v1h-1zm4,0h1v1h-1zm7,0h1v3h-1zm1,0h1v1h-1z
+m5,0h1v3h-1zm2,0h1v2h-1zm2,0h1v2h-1zm3,0h2v1h-2zm4,0h1v1h-1zm-62,1h1v6h-1z
+m6,0h1v6h-1zm2,0h1v4h-1zm1,-0h1v1h-1zm5,0h1v5h-1zm2,0h2v2h-2zm5,-0h1v1h-1z
+m2,0h1v1h-1zm17,0h3v1h-3zm7,0h1v4h-1zm2,-0h2v1h-2zm3,0h1v1h-1zm4,0h1v1h-1z
+m9,0h2v1h-2zm3,0h1v1h-1zm-66,1h3v3h-3zm9,-0h2v1h-2zm8,0h1v3h-1zm1,-0h1v1h-1z
+m13,0h1v5h-1zm1,0h2v1h-2zm4,0h1v1h-1zm3,0h4v1h-4zm7,0h1v5h-1zm2,0h1v2h-1z
+m7,-0h2v1h-2zm4,0h2v2h-2zm2,-0h1v1h-1zm-53,1h1v1h-1zm5,0h1v1h-1zm6,0h4v1h-4z
+m6,0h1v4h-1zm2,0h1v2h-1zm6,0h1v1h-1zm2,0h1v1h-1zm3,0h3v1h-3zm4,0h1v2h-1z
+m5,0h1v1h-1zm3,0h3v1h-3zm7,0h1v4h-1zm6,0h1v2h-1zm-49,1h3v1h-3zm5,0h2v1h-2z
+m4,0h1v3h-1zm1,0h1v1h-1zm8,0h1v1h-1zm2,0h1v3h-1zm2,0h3v1h-3zm5,0h1v3h-1z
+m2,0h1v3h-1zm6,0h1v3h-1zm6,0h2v2h-2zm3,0h1v3h-1zm1,0h1v1h-1zm-52,1h1v2h-1z
+m2,0h1v1h-1zm4,0h1v2h-1zm2,0h1v1h-1zm4,0h1v1h-1zm2,0h2v1h-2zm8,0h1v2h-1z
+m6,0h1v2h-1zm2,0h3v1h-3zm7,0h1v2h-1zm8,0h1v2h-1zm2,0h1v1h-1zm10,0h1v1h-1z
+m-65,1h5v1h-5zm7,0h1v1h-1zm2,0h1v1h-1zm2,0h1v1h-1zm4,0h1v1h-1zm2,0h3v1h-3z
+m6,0h1v1h-1zm2,0h1v1h-1zm3,0h1v1h-1zm5,0h1v1h-1zm4,0h1v1h-1zm3,0h2v1h-2z
+m6,0h1v1h-1zm2,0h2v1h-2zm4,0h1v1h-1zm4,0h1v1h-1zm8,0h1v1h-1zm2,0h1v1h-1z" fill="#000000"/>
+</g>
+<g transform="translate(22.677 -90.382)">
+<path d="M56.693,-73.701h17.008v17.008h-17.008z" fill="#000000"/>
+<path d="M63.543,-70.709h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z" fill="#ffffff"/>
+</g>
+<g transform="translate(22.677 -0)">
+</g>
+<g transform="translate(195.591 -0)">
+<text x="0" y="-268.561" font-size="8" font-weight="bold">Compte</text>
+<text x="0" y="-253.961" font-size="10">CH44 3199 9123 0008 8901 2</text>
+<text x="0" y="-237.561" font-size="8" font-weight="bold">Bénéficiaire</text>
+<text x="0" y="-222.961" font-size="10">Robert Schneider AG</text>
+<text x="0" y="-210.961" font-size="10">Rue du Lac 1268/2/22</text>
+<text x="0" y="-198.961" font-size="10">CH-2501 Biel</text>
+<text x="0" y="-182.561" font-size="8" font-weight="bold">Bénéficiaire final</text>
+<text x="0" y="-167.961" font-size="10">Robert Schneider Services Switzerland AG</text>
+<text x="0" y="-155.961" font-size="10">Rue du Lac 1268/3/1</text>
+<text x="0" y="-143.961" font-size="10">CH-2501 Biel</text>
+<text x="0" y="-127.561" font-size="8" font-weight="bold">Numéro de référence</text>
+<text x="0" y="-112.961" font-size="10">RF18 5390 0754 7034</text>
+<text x="0" y="-96.561" font-size="8" font-weight="bold">Débiteur</text>
+<text x="0" y="-81.961" font-size="10">Pia-Maria Rutschmann-Schnyder</text>
+<text x="0" y="-69.961" font-size="10">Grosse Marktgasse 28</text>
+<text x="0" y="-57.961" font-size="10">CH-9400 Rorschach</text>
+<text x="0" y="-41.561" font-size="8" font-weight="bold">À payer jusqu&apos;au</text>
+<text x="0" y="-26.961" font-size="10">31.10.2019</text>
+</g>
+</g>
+</svg>
