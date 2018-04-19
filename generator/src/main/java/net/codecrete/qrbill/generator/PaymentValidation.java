@@ -215,26 +215,11 @@ class PaymentValidation {
     }
 
     private static boolean hasValidMod97CheckDigits(String number) {
-        String rearranged = number.substring(4) + number.substring(0, 4);
-        int len = rearranged.length();
-        int sum = 0;
-        for (int i = 0; i < len; i++) {
-            char ch = rearranged.charAt(i);
-            if (ch >= '0' && ch <= '9') {
-                sum = sum * 10 + (ch - '0');
-            } else if (ch >= 'A' && ch <= 'Z') {
-                sum = sum * 100 + (ch - 'A' + 10);
-            } else if (ch >= 'a' && ch <= 'z') {
-                sum = sum * 100 + (ch - 'a' + 10);
-            } else {
-                return false;
-            }
-            if (sum > 9999999)
-                sum = sum % 97;
+        try {
+            return Strings.calculateMod97(number) == 1;
+        } catch (IllegalArgumentException e) {
+            return false;
         }
-
-        sum = sum % 97;
-        return sum == 1;
     }
 
     private static boolean isNumeric(String value) {
