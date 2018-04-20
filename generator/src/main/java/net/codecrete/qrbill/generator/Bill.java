@@ -299,16 +299,16 @@ public class Bill implements Serializable {
     }
     
     /**
-     * Creates a ISO11649 creditor reference from a raw String by prefixing the String with "RF"
+     * Creates and sets a ISO11649 creditor reference from a raw string by prefixing the String with "RF"
      * and the modulo 97 checksum.
-     * Sets the created reference number 
-     * @param rawReference The raw String. spaces are removed
-     * @throws IllegalArgumentException if the rawReference contains invalid characters
+     * <p>
+     * Whitespace is removed from the reference
+     * </p>
+     * @param rawReference The raw string
+     * @throws IllegalArgumentException if {@code rawReference} contains invalid characters
      */
-    public void createSetCreditorReference(String rawReference) {
-        final String whiteSpaceRemoved = Strings.whiteSpaceRemoved(rawReference);
-        final int modulo = Strings.calculateMod97("RF00" + whiteSpaceRemoved);
-        setReferenceNo(String.format("RF%02d", 98-modulo) + whiteSpaceRemoved);
+    public void createAndSetCreditorReference(String rawReference) {
+        setReferenceNo(Payments.createISO11649Reference(rawReference));
     }
 
     /**

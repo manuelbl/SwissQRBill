@@ -5,7 +5,7 @@
 // https://opensource.org/licenses/MIT
 //
 
-package net.codecrete.qrbill.generator;
+package net.codecrete.qrbill.generatortest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -14,6 +14,12 @@ import static org.junit.Assert.fail;
 import java.util.List;
 
 import org.junit.Test;
+
+import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.QRBill;
+import net.codecrete.qrbill.generator.QRBillValidationError;
+import net.codecrete.qrbill.generator.ValidationMessage;
+import net.codecrete.qrbill.generator.ValidationResult;
 
 
 public class DecodedTextTest {

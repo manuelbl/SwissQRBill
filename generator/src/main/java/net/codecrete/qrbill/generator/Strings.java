@@ -11,7 +11,7 @@ package net.codecrete.qrbill.generator;
 /**
  * Helper function for processing strings.
  */
-class Strings {
+public class Strings {
 
 
     private Strings() {
@@ -26,7 +26,7 @@ class Strings {
      * @param value string to trim
      * @return trimmed string
      */
-    static String trimmed(String value) {
+    public static String trimmed(String value) {
         if (value == null)
             return null;
         value = value.trim();
@@ -41,7 +41,7 @@ class Strings {
      * @param value string to process
      * @return resulting string with all whitespace removed
      */
-    static String whiteSpaceRemoved(String value) {
+    public static String whiteSpaceRemoved(String value) {
         StringBuilder sb = null;
         int len = value.length();
         int lastCopied = 0;
@@ -76,36 +76,7 @@ class Strings {
      * @param value string to test
      * @return boolean indicating if string is null or empty
      */
-    static boolean isNullOrEmpty(String value) {
+    public static boolean isNullOrEmpty(String value) {
         return value == null || value.trim().length() == 0;
-    }
-
-	/**
-	 * Convert a string to an integer and calculate modulo 97 according to ISO11649 and IBAN
-	 * checksum standard
-	 * @param reference
-	 * @return
-	 */
-    static int calculateMod97(String reference) throws IllegalArgumentException {
-        String rearranged = reference.substring(4) + reference.substring(0, 4);
-        int len = rearranged.length();
-        int sum = 0;
-        for (int i = 0; i < len; i++) {
-            char ch = rearranged.charAt(i);
-            if (ch >= '0' && ch <= '9') {
-                sum = sum * 10 + (ch - '0');
-            } else if (ch >= 'A' && ch <= 'Z') {
-                sum = sum * 100 + (ch - 'A' + 10);
-            } else if (ch >= 'a' && ch <= 'z') {
-                sum = sum * 100 + (ch - 'a' + 10);
-            } else {
-                throw new IllegalArgumentException("Invalid character in reference: " + ch);
-            }
-            if (sum > 9999999)
-                sum = sum % 97;
-        }
-
-        sum = sum % 97;
-        return sum;
     }
 }

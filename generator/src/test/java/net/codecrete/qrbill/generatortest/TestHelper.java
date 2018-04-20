@@ -4,7 +4,7 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-package net.codecrete.qrbill.generator;
+package net.codecrete.qrbill.generatortest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -44,7 +44,7 @@ public class TestHelper {
     }
 
     private static byte[] loadReferenceFile(String filename) throws IOException {
-        try (InputStream is = QRCodeTest.class.getResourceAsStream("/" + filename)) {
+        try (InputStream is = TestHelper.class.getResourceAsStream("/" + filename)) {
             if (is == null)
                 throw new FileNotFoundException(filename);
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();

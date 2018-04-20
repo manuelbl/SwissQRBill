@@ -8,7 +8,7 @@ package net.codecrete.qrbill.generator;
 
 import java.util.Locale;
 
-import net.codecrete.qrbill.generator.PaymentValidation.CleaningResult;
+import net.codecrete.qrbill.generator.Payments.CleaningResult;
 import net.codecrete.qrbill.generator.ValidationMessage.Type;
 
 
@@ -124,7 +124,7 @@ class Validator {
 
         referenceNo = Strings.whiteSpaceRemoved(referenceNo);
         if (referenceNo.startsWith("RF")) {
-            if (!PaymentValidation.isValidISO11649ReferenceNo(referenceNo)) {
+            if (!Payments.isValidISO11649ReferenceNo(referenceNo)) {
                 validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, QRBill.KEY_VALID_ISO11649_CREDITOR_REF);
             } else {
                 billOut.setReferenceNo(referenceNo);
@@ -132,7 +132,7 @@ class Validator {
         } else {
             if (referenceNo.length() < 27)
                 referenceNo = "00000000000000000000000000".substring(0, 27 - referenceNo.length()) + referenceNo;
-            if (!PaymentValidation.isValidQRReferenceNo(referenceNo))
+            if (!Payments.isValidQRReferenceNo(referenceNo))
                 validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, QRBill.KEY_VALID_QR_REF_NO);
             else
                 billOut.setReferenceNo(referenceNo);
@@ -182,14 +182,14 @@ class Validator {
 
         if (addressOut.getCountryCode() != null
             && (addressOut.getCountryCode().length() != 2
-                    || !PaymentValidation.isAlphaNumeric(addressOut.getCountryCode())))
+                    || !Payments.isAlphaNumeric(addressOut.getCountryCode())))
                 validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE, QRBill.KEY_VALID_COUNTRY_CODE);
 
         return addressOut;
     }
 
     private boolean validateIBAN(String iban, String field) {
-        if (!PaymentValidation.isValidIBAN(iban)) {
+        if (!Payments.isValidIBAN(iban)) {
             validationResult.addMessage(Type.ERROR, field, QRBill.KEY_ACCOUNT_IS_VALID_IBAN);
             return false;
         }
@@ -254,7 +254,7 @@ class Validator {
 
     private String cleanedValue(String value, String fieldRoot, String subfield) {
         CleaningResult result = new CleaningResult();
-        PaymentValidation.cleanValue(value, result);
+        Payments.cleanValue(value, result);
         if (result.replacedUnsupportedChars)
             validationResult.addMessage(Type.WARNING, fieldRoot + subfield, QRBill.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         return result.cleanedString;
