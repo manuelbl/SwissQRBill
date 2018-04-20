@@ -4,17 +4,23 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-package net.codecrete.qrbill.generator;
+package net.codecrete.qrbill.generatortest;
 
-import org.junit.Test;
-
-import java.time.LocalDate;
-
-import static net.codecrete.qrbill.generator.ValidationMessage.Type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.time.LocalDate;
+
+import org.junit.Test;
+
+import net.codecrete.qrbill.generator.Address;
+import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.QRBill;
+import net.codecrete.qrbill.generator.ValidationMessage;
+import net.codecrete.qrbill.generator.ValidationMessage.Type;
+import net.codecrete.qrbill.generator.ValidationResult;
 
 public class ValidationTest {
 
@@ -519,7 +525,7 @@ public class ValidationTest {
     }
 
     private void validate() {
-        result = Validator.validate(bill);
+        result = QRBill.validate(bill);
         validatedBill = result.getCleanedBill();
     }
 

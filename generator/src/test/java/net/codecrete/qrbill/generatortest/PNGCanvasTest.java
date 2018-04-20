@@ -4,11 +4,13 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-package net.codecrete.qrbill.generator;
+package net.codecrete.qrbill.generatortest;
 
 import org.junit.Test;
 
 import net.codecrete.qrbill.canvas.PNGCanvas;
+import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.QRBill;
 
 public class PNGCanvasTest {
 

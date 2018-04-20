@@ -297,6 +297,19 @@ public class Bill implements Serializable {
     public void setReferenceNo(String referenceNo) {
         this.referenceNo = referenceNo;
     }
+    
+    /**
+     * Creates and sets a ISO11649 creditor reference from a raw string by prefixing the String with "RF"
+     * and the modulo 97 checksum.
+     * <p>
+     * Whitespace is removed from the reference
+     * </p>
+     * @param rawReference The raw string
+     * @throws IllegalArgumentException if {@code rawReference} contains invalid characters
+     */
+    public void createAndSetCreditorReference(String rawReference) {
+        setReferenceNo(Payments.createISO11649Reference(rawReference));
+    }
 
     /**
      * Gets the additional unstructured message.

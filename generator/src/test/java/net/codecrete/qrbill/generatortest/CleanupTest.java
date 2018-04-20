@@ -5,7 +5,7 @@
 // https://opensource.org/licenses/MIT
 //
 
-package net.codecrete.qrbill.generator;
+package net.codecrete.qrbill.generatortest;
 
 import static org.junit.Assert.assertNull;
 

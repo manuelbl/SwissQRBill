@@ -11,7 +11,7 @@ package net.codecrete.qrbill.generator;
 /**
  * Helper function for processing strings.
  */
-class Strings {
+public class Strings {
 
 
     private Strings() {
@@ -26,7 +26,7 @@ class Strings {
      * @param value string to trim
      * @return trimmed string
      */
-    static String trimmed(String value) {
+    public static String trimmed(String value) {
         if (value == null)
             return null;
         value = value.trim();
@@ -41,7 +41,7 @@ class Strings {
      * @param value string to process
      * @return resulting string with all whitespace removed
      */
-    static String whiteSpaceRemoved(String value) {
+    public static String whiteSpaceRemoved(String value) {
         StringBuilder sb = null;
         int len = value.length();
         int lastCopied = 0;
@@ -76,7 +76,7 @@ class Strings {
      * @param value string to test
      * @return boolean indicating if string is null or empty
      */
-    static boolean isNullOrEmpty(String value) {
+    public static boolean isNullOrEmpty(String value) {
         return value == null || value.trim().length() == 0;
     }
 }

@@ -5,13 +5,17 @@
 // https://opensource.org/licenses/MIT
 //
 
-package net.codecrete.qrbill.generator;
+package net.codecrete.qrbill.generatortest;
 
 import java.io.IOException;
 
 import org.junit.Test;
 
 import net.codecrete.qrbill.canvas.AbstractCanvas;
+import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.QRBill;
+import net.codecrete.qrbill.generator.QRBillUnexpectedException;
+import net.codecrete.qrbill.generator.QRBillValidationError;
 
 public class QRBillError {
 
