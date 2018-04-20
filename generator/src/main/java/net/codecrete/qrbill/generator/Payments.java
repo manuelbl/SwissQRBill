@@ -231,7 +231,6 @@ public class Payments {
         return String.format("RF%02d", 98-modulo) + whiteSpaceRemoved;
     }
 
-
     private static boolean hasValidMod97CheckDigits(String number) {
         try {
             return calculateMod97(number) == 1;
@@ -240,13 +239,17 @@ public class Payments {
         }
     }
 
+
     /**
-	 * Convert a string to an integer and calculate modulo 97 according to ISO11649 and IBAN
-	 * checksum standard
-	 * @param reference
-	 * @return
+	 * Calculate the reference's modulo 97 checksum according to ISO11649 and IBAN standard.
+     * <p>
+     * The string may only contains digits and letters (A to Z, no accents)
+     * </p>
+	 * @param reference the reference
+	 * @return the checksum (0 to 96)
+     * @throws IllegalArgumentException thrown if the reference contains an invalid character
 	 */
-    public static int calculateMod97(String reference) throws IllegalArgumentException {
+    public static int calculateMod97(String reference) {
         String rearranged = reference.substring(4) + reference.substring(0, 4);
         int len = rearranged.length();
         int sum = 0;
@@ -280,6 +283,7 @@ public class Payments {
         return true;
     }
 
+    
     static boolean isAlphaNumeric(String value) {
         int len = value.length();
         for (int i = 0; i < len; i++) {
