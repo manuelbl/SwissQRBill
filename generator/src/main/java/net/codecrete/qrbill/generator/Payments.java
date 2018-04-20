@@ -144,6 +144,8 @@ public class Payments {
      *   The string is checked for valid characters, valid length
      *   and for a valid check digit.
      * </p>
+     * @param iban IBAN to validate
+     * @return {@code true} if the IBAN is valid, {@code false} otherwise
      */
     public static boolean isValidIBAN(String iban) {
         if (iban.length() < 5)
@@ -172,6 +174,8 @@ public class Payments {
      *   The string is checked for valid characters, valid length
      *   and a valid check digit.
      * </p>
+     * @param referenceNo QR reference number to validate
+     * @return {@code true} if the reference number is valid, {@code false} otherwise
      */
     public static boolean isValidQRReferenceNo(String referenceNo) {
         if (!isNumeric(referenceNo))
@@ -200,6 +204,8 @@ public class Payments {
      *   The string is checked for valid characters, valid length
      *   and a valid check digit.
      * </p>
+     * @param referenceNo ISO 11649 creditor reference to validate
+     * @return {@code true} if the creditor reference is valid, {@code false} otherwise
      */
     public static boolean isValidISO11649ReferenceNo(String referenceNo) {
         if (referenceNo.length() < 5 || referenceNo.length() > 25)
