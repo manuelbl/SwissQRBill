@@ -82,6 +82,10 @@ public class QRBill {
      *     The validation result contains the error and warning
      *     messages (if any) and the cleaned bill data.
      * </p>
+     * <p>
+     *     For details about the validation result, see
+     *     <a href="https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data validation</a>
+     * </p>
      * @param bill bill data
      * @return validation result
      */
@@ -94,12 +98,14 @@ public class QRBill {
      * Generates a QR bill payment part.
      * <p>
      *     If the bill data does not validate, a {@link QRBillValidationError} is thrown,
-     *     which contains the validation result.
+     *     which contains the validation result. For details about the validation result, see
+     *     <a href="https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data validation</a>
      * </p>
      * @param bill the bill data
      * @param billFormat the bill's output size
      * @param graphicsFormat the bill's output format
      * @return the generated QR bill (as a byte array)
+     * @throws QRBillValidationError thrown if the bill data does not validate
      */
     public static byte[] generate(Bill bill, BillFormat billFormat, GraphicsFormat graphicsFormat) {
         try (Canvas canvas = createCanvas(graphicsFormat)) {
@@ -114,7 +120,8 @@ public class QRBill {
      * Generates a QR bill payment part using the specified canvas.
      * <p>
      *     If the bill data does not validate, a {@link QRBillValidationError} is thrown,
-     *     which contains the validation result.
+     *     which contains the validation result. For details about the validation result, see
+     *     <a href="https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data validation</a>
      * </p>
      * <p>
      *     The canvas will be initialized with {@code Canvas#setupPage} and it will
@@ -124,6 +131,7 @@ public class QRBill {
      * @param billFormat the bill's output size
      * @param canvas the canvas to draw to
      * @return the generated QR bill (as a byte array)
+     * @throws QRBillValidationError thrown if the bill data does not validate
      */
     public static byte[] generate(Bill bill, BillFormat billFormat, Canvas canvas) {
         try (Canvas c = canvas) {
@@ -155,10 +163,12 @@ public class QRBill {
      * </p>
      * <p>
      *     If the bill data does not validate, a {@link QRBillValidationError} is thrown,
-     *     which contains the validation result.
+     *     which contains the validation result. For details about the validation result, see
+     *     <a href="https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data validation</a>
      * </p>
      * @param bill the bill data to encode
      * @return the QR code text
+     * @throws QRBillValidationError thrown if the bill data does not validate
      */
     public static String encodeQrCodeText(Bill bill) {
         ValidationResult result = Validator.validate(bill);
@@ -173,8 +183,15 @@ public class QRBill {
 
     /**
      * Decodes the text embedded in the QR code and fills it into a {@link Bill} data structure.
+     * <p>
+     * A subset of the validations related to embedded QR code text is run. It the validation fails,
+     * a {@link QRBillValidationError} is thrown, which contains the validation result.
+     * See the error messages marked with a dagger in
+     * <a href="https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data validation</a>.
+     * </p>
      * @param text the text to decode
      * @return the decoded bill data
+     * @throws QRBillValidationError thrown if the bill data does not validate
      */
     public static Bill decodeQrCodeText(String text) {
         return QRCode.decodeQRCodeText(text);
