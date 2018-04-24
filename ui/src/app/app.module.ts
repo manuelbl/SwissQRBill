@@ -5,7 +5,7 @@
 // https://opensource.org/licenses/MIT
 //
 import '../polyfills';
-import { NgModule } from '@angular/core';
+import { NgModule, Input } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -38,7 +38,7 @@ import { ExamplesComponent } from './examples/examples.component';
 import { ExampleService } from './example-service/example.service';
 import { BillSingletonService } from './bill-singleton-service/bill-singleton.service';
 import { IsoDateAdapter } from './date-adapter/iso-date-adapter';
-import { IBANInputDirective } from './input-fields/iban-input';
+import { InputWithFormatDirective } from './input-fields/input-with-format';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -53,7 +53,7 @@ export function createTranslateLoader(http: HttpClient) {
     AboutComponent,
     SettingsComponent,
     ExamplesComponent,
-    IBANInputDirective
+    InputWithFormatDirective
   ],
   entryComponents: [
     PreviewComponent

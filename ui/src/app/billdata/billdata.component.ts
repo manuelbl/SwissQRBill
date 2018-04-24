@@ -13,11 +13,13 @@ import { QrBill } from '../qrbill-api/qrbill';
 import { ValidationResponse } from '../qrbill-api/validation-response';
 import { PreviewComponent } from '../preview/preview.component';
 import { BillSingletonService } from '../bill-singleton-service/bill-singleton.service';
+import { IBANFormatter } from '../input-fields/iban-formatter';
 
 @Component({
   selector: 'bill-data',
   templateUrl: './billdata.component.html',
-  styleUrls: ['./billdata.component.css']
+  styleUrls: ['./billdata.component.css'],
+  providers: [ IBANFormatter ]
 })
 export class BillData implements OnInit {
   public bill: QrBill;
@@ -31,7 +33,7 @@ export class BillData implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private qrBillService: QrBillService,
       private dialog: MatDialog, private translate: TranslateService,
-      private billSingleton: BillSingletonService) {
+      private billSingleton: BillSingletonService, protected ibanFormatter: IBANFormatter) {
     this.bill = billSingleton.getBill();
     this.outputSize = "a6-landscape";
   }
