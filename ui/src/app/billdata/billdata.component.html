@@ -133,7 +133,7 @@
 
         <div class="form-line">
           <mat-form-field class="form-field s12">
-            <input matInput placeholder="{{ 'reference_no' | translate }}" formControlName="referenceNo">
+            <input inputWithFormat [inputFormatter]="refNumberFormatter" placeholder="{{ 'reference_no' | translate }}" formControlName="referenceNo">
             <mat-error *ngIf="billForm.hasError('serverSide', ['referenceNo'])">{{billForm.getError('serverSide', 'referenceNo')}}</mat-error>
           </mat-form-field>
         </div>
