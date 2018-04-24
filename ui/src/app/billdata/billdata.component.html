@@ -9,7 +9,7 @@
       <div class="form-group mat-elevation-z3">
         <div class="form-line">
           <mat-form-field class="form-field s12">
-            <input matInput placeholder="{{ 'account' | translate }}" formControlName="account" required>
+            <input ibanInput placeholder="{{ 'account' | translate }}" formControlName="account" required>
             <mat-error *ngIf="billForm.hasError('serverSide', ['account'])">{{billForm.getError('serverSide', 'account')}}</mat-error>
           </mat-form-field>
         </div>

@@ -38,6 +38,7 @@ import { ExamplesComponent } from './examples/examples.component';
 import { ExampleService } from './example-service/example.service';
 import { BillSingletonService } from './bill-singleton-service/bill-singleton.service';
 import { IsoDateAdapter } from './date-adapter/iso-date-adapter';
+import { IBANInputDirective } from './input-fields/iban-input';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -51,7 +52,8 @@ export function createTranslateLoader(http: HttpClient) {
     NavbarComponent,
     AboutComponent,
     SettingsComponent,
-    ExamplesComponent
+    ExamplesComponent,
+    IBANInputDirective
   ],
   entryComponents: [
     PreviewComponent
