@@ -15,6 +15,7 @@ import { PreviewComponent } from '../preview/preview.component';
 import { BillSingletonService } from '../bill-singleton-service/bill-singleton.service';
 import { IBANFormatter } from '../input-fields/iban-formatter';
 import { ReferenceNumberFormatter } from '../input-fields/ref-number-formatter';
+import { AmountFormatter } from '../input-fields/amount-formatter';
 
 @Component({
   selector: 'bill-data',
@@ -31,10 +32,9 @@ export class BillData implements OnInit {
   private validationInProgress: number = 0;
   private previewPressed: boolean = false;
 
-
   constructor(private formBuilder: FormBuilder, private qrBillService: QrBillService,
       private dialog: MatDialog, private translate: TranslateService,
-      private billSingleton: BillSingletonService,
+      private billSingleton: BillSingletonService, protected amountFormatter: AmountFormatter,
       protected ibanFormatter: IBANFormatter, protected refNumberFormatter: ReferenceNumberFormatter) {
     this.bill = billSingleton.getBill();
     this.outputSize = "a6-landscape";

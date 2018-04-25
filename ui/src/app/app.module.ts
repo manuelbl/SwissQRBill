@@ -39,6 +39,7 @@ import { ExampleService } from './example-service/example.service';
 import { BillSingletonService } from './bill-singleton-service/bill-singleton.service';
 import { IsoDateAdapter } from './date-adapter/iso-date-adapter';
 import { InputWithFormatDirective } from './input-fields/input-with-format';
+import { AmountFormatter } from './input-fields/amount-formatter';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -86,7 +87,8 @@ export function createTranslateLoader(http: HttpClient) {
     QrBillService,
     ExampleService,
     BillSingletonService,
-    { provide: DateAdapter, useClass: IsoDateAdapter }
+    { provide: DateAdapter, useClass: IsoDateAdapter },
+    AmountFormatter
   ],
   bootstrap: [AppComponent]
 })

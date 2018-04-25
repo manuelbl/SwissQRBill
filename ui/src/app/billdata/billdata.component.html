@@ -117,7 +117,7 @@
           </mat-form-field>
 
           <mat-form-field class="form-field s4">
-            <input type="number" matInput placeholder="{{ 'amount' | translate}}" formControlName="amount">
+            <input inputWithFormat [inputFormatter]="amountFormatter" placeholder="{{ 'amount' | translate}}" formControlName="amount">
             <mat-error *ngIf="billForm.hasError('serverSide', ['amount'])">{{billForm.getError('serverSide', 'amount')}}</mat-error>
           </mat-form-field>
         </div>
