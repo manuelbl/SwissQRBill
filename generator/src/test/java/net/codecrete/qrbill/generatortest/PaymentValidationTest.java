@@ -7,6 +7,7 @@
 
 package net.codecrete.qrbill.generatortest;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -116,4 +117,13 @@ public class PaymentValidationTest {
         assertFalse(Payments.isValidISO11649ReferenceNo("RF18000000000539007547033"));
     }
 
+    @Test
+    public void formatCreditorReference() {
+        assertEquals("RF71 2348 231", Payments.formatIBAN("RF712348231"));
+    }
+
+    @Test
+    public void formatQRReference() {
+        assertEquals("21 00000 00003 13947 14300 09017", Payments.formatQRReferenceNumber("210000000003139471430009017"));
+    }
 }

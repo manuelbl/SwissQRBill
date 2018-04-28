@@ -27,11 +27,10 @@ public class Payments {
         boolean replacedUnsupportedChars;
     }
 
-
     /**
      * Cleans a string value.
      * <p>
-     *     Unsupported characters (according to Swiss Payment Standars 2018, ch. 2.4.1 and appendix D)
+     *     Unsupported characters (according to Swiss Payment Standards 2018, ch. 2.4.1 and appendix D)
      *     are replaced with spaces (unsupported whitespace)
      *     or dots (all other unsupported characters). Leading and trailing
      *     whitespace is removed.
@@ -58,9 +57,7 @@ public class Payments {
     }
 
     private static void cleanValue(String value, CleaningResult result, boolean isNormalized) {
-
         /* This code has cognitive complexity 30. Deal with it. */
-
         if (value == null)
             return;
 
@@ -133,7 +130,6 @@ public class Payments {
         result.replacedUnsupportedChars = true;
     }
 
-
     /**
      * Validates if the string is a valid IBAN number
      * <p>
@@ -157,6 +153,114 @@ public class Payments {
             return false;
 
         return hasValidMod97CheckDigits(iban);
+    }
+    
+    /**
+     * Formats a IBAN or creditor reference by inserting spaces.
+     * <p>
+     * Spaces are inserted to form groups of 4 letters/digits.
+     * If a group of less than 4 letters/digits is needed, it
+     * appears at the end.
+     * </p>
+     * 
+     * @param iban IBAN or creditor reference without white space
+     * @return formatted IBAN or creditor reference
+     */
+    public static String formatIBAN(String iban) {
+        StringBuilder sb = new StringBuilder(25);
+        int len = iban.length();
+
+        for (int pos = 0; pos < len; pos += 4) {
+            int endPos = pos + 4;
+            if (endPos > len)
+                endPos = len;
+            sb.append(iban, pos, endPos);
+            if (endPos != len)
+                sb.append(' ');
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Validates if the string is a valid ISO 11649 reference number.
+     * <p>
+     *   All whitespace must have been removed before the
+     *   the validation is performed.
+     * </p>
+     * <p>
+     *   The string is checked for valid characters, valid length
+     *   and a valid check digit.
+     * </p>
+     * @param referenceNo ISO 11649 creditor reference to validate
+     * @return {@code true} if the creditor reference is valid, {@code false} otherwise
+     */
+    public static boolean isValidISO11649ReferenceNo(String referenceNo) {
+        if (referenceNo.length() < 5 || referenceNo.length() > 25)
+            return false;
+
+        if (!isAlphaNumeric(referenceNo))
+            return false;
+
+        if (!Character.isDigit(referenceNo.charAt(2)) || !Character.isDigit(referenceNo.charAt(3)))
+            return false;
+
+        return hasValidMod97CheckDigits(referenceNo);
+    }
+
+    /**
+     * Creates a ISO11649 creditor reference from a raw string by prefixing the string with "RF"
+     * and the modulo 97 checksum.
+     * <p>
+     * Whitespace is removed from the reference
+     * </p>
+     * @param rawReference The raw string
+     * @return ISO11649 creditor reference
+     * @throws IllegalArgumentException if {@code rawReference} contains invalid characters
+     */
+    public static String createISO11649Reference(String rawReference) {
+        final String whiteSpaceRemoved = Strings.whiteSpaceRemoved(rawReference);
+        final int modulo = Payments.calculateMod97("RF00" + whiteSpaceRemoved);
+        return String.format("RF%02d", 98-modulo) + whiteSpaceRemoved;
+    }
+
+    private static boolean hasValidMod97CheckDigits(String number) {
+        try {
+            return calculateMod97(number) == 1;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    /**
+	 * Calculate the reference's modulo 97 checksum according to ISO11649 and IBAN standard.
+     * <p>
+     * The string may only contains digits and letters (A to Z, no accents)
+     * </p>
+	 * @param reference the reference
+	 * @return the checksum (0 to 96)
+     * @throws IllegalArgumentException thrown if the reference contains an invalid character
+	 */
+    public static int calculateMod97(String reference) {
+        String rearranged = reference.substring(4) + reference.substring(0, 4);
+        int len = rearranged.length();
+        int sum = 0;
+        for (int i = 0; i < len; i++) {
+            char ch = rearranged.charAt(i);
+            if (ch >= '0' && ch <= '9') {
+                sum = sum * 10 + (ch - '0');
+            } else if (ch >= 'A' && ch <= 'Z') {
+                sum = sum * 100 + (ch - 'A' + 10);
+            } else if (ch >= 'a' && ch <= 'z') {
+                sum = sum * 100 + (ch - 'a' + 10);
+            } else {
+                throw new IllegalArgumentException("Invalid character in reference: " + ch);
+            }
+            if (sum > 9999999)
+                sum = sum % 97;
+        }
+
+        sum = sum % 97;
+        return sum;
     }
     
     private static final int[] MOD_10 = { 0, 9, 4, 6, 8, 2, 7, 1, 3, 5 };
@@ -195,90 +299,31 @@ public class Payments {
     }
 
     /**
-     * Validates if the string is a valid ISO 11649 reference number.
+     * Formats a QR reference number by inserted spaces.
      * <p>
-     *   All whitespace must have been removed before the
-     *   the validation is performed.
+     * Spaces are inserted to create groups of 5 digits.
+     * If a group of less than 5 digits is needed, it
+     * appears at the start of the formatted reference number.
      * </p>
-     * <p>
-     *   The string is checked for valid characters, valid length
-     *   and a valid check digit.
-     * </p>
-     * @param referenceNo ISO 11649 creditor reference to validate
-     * @return {@code true} if the creditor reference is valid, {@code false} otherwise
+     * 
+     * @param refNo reference number without white space
+     * @return formatted reference number
      */
-    public static boolean isValidISO11649ReferenceNo(String referenceNo) {
-        if (referenceNo.length() < 5 || referenceNo.length() > 25)
-            return false;
-
-        if (!isAlphaNumeric(referenceNo))
-            return false;
-
-        if (!Character.isDigit(referenceNo.charAt(2)) || !Character.isDigit(referenceNo.charAt(3)))
-            return false;
-
-        return hasValidMod97CheckDigits(referenceNo);
-    }
-
-
-    /**
-     * Creates a ISO11649 creditor reference from a raw string by prefixing the string with "RF"
-     * and the modulo 97 checksum.
-     * <p>
-     * Whitespace is removed from the reference
-     * </p>
-     * @param rawReference The raw string
-     * @return ISO11649 creditor reference
-     * @throws IllegalArgumentException if {@code rawReference} contains invalid characters
-     */
-    public static String createISO11649Reference(String rawReference) {
-        final String whiteSpaceRemoved = Strings.whiteSpaceRemoved(rawReference);
-        final int modulo = Payments.calculateMod97("RF00" + whiteSpaceRemoved);
-        return String.format("RF%02d", 98-modulo) + whiteSpaceRemoved;
-    }
-
-    private static boolean hasValidMod97CheckDigits(String number) {
-        try {
-            return calculateMod97(number) == 1;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
-    }
-
-
-    /**
-	 * Calculate the reference's modulo 97 checksum according to ISO11649 and IBAN standard.
-     * <p>
-     * The string may only contains digits and letters (A to Z, no accents)
-     * </p>
-	 * @param reference the reference
-	 * @return the checksum (0 to 96)
-     * @throws IllegalArgumentException thrown if the reference contains an invalid character
-	 */
-    public static int calculateMod97(String reference) {
-        String rearranged = reference.substring(4) + reference.substring(0, 4);
-        int len = rearranged.length();
-        int sum = 0;
-        for (int i = 0; i < len; i++) {
-            char ch = rearranged.charAt(i);
-            if (ch >= '0' && ch <= '9') {
-                sum = sum * 10 + (ch - '0');
-            } else if (ch >= 'A' && ch <= 'Z') {
-                sum = sum * 100 + (ch - 'A' + 10);
-            } else if (ch >= 'a' && ch <= 'z') {
-                sum = sum * 100 + (ch - 'a' + 10);
-            } else {
-                throw new IllegalArgumentException("Invalid character in reference: " + ch);
-            }
-            if (sum > 9999999)
-                sum = sum % 97;
+    public static String formatQRReferenceNumber(String refNo) {
+        int len = refNo.length();
+        StringBuilder sb = new StringBuilder();
+        int t = 0;
+        while (t < len) {
+            int n = t + (len - t - 1) % 5 + 1;
+            if (t != 0)
+                sb.append(" ");
+            sb.append(refNo, t, n);
+            t = n;
         }
 
-        sum = sum % 97;
-        return sum;
+        return sb.toString();
     }
-    
-    
+
     private static boolean isNumeric(String value) {
         int len = value.length();
         for (int i = 0; i < len; i++) {
@@ -289,7 +334,6 @@ public class Payments {
         return true;
     }
 
-    
     static boolean isAlphaNumeric(String value) {
         int len = value.length();
         for (int i = 0; i < len; i++) {

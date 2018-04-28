@@ -212,7 +212,7 @@ class PaymentPartLayout {
 
     // Prepare the text in the right column (mainly formatting and line breaking)
     private void prepareRightColumnText() {
-        account = formatIBANForDisplay(bill.getAccount());
+        account = Payments.formatIBAN(bill.getAccount());
         creditor = FontMetrics.splitLines(formatPersonForDisplay(bill.getCreditor()), RIGHT_COLUMN_WIDTH * MM_TO_PT, fontSizeText);
         finalCreditor = null;
         if (bill.getFinalCreditor() != null)
@@ -345,21 +345,6 @@ class PaymentPartLayout {
         return date.format(dateDisplayFormat);
     }
 
-    private static String formatIBANForDisplay(String iban) {
-        StringBuilder sb = new StringBuilder(25);
-        int len = iban.length();
-
-        // groups of 4 letters/digits, starting in the front
-        for (int pos = 0; pos < len; pos += 4) {
-            int endPos = pos + 4;
-            if (endPos > len)
-                endPos = len;
-            sb.append(iban, pos, endPos);
-            if (endPos != len)
-                sb.append(' ');
-        }
-        return sb.toString();
-    }
 
     private static String formatPersonForDisplay(Address address) {
         StringBuilder sb = new StringBuilder();
@@ -383,6 +368,7 @@ class PaymentPartLayout {
         return sb.toString();
     }
 
+    
     private static String formatReferenceNumber(String refNo) {
         if (refNo == null)
             return null;
@@ -392,19 +378,8 @@ class PaymentPartLayout {
             return null;
         if (refNo.startsWith("RF"))
             // same format as IBAN
-            return formatIBANForDisplay(refNo);
+            return Payments.formatIBAN(refNo);
 
-        // groups of 5 digits, starting at the end
-        StringBuilder sb = new StringBuilder();
-        int t = 0;
-        while (t < len) {
-            int n = t + (len - t - 1) % 5 + 1;
-            if (t != 0)
-                sb.append(" ");
-            sb.append(refNo, t, n);
-            t = n;
-        }
-
-        return sb.toString();
+        return Payments.formatQRReferenceNumber(refNo);
     }
 }
