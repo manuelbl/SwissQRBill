@@ -34,8 +34,8 @@ export class BillData implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private qrBillService: QrBillService,
       private dialog: MatDialog, private translate: TranslateService,
-      private billSingleton: BillSingletonService, protected amountFormatter: AmountFormatter,
-      protected ibanFormatter: IBANFormatter, protected refNumberFormatter: ReferenceNumberFormatter) {
+      private billSingleton: BillSingletonService, public amountFormatter: AmountFormatter,
+      public ibanFormatter: IBANFormatter, public refNumberFormatter: ReferenceNumberFormatter) {
     this.bill = billSingleton.getBill();
     this.outputSize = "a6-landscape";
   }
