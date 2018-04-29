@@ -21,7 +21,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 group = 'net.codecrete.qrbill'
-version = '0.9.4'
+version = '0.9.5'
 
 bootJar {
     baseName = 'qrbill-service'
