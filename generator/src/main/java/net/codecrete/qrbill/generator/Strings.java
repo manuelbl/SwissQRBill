@@ -37,6 +37,9 @@ public class Strings {
 
     /**
      * Returns string without white space
+     * <p>
+     * Only the space character is considered white space.
+     * </p>
      * 
      * @param value string to process
      * @return resulting string with all whitespace removed
@@ -57,11 +60,19 @@ public class Strings {
             }
         }
 
-        if (sb == null)
-            return value;
+        if (sb == null) {
+            if (lastCopied == 0)
+                return value;
 
-        if (len > lastCopied)
+            if (lastCopied == len)
+                return "";
+            
+            return value.substring(lastCopied, len);
+        }
+
+        if (lastCopied < len)
             sb.append(value, lastCopied, len);
+        
         return sb.toString();
     }
 

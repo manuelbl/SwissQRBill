@@ -1,0 +1,38 @@
+{
+    "run": [
+        {
+            "name": "generator",
+            "projectName": "generator",
+            "workingDirectory": "/Users/bleichenbacher/Documents/Lab/QR-Bill/QRBill",
+            "args": [],
+            "vmargs": [],
+            "preLaunchTask": ""
+        },
+        {
+            "name": "web",
+            "projectName": "web",
+            "workingDirectory": "/Users/bleichenbacher/Documents/Lab/QR-Bill/QRBill",
+            "args": [],
+            "vmargs": [],
+            "preLaunchTask": ""
+        }
+    ],
+    "debug": [
+        {
+            "name": "generator",
+            "projectName": "generator",
+            "workingDirectory": "/Users/bleichenbacher/Documents/Lab/QR-Bill/QRBill",
+            "args": [],
+            "vmargs": [],
+            "preLaunchTask": ""
+        },
+        {
+            "name": "web",
+            "projectName": "web",
+            "workingDirectory": "/Users/bleichenbacher/Documents/Lab/QR-Bill/QRBill",
+            "args": [],
+            "vmargs": [],
+            "preLaunchTask": ""
+        }
+    ]
+}
