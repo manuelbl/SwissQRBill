@@ -28,12 +28,12 @@ public class Payments {
     }
 
     /**
-     * Cleans a string value.
+     * Cleans a string value to make it viable for the Swiss Payment Standards 2018.
      * <p>
-     *     Unsupported characters (according to Swiss Payment Standards 2018, ch. 2.4.1 and appendix D)
-     *     are replaced with spaces (unsupported whitespace)
-     *     or dots (all other unsupported characters). Leading and trailing
-     *     whitespace is removed.
+     *     Unsupported characters (according to Swiss Payment Standards 2018,
+     *     ch. 2.4.1 and appendix D) are replaced with spaces (unsupported
+     *     whitespace) or dots (all other unsupported characters). Leading and
+     *     trailing whitespace is removed.
      * </p>
      * <p>
      *     If characters beyond 0xff are detected, the string is first normalized
@@ -43,7 +43,7 @@ public class Payments {
      * </p>
      * <p>
      *     If the resulting strings is all white space, {@code null} is
-     *     returned and no warning is added.
+     *     returned.
      * </p>
      * @param value string value to clean
      * @param result result to be filled with cleaned string and flag 
@@ -133,23 +133,33 @@ public class Payments {
     /**
      * Validates if the string is a valid IBAN number
      * <p>
-     *   All whitespace must have been removed before the
-     *   the validation is performed.
-     * </p>
-     * <p>
      *   The string is checked for valid characters, valid length
-     *   and for a valid check digit.
+     *   and for a valid check digit. Spaces are ignored.
      * </p>
      * @param iban IBAN to validate
      * @return {@code true} if the IBAN is valid, {@code false} otherwise
      */
     public static boolean isValidIBAN(String iban) {
-        if (iban.length() < 5)
+
+        iban = Strings.whiteSpaceRemoved(iban);
+
+        int len = iban.length();
+        if (len < 5)
             return false;
+
         if (!isAlphaNumeric(iban))
             return false;
-        if (!Character.isLetter(iban.charAt(0)) || !Character.isLetter(iban.charAt(1))
-                || !Character.isDigit(iban.charAt(2)) || !Character.isDigit(iban.charAt(3)))
+
+        // Check for country code
+        if (!Character.isLetter(iban.charAt(0)) || !Character.isLetter(iban.charAt(1)))
+            return false;
+
+        // Check for check digits
+        if (!Character.isDigit(iban.charAt(2)) || !Character.isDigit(iban.charAt(3)))
+            return false;
+
+        String checkDigits = iban.substring(2, 4);
+        if ("00".equals(checkDigits) || "01".equals(checkDigits) || "99".equals(checkDigits))
             return false;
 
         return hasValidMod97CheckDigits(iban);
@@ -163,7 +173,7 @@ public class Payments {
      * appears at the end.
      * </p>
      * 
-     * @param iban IBAN or creditor reference without white space
+     * @param iban IBAN or creditor reference without spaces
      * @return formatted IBAN or creditor reference
      */
     public static String formatIBAN(String iban) {
@@ -184,21 +194,23 @@ public class Payments {
     /**
      * Validates if the string is a valid ISO 11649 reference number.
      * <p>
-     *   All whitespace must have been removed before the
-     *   the validation is performed.
-     * </p>
-     * <p>
      *   The string is checked for valid characters, valid length
-     *   and a valid check digit.
+     *   and a valid check digit. White space is ignored.
      * </p>
      * @param referenceNo ISO 11649 creditor reference to validate
      * @return {@code true} if the creditor reference is valid, {@code false} otherwise
      */
-    public static boolean isValidISO11649ReferenceNo(String referenceNo) {
+    public static boolean isValidISO11649Reference(String referenceNo) {
+
+        referenceNo = Strings.whiteSpaceRemoved(referenceNo);
+
         if (referenceNo.length() < 5 || referenceNo.length() > 25)
             return false;
 
         if (!isAlphaNumeric(referenceNo))
+            return false;
+
+        if (referenceNo.charAt(0) != 'R' || referenceNo.charAt(1) != 'F')
             return false;
 
         if (!Character.isDigit(referenceNo.charAt(2)) || !Character.isDigit(referenceNo.charAt(3)))
@@ -234,15 +246,19 @@ public class Payments {
     /**
 	 * Calculate the reference's modulo 97 checksum according to ISO11649 and IBAN standard.
      * <p>
-     * The string may only contains digits and letters (A to Z, no accents)
+     * The string may only contains digits, letters ('A' to 'Z' and 'a' to 'z', no accents).
+     * It must not contain white space.
      * </p>
 	 * @param reference the reference
 	 * @return the checksum (0 to 96)
      * @throws IllegalArgumentException thrown if the reference contains an invalid character
 	 */
-    public static int calculateMod97(String reference) {
+    private static int calculateMod97(String reference) {
+        int len = reference.length();
+        if (len < 5)
+            throw new IllegalArgumentException("Insufficient characters for checksum calculation");
+
         String rearranged = reference.substring(4) + reference.substring(0, 4);
-        int len = rearranged.length();
         int sum = 0;
         for (int i = 0; i < len; i++) {
             char ch = rearranged.charAt(i);
@@ -271,17 +287,16 @@ public class Payments {
      *   A valid QR reference is a valid ISR reference number.
      * </p>
      * <p>
-     *   All whitespace must have been removed before the
-     *   the validation is performed.
-     * </p>
-     * <p>
      *   The string is checked for valid characters, valid length
-     *   and a valid check digit.
+     *   and a valid check digit. Spaces are ignored.
      * </p>
      * @param referenceNo QR reference number to validate
      * @return {@code true} if the reference number is valid, {@code false} otherwise
      */
     public static boolean isValidQRReferenceNo(String referenceNo) {
+
+        referenceNo = Strings.whiteSpaceRemoved(referenceNo);
+
         if (!isNumeric(referenceNo))
             return false;
 
@@ -338,6 +353,23 @@ public class Payments {
         int len = value.length();
         for (int i = 0; i < len; i++) {
             char ch = value.charAt(i);
+            if (ch >= '0' && ch <= '9')
+                continue;
+            if (ch >= 'A' && ch <= 'Z')
+                continue;
+            if (ch >= 'a' && ch <= 'z')
+                continue;
+            return false;
+        }
+        return true;
+    }
+
+    static boolean isAlphaNumericOrSpace(String value) {
+        int len = value.length();
+        for (int i = 0; i < len; i++) {
+            char ch = value.charAt(i);
+            if (ch == ' ')
+                continue;
             if (ch >= '0' && ch <= '9')
                 continue;
             if (ch >= 'A' && ch <= 'Z')

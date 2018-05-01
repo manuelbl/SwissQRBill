@@ -15,76 +15,79 @@ import org.junit.jupiter.api.Test;
 import net.codecrete.qrbill.generator.Strings;
 
 
+/**
+ * Unit tests for {@link Strings.trimmed}
+ */
 class TrimStringTest {
 
     @Test
-    void nullStringTest() {
+    void nullString() {
         assertEquals(null, Strings.trimmed(null));
     }
 
     @Test
-    void emptyStringTest() {
+    void emptyString() {
         assertEquals(null, Strings.trimmed(""));
     }
 
     @Test
-    void oneSpaceTest() {
+    void oneSpace() {
         assertEquals(null, Strings.trimmed(" "));
     }
 
     @Test
-    void severalSpacesTest() {
+    void severalSpaces() {
         assertEquals(null, Strings.trimmed("   "));
     }
 
     @Test
-    void noWhitespaceTest() {
+    void noWhitespace() {
         assertEquals("ghj", Strings.trimmed("ghj"));
     }
 
     @Test
-    void leadingSpaceTest() {
+    void leadingSpace() {
         assertEquals("klm", Strings.trimmed(" klm"));
     }
 
     @Test
-    void multipleLeadingSpacesTest() {
+    void multipleLeadingSpaces() {
         assertEquals("mnop", Strings.trimmed("   mnop"));
     }
 
     @Test
-    void trailingSpaceTest() {
+    void trailingSpace() {
         assertEquals("pqrs", Strings.trimmed("pqrs "));
     }
 
     @Test
-    void multipleTrailingSpacesTest() {
+    void multipleTrailingSpaces() {
         assertEquals("rstu", Strings.trimmed("rstu    "));
     }
 
     @Test
-    void leadingAndTrailingSpacesTest() {
+    void leadingAndTrailingSpaces() {
         assertEquals("xyz", Strings.trimmed(" xyz    "));
     }
 
     @Test
-    void internalSpaceTest() {
+    void internalSpace() {
         assertEquals("cd ef", Strings.trimmed("cd ef"));
     }
 
     @Test
-    void multipleInternalSpacesTest() {
+    void multipleInternalSpaces() {
         assertEquals("fg  hi", Strings.trimmed("fg  hi"));
     }
 
     @Test
-    void copyAvoidanceWithoutSpacesTest() {
+    void copyAvoidanceWithoutSpaces() {
         String value = "cvbn";
         assertTrue(value == Strings.trimmed(value));
     }
 
     @Test
-    void copyAvoidanceWithSpacesTest() {
+    void copyAvoidanceWithSpaces() {
         String value = "i o p";
         assertTrue(value == Strings.trimmed(value));
     }

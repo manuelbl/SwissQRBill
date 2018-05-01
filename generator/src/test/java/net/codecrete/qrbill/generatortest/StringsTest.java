@@ -14,30 +14,33 @@ import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Strings;
 
-public class StringsTest {
+/**
+ * Unit tests for {@link Strings.isNullOrEmpty}
+ */
+class StringsTest {
 
     @Test
-    public void nullTest() {
+    void nullValue() {
         assertTrue(Strings.isNullOrEmpty(null));
     }
 
     @Test
-    public void emptyTest() {
+    void empty() {
         assertTrue(Strings.isNullOrEmpty(""));
     }
 
     @Test
-    public void spaceTest() {
+    void space() {
         assertTrue(Strings.isNullOrEmpty(" "));
     }
 
     @Test
-    public void multipleSpacesTest() {
+    void multipleSpaces() {
         assertTrue(Strings.isNullOrEmpty("   "));
     }
 
     @Test
-    public void nonEmptyTest() {
+    void nonEmpty() {
         assertFalse(Strings.isNullOrEmpty("a"));
     }
 }

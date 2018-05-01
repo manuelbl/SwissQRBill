@@ -124,7 +124,7 @@ class Validator {
 
         referenceNo = Strings.whiteSpaceRemoved(referenceNo);
         if (referenceNo.startsWith("RF")) {
-            if (!Payments.isValidISO11649ReferenceNo(referenceNo)) {
+            if (!Payments.isValidISO11649Reference(referenceNo)) {
                 validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, QRBill.KEY_VALID_ISO11649_CREDITOR_REF);
             } else {
                 billOut.setReferenceNo(referenceNo);

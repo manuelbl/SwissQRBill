@@ -15,87 +15,89 @@ import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Strings;
 
-
+/**
+ * Unit tests for {@link Strings.whiteSpaceRemoved}
+ */
 class RemoveWhitespaceTest {
 
     @Test
-    void emptyStringTest() {
+    void emptyString() {
         assertEquals("", Strings.whiteSpaceRemoved(""));
     }
 
     @Test
-    void oneSpaceTest() {
+    void oneSpace() {
         assertEquals("", Strings.whiteSpaceRemoved(" "));
     }
 
     @Test
-    void severalSpacesTest() {
+    void severalSpaces() {
         assertEquals("", Strings.whiteSpaceRemoved("   "));
     }
 
     @Test
-    void noWhitespaceTest() {
+    void noWhitespace() {
         assertEquals("abcd", Strings.whiteSpaceRemoved("abcd"));
     }
 
     @Test
-    void leadingSpaceTest() {
+    void leadingSpace() {
         assertEquals("fggh", Strings.whiteSpaceRemoved(" fggh"));
     }
 
     @Test
-    void multipleLeadingSpacesTest() {
+    void multipleLeadingSpaces() {
         assertEquals("jklm", Strings.whiteSpaceRemoved("   jklm"));
     }
 
     @Test
-    void trailingSpaceTest() {
+    void trailingSpace() {
         assertEquals("nppo", Strings.whiteSpaceRemoved("nppo "));
     }
 
     @Test
-    void multipleTrailingSpacesTest() {
+    void multipleTrailingSpaces() {
         assertEquals("qrs", Strings.whiteSpaceRemoved("qrs    "));
     }
 
     @Test
-    void leadingAndTrailingSpacesTest() {
+    void leadingAndTrailingSpaces() {
         assertEquals("guj", Strings.whiteSpaceRemoved(" guj    "));
     }
 
     @Test
-    void singleSpaceTest() {
+    void singleSpace() {
         assertEquals("abde", Strings.whiteSpaceRemoved("ab de"));
     }
 
     @Test
-    void multipleSpacesTest() {
+    void multipleSpaces() {
         assertEquals("cdef", Strings.whiteSpaceRemoved("cd    ef"));
     }
 
     @Test
-    void multipleGroupsOfSpacesTest() {
+    void multipleGroupsOfSpaces() {
         assertEquals("ghijkl", Strings.whiteSpaceRemoved("gh ij  kl"));
     }
 
     @Test
-    void leadingAndMultipleGroupsOfSpacesTest() {
+    void leadingAndMultipleGroupsOfSpaces() {
         assertEquals("opqrst", Strings.whiteSpaceRemoved("  op   qr s t"));
     }
 
     @Test
-    void leadingAndTrailingAndMultipleGroupsOfSpacesTest() {
+    void leadingAndTrailingAndMultipleGroupsOfSpaces() {
         assertEquals("uvxyz", Strings.whiteSpaceRemoved(" uv x  y z  "));
     }
 
     @Test
-    void copyAvoidanceTest() {
+    void copyAvoidance() {
         String value = "qwerty";
         assertTrue(value == Strings.whiteSpaceRemoved(value));
     }
 
     @Test
-    void nullStringTest() {
+    void nullString() {
         assertThrows(NullPointerException.class, () -> {
             Strings.whiteSpaceRemoved(null);
         });
