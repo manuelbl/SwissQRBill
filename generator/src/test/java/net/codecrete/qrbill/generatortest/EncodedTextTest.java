@@ -6,9 +6,10 @@
 //
 package net.codecrete.qrbill.generatortest;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.QRBill;
@@ -152,11 +153,13 @@ public class EncodedTextTest {
                 QRBill.encodeQrCodeText(bill));
     }
 
-    @Test(expected = QRBillValidationError.class)
+    @Test
     public void createText5() {
-        Bill bill = SampleData.getExample4();
-        bill.setAmount(0.0);
-        QRBill.encodeQrCodeText(bill);
+        assertThrows(QRBillValidationError.class, () -> {
+            Bill bill = SampleData.getExample4();
+            bill.setAmount(0.0);
+            QRBill.encodeQrCodeText(bill);
+        });
     }
 
 }
