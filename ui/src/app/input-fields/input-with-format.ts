@@ -10,13 +10,14 @@
  * Copyright Google LLC All Rights Reserved.
  */
 
-import { OnChanges, OnDestroy, OnInit, DoCheck, Input, ElementRef, Self, Optional, Inject, Directive } from "@angular/core";
+import { OnChanges, OnDestroy, OnInit, DoCheck, Input, ElementRef, Self, Optional, Inject, Directive, NgZone } from "@angular/core";
 import { NgControl, NgForm, FormGroupDirective, ControlValueAccessor } from "@angular/forms";
 import { MatFormFieldControl, _MatInputMixinBase, CanUpdateErrorState, ErrorStateMatcher } from "@angular/material";
 import { coerceBooleanProperty } from "@angular/cdk/coercion";
 import { Platform } from "@angular/cdk/platform";
-import { Subject } from "rxjs/Subject";
 import { InputFormatter } from "./input-formatter";
+import { Subject } from "rxjs";
+import { AutofillMonitor } from "@angular/cdk/text-field";
 
 let nextUniqueId = 0;
 
@@ -160,7 +161,9 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
         @Optional() @Self() public ngControl: NgControl,
         @Optional() _parentForm: NgForm,
         @Optional() _parentFormGroup: FormGroupDirective,
-        _defaultErrorStateMatcher: ErrorStateMatcher) {
+        _defaultErrorStateMatcher: ErrorStateMatcher,
+        private _autofillMonitor: AutofillMonitor,
+        ngZone: NgZone) {
         super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
         this._previousNativeValue = this._elementRef.nativeElement.value;
@@ -175,21 +178,30 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
         // key. In order to get around this we need to "jiggle" the caret loose. Since this bug only
         // exists on iOS, we only bother to install the listener on iOS.
         if (_platform.IOS) {
-            _elementRef.nativeElement.addEventListener('keyup', (event: Event) => {
-                let el = event.target as HTMLInputElement;
-                if (!el.value && !el.selectionStart && !el.selectionEnd) {
-                    // Note: Just setting `0, 0` doesn't fix the issue. Setting
-                    // `1, 1` fixes it for the first time that you type text and
-                    // then hold delete. Toggling to `1, 1` and then back to
-                    // `0, 0` seems to completely fix it.
-                    el.setSelectionRange(1, 1);
-                    el.setSelectionRange(0, 0);
-                }
+            ngZone.runOutsideAngular(() => {
+                _elementRef.nativeElement.addEventListener('keyup', (event: Event) => {
+                    let el = event.target as HTMLInputElement;
+                    if (!el.value && !el.selectionStart && !el.selectionEnd) {
+                        // Note: Just setting `0, 0` doesn't fix the issue. Setting
+                        // `1, 1` fixes it for the first time that you type text and
+                        // then hold delete. Toggling to `1, 1` and then back to
+                        // `0, 0` seems to completely fix it.
+                        el.setSelectionRange(1, 1);
+                        el.setSelectionRange(0, 0);
+                    }
+                });
             });
         }
 
         this._isServer = !this._platform.isBrowser;
     }
+
+    ngOnInit() {
+        this._autofillMonitor.monitor(this._elementRef.nativeElement).subscribe(event => {
+          this.autofilled = event.isAutofilled;
+          this.stateChanges.next();
+        });
+      }
 
     ngOnChanges() {
         this.stateChanges.next();
@@ -197,6 +209,7 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
 
     ngOnDestroy() {
         this.stateChanges.complete();
+        this._autofillMonitor.stopMonitoring(this._elementRef.nativeElement);
     }
 
     ngDoCheck() {
@@ -267,7 +280,8 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
      * Implemented as part of MatFormFieldControl.
      */
     get empty(): boolean {
-        return !this._elementRef.nativeElement.value && !this._isBadInput();
+        return !this._elementRef.nativeElement.value && !this._isBadInput()
+            && !this.autofilled;
     }
 
     /**

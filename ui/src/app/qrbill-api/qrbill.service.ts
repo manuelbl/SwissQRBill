@@ -6,9 +6,9 @@
 //
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 import { QrBill } from './qrbill';
 import { ValidationResponse } from './validation-response';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class QrBillService {

@@ -7,12 +7,13 @@
 
 import { Injectable, Optional, Inject } from "@angular/core";
 import { NativeDateAdapter, MAT_DATE_LOCALE } from "@angular/material";
+import { Platform } from "@angular/cdk/platform";
 
 @Injectable()
 export class IsoDateAdapter extends NativeDateAdapter {
 
-    constructor(@Optional() @Inject(MAT_DATE_LOCALE) matDateLocale: string) {
-        super(matDateLocale);
+    constructor(@Optional() @Inject(MAT_DATE_LOCALE) matDateLocale: string, platform: Platform) {
+        super(matDateLocale, platform);
     }
 
     getFirstDayOfWeek(): number {

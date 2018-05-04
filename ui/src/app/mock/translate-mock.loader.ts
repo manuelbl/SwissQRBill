@@ -5,8 +5,7 @@
 // https://opensource.org/licenses/MIT
 //
 import { TranslateLoader } from "@ngx-translate/core";
-import { Observable } from "rxjs/Observable";
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from "rxjs";
 
 let translations: any = {
     app_name: "Swiss QR Bill",
