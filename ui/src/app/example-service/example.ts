@@ -4,7 +4,7 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-import { QrBill } from "../qrbill-api/qrbill";
+import { QrBill } from '../qrbill-api/qrbill';
 
 export class Example {
     bill: QrBill;
@@ -19,6 +19,6 @@ export class Example {
         if (this.bill.creditor && this.bill.creditor.name) {
             return this.bill.creditor.name;
         }
-        return "No creditor yet";
+        return 'No creditor yet';
     }
 }
