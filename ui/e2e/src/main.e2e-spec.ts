@@ -15,12 +15,12 @@ describe('Main Page', () => {
   });
 
   it('should open preview dialog', () => {
-    let EC = protractor.ExpectedConditions;
+    const EC = protractor.ExpectedConditions;
 
     page.navigateTo();
     page.getPreviewButton().click();
 
-    let condition = EC.visibilityOf(element(by.css('.preview-section')));
+    const condition = EC.visibilityOf(element(by.css('.preview-section')));
     browser.wait(condition, 1000);
   });
 });

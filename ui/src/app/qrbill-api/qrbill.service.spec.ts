@@ -1,6 +1,6 @@
 //
 // Swiss QR Bill Generator
-// Copyright (c) 2017 Manuel Bleichenbacher
+// Copyright (c) 2018 Manuel Bleichenbacher
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
@@ -13,9 +13,9 @@ class HttpClientMock {
 
 }
 
-describe('QrbillService', () => {
+describe('QrBillService', () => {
 
-  let qrbillService: QrBillService;
+  let qrBillService: QrBillService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -28,7 +28,7 @@ describe('QrbillService', () => {
       ]
     });
 
-    qrbillService = TestBed.get(QrBillService);
+    qrBillService = TestBed.get(QrBillService);
   });
 
   it('should be created', inject([QrBillService], (service: QrBillService) => {
@@ -37,6 +37,6 @@ describe('QrbillService', () => {
 
   it('Service injected via inject(...) and TestBed.get(...) should be the same instance',
     inject([QrBillService], (injectService: QrBillService) => {
-      expect(injectService).toBe(qrbillService);
+      expect(injectService).toBe(qrBillService);
   }));
 });

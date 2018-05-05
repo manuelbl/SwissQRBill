@@ -5,12 +5,12 @@
 // https://opensource.org/licenses/MIT
 //
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { MatButtonToggleModule, MatCardModule } from '@angular/material';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 
 import { SettingsComponent } from './settings.component';
 import { TranslateMockLoader } from '../mock/translate-mock.loader';
-import { MatCardModule, MatButtonToggleModule } from '@angular/material';
-import { FormsModule } from '@angular/forms';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;

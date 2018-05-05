@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-settings',
+  selector: 'qrbill-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })

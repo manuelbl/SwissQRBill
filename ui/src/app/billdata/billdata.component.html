@@ -9,7 +9,7 @@
       <div class="form-group mat-elevation-z3">
         <div class="form-line">
           <mat-form-field class="form-field s12">
-            <input inputWithFormat [inputFormatter]="ibanFormatter" placeholder="{{ 'account' | translate }}" formControlName="account" required>
+            <input qrbillInputWithFormat [inputFormatter]="ibanFormatter" placeholder="{{ 'account' | translate }}" formControlName="account" required>
             <mat-error *ngIf="billForm.hasError('serverSide', ['account'])">{{billForm.getError('serverSide', 'account')}}</mat-error>
           </mat-form-field>
         </div>
@@ -117,7 +117,7 @@
           </mat-form-field>
 
           <mat-form-field class="form-field s4">
-            <input inputWithFormat [inputFormatter]="amountFormatter" placeholder="{{ 'amount' | translate}}" formControlName="amount">
+            <input qrbillInputWithFormat [inputFormatter]="amountFormatter" placeholder="{{ 'amount' | translate}}" formControlName="amount">
             <mat-error *ngIf="billForm.hasError('serverSide', ['amount'])">{{billForm.getError('serverSide', 'amount')}}</mat-error>
           </mat-form-field>
         </div>
@@ -133,7 +133,7 @@
 
         <div class="form-line">
           <mat-form-field class="form-field s12">
-            <input inputWithFormat [inputFormatter]="refNumberFormatter" placeholder="{{ 'reference_no' | translate }}" formControlName="referenceNo">
+            <input qrbillInputWithFormat [inputFormatter]="refNumberFormatter" placeholder="{{ 'reference_no' | translate }}" formControlName="referenceNo">
             <mat-error *ngIf="billForm.hasError('serverSide', ['referenceNo'])">{{billForm.getError('serverSide', 'referenceNo')}}</mat-error>
           </mat-form-field>
         </div>

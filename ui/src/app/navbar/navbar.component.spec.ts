@@ -29,7 +29,7 @@ describe('NavbarComponent', () => {
     .compileComponents();
   }));
 
-  beforeEach(inject([TranslateService],(service) => {
+  beforeEach(inject([TranslateService], (service) => {
     service.use('en');
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;
@@ -42,8 +42,8 @@ describe('NavbarComponent', () => {
 
   it('should render bar', async(() => {
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('img').src.endsWith("/assets/swiss-qr-bill.svg")).toBeTruthy();
-    expect(compiled.querySelector('.navbar-link').textContent).toEqual("Examples");
+    expect(compiled.querySelector('img').src.endsWith('/assets/swiss-qr-bill.svg')).toBeTruthy();
+    expect(compiled.querySelector('.navbar-link').textContent).toEqual('Examples');
   }));
-  
+
 });

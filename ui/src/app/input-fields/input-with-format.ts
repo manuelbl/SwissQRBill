@@ -10,14 +10,15 @@
  * Copyright Google LLC All Rights Reserved.
  */
 
-import { OnChanges, OnDestroy, OnInit, DoCheck, Input, ElementRef, Self, Optional, Inject, Directive, NgZone } from "@angular/core";
-import { NgControl, NgForm, FormGroupDirective, ControlValueAccessor } from "@angular/forms";
-import { MatFormFieldControl, _MatInputMixinBase, CanUpdateErrorState, ErrorStateMatcher } from "@angular/material";
-import { coerceBooleanProperty } from "@angular/cdk/coercion";
-import { Platform } from "@angular/cdk/platform";
-import { InputFormatter } from "./input-formatter";
-import { Subject } from "rxjs";
-import { AutofillMonitor } from "@angular/cdk/text-field";
+import { OnChanges, OnDestroy, OnInit, DoCheck, Input, ElementRef, Self, Optional, Inject, Directive, NgZone,
+    HostListener, HostBinding } from '@angular/core';
+import { NgControl, NgForm, FormGroupDirective, ControlValueAccessor } from '@angular/forms';
+import { MatFormFieldControl, _MatInputMixinBase, CanUpdateErrorState, ErrorStateMatcher } from '@angular/material';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Platform } from '@angular/cdk/platform';
+import { InputFormatter } from './input-formatter';
+import { Subject } from 'rxjs';
+import { AutofillMonitor } from '@angular/cdk/text-field';
 
 let nextUniqueId = 0;
 
@@ -25,44 +26,39 @@ let nextUniqueId = 0;
  * Directive that allows a native input to work inside a `MatFormField` and apply a formatting when input loses focus.
  */
 @Directive({
-    selector: `input[inputWithFormat]`,
-    exportAs: 'inputWithFormat',
-    host: {
-        'class': 'mat-input-element mat-form-field-autofill-control',
-        '[class.mat-input-server]': '_isServer',
-        '[attr.id]': 'id',
-        '[attr.placeholder]': 'placeholder',
-        '[disabled]': 'disabled',
-        '[required]': 'required',
-        '[readonly]': 'readonly',
-        '[attr.aria-describedby]': '_ariaDescribedby || null',
-        '[attr.aria-invalid]': 'errorState',
-        '[attr.aria-required]': 'required.toString()',
-        '(blur)': '_focusChanged(false)',
-        '(focus)': '_focusChanged(true)',
-        '(input)': '_onInput()'
-    },
+    selector: `input[qrbillInputWithFormat]`,
+    exportAs: 'qrbillInputWithFormat',
     providers: [
         { provide: MatFormFieldControl, useExisting: InputWithFormatDirective }
     ],
 })
 export class InputWithFormatDirective<T> extends _MatInputMixinBase implements MatFormFieldControl<T>, OnChanges,
-    OnDestroy, DoCheck, CanUpdateErrorState, ControlValueAccessor {
+    OnInit, OnDestroy, DoCheck, CanUpdateErrorState, ControlValueAccessor {
 
     protected _uid = `input-with-format-${nextUniqueId++}`;
     protected _rawValue: T;
     protected _previousNativeValue: string;
 
+    @HostBinding('class') _baseClasses = 'mat-input-element mat-form-field-autofill-control';
+
     /** The aria-describedby attribute on the input for improved a11y. */
-    _ariaDescribedby: string;
+    @HostBinding('attr.aria-describedby') _ariaDescribedby: string;
+
+    @HostBinding('attr.aria-invalid') get _ariaInvalid() {
+        return this.errorState;
+    }
+
+    @HostBinding('attr.aria-required') get _ariaRequired() {
+        return this.required.toString();
+    }
 
     /** Whether the component is being rendered on the server. */
-    _isServer = false;
+    @HostBinding('class.mat-input-server') _isServer = false;
 
     /**
      * Implemented as part of MatFormFieldControl.
      */
-    focused: boolean = false;
+    focused = false;
 
     /**
      * Implemented as part of MatFormFieldControl.
@@ -72,7 +68,7 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
     /**
      * Implemented as part of MatFormFieldControl.
      */
-    controlType: string = 'input-with-format';
+    controlType = 'input-with-format';
 
     /**
      * Implemented as part of MatFormFieldControl.
@@ -82,7 +78,7 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
     /**
      * Implemented as part of MatFormFieldControl.
      */
-    @Input()
+    @Input() @HostBinding('disabled')
     get disabled(): boolean {
         if (this.ngControl && this.ngControl.disabled !== null) {
             return this.ngControl.disabled;
@@ -104,7 +100,7 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
     /**
      * Implemented as part of MatFormFieldControl.
      */
-    @Input()
+    @Input() @HostBinding('attr.id')
     get id(): string { return this._id; }
     set id(value: string) { this._id = value || this._uid; }
     protected _id: string;
@@ -112,12 +108,12 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
     /**
      * Implemented as part of MatFormFieldControl.
      */
-    @Input() placeholder: string = '';
+    @Input() @HostBinding('attr.placeholder') placeholder = '';
 
     /**
      * Implemented as part of MatFormFieldControl.
      */
-    @Input()
+    @Input() @HostBinding('required')
     get required(): boolean { return this._required; }
     set required(value: boolean) { this._required = coerceBooleanProperty(value); }
     protected _required = false;
@@ -133,11 +129,13 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
     set value(value: T) {
         if (value !== this._rawValue) {
             this._rawValue = value;
-            if (this._inputFormatter)
+            if (this._inputFormatter) {
                 this._elementRef.nativeElement.value = this._inputFormatter.formattedValue(value);
+            }
             this.stateChanges.next();
-            if (this._onChange)
+            if (this._onChange) {
                 this._onChange(value);
+            }
         }
     }
 
@@ -151,7 +149,7 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
     private _inputFormatter: InputFormatter<T> = null;
 
     /** Whether the element is readonly. */
-    @Input()
+    @Input() @HostBinding('readonly')
     get readonly(): boolean { return this._readonly; }
     set readonly(value: boolean) { this._readonly = coerceBooleanProperty(value); }
     private _readonly = false;
@@ -171,8 +169,9 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
         // Force setter to be called in case id was not specified.
         this.id = this.id;
 
-        if (this.ngControl != null)
+        if (this.ngControl != null) {
             this.ngControl.valueAccessor = this;
+        }
 
         // On some versions of iOS the caret gets stuck in the wrong place when holding down the delete
         // key. In order to get around this we need to "jiggle" the caret loose. Since this bug only
@@ -180,7 +179,7 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
         if (_platform.IOS) {
             ngZone.runOutsideAngular(() => {
                 _elementRef.nativeElement.addEventListener('keyup', (event: Event) => {
-                    let el = event.target as HTMLInputElement;
+                    const el = event.target as HTMLInputElement;
                     if (!el.value && !el.selectionStart && !el.selectionEnd) {
                         // Note: Just setting `0, 0` doesn't fix the issue. Setting
                         // `1, 1` fixes it for the first time that you type text and
@@ -229,24 +228,30 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
     /** Focuses the input. */
     focus(): void { this._elementRef.nativeElement.focus(); }
 
+    @HostListener('blur') _onBlur() { this._focusChanged(false); }
+
+    @HostListener('focus') _onFocus() { this._focusChanged(true); }
+
     /** Callback for the cases where the focused state of the input changes. */
     _focusChanged(isFocused: boolean) {
         if (isFocused !== this.focused && !this.readonly) {
             this.focused = isFocused;
             this.stateChanges.next();
             if (isFocused) {
-                if (this._inputFormatter.editValue)
+                if (this._inputFormatter.editValue) {
                     this._elementRef.nativeElement.value = this._inputFormatter.editValue(this._rawValue);
+                }
             } else {
                 this._previousNativeValue = this._inputFormatter.formattedValue(this._rawValue);
                 this._elementRef.nativeElement.value = this._previousNativeValue;
-                if (this._onTouched)
+                if (this._onTouched) {
                     this._onTouched();
+                }
             }
         }
     }
 
-    _onInput() {
+    @HostListener('input') _onInput() {
         // This is a noop function and is used to let Angular know whenever the value changes.
         // Angular will run a new change detection each time the `input` event has been dispatched.
         // It's necessary that Angular recognizes the value change, because when floatingLabel
@@ -264,15 +269,16 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase implements M
             this._previousNativeValue = newValue;
             this._rawValue = this._inputFormatter.rawValue(newValue);
             this.stateChanges.next();
-            if (this._onChange)
+            if (this._onChange) {
                 this._onChange(this._rawValue);
+            }
         }
     }
 
     /** Checks whether the input is invalid based on the native validation. */
     protected _isBadInput() {
         // The `validity` property won't be present on platform-server.
-        let validity = (this._elementRef.nativeElement as HTMLInputElement).validity;
+        const validity = (this._elementRef.nativeElement as HTMLInputElement).validity;
         return validity && validity.badInput;
     }
 

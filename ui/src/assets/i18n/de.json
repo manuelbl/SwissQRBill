@@ -43,5 +43,6 @@
         "fr": "Französisch",
         "it": "Italienisch"
     },
-    "use_bill": "VERWENDEN"
+    "use_bill": "VERWENDEN",
+    "language": "Sprache"
 }

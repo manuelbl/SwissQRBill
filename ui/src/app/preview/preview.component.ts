@@ -8,20 +8,20 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
-  selector: 'app-preview',
+  selector: 'qrbill-preview',
   templateUrl: './preview.component.html',
   styleUrls: ['./preview.component.css']
 })
 export class PreviewComponent implements OnInit {
 
   public billID: string;
-  public outputSize: string = "a6-landscape";
+  public outputSize = 'a6-landscape';
 
   constructor(public dialogRef: MatDialogRef<PreviewComponent>,
-      @Inject(MAT_DIALOG_DATA) private data: any) {
-        this.billID = data.billID;
-        this.outputSize = data.outputSize;
-      }
+    @Inject(MAT_DIALOG_DATA) private data: any) {
+      this.billID = data.billID;
+      this.outputSize = data.outputSize;
+    }
 
   ngOnInit() {
   }

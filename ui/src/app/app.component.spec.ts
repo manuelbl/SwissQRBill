@@ -5,6 +5,9 @@
 // https://opensource.org/licenses/MIT
 //
 import { TestBed, async } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { APP_BASE_HREF } from '@angular/common';
 import {
   MatButtonModule,
   MatButtonToggleModule,
@@ -14,34 +17,32 @@ import {
   MatIconModule,
   MatInputModule,
   MatSelectModule,
-  DateAdapter,
+  DateAdapter
 } from '@angular/material';
-import { RouterModule } from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { APP_BASE_HREF } from '@angular/common';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-
 import { TranslateMockLoader } from './mock/translate-mock.loader';
 import { AboutComponent } from './about/about.component';
 import { AppComponent } from './app.component';
-import { BillData } from './billdata/billdata.component';
+import { BillDataComponent } from './billdata/billdata.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { AmountFormatter } from './input-fields/amount-formatter';
 import { SettingsComponent } from './settings/settings.component';
 import { ExamplesComponent } from './examples/examples.component';
 import { IsoDateAdapter } from './date-adapter/iso-date-adapter';
+import { InputWithFormatDirective } from './input-fields/input-with-format';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        BillData,
+        BillDataComponent,
         NavbarComponent,
         SettingsComponent,
         AboutComponent,
-        ExamplesComponent
+        ExamplesComponent,
+        InputWithFormatDirective
       ],
       imports: [
         FormsModule,
@@ -54,7 +55,6 @@ describe('AppComponent', () => {
         MatIconModule,
         MatInputModule,
         MatSelectModule,
-        BrowserAnimationsModule,
         RouterModule,
         AppRoutingModule,
         TranslateModule.forRoot({
@@ -63,7 +63,8 @@ describe('AppComponent', () => {
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/qrbill' },
-        { provide: DateAdapter, useClass: IsoDateAdapter }
+        { provide: DateAdapter, useClass: IsoDateAdapter },
+        AmountFormatter
       ]
     }).compileComponents();
   }));

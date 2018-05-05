@@ -22,11 +22,11 @@ describe('AboutComponent', () => {
           loader: { provide: TranslateLoader, useClass: TranslateMockLoader }
         })
       ]
-    })
+})
     .compileComponents();
   }));
 
-  beforeEach(inject([TranslateService],(service) => {
+  beforeEach(inject([TranslateService], (service) => {
     service.use('en');
     fixture = TestBed.createComponent(AboutComponent);
     component = fixture.componentInstance;

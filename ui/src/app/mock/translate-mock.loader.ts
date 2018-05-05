@@ -4,13 +4,13 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-import { TranslateLoader } from "@ngx-translate/core";
-import { Observable, of } from "rxjs";
+import { TranslateLoader } from '@ngx-translate/core';
+import { Observable, of } from 'rxjs';
 
-let translations: any = {
-    app_name: "Swiss QR Bill",
-    copyright: "Copyright © 2018 Manuel Bleichenbacher",
-    examples: "Examples"
+const translations: any = {
+    app_name: 'Swiss QR Bill',
+    copyright: 'Copyright © 2018 Manuel Bleichenbacher',
+    examples: 'Examples'
 };
 
 export class TranslateMockLoader extends TranslateLoader {

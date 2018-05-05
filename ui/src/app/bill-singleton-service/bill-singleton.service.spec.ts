@@ -1,8 +1,12 @@
+//
+// Swiss QR Bill Generator
+// Copyright (c) 2018 Manuel Bleichenbacher
+// Licensed under MIT License
+// https://opensource.org/licenses/MIT
+//
 import { TestBed, inject } from '@angular/core/testing';
 
 import { BillSingletonService } from './bill-singleton.service';
-import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
-import { TranslateMockLoader } from '../mock/translate-mock.loader';
 import { ExampleService } from '../example-service/example.service';
 import { QrBill } from '../qrbill-api/qrbill';
 
@@ -14,11 +18,6 @@ describe('BillSingletonService', () => {
       providers: [
         BillSingletonService,
         ExampleService
-      ],
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: TranslateMockLoader }
-        })
       ]
     });
 
@@ -35,12 +34,14 @@ describe('BillSingletonService', () => {
   }));
 
   it('should retain singleton data', () => {
-    let bill: QrBill = {
+    const bill: QrBill = {
+      language: 'de',
+      version: 'V1_0',
       creditor: {
-        name: "Name-1",
-        countryCode: "CH",
-        postalCode: "1234",
-        town: "Nana"
+        name: 'Name-1',
+        countryCode: 'CH',
+        postalCode: '1234',
+        town: 'Nana'
       }
     };
     singletonService.setBill(bill);

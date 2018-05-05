@@ -1,8 +1,16 @@
+//
+// Swiss QR Bill Generator
+// Copyright (c) 2018 Manuel Bleichenbacher
+// Licensed under MIT License
+// https://opensource.org/licenses/MIT
+//
 import { Injectable } from '@angular/core';
 import { QrBill } from '../qrbill-api/qrbill';
 import { ExampleService } from '../example-service/example.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BillSingletonService {
 
   private bill: QrBill;

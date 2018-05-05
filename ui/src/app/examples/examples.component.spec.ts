@@ -11,7 +11,6 @@ import { MatCardModule } from '@angular/material';
 import { ExampleService } from '../example-service/example.service';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateMockLoader } from '../mock/translate-mock.loader';
-import { BillSingletonService } from '../bill-singleton-service/bill-singleton.service';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ExamplesComponent', () => {
@@ -30,10 +29,6 @@ describe('ExamplesComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateMockLoader }
         })
-      ],
-      providers: [
-        ExampleService,
-        BillSingletonService
       ]
     })
     .compileComponents();
@@ -57,5 +52,5 @@ describe('ExamplesComponent', () => {
     expect(compiled.querySelector('img').src.endsWith('/' + exampleService.getExamples()[0].billID)).toBeTruthy();
     expect(compiled.querySelectorAll('mat-card').length).toEqual(exampleService.getExamples().length);
   }));
-  
+
 });

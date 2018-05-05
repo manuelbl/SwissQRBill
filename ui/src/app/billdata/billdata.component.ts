@@ -1,6 +1,6 @@
 //
 // Swiss QR Bill Generator
-// Copyright (c) 2017 Manuel Bleichenbacher
+// Copyright (c) 2018 Manuel Bleichenbacher
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
@@ -18,26 +18,27 @@ import { ReferenceNumberFormatter } from '../input-fields/ref-number-formatter';
 import { AmountFormatter } from '../input-fields/amount-formatter';
 
 @Component({
-  selector: 'bill-data',
+  selector: 'qrbill-data',
   templateUrl: './billdata.component.html',
   styleUrls: ['./billdata.component.css'],
   providers: [ IBANFormatter, ReferenceNumberFormatter ]
 })
-export class BillData implements OnInit {
+export class BillDataComponent implements OnInit {
+
   public bill: QrBill;
   public outputSize: string;
   public billForm: FormGroup;
   private validatedBill: QrBill;
   private billID: string;
-  private validationInProgress: number = 0;
-  private previewPressed: boolean = false;
+  private validationInProgress = 0;
+  private previewPressed = false;
 
   constructor(private formBuilder: FormBuilder, private qrBillService: QrBillService,
-      private dialog: MatDialog, private translate: TranslateService,
-      private billSingleton: BillSingletonService, public amountFormatter: AmountFormatter,
-      public ibanFormatter: IBANFormatter, public refNumberFormatter: ReferenceNumberFormatter) {
+    private dialog: MatDialog, private translate: TranslateService,
+    private billSingleton: BillSingletonService, public amountFormatter: AmountFormatter,
+    public ibanFormatter: IBANFormatter, public refNumberFormatter: ReferenceNumberFormatter) {
     this.bill = billSingleton.getBill();
-    this.outputSize = "a6-landscape";
+    this.outputSize = 'a6-landscape';
   }
 
   ngOnInit() {
@@ -49,7 +50,8 @@ export class BillData implements OnInit {
         name: new FormControl(this.bill.creditor.name, { validators: Validators.required}),
         street: new FormControl(this.bill.creditor.street),
         houseNo: new FormControl(this.bill.creditor.houseNo),
-        countryCode: new FormControl(this.bill.creditor.countryCode, { validators: [Validators.required, Validators.pattern('[A-Za-z]{2}')]}),
+        countryCode: new FormControl(this.bill.creditor.countryCode,
+          { validators: [Validators.required, Validators.pattern('[A-Za-z]{2}')]}),
         postalCode: new FormControl(this.bill.creditor.postalCode, { validators: Validators.required}),
         town: new FormControl(this.bill.creditor.town, { validators: Validators.required})
       }),
@@ -91,7 +93,7 @@ export class BillData implements OnInit {
   // Send data to server for validation
   validateServerSide(value: any) {
     this.validationInProgress++;
-    let bill = this.getBill(value);
+    const bill = this.getBill(value);
     return this.qrBillService.validate(bill, this.translate.currentLang)
       .subscribe(response => this.updateServerSideErrors(response));
   }
@@ -104,15 +106,16 @@ export class BillData implements OnInit {
 
     this.clearServerSideErrors(this.billForm);
 
-    let messages = response.validationMessages;
+    const messages = response.validationMessages;
     if (messages) {
-      for (let msg of messages) {
-        if (msg.type === "Error") {
-          let control = this.billForm.get(msg.field);
+      for (const msg of messages) {
+        if (msg.type === 'Error') {
+          const control = this.billForm.get(msg.field);
           let errors = control.errors;
-          if (!errors)
+          if (!errors) {
             errors = { };
-          errors["serverSide"] = msg.message;
+          }
+          errors['serverSide'] = msg.message;
           control.setErrors(errors);
         }
       }
@@ -120,27 +123,31 @@ export class BillData implements OnInit {
 
     if (messages) {
       // TODO: set focus to first field with error
-      if (this.previewPressed && this.validationInProgress == 0)
+      if (this.previewPressed && this.validationInProgress === 0) {
       this.previewPressed = false;
+      }
     } else {
       // user clicked on "Preview" and is waiting for validation
-      if (this.previewPressed && this.validationInProgress == 0)
+      if (this.previewPressed && this.validationInProgress === 0) {
         this.openPreview();
+      }
     }
   }
 
   // Remove the errors of type "serverSide"
   clearServerSideErrors(group: FormGroup) {
-    for (let controlName in group.controls) {
-      let control = group.get(controlName);
+    // tslint:disable-next-line:forin
+    for (const controlName in group.controls.keys) {
+      const control = group.get(controlName);
       if (control instanceof FormGroup) {
         this.clearServerSideErrors(control as FormGroup);
       } else {
-        if (control.hasError("serverSide")) {
+        if (control.hasError('serverSide')) {
           let errors = control.errors;
           delete errors.serverSide;
-          if (Object.keys(errors).length === 0)
+          if (Object.keys(errors).length === 0) {
             errors = null;
+          }
           control.setErrors(errors);
         }
       }
@@ -148,8 +155,9 @@ export class BillData implements OnInit {
   }
 
   preview(model: FormGroup) {
-    if (!this.billID)
+    if (!this.billID) {
       this.validateServerSide(this.billForm.value);
+    }
     if (this.validationInProgress > 0) {
       this.previewPressed = true;
       return;
@@ -159,8 +167,9 @@ export class BillData implements OnInit {
   }
 
   private openPreview() {
-    if (!this.billForm.valid)
+    if (!this.billForm.valid) {
       return;
+    }
 
     this.previewPressed = false;
     this.dialog.open(PreviewComponent, {
@@ -176,7 +185,7 @@ export class BillData implements OnInit {
 
   getBill(value: any): QrBill {
     if (value.dueDate instanceof Date) {
-      let dueDate = value.dueDate as Date;
+      const dueDate = value.dueDate as Date;
       value.dueDate = dueDate.getFullYear() + '-' + this._2digit(dueDate.getMonth() + 1)
         + '-' + this._2digit(dueDate.getDate());
     }
@@ -187,4 +196,3 @@ export class BillData implements OnInit {
     return ('00' + n).slice(-2);
   }
 }
-

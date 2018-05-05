@@ -1,14 +1,17 @@
 //
 // Swiss QR Bill Generator
-// Copyright (c) 2017 Manuel Bleichenbacher
+// Copyright (c) 2018 Manuel Bleichenbacher
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-import '../polyfills';
-import { NgModule, Input } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InputWithFormatDirective } from './input-fields/input-with-format';
+import { AppRoutingModule } from './app-routing/app-routing.module';
+import { AboutComponent } from './about/about.component';
 import {
   MatButtonModule,
   MatButtonToggleModule,
@@ -18,28 +21,19 @@ import {
   MatIconModule,
   MatInputModule,
   MatNativeDateModule,
-  MatSelectModule,
-  DateAdapter
+  MatSelectModule
 } from '@angular/material';
-import 'hammerjs';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { AppComponent } from './app.component';
-import { BillData } from './billdata/billdata.component';
-import { QrBillService } from './qrbill-api/qrbill.service';
-import { PreviewComponent } from './preview/preview.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { AppRoutingModule } from './app-routing/app-routing.module';
-import { AboutComponent } from './about/about.component';
+import { DateAdapter } from '@angular/material';
+import { IsoDateAdapter } from './date-adapter/iso-date-adapter';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AmountFormatter } from './input-fields/amount-formatter';
 import { SettingsComponent } from './settings/settings.component';
 import { ExamplesComponent } from './examples/examples.component';
-import { ExampleService } from './example-service/example.service';
-import { BillSingletonService } from './bill-singleton-service/bill-singleton.service';
-import { IsoDateAdapter } from './date-adapter/iso-date-adapter';
-import { InputWithFormatDirective } from './input-fields/input-with-format';
-import { AmountFormatter } from './input-fields/amount-formatter';
+import { PreviewComponent } from './preview/preview.component';
+import { BillDataComponent } from './billdata/billdata.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -48,7 +42,7 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
-    BillData,
+    BillDataComponent,
     PreviewComponent,
     NavbarComponent,
     AboutComponent,
@@ -84,9 +78,7 @@ export function createTranslateLoader(http: HttpClient) {
     })
   ],
   providers: [
-    QrBillService,
-    ExampleService,
-    BillSingletonService,
+
     { provide: DateAdapter, useClass: IsoDateAdapter },
     AmountFormatter
   ],

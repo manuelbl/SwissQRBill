@@ -5,9 +5,9 @@
 // https://opensource.org/licenses/MIT
 //
 
-import { Injectable, Optional, Inject } from "@angular/core";
-import { NativeDateAdapter, MAT_DATE_LOCALE } from "@angular/material";
-import { Platform } from "@angular/cdk/platform";
+import { Injectable, Optional, Inject } from '@angular/core';
+import { NativeDateAdapter, MAT_DATE_LOCALE } from '@angular/material';
+import { Platform } from '@angular/cdk/platform';
 
 @Injectable()
 export class IsoDateAdapter extends NativeDateAdapter {

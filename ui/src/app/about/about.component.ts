@@ -7,7 +7,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-about',
+  selector: 'qrbill-about',
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.css']
 })

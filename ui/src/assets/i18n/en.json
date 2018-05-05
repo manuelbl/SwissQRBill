@@ -43,5 +43,6 @@
         "fr": "French",
         "it": "Italian"
     },
-    "use_bill": "USE"
+    "use_bill": "USE",
+    "language": "Language"
 }

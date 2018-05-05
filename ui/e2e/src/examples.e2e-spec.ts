@@ -20,11 +20,11 @@ describe('Examples Page', () => {
   });
 
   it('should display images', () => {
-    let EC = protractor.ExpectedConditions;
+    const EC = protractor.ExpectedConditions;
     for (let i = 1; i <= 4; i++) {
         browser.wait(
             () => browser.executeScript(
-                "return arguments[0].complete && arguments[0].naturalWidth > 0;",
+                'return arguments[0].complete && arguments[0].naturalWidth > 0;',
                 page.getAppExample(i).element(by.css('img')).getWebElement()),
             3000
         );
@@ -34,7 +34,7 @@ describe('Examples Page', () => {
   it('should navigate to main page', () => {
     page.getUseButton(2).click();
     browser.waitForAngular();
-    let mainPage = new MainPage();
+    const mainPage = new MainPage();
     expect(mainPage.getPreviewButton()).toBeTruthy();
   });
 });

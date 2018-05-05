@@ -7,8 +7,8 @@
 import { Address } from './address';
 
 export class QrBill {
-    language?: string = "en";
-    version?: string = "V1_0";
+    language = 'en';
+    version = 'V1_0';
     amount?: number;
     currency?: string;
     account?: string;
@@ -16,7 +16,7 @@ export class QrBill {
     finalCreditor?: Address;
     referenceNo?: string;
     additionalInfo?: string;
-    debtor?: Address
+    debtor?: Address;
     dueDate?: string;
 
     static clone(bill: QrBill): QrBill {
@@ -32,6 +32,6 @@ export class QrBill {
             additionalInfo: bill.additionalInfo,
             debtor: Address.clone(bill.debtor),
             dueDate: bill.dueDate
-        }
+        };
     }
 }

@@ -11,7 +11,7 @@ import { BillSingletonService } from '../bill-singleton-service/bill-singleton.s
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-examples',
+  selector: 'qrbill-examples',
   templateUrl: './examples.component.html',
   styleUrls: ['./examples.component.css']
 })
@@ -20,7 +20,7 @@ export class ExamplesComponent implements OnInit {
   examples: Example[];
 
   constructor(private exampleService: ExampleService, private billSingleton: BillSingletonService,
-      private router: Router) { }
+    private router: Router) { }
 
   ngOnInit() {
     this.examples = this.exampleService.getExamples();

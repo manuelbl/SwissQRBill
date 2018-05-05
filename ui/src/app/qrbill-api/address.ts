@@ -13,9 +13,10 @@ export class Address {
     countryCode?: string;
 
     static clone(address: Address): Address {
-        if (!address)
+        if (!address) {
             return null;
-            
+        }
+
         return {
             name: address.name,
             street: address.street,

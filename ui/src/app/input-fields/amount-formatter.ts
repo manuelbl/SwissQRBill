@@ -5,8 +5,8 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { InputFormatter } from "./input-formatter";
-import { Injectable } from "@angular/core";
+import { InputFormatter } from './input-formatter';
+import { Injectable } from '@angular/core';
 
 /** Formatter for amount (thousand's separator and rounded to two fractional digits) */
 @Injectable()
@@ -29,26 +29,30 @@ export class AmountFormatter implements InputFormatter<number> {
     }
 
     rawValue(formattedValue: string): number {
-        if (!formattedValue)
+        if (!formattedValue) {
             return null;
+        }
         let cleanedValue = formattedValue.replace(this.cleaner, '');
-        if (this.userDecimalSeparator !== this.systemDecimalSeparator)
+        if (this.userDecimalSeparator !== this.systemDecimalSeparator) {
             cleanedValue = cleanedValue.replace(this.userDecimalSeparator, this.systemDecimalSeparator);
-        let num = Number(cleanedValue);
+        }
+        const num = Number(cleanedValue);
         return this.rounded(num);
     }
 
     formattedValue(rawValue: number): string {
-        if (!rawValue)
+        if (!rawValue) {
             return '';
-        let n = this.rounded(rawValue);
+        }
+        const n = this.rounded(rawValue);
         return n.toLocaleString(this.language, { minimumFractionDigits: 2 });
     }
 
     editValue(rawValue: number): string {
-        if (!rawValue)
+        if (!rawValue) {
             return '';
-        let n = this.rounded(rawValue);
+        }
+        const n = this.rounded(rawValue);
         return n.toLocaleString(this.language, { minimumFractionDigits: 2 }).replace(this.cleaner, '');
     }
 
