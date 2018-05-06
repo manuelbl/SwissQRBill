@@ -74,7 +74,7 @@ class DebtorValidationTest extends BillDataValidationBase {
     @Test
     void missingTown() {
         bill = SampleData.getExample1();
-        Address address = address = createValidPerson();
+        Address address = createValidPerson();
         address.setTown(null);
         bill.setDebtor(address);
         validate();

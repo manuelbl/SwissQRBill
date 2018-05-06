@@ -8,14 +8,11 @@
 package net.codecrete.qrbill.generatortest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import net.codecrete.qrbill.generator.Payments;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.Bill;
 
 /**

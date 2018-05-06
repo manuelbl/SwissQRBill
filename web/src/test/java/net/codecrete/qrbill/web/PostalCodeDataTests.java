@@ -6,29 +6,35 @@
 //
 package net.codecrete.qrbill.web;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.Locale;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.web.controller.PostalCodeData;
 
+
+/**
+ * Unit test for the {@link PostalCodeData} class
+ */
+@DisplayName("Postal code lookup")
 public class PostalCodeDataTests {
 
     private static PostalCodeData postalCodeData;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() {
         postalCodeData = new PostalCodeData();
     }
 
     @Test
-    public void getPostalCodeMatch() {
+    public void singleMatch() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "8302");
         assertEquals(1, result.size());
         assertEquals("8302", result.get(0).code);
@@ -36,7 +42,7 @@ public class PostalCodeDataTests {
     }
 
     @Test
-    public void getZurich() {
+    public void zurichFullName() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "Zürich");
         assertEquals(20, result.size());
         String previousCode = "";
@@ -50,7 +56,7 @@ public class PostalCodeDataTests {
     }
 
     @Test
-    public void getZurichSubstring() {
+    public void zurichSubstring() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "Züri");
         assertEquals(20, result.size());
         String previousCode = "";
@@ -64,7 +70,7 @@ public class PostalCodeDataTests {
     }
 
     @Test
-    public void getDorfSubstring() {
+    public void dorfSubstring() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", " dorf");
         assertEquals(20, result.size());
         String previousTown = "";
@@ -73,14 +79,14 @@ public class PostalCodeDataTests {
             assertNotNull(pc.code);
             if (previousTown.startsWith("Dorf") && !pc.town.startsWith("Dorf"))
                 previousTown = ""; // Reset between "Dorf...." towns and "...dorf..." towns
-            assertTrue(String.format("%s alphabetically before %s", previousTown, pc.town),
-                    previousTown.compareTo(pc.town) < 0);
+            assertTrue(previousTown.compareTo(pc.town) < 0,
+                String.format("%s alphabetically before %s", previousTown, pc.town));
             previousTown = pc.town;
         }
     }
 
     @Test
-    public void getNumberSubstring() {
+    public void numericSubstring() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "203");
         assertEquals(12, result.size());
         String previousCode = "";
@@ -89,36 +95,36 @@ public class PostalCodeDataTests {
             assertTrue(pc.code.contains("203"));
             if (previousCode.startsWith("203") && !pc.code.startsWith("203"))
                 previousCode = "";
-            assertTrue(String.format("%s <= %s", previousCode, pc.code),
-                    previousCode.compareTo(pc.code) <= 0);
+            assertTrue(previousCode.compareTo(pc.code) <= 0,
+                String.format("%s <= %s", previousCode, pc.code));
             previousCode = pc.code;
         }
     }
 
     @Test
-    public void getNumber880Start() {
+    public void startsWith880() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("", "880 ");
         assertEquals(8, result.size());
         String previousCode = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertNotNull(pc.town);
             assertTrue(pc.code.startsWith("880"));
-            assertTrue(String.format("%s <= %s", previousCode, pc.code),
-                    previousCode.compareTo(pc.code) <= 0);
+            assertTrue(previousCode.compareTo(pc.code) <= 0,
+                String.format("%s <= %s", previousCode, pc.code));
             previousCode = pc.code;
         }
     }
 
     @Test
-    public void getRickenbachStart() {
+    public void startsWithRickenbach() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes(null, " Rickenbach");
         assertEquals(8, result.size());
         String previousTown = "";
         for (PostalCodeData.PostalCode pc : result) {
             assertTrue(pc.town.startsWith("Rickenbach"));
             assertNotNull(pc.code);
-            assertTrue(String.format("%s alphabetically before %s", previousTown, pc.town),
-                    previousTown.compareTo(pc.town.toLowerCase(Locale.FRENCH)) <= 0);
+            assertTrue(previousTown.compareTo(pc.town.toLowerCase(Locale.FRENCH)) <= 0,
+                String.format("%s alphabetically before %s", previousTown, pc.town));
             previousTown = pc.town.toLowerCase(Locale.FRENCH);
         }
     }

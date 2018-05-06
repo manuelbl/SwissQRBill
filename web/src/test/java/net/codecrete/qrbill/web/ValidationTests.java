@@ -6,32 +6,38 @@
 //
 package net.codecrete.qrbill.web;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import net.codecrete.qrbill.web.api.QrBill;
 import net.codecrete.qrbill.web.api.ValidationMessage;
 import net.codecrete.qrbill.web.api.ValidationResponse;
 
-@RunWith(SpringRunner.class)
+
+/**
+ * Unit tests for bill data validation API
+ */
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DisplayName("Bill data validation")
 public class ValidationTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
-    public void okValidationTest() {
+    public void validBill() {
         QrBill bill = SampleData.createBill1();
 
         ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
@@ -48,7 +54,7 @@ public class ValidationTests {
     }
 
     @Test
-    public void truncationWarningTest() {
+    public void truncationWarning() {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown("city56789012345678901234567890123456");
 
@@ -74,7 +80,7 @@ public class ValidationTests {
     }
 
     @Test
-    public void missingCreditorTest() {
+    public void missingCreditorError() {
         QrBill bill = SampleData.createBill1();
         bill.setCreditor(null);
 

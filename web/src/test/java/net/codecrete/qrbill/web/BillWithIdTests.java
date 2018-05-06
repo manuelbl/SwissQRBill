@@ -6,30 +6,36 @@
 //
 package net.codecrete.qrbill.web;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.charset.StandardCharsets;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import net.codecrete.qrbill.web.api.QrBill;
 import net.codecrete.qrbill.web.api.ValidationResponse;
 
-@RunWith(SpringRunner.class)
+
+/**
+ * Unit test for retrieving a bill by ID (API test)
+ */
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DisplayName("SVG bill from ID")
 public class BillWithIdTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
-    public void okTest1() {
+    public void validateAndRetrieveBill() {
         QrBill bill = SampleData.createBill1();
 
         ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);

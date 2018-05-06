@@ -8,6 +8,9 @@ package net.codecrete.qrbill.web;
 
 import net.codecrete.qrbill.web.api.QrBill;
 
+/**
+ * Creates sample bill data
+ */
 public class SampleData {
 
     static QrBill createBill1() {

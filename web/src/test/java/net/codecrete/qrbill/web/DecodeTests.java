@@ -6,23 +6,29 @@
 //
 package net.codecrete.qrbill.web;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import net.codecrete.qrbill.web.api.QrCodeInformation;
 import net.codecrete.qrbill.web.api.ValidationResponse;
 
-@RunWith(SpringRunner.class)
+
+/**
+ * Unit test for QR code decoding API
+ */
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DisplayName("Decode QR code text")
 public class DecodeTests {
 
     private static final String VALID_QR_CODE_TEXT =
@@ -58,12 +64,12 @@ public class DecodeTests {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void okValidationTest() {
+    public void decodeText() {
 
         QrCodeInformation info = new QrCodeInformation();
         info.setQrCodeText(VALID_QR_CODE_TEXT);
 
-        ValidationResponse response = restTemplate.postForObject("//bill/decode", info, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/bill/decode", info, ValidationResponse.class);
 
         assertNotNull(response);
         assertTrue(response.isValid());

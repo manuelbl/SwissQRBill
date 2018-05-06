@@ -6,32 +6,37 @@
 //
 package net.codecrete.qrbill.web;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.charset.StandardCharsets;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import net.codecrete.qrbill.web.api.QrBill;
 import net.codecrete.qrbill.web.api.ValidationMessage;
 
 
-@RunWith(SpringRunner.class)
+/**
+ * Unit test for QR bill generation API (PDF and SVG)
+ */
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DisplayName("QR bill generation")
 public class BillGenerationTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
-    public void generateSVGTest() {
+    public void svgA6() {
 
         QrBill bill = SampleData.createBill1();
         byte[] response = restTemplate.postForObject("/bill/svg/a6-landscape", bill, byte[].class);
@@ -46,7 +51,7 @@ public class BillGenerationTests {
     }
 
     @Test
-    public void generatePDFTest() {
+    public void pdfA6() {
 
         QrBill bill = SampleData.createBill1();
         byte[] response = restTemplate.postForObject("/bill/pdf/a6-landscape", bill, byte[].class);
@@ -59,7 +64,7 @@ public class BillGenerationTests {
     }
 
     @Test
-    public void truncationTest() {
+    public void svgWithTruncatedTown() {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown("city56789012345678901234567890123456");
 
@@ -75,7 +80,7 @@ public class BillGenerationTests {
     }
 
     @Test
-    public void validationTest() {
+    public void oneValidationError() {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown(null);
 
