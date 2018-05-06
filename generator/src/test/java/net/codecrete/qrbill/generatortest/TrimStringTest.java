@@ -8,6 +8,7 @@
 package net.codecrete.qrbill.generatortest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
@@ -24,22 +25,22 @@ class TrimStringTest {
 
     @Test
     void nullString() {
-        assertEquals(null, Strings.trimmed(null));
+        assertNull(Strings.trimmed(null));
     }
 
     @Test
     void emptyString() {
-        assertEquals(null, Strings.trimmed(""));
+        assertNull(Strings.trimmed(""));
     }
 
     @Test
     void oneSpace() {
-        assertEquals(null, Strings.trimmed(" "));
+        assertNull(Strings.trimmed(" "));
     }
 
     @Test
     void severalSpaces() {
-        assertEquals(null, Strings.trimmed("   "));
+        assertNull(Strings.trimmed("   "));
     }
 
     @Test

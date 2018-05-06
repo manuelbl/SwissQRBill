@@ -7,15 +7,17 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import net.codecrete.qrbill.generator.ValidationMessage;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.Bill;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import net.codecrete.qrbill.generator.ValidationMessage;
 
 /**
  * Unit test for the validation of the creditor data

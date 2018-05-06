@@ -12,7 +12,7 @@ import { Example } from './example';
 })
 export class ExampleService {
 
-  private examples: Example[];
+  private readonly examples: Example[];
 
   constructor() {
 

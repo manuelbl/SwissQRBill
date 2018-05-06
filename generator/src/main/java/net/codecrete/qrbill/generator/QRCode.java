@@ -6,9 +6,6 @@
 //
 package net.codecrete.qrbill.generator;
 
-import net.codecrete.io.nayuki.qrcodegen.QrCode;
-import net.codecrete.qrbill.canvas.Canvas;
-
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -18,7 +15,9 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static net.codecrete.qrbill.generator.ValidationMessage.*;
+import net.codecrete.io.nayuki.qrcodegen.QrCode;
+import net.codecrete.qrbill.canvas.Canvas;
+import net.codecrete.qrbill.generator.ValidationMessage.Type;
 
 /**
  * Generates the QR code for the Swiss QR bill.
@@ -32,7 +31,7 @@ class QRCode {
     private static final String CRLF = "\r\n";
 
     private Bill bill;
-    private StringBuilder textBuilder = new StringBuilder();
+    private final StringBuilder textBuilder = new StringBuilder();
 
     /**
      * Creates an instance of the QR code for the specified bill data.
@@ -205,7 +204,7 @@ class QRCode {
                 modules[iy][ix] = false;
     }
 
-    private static DecimalFormat amountFieldFormat;
+    private static final DecimalFormat amountFieldFormat;
 
     static {
         amountFieldFormat = new DecimalFormat("#0.00");
@@ -325,7 +324,7 @@ class QRCode {
 
         // add last line
         lines.add(text.substring(lastPos));
-        return lines.toArray(new String[lines.size()]);
+        return lines.toArray(new String[0]);
     }
 
     private static void throwSingleValidationError(String field, String messageKey) {

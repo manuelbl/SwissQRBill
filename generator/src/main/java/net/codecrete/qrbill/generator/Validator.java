@@ -17,9 +17,9 @@ import net.codecrete.qrbill.generator.ValidationMessage.Type;
  */
 class Validator {
 
-    private Bill billIn;
-    private Bill billOut;
-    private ValidationResult validationResult;
+    private final Bill billIn;
+    private final Bill billOut;
+    private final ValidationResult validationResult;
 
 
     /**
@@ -89,7 +89,7 @@ class Validator {
         String account = Strings.trimmed(billIn.getAccount());
         if (validateMandatory(account, Bill.FIELD_ACCOUNT)) {
             account = Strings.whiteSpaceRemoved(account).toUpperCase(Locale.US);
-            if (validateIBAN(account, Bill.FIELD_ACCOUNT)) {
+            if (validateIBAN(account)) {
                 if (!account.startsWith("CH") && !account.startsWith("LI")) {
                     validationResult.addMessage(Type.ERROR, Bill.FIELD_ACCOUNT, QRBill.KEY_ACCOUNT_IS_CH_LI_IBAN);
                 } else if (account.length() != 21) {
@@ -188,9 +188,9 @@ class Validator {
         return addressOut;
     }
 
-    private boolean validateIBAN(String iban, String field) {
+    private boolean validateIBAN(String iban) {
         if (!Payments.isValidIBAN(iban)) {
-            validationResult.addMessage(Type.ERROR, field, QRBill.KEY_ACCOUNT_IS_VALID_IBAN);
+            validationResult.addMessage(Type.ERROR, Bill.FIELD_ACCOUNT, QRBill.KEY_ACCOUNT_IS_VALID_IBAN);
             return false;
         }
         return true;
@@ -224,13 +224,9 @@ class Validator {
         return true;
     }
 
-    private boolean validateMandatory(String value, String fieldRoot, String subfield) {
-        if (Strings.isNullOrEmpty(value)) {
+    private void validateMandatory(String value, String fieldRoot, String subfield) {
+        if (Strings.isNullOrEmpty(value))
             validationResult.addMessage(Type.ERROR, fieldRoot + subfield, QRBill.KEY_FIELD_IS_MANDATORY);
-            return false;
-        }
-
-        return true;
     }
 
     private String clippedValue(String value, int maxLength, String field) {

@@ -73,29 +73,6 @@ public interface Canvas extends Closeable {
     /**
      * Adds several lines of text to the graphics.
      * <p>
-     *     The specified text is automatically broken into several lines if a text line
-     *     would exceed the specified maximum length of a text line. Newlines can be
-     *     used to force a line break.
-     * </p>
-     * <p>
-     *     The text position refers to the left most point
-     *     on the baseline of the first text line. Additional
-     *     lines then follow below.
-     * </p>
-     * @param text the text
-     * @param x x position of the text's start (in mm)
-     * @param y y position of the text's top (in mm)
-     * @param fontSize the font size (in pt)
-     * @param maxWidth maximum length of text line / width of text block (in mm)
-     * @param leading additional vertical space between text lines (in mm)
-     * @throws IOException thrown if the graphics cannot be generated
-     * @return the number of text lines that were added
-     */
-    int putMultilineText(String text, double x, double y, int fontSize, double maxWidth, double leading) throws IOException;
-
-    /**
-     * Adds several lines of text to the graphics.
-     * <p>
      *     The text position refers to the left most point
      *     on the baseline of the first text line. Additional
      *     lines then follow below.

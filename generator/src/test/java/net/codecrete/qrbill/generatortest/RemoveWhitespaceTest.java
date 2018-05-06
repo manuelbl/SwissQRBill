@@ -100,8 +100,6 @@ class RemoveWhitespaceTest {
 
     @Test
     void nullString() {
-        assertThrows(NullPointerException.class, () -> {
-            Strings.whiteSpaceRemoved(null);
-        });
+        assertThrows(NullPointerException.class, () -> Strings.whiteSpaceRemoved(null));
     }
 }

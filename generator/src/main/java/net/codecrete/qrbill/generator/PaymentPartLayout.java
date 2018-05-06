@@ -326,8 +326,8 @@ class PaymentPartLayout {
     }
 
 
-    private static DecimalFormat amountDisplayFormat;
-    private static DateTimeFormatter dateDisplayFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private static final DecimalFormat amountDisplayFormat;
+    private static final DateTimeFormatter dateDisplayFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     static {
         amountDisplayFormat = new DecimalFormat("###,##0.00");

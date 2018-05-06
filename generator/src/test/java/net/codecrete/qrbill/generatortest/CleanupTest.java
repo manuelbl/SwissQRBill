@@ -26,7 +26,7 @@ class CleanupTest {
 
     @Test
     void closePNGFreesResources() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-        PNGCanvas pngCanvas = null;
+        PNGCanvas pngCanvas;
         try (PNGCanvas canvas = new PNGCanvas(300)) {
             canvas.setupPage(200, 100);
             pngCanvas = canvas;
@@ -39,7 +39,7 @@ class CleanupTest {
 
     @Test
     void closePDFFreesResources() throws IOException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
-        PDFCanvas pdfCanvas = null;
+        PDFCanvas pdfCanvas;
         try (PDFCanvas canvas = new PDFCanvas()) {
             canvas.setupPage(200, 100);
             pdfCanvas = canvas;

@@ -364,23 +364,6 @@ public class Payments {
         return true;
     }
 
-    static boolean isAlphaNumericOrSpace(String value) {
-        int len = value.length();
-        for (int i = 0; i < len; i++) {
-            char ch = value.charAt(i);
-            if (ch == ' ')
-                continue;
-            if (ch >= '0' && ch <= '9')
-                continue;
-            if (ch >= 'A' && ch <= 'Z')
-                continue;
-            if (ch >= 'a' && ch <= 'z')
-                continue;
-            return false;
-        }
-        return true;
-    }
-
     private static boolean isValidQRBillCharacter(char ch) {
         if (ch < 0x20)
             return false;

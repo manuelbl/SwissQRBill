@@ -40,9 +40,9 @@ import javax.imageio.stream.ImageOutputStream;
  */
 public class PNGCanvas  extends AbstractCanvas {
 
-    private int resolution;
-    private float coordinateScale;
-    private float fontScale;
+    private final int resolution;
+    private final float coordinateScale;
+    private final float fontScale;
     private BufferedImage image;
     private Graphics2D graphics;
     private Path2D.Double currentPath;

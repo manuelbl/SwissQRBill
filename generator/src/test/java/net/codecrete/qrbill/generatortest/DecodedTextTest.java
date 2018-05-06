@@ -97,68 +97,62 @@ class DecodedTextTest {
 
     @Test
     void decodeInvalidFormat1() {
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> {
-            QRBill.decodeQrCodeText("garbage");
-        });
+        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText("garbage"));
         assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_QR_TYPE);
     }
 
     @Test
     void decodeInvalidFormat2() {
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> {
-            QRBill.decodeQrCodeText("SPC\r\n0100\r\n\r\n\r\n");
-        });
+        QRBillValidationError err = assertThrows(QRBillValidationError.class,
+                () -> QRBill.decodeQrCodeText("SPC\r\n0100\r\n\r\n\r\n"));
         assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_QR_TYPE);
     }
 
     @Test
     void decodeInvalidFormat3() {
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> {
-            QRBill.decodeQrCodeText("SPC1\r\n0100\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n");
-        });
+        QRBillValidationError err = assertThrows(QRBillValidationError.class,() -> QRBill.decodeQrCodeText(
+                "SPC1\r\n0100\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
+        ));
         assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_QR_TYPE);
     }
 
     @Test
     void decodeInvalidVersion() {
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> {
-            QRBill.decodeQrCodeText("SPC\r\n0101\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n");
-        });
+        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
+                "SPC\r\n0101\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
+        ));
         assertSingleError(err.getValidationResult(), QRBill.KEY_SUPPORTED_VERSION, Bill.FIELD_VERSION);
     }
 
     @Test
     void decodeInvalidCodingType() {
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> {
-            QRBill.decodeQrCodeText("SPC\r\n0100\r\n0\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n");
-        });
+        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
+                "SPC\r\n0100\r\n0\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
+        ));
         assertSingleError(err.getValidationResult(), QRBill.KEY_SUPPORTED_CODING_TYPE, Bill.FIELD_CODING_TYPE);
     }
 
     @Test
     void decodeInvalidNumber() {
         String invalidText = VALID_TEXT.replace("123949.75", "1239d49.75");
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> {
-            QRBill.decodeQrCodeText(invalidText);
-        });
+        QRBillValidationError err = assertThrows(QRBillValidationError.class,
+                () ->  QRBill.decodeQrCodeText(invalidText));
         assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_NUMBER, Bill.FIELD_AMOUNT);
     }
 
     @Test
     void decodeInvalidDate1() {
         String invalidText = VALID_TEXT.replace("2019-10-31", "2019-10-32");
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> {
-            QRBill.decodeQrCodeText(invalidText);
-        });
+        QRBillValidationError err = assertThrows(QRBillValidationError.class,
+                () -> QRBill.decodeQrCodeText(invalidText));
         assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATE, Bill.FIELD_DUE_DATE);
     }
 
     @Test
     void decodeInvalidDate2() {
         String invalidText = VALID_TEXT.replace("2019-10-31", "31.10.2019");
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> {
-            QRBill.decodeQrCodeText(invalidText);
-        });
+        QRBillValidationError err = assertThrows(QRBillValidationError.class,
+                () -> QRBill.decodeQrCodeText(invalidText));
         assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATE, Bill.FIELD_DUE_DATE);
     }
 

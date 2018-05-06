@@ -24,9 +24,9 @@ public class MultilingualText {
     public static final String KEY_CURRENCY = "currency";
     public static final String KEY_AMOUNT = "amount";
 
-    private static String[] languageCodes = { "de", "fr", "it", "en" };
+    private static final String[] languageCodes = { "de", "fr", "it", "en" };
 
-    private static ResourceBundle[] messageBundles = new ResourceBundle[4];
+    private static final ResourceBundle[] messageBundles = new ResourceBundle[4];
 
 
     public static String getText(String key, Bill.Language language) {
