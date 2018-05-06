@@ -4,11 +4,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Payments;
 
-public class ISO11649Test {
+/**
+ * Unit tests for ISO 11649 creditor reference related methods in {@link Payments}
+ */
+@DisplayName("ISO 11649 creditor reference validation and generation")
+class ISO11649Test {
 
     @Test
     void valid() {

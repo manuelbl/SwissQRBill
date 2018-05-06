@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Payments;
@@ -18,6 +19,7 @@ import net.codecrete.qrbill.generator.Payments;
 /**
  * Unit tests for IBAN related methods in {@link Payments}
  */
+@DisplayName("IBAN validation and formatting")
 class IBANTest {
 
     @Test

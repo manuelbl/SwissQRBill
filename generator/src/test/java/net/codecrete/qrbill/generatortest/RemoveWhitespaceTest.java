@@ -11,13 +11,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Strings;
 
 /**
- * Unit tests for {@link Strings.whiteSpaceRemoved}
+ * Unit tests for {@link Strings#whiteSpaceRemoved(String)}
  */
+@DisplayName("White space removal")
 class RemoveWhitespaceTest {
 
     @Test

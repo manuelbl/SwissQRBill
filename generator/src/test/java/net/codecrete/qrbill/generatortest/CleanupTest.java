@@ -7,20 +7,25 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.canvas.PDFCanvas;
 import net.codecrete.qrbill.canvas.PNGCanvas;
 
-public class CleanupTest {
+/**
+ * Unit test for checking that resources are properly released
+ */
+@DisplayName("Cleanup of resources")
+class CleanupTest {
 
     @Test
-    public void closePNG() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+    void closePNGFreesResources() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         PNGCanvas pngCanvas = null;
         try (PNGCanvas canvas = new PNGCanvas(300)) {
             canvas.setupPage(200, 100);
@@ -33,7 +38,7 @@ public class CleanupTest {
     }
 
     @Test
-    public void closePDF() throws IOException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
+    void closePDFFreesResources() throws IOException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
         PDFCanvas pdfCanvas = null;
         try (PDFCanvas canvas = new PDFCanvas()) {
             canvas.setupPage(200, 100);

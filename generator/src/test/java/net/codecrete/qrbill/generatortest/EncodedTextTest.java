@@ -9,16 +9,21 @@ package net.codecrete.qrbill.generatortest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.QRBillValidationError;
 
-public class EncodedTextTest {
+/**
+ * Unit tests for encoding the embedded QR code text
+ */
+@DisplayName("Encoding of embedded QR code text")
+class EncodedTextTest {
 
     @Test
-    public void createText1() {
+    void createText1() {
         Bill bill = SampleData.getExample1();
         assertEquals("SPC\r\n" +
                         "0100\r\n" +
@@ -52,7 +57,7 @@ public class EncodedTextTest {
     }
 
     @Test
-    public void createText2() {
+    void createText2() {
         Bill bill = SampleData.getExample2();
         assertEquals("SPC\r\n" +
                         "0100\r\n" +
@@ -86,7 +91,7 @@ public class EncodedTextTest {
     }
 
     @Test
-    public void createText3() {
+    void createText3() {
         Bill bill = SampleData.getExample3();
         assertEquals("SPC\r\n" +
                         "0100\r\n" +
@@ -120,7 +125,7 @@ public class EncodedTextTest {
     }
 
     @Test
-    public void createText4() {
+    void createText4() {
         Bill bill = SampleData.getExample4();
         assertEquals("SPC\r\n" +
                         "0100\r\n" +
@@ -154,7 +159,7 @@ public class EncodedTextTest {
     }
 
     @Test
-    public void createText5() {
+    void createText5() {
         assertThrows(QRBillValidationError.class, () -> {
             Bill bill = SampleData.getExample4();
             bill.setAmount(0.0);

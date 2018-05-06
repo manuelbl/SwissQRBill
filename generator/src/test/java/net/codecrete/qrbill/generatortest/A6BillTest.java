@@ -6,38 +6,46 @@
 //
 package net.codecrete.qrbill.generatortest;
 
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.QRBill;
 
-public class A6BillTest {
+/**
+ * Unit tests for generation of A6 bills (PDF and SVG)
+ * <p>
+ *     Resulting output is compared byte by byte.
+ * </p>
+ */
+@DisplayName("A6 bill generation (PDF and SVG)")
+class A6BillTest {
 
     @Test
-    public void createA6Bill1() {
+    void createA6Bill1() {
         Bill bill = SampleData.getExample1();
         byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.SVG);
-        TestHelper.assertFileContentsEqual(svg, "a6bill_ex1.svg");
+        FileComparison.assertFileContentsEqual(svg, "a6bill_ex1.svg");
     }
 
     @Test
-    public void createA6Bill2() {
+    void createA6Bill2() {
         Bill bill = SampleData.getExample2();
         byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.SVG);
-        TestHelper.assertFileContentsEqual(svg, "a6bill_ex2.svg");
+        FileComparison.assertFileContentsEqual(svg, "a6bill_ex2.svg");
     }
 
     @Test
-    public void createA6Bill3() {
+    void createA6Bill3() {
         Bill bill = SampleData.getExample3();
         byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.SVG);
-        TestHelper.assertFileContentsEqual(svg, "a6bill_ex3.svg");
+        FileComparison.assertFileContentsEqual(svg, "a6bill_ex3.svg");
     }
 
     @Test
-    public void createA6Bill4() {
+    void createA6Bill4() {
         Bill bill = SampleData.getExample4();
         byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.SVG);
-        TestHelper.assertFileContentsEqual(svg, "a6bill_ex4.svg");
+        FileComparison.assertFileContentsEqual(svg, "a6bill_ex4.svg");
     }
 }

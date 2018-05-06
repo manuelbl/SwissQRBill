@@ -11,9 +11,12 @@ import java.time.LocalDate;
 import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.Bill;
 
-public class SampleData {
+/**
+ * Generates valid sample bill data.
+ */
+class SampleData {
 
-    public static Bill getExample1() {
+    static Bill getExample1() {
         Bill bill = new Bill();
         bill.setLanguage(Bill.Language.EN);
         bill.setAccount("CH44 3199 9123 0008  89012");
@@ -49,7 +52,7 @@ public class SampleData {
         return bill;
     }
 
-    public static Bill getExample2() {
+    static Bill getExample2() {
         Bill bill = new Bill();
         bill.setLanguage(Bill.Language.DE);
         bill.setAccount("CH3709000000304442225");
@@ -71,7 +74,7 @@ public class SampleData {
         return bill;
     }
 
-    public static Bill getExample3() {
+    static Bill getExample3() {
         Bill bill = new Bill();
         bill.setLanguage(Bill.Language.FR);
         bill.setAccount("CH4431999123000889012");
@@ -107,7 +110,7 @@ public class SampleData {
         return bill;
     }
 
-    public static Bill getExample4() {
+    static Bill getExample4() {
         Bill bill = new Bill();
         bill.setLanguage(Bill.Language.IT);
         bill.setAccount("CH3709000000304442225");

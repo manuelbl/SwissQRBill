@@ -7,9 +7,12 @@
 
 package net.codecrete.qrbill.generatortest;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.canvas.AbstractCanvas;
 import net.codecrete.qrbill.generator.Bill;
@@ -17,20 +20,28 @@ import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.QRBillUnexpectedException;
 import net.codecrete.qrbill.generator.QRBillValidationError;
 
-public class QRBillError {
+/**
+ * Unit tests for verifying the thrown exceptions when a QR bill is generated
+ */
+@DisplayName("QR bill generatio exception")
+class QRBillErrors {
 
-    @Test(expected = QRBillUnexpectedException.class)
-    public void testQrBillRuntimeException() {
-        Bill bill = SampleData.getExample1();
-        FailingCanvas canvas = new FailingCanvas();
-        QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, canvas);
+    @Test
+    void throwsRuntimeException() {
+		assertThrows(QRBillUnexpectedException.class, () -> {
+			Bill bill = SampleData.getExample1();
+			FailingCanvas canvas = new FailingCanvas();
+			QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, canvas);
+		});
     }
 
-    @Test(expected = QRBillValidationError.class)
-    public void testValidationError() {
-        Bill bill = SampleData.getExample1();
-        bill.getCreditor().setName(" ");
-        QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.PDF);
+    @Test
+    void throwsValidationError() {
+		assertThrows(QRBillValidationError.class, () -> {
+			Bill bill = SampleData.getExample1();
+			bill.getCreditor().setName(" ");
+			QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.PDF);
+		});
     }
 
 

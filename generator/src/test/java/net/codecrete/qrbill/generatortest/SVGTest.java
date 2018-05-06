@@ -7,18 +7,24 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import org.junit.Test;
+import net.codecrete.qrbill.generator.Strings;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.QRBill;
 
-public class SVGTest {
+/**
+ * Unit tests with characters challening for SVG (XML relevant characters)
+ */
+@DisplayName("SVG special characters")
+class SVGTest {
 
     @Test
-    public void createSVGWithDifficultCharacters() {
+    void svgWithChallengingCharacters() {
         Bill bill = SampleData.getExample1();
         bill.setAdditionalInfo("<h1>&&\"ff\"'t'");
         byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.SVG);
-        TestHelper.assertFileContentsEqual(svg, "a6bill_sc1.svg");
+        FileComparison.assertFileContentsEqual(svg, "a6bill_sc1.svg");
     }
 }

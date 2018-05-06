@@ -10,13 +10,15 @@ package net.codecrete.qrbill.generatortest;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Strings;
 
 /**
- * Unit tests for {@link Strings.isNullOrEmpty}
+ * Unit tests for {@link Strings#isNullOrEmpty(String)}
  */
+@DisplayName("Null or empty strings")
 class StringsTest {
 
     @Test

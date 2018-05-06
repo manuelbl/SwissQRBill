@@ -16,11 +16,27 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-public class TestHelper {
+/**
+ * Compares a generated file with an reference file.
+ */
+class FileComparison {
 
-    public static void assertFileContentsEqual(byte[] actualContent, String expectedFileName) {
+    /**
+     * Asserts that the specified file content matches the content of a reference file.
+     * <p>
+     *     If the actual content differs from the expected file content, an assertion exception
+     *     is thrown and the actual content is saved to a file starting with the name "actual_".
+     * </p>
+     * <p>
+     *     If the actual content matches the expected file content, the file system is checked for
+     *     a file starting with the name "actual_". If it exists, it is deleted.
+     * </p>
+     * @param actualContent content of actual file
+     * @param expectedFileName file name of expected file (reference file)
+     */
+     static void assertFileContentsEqual(byte[] actualContent, String expectedFileName) {
 
         try {
             byte[] expectedContent = loadReferenceFile(expectedFileName);
@@ -44,7 +60,7 @@ public class TestHelper {
     }
 
     private static byte[] loadReferenceFile(String filename) throws IOException {
-        try (InputStream is = TestHelper.class.getResourceAsStream("/" + filename)) {
+        try (InputStream is = FileComparison.class.getResourceAsStream("/" + filename)) {
             if (is == null)
                 throw new FileNotFoundException(filename);
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
