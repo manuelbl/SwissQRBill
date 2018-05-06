@@ -7,7 +7,6 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import net.codecrete.qrbill.generator.Strings;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
