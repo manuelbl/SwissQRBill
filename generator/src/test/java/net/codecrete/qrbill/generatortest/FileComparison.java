@@ -36,7 +36,7 @@ class FileComparison {
      * @param actualContent content of actual file
      * @param expectedFileName file name of expected file (reference file)
      */
-     static void assertFileContentsEqual(byte[] actualContent, String expectedFileName) {
+    static void assertFileContentsEqual(byte[] actualContent, String expectedFileName) {
 
         try {
             byte[] expectedContent = loadReferenceFile(expectedFileName);
@@ -47,6 +47,23 @@ class FileComparison {
                 clearPdfID(actualContent);
             }
             assertArrayEquals(expectedContent, actualContent);
+
+        } catch (AssertionError e) {
+            saveActualFile(actualContent, expectedFileName);
+            throw e;
+        } catch (IOException e) {
+            saveActualFile(actualContent, expectedFileName);
+            throw new RuntimeException(e);
+        }
+
+        deleteActualFile(expectedFileName);
+    }
+
+    static void assertGrayscaleImageContentsEqual(byte[] actualContent, String expectedFileName) {
+
+        try {
+            byte[] expectedContent = loadReferenceFile(expectedFileName);
+            ImageComparison.assertGrayscaleImageContentEquals(expectedContent, actualContent);
 
         } catch (AssertionError e) {
             saveActualFile(actualContent, expectedFileName);

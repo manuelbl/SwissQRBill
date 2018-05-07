@@ -24,7 +24,7 @@ class PNGCanvasTest {
         Bill bill = SampleData.getExample1();
         PNGCanvas canvas = new PNGCanvas(300);
         byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, canvas);
-        FileComparison.assertFileContentsEqual(svg, "a6bill_ex1.png");
+        FileComparison.assertGrayscaleImageContentsEqual(svg, "a6bill_ex1.png");
     }
 
     @Test
@@ -32,6 +32,6 @@ class PNGCanvasTest {
         Bill bill = SampleData.getExample3();
         PNGCanvas canvas = new PNGCanvas(144);
         byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A5_LANDSCAPE_SHEET, canvas);
-        FileComparison.assertFileContentsEqual(svg, "a5bill_ex3.png");
+        FileComparison.assertGrayscaleImageContentsEqual(svg, "a5bill_ex3.png");
     }
 }
