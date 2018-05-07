@@ -9,7 +9,7 @@ package net.codecrete.qrbill.generatortest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -86,12 +86,12 @@ class TrimStringTest {
     @Test
     void copyAvoidanceWithoutSpaces() {
         String value = "cvbn";
-        assertTrue(value == Strings.trimmed(value));
+        assertSame(value, Strings.trimmed(value));
     }
 
     @Test
     void copyAvoidanceWithSpaces() {
         String value = "i o p";
-        assertTrue(value == Strings.trimmed(value));
+        assertSame(value, Strings.trimmed(value));
     }
 }
