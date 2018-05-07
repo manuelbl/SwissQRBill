@@ -20,10 +20,17 @@ test {
     useJUnitPlatform()
 }
 
+javadoc {
+    include 'net/codecrete/qrbill/canvas/*'
+    include 'net/codecrete/qrbill/generator/*'
+
+    title = 'Swiss QR Bill Generator'
+    options.addBooleanOption('html5', true)
+}
+
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
     from javadoc
-    exclude '**/nayuki/**'
 }
 
 task sourcesJar(type: Jar) {
