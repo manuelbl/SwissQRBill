@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'net.codecrete.qrbill'
-version = '0.9.5'
+version = '0.9.6'
 
 task angular(type: NpmTask) {
   args = ['run', 'build']
