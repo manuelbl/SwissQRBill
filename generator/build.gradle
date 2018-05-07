@@ -10,7 +10,7 @@ apply plugin: 'jacoco'
 sourceCompatibility = 1.8
 
 group = 'net.codecrete.qrbill'
-version = '6'
+version = '0.9.6'
 archivesBaseName = "qrbill-generator"
 
 jar {
@@ -24,7 +24,7 @@ javadoc {
     include 'net/codecrete/qrbill/canvas/*'
     include 'net/codecrete/qrbill/generator/*'
 
-    title = 'Swiss QR Bill Generator'
+    title = "QR Bill Generator ${version}"
     options.addBooleanOption('html5', true)
 }
 
