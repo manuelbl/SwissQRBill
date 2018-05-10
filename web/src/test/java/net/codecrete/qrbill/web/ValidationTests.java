@@ -31,13 +31,16 @@ import net.codecrete.qrbill.web.api.ValidationResponse;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("Bill data validation")
-public class ValidationTests {
+class ValidationTests {
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private final TestRestTemplate restTemplate;
+
+    ValidationTests(@Autowired TestRestTemplate template) {
+        restTemplate = template;
+    }
 
     @Test
-    public void validBill() {
+    void validBill() {
         QrBill bill = SampleData.createBill1();
 
         ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
@@ -54,7 +57,7 @@ public class ValidationTests {
     }
 
     @Test
-    public void truncationWarning() {
+    void truncationWarning() {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown("city56789012345678901234567890123456");
 
@@ -80,7 +83,7 @@ public class ValidationTests {
     }
 
     @Test
-    public void missingCreditorError() {
+    void missingCreditorError() {
         QrBill bill = SampleData.createBill1();
         bill.setCreditor(null);
 

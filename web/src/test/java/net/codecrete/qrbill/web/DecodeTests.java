@@ -29,7 +29,7 @@ import net.codecrete.qrbill.web.api.ValidationResponse;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("Decode QR code text")
-public class DecodeTests {
+class DecodeTests {
 
     private static final String VALID_QR_CODE_TEXT =
             "SPC\r\n" +
@@ -60,11 +60,15 @@ public class DecodeTests {
             "QRR\r\n" +
             "829300097829382938291172974\r\n";
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private final TestRestTemplate restTemplate;
 
+    DecodeTests(@Autowired TestRestTemplate template) {
+        restTemplate = template;
+    }
+        
+        
     @Test
-    public void decodeText() {
+    void decodeText() {
 
         QrCodeInformation info = new QrCodeInformation();
         info.setQrCodeText(VALID_QR_CODE_TEXT);

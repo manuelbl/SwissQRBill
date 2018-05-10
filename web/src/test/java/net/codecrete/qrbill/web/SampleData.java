@@ -11,7 +11,7 @@ import net.codecrete.qrbill.web.api.QrBill;
 /**
  * Creates sample bill data
  */
-public class SampleData {
+class SampleData {
 
     static QrBill createBill1() {
         QrBill bill = new QrBill();

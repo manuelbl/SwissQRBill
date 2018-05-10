@@ -24,17 +24,17 @@ import net.codecrete.qrbill.web.controller.PostalCodeData;
  * Unit test for the {@link PostalCodeData} class
  */
 @DisplayName("Postal code lookup")
-public class PostalCodeDataTests {
+class PostalCodeDataTests {
 
     private static PostalCodeData postalCodeData;
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         postalCodeData = new PostalCodeData();
     }
 
     @Test
-    public void singleMatch() {
+    void singleMatch() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "8302");
         assertEquals(1, result.size());
         assertEquals("8302", result.get(0).code);
@@ -42,7 +42,7 @@ public class PostalCodeDataTests {
     }
 
     @Test
-    public void zurichFullName() {
+    void zurichFullName() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "Zürich");
         assertEquals(20, result.size());
         String previousCode = "";
@@ -56,7 +56,7 @@ public class PostalCodeDataTests {
     }
 
     @Test
-    public void zurichSubstring() {
+    void zurichSubstring() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "Züri");
         assertEquals(20, result.size());
         String previousCode = "";
@@ -70,7 +70,7 @@ public class PostalCodeDataTests {
     }
 
     @Test
-    public void dorfSubstring() {
+    void dorfSubstring() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", " dorf");
         assertEquals(20, result.size());
         String previousTown = "";
@@ -86,7 +86,7 @@ public class PostalCodeDataTests {
     }
 
     @Test
-    public void numericSubstring() {
+    void numericSubstring() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "203");
         assertEquals(12, result.size());
         String previousCode = "";
@@ -102,7 +102,7 @@ public class PostalCodeDataTests {
     }
 
     @Test
-    public void startsWith880() {
+    void startsWith880() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("", "880 ");
         assertEquals(8, result.size());
         String previousCode = "";
@@ -116,7 +116,7 @@ public class PostalCodeDataTests {
     }
 
     @Test
-    public void startsWithRickenbach() {
+    void startsWithRickenbach() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes(null, " Rickenbach");
         assertEquals(8, result.size());
         String previousTown = "";
@@ -130,19 +130,19 @@ public class PostalCodeDataTests {
     }
 
     @Test
-    public void noMatch() {
+    void noMatch() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "abc");
         assertEquals(0, result.size());
     }
 
     @Test
-    public void noMatchNumeric() {
+    void noMatchNumeric() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("CH", "0123");
         assertEquals(0, result.size());
     }
 
     @Test
-    public void unsupportedCountry() {
+    void unsupportedCountry() {
         List<PostalCodeData.PostalCode> result = postalCodeData.suggestPostalCodes("DE", "12");
         assertEquals(0, result.size());
     }

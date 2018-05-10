@@ -29,13 +29,16 @@ import net.codecrete.qrbill.web.api.ValidationResponse;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("SVG bill from ID")
-public class BillWithIdTests {
+class BillWithIdTests {
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private final TestRestTemplate restTemplate;
+
+    BillWithIdTests(@Autowired TestRestTemplate template) {
+        restTemplate = template;
+    }
 
     @Test
-    public void validateAndRetrieveBill() {
+    void validateAndRetrieveBill() {
         QrBill bill = SampleData.createBill1();
 
         ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);

@@ -27,10 +27,13 @@ import net.codecrete.qrbill.web.api.PostalCode;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("Postal code lookup service")
-public class PostalCodeServiceTests {
+class PostalCodeServiceTests {
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private final TestRestTemplate restTemplate;
+
+    PostalCodeServiceTests(@Autowired TestRestTemplate template) {
+        restTemplate = template;
+    }
 
     private PostalCode[] suggestPostalCodes(String country, String substring) {
         if (country == null)
@@ -42,7 +45,7 @@ public class PostalCodeServiceTests {
     }
 
     @Test
-    public void singleMatch() {
+    void singleMatch() {
         PostalCode[] postalCodes = suggestPostalCodes("CH", "8302");
         assertEquals(1, postalCodes.length);
         assertEquals("8302", postalCodes[0].getPostalCode());
@@ -50,7 +53,7 @@ public class PostalCodeServiceTests {
     }
 
     @Test
-    public void multipleNumericMatches() {
+    void multipleNumericMatches() {
         PostalCode[] postalCodes = suggestPostalCodes("CH", "1475");
         assertEquals(3, postalCodes.length);
         for (PostalCode pc : postalCodes) {
@@ -60,13 +63,13 @@ public class PostalCodeServiceTests {
     }
 
     @Test
-    public void noMatchOutsideSwitzerland() {
+    void noMatchOutsideSwitzerland() {
         PostalCode[] postalCodes = suggestPostalCodes("FR", "123");
         assertEquals(0, postalCodes.length);
     }
 
     @Test
-    public void getZurichSubstring() {
+    void getZurichSubstring() {
         PostalCode[] postalCodes = suggestPostalCodes(null, "Züri");
         assertEquals(20, postalCodes.length);
         for (PostalCode pc : postalCodes) {
