@@ -6,7 +6,7 @@ export class MainPage {
   }
 
   getNavbarText() {
-    return element(by.css('app-root .navbar-button')).getText();
+    return element(by.css('qrbill-root .navbar-button')).getText();
   }
 
   getPreviewButton() {

@@ -9,7 +9,13 @@ exports.config = {
     './src/**/*.e2e-spec.ts'
   ],
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'chrome',
+    'chromeOptions': {	
+      args: ['lang=en-US'],	
+      prefs: {	
+        intl: { accept_languages: "en-US" },	
+      }
+    }
   },
   directConnect: true,
   baseUrl: 'http://localhost:4200/qrbill/',

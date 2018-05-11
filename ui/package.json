@@ -7,7 +7,7 @@
     "build": "ng build --prod --base-href=/qrbill/",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e --no-serve"
   },
   "private": true,
   "dependencies": {
