@@ -10,6 +10,6 @@ task execute(type: JavaExec) {
 }
 
 dependencies {
-    compile group: 'net.codecrete.qrbill', name: 'qrbill-generator', version: '0.9.5'
+    compile group: 'net.codecrete.qrbill', name: 'qrbill-generator', version: '0.9.6'
 }
 
