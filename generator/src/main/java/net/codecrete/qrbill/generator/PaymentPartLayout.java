@@ -149,7 +149,6 @@ class PaymentPartLayout {
         double qrCodeSpacing = (SLIP_HEIGHT - upperTextHeight - QRCode.SIZE - lowerTextHeight) / 2;
         yPos = lowerTextHeight + qrCodeSpacing;
         qrCode.draw(graphics, offsetX + HORIZ_BORDER, offsetY + yPos);
-        graphics.setTransformation(offsetX + HORIZ_BORDER, offsetY, 1); // restore transformation
 
         // information section
         graphics.setTransformation(offsetX + HORIZ_BORDER + LEFT_COLUMN_WIDTH + MIDDLE_SPACING, offsetY, 1);
