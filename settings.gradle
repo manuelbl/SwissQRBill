@@ -1,3 +1,3 @@
 rootProject.name = 'qrbill'
 
-include 'ui', 'generator', 'web'
+include 'generator', 'web', 'ui'
