@@ -21,6 +21,11 @@ export class AmountFormatter implements InputFormatter<number> {
         this.setLanguage('de-CH');
     }
 
+    private static rounded(rawValue: number): number {
+        // avoid 'toFixed()' for rounded as it is buggy
+        return Math.round(rawValue * 100) / 100;
+    }
+
     public setLanguage(language: string) {
         this.language = language;
         this.systemDecimalSeparator = 1.1.toFixed(1).substring(1, 2);
@@ -37,14 +42,14 @@ export class AmountFormatter implements InputFormatter<number> {
             cleanedValue = cleanedValue.replace(this.userDecimalSeparator, this.systemDecimalSeparator);
         }
         const num = Number(cleanedValue);
-        return this.rounded(num);
+        return AmountFormatter.rounded(num);
     }
 
     formattedValue(rawValue: number): string {
         if (!rawValue) {
             return '';
         }
-        const n = this.rounded(rawValue);
+        const n = AmountFormatter.rounded(rawValue);
         return n.toLocaleString(this.language, { minimumFractionDigits: 2 });
     }
 
@@ -52,12 +57,7 @@ export class AmountFormatter implements InputFormatter<number> {
         if (!rawValue) {
             return '';
         }
-        const n = this.rounded(rawValue);
+        const n = AmountFormatter.rounded(rawValue);
         return n.toLocaleString(this.language, { minimumFractionDigits: 2 }).replace(this.cleaner, '');
-    }
-
-    private rounded(rawValue: number): number {
-        // avoid 'toFixed()' for rounded as it is buggy
-        return Math.round(rawValue * 100) / 100;
     }
 }

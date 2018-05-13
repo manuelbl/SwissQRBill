@@ -18,5 +18,5 @@ h2 {
 .sticky-footer {
     -webkit-position: sticky;
     position: sticky;
-    bottom: 0px;
+    bottom: 0;
 }

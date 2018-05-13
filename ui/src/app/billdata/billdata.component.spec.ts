@@ -15,7 +15,6 @@ import {
   MatNativeDateModule
 } from '@angular/material';
 import { RouterModule } from '@angular/router';
-import { AppRoutingModule } from '../app-routing/app-routing.module';
 import { InputWithFormatDirective } from '../input-fields/input-with-format';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateMockLoader } from '../mock/translate-mock.loader';

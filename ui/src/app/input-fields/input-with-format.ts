@@ -10,7 +10,7 @@
  * Copyright Google LLC All Rights Reserved.
  */
 
-import { OnChanges, OnDestroy, OnInit, DoCheck, Input, ElementRef, Self, Optional, Inject, Directive, NgZone,
+import { OnChanges, OnDestroy, OnInit, DoCheck, Input, ElementRef, Self, Optional, Directive, NgZone,
     HostListener, HostBinding } from '@angular/core';
 import { NgControl, NgForm, FormGroupDirective, ControlValueAccessor } from '@angular/forms';
 import { MatFormFieldControl, _MatInputMixinBase, CanUpdateErrorState, ErrorStateMatcher } from '@angular/material';

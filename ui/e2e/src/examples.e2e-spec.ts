@@ -1,6 +1,6 @@
 import { ExamplesPage } from './examples.po';
 import { protractor } from 'protractor/built/ptor';
-import { browser, by, element } from 'protractor';
+import { browser, by } from 'protractor';
 import { MainPage } from './main.po';
 
 describe('Examples Page', () => {
@@ -20,7 +20,6 @@ describe('Examples Page', () => {
   });
 
   it('should display images', () => {
-    const EC = protractor.ExpectedConditions;
     for (let i = 1; i <= 4; i++) {
         browser.wait(
             () => browser.executeScript(

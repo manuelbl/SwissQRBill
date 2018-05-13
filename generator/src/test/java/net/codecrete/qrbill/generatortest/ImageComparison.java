@@ -27,8 +27,8 @@ class ImageComparison {
             return;
         
         // read images
-        BufferedImage expectedImage = null;
-        BufferedImage actualImage = null;
+        BufferedImage expectedImage;
+        BufferedImage actualImage;
         try {
             try (ByteArrayInputStream ios = new ByteArrayInputStream(expectedContent)) {
                 expectedImage = ImageIO.read(ios);

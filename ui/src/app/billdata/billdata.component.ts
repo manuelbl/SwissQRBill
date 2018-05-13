@@ -33,6 +33,10 @@ export class BillDataComponent implements OnInit {
   private validationInProgress = 0;
   private previewPressed = false;
 
+  private static _2digit(n: number) {
+    return ('00' + n).slice(-2);
+  }
+
   constructor(private formBuilder: FormBuilder, private qrBillService: QrBillService,
     private dialog: MatDialog, private translate: TranslateService,
     private billSingleton: BillSingletonService, public amountFormatter: AmountFormatter,
@@ -140,7 +144,7 @@ export class BillDataComponent implements OnInit {
     for (const controlName in group.controls.keys) {
       const control = group.get(controlName);
       if (control instanceof FormGroup) {
-        this.clearServerSideErrors(control as FormGroup);
+        this.clearServerSideErrors(control);
       } else {
         if (control.hasError('serverSide')) {
           let errors = control.errors;
@@ -154,7 +158,7 @@ export class BillDataComponent implements OnInit {
     }
   }
 
-  preview(model: FormGroup) {
+  preview() {
     if (!this.billID) {
       this.validateServerSide(this.billForm.value);
     }
@@ -186,13 +190,9 @@ export class BillDataComponent implements OnInit {
   getBill(value: any): QrBill {
     if (value.dueDate instanceof Date) {
       const dueDate = value.dueDate as Date;
-      value.dueDate = dueDate.getFullYear() + '-' + this._2digit(dueDate.getMonth() + 1)
-        + '-' + this._2digit(dueDate.getDate());
+      value.dueDate = dueDate.getFullYear() + '-' + BillDataComponent._2digit(dueDate.getMonth() + 1)
+        + '-' + BillDataComponent._2digit(dueDate.getDate());
     }
     return value as QrBill;
-  }
-
-  private _2digit(n: number) {
-    return ('00' + n).slice(-2);
   }
 }

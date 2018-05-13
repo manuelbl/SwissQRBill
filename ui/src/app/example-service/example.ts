@@ -14,11 +14,4 @@ export class Example {
         this.bill = bill;
         this.billID = billID;
     }
-
-    get title(): string {
-        if (this.bill.creditor && this.bill.creditor.name) {
-            return this.bill.creditor.name;
-        }
-        return 'No creditor yet';
-    }
 }

@@ -7,10 +7,6 @@ export class ExamplesPage {
         return browser.get('/examples');
     }
 
-    getNavbarText(): promise.Promise<string> {
-        return element(by.css('app-root .navbar-button')).getText();
-    }
-
     getAppExample(index: number): ElementFinder {
         return element(by.css('.examples mat-card:nth-child(' + index + ')'));
     }

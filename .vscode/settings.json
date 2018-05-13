@@ -1,3 +1,4 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "sonarlint.ls.javaHome": "/Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home/jre"
 }
