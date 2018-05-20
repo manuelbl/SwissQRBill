@@ -16,6 +16,7 @@ import { BillSingletonService } from '../bill-singleton-service/bill-singleton.s
 import { IBANFormatter } from '../input-fields/iban-formatter';
 import { ReferenceNumberFormatter } from '../input-fields/ref-number-formatter';
 import { AmountFormatter } from '../input-fields/amount-formatter';
+import { Moment, isMoment } from 'moment';
 
 @Component({
   selector: 'qrbill-data',
@@ -188,10 +189,9 @@ export class BillDataComponent implements OnInit {
   }
 
   getBill(value: any): QrBill {
-    if (value.dueDate instanceof Date) {
-      const dueDate = value.dueDate as Date;
-      value.dueDate = dueDate.getFullYear() + '-' + BillDataComponent._2digit(dueDate.getMonth() + 1)
-        + '-' + BillDataComponent._2digit(dueDate.getDate());
+    if (isMoment(value.dueDate)) {
+      const dueDate = value.dueDate as Moment;
+      value.dueDate = dueDate.toISOString(true).substring(0, 10);
     }
     return value as QrBill;
   }

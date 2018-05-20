@@ -29,8 +29,8 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AmountFormatter } from './input-fields/amount-formatter';
 import { SettingsComponent } from './settings/settings.component';
 import { ExamplesComponent } from './examples/examples.component';
-import { IsoDateAdapter } from './date-adapter/iso-date-adapter';
 import { InputWithFormatDirective } from './input-fields/input-with-format';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -63,7 +63,7 @@ describe('AppComponent', () => {
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/qrbill' },
-        { provide: DateAdapter, useClass: IsoDateAdapter },
+        { provide: DateAdapter, useClass: MomentDateAdapter },
         AmountFormatter
       ]
     }).compileComponents();

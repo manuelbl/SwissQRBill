@@ -20,14 +20,13 @@ import {
   MatDialogModule,
   MatIconModule,
   MatInputModule,
-  MatNativeDateModule,
   MatSelectModule
 } from '@angular/material';
+import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NavbarComponent } from './navbar/navbar.component';
 import { DateAdapter } from '@angular/material';
-import { IsoDateAdapter } from './date-adapter/iso-date-adapter';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AmountFormatter } from './input-fields/amount-formatter';
 import { SettingsComponent } from './settings/settings.component';
@@ -65,7 +64,7 @@ export function createTranslateLoader(http: HttpClient) {
     MatDialogModule,
     MatIconModule,
     MatInputModule,
-    MatNativeDateModule,
+    MatMomentDateModule,
     MatSelectModule,
     HttpClientModule,
     AppRoutingModule,
@@ -79,7 +78,7 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   providers: [
 
-    { provide: DateAdapter, useClass: IsoDateAdapter },
+    { provide: DateAdapter, useClass: MomentDateAdapter },
     AmountFormatter
   ],
   bootstrap: [AppComponent]

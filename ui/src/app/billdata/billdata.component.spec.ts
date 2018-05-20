@@ -11,8 +11,7 @@ import {
   MatIconModule,
   MatInputModule,
   MatSelectModule,
-  DateAdapter,
-  MatNativeDateModule
+  DateAdapter
 } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { InputWithFormatDirective } from '../input-fields/input-with-format';
@@ -20,8 +19,8 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateMockLoader } from '../mock/translate-mock.loader';
 import { HttpClientModule } from '@angular/common/http';
 import { AmountFormatter } from '../input-fields/amount-formatter';
-import { IsoDateAdapter } from '../date-adapter/iso-date-adapter';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 
 describe('BillDataComponent', () => {
   let component: BillDataComponent;
@@ -44,7 +43,7 @@ describe('BillDataComponent', () => {
         MatIconModule,
         MatInputModule,
         MatSelectModule,
-        MatNativeDateModule,
+        MatMomentDateModule,
         BrowserAnimationsModule,
         RouterModule,
         HttpClientModule,
@@ -53,7 +52,7 @@ describe('BillDataComponent', () => {
         })
       ],
       providers: [
-        { provide: DateAdapter, useClass: IsoDateAdapter },
+        { provide: DateAdapter, useClass: MomentDateAdapter },
         AmountFormatter
       ]
     })
