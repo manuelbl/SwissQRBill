@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.Bill;
@@ -127,5 +129,19 @@ class CharacterSetTest extends BillDataValidationBase {
         validate();
         assertSingleWarningMessage(Bill.FIELD_CREDITOR_TOWN, "replaced_unsupported_characters");
         assertEquals("-- .. --", validatedBill.getCreditor().getTown());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "^", "\u007f", "\u0080", "\u00a0", "\u00A0", "¡",
+        "¤", "©", "±", "µ", "¼", "Å", "Æ", "Ð", "×", "Ø", "Ý", "Þ", "å", "æ",
+        "ø", "€", "¿", "Ý", "Ą", "Ď", "ð", "õ", "ã", "Ã" })
+    void invalidChars(String invalidChar) {
+        bill = SampleData.getExample1();
+        Address address = createValidPerson();
+        address.setStreet("ABC" + invalidChar + "QRS");
+        bill.setCreditor(address);
+        validate();
+        assertSingleWarningMessage(Bill.FIELD_CREDITOR_STREET, "replaced_unsupported_characters");
+        assertEquals("ABC.QRS", validatedBill.getCreditor().getStreet());
     }
 }

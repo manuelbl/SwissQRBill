@@ -24,7 +24,7 @@ import net.codecrete.qrbill.generator.QRBillValidationError;
  * Unit tests for verifying the thrown exceptions when a QR bill is generated
  */
 @DisplayName("QR bill generatio exception")
-class QRBillErrors {
+class QRBillErrorsTest {
 
     @Test
     void throwsRuntimeException() {

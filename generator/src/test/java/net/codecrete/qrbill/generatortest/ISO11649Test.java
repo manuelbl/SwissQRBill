@@ -27,6 +27,11 @@ class ISO11649Test {
     }
 
     @Test
+    void validWithLowercaseLetters() {
+        assertTrue(Payments.isValidISO11649Reference("RF 44 alll ower case"));
+    }
+
+    @Test
     void validWithTrailingAndLeadingSpaces() {
         assertTrue(Payments.isValidISO11649Reference(" RF19N8BG33KQ9HSS7BG "));
     }

@@ -43,6 +43,11 @@ class QRReferenceTest {
     }
 
     @Test
+    void invalidQRReferenceWithSpecialChar() {
+        assertFalse(Payments.isValidQRReferenceNo("210000000%03139471430009017"));
+    }
+
+    @Test
     void invalidCheckDigitQRReference() {
         assertFalse(Payments.isValidQRReferenceNo("210000000003139471430009016"));
     }
