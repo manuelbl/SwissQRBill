@@ -110,7 +110,7 @@ class DecodedTextTest {
 
     @Test
     void decodeInvalidFormat3() {
-        QRBillValidationError err = assertThrows(QRBillValidationError.class,() -> QRBill.decodeQrCodeText(
+        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
                 "SPC1\r\n0100\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
         ));
         assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_QR_TYPE);

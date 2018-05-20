@@ -105,7 +105,7 @@ public class Payments {
                 justProcessedSpace = false;
                 pos++;
             } else {
-                if (Character.isWhitespace(ch)) {
+                if (ch <= ' ') {
                     if (!justProcessedSpace)
                         sb.append(' ');
                     justProcessedSpace = true;
@@ -134,7 +134,7 @@ public class Payments {
      * Validates if the string is a valid IBAN number
      * <p>
      *   The string is checked for valid characters, valid length
-     *   and for a valid check digit. Spaces are ignored.
+     *   and for a valid check digit. White space is ignored.
      * </p>
      * @param iban IBAN to validate
      * @return {@code true} if the IBAN is valid, {@code false} otherwise
@@ -166,7 +166,7 @@ public class Payments {
     }
     
     /**
-     * Formats a IBAN or creditor reference by inserting spaces.
+     * Formats an IBAN or creditor reference by inserting spaces.
      * <p>
      * Spaces are inserted to form groups of 4 letters/digits.
      * If a group of less than 4 letters/digits is needed, it
@@ -236,11 +236,7 @@ public class Payments {
     }
 
     private static boolean hasValidMod97CheckDigits(String number) {
-        try {
-            return calculateMod97(number) == 1;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+        return calculateMod97(number) == 1;
     }
 
     /**
@@ -288,7 +284,7 @@ public class Payments {
      * </p>
      * <p>
      *   The string is checked for valid characters, valid length
-     *   and a valid check digit. Spaces are ignored.
+     *   and a valid check digit. White space is ignored.
      * </p>
      * @param referenceNo QR reference number to validate
      * @return {@code true} if the reference number is valid, {@code false} otherwise
@@ -314,7 +310,7 @@ public class Payments {
     }
 
     /**
-     * Formats a QR reference number by inserted spaces.
+     * Formats a QR reference number by inserting spaces.
      * <p>
      * Spaces are inserted to create groups of 5 digits.
      * If a group of less than 5 digits is needed, it

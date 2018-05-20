@@ -228,10 +228,12 @@ class QRCode {
      *     defined by SIX.
      * </p>
      * <p>
-     *     The returned data is not validated. Only the format and the header are checked.
+     *     The returned data is only minimally validated. The format and the header are checked.
+     *     Amount and date must be parsable.
      * </p>
      * @param text the text to decode
      * @return the bill data
+     * @throws QRBillValidationError if a validation error occurs
      */
     public static Bill decodeQRCodeText(String text) {
         String[] lines = splitLines(text);

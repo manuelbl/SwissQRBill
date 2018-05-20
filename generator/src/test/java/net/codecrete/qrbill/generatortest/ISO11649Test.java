@@ -3,6 +3,7 @@ package net.codecrete.qrbill.generatortest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -118,5 +119,15 @@ class ISO11649Test {
     @Test
     void createCreditorReferenceWithLeadingZero() {
         assertEquals("RF097", Payments.createISO11649Reference("7"));
+    }
+
+    @Test
+    void tooShortException() {
+        assertThrows(IllegalArgumentException.class, () -> Payments.createISO11649Reference(""));
+    }
+
+    @Test
+    void invalidCharacterException() {
+        assertThrows(IllegalArgumentException.class, () -> Payments.createISO11649Reference("ABC-DEF"));
     }
 }

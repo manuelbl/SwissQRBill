@@ -21,9 +21,9 @@ public class Strings {
     /**
      * Returns string with leading and trailing whitespace removed
      * <p>
-     *   For empty strings, {@code null} is returned.
+     *   For empty strings or {@code null}, {@code null} is returned.
      * </p>
-     * @param value string to trim
+     * @param value string to trim or {@code null}
      * @return trimmed string
      */
     public static String trimmed(String value) {
@@ -37,11 +37,8 @@ public class Strings {
 
     /**
      * Returns string without white space
-     * <p>
-     * Only the space character is considered white space.
-     * </p>
      * 
-     * @param value string to process
+     * @param value string to process (non null)
      * @return resulting string with all whitespace removed
      */
     public static String whiteSpaceRemoved(String value) {
@@ -50,7 +47,7 @@ public class Strings {
         int lastCopied = 0;
         for (int i = 0; i < len; i++) {
             char ch = value.charAt(i);
-            if (ch == ' ') {
+            if (ch <= ' ') {
                 if (i > lastCopied) {
                     if (sb == null)
                         sb = new StringBuilder();
