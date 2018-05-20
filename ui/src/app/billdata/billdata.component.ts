@@ -4,7 +4,7 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
@@ -41,7 +41,8 @@ export class BillDataComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private qrBillService: QrBillService,
     private dialog: MatDialog, private translate: TranslateService,
     private billSingleton: BillSingletonService, public amountFormatter: AmountFormatter,
-    public ibanFormatter: IBANFormatter, public refNumberFormatter: ReferenceNumberFormatter) {
+    public ibanFormatter: IBANFormatter, public refNumberFormatter: ReferenceNumberFormatter,
+    private ngZone: NgZone) {
     this.bill = billSingleton.getBill();
     this.outputSize = 'a6-landscape';
   }
@@ -112,9 +113,13 @@ export class BillDataComponent implements OnInit {
     this.clearServerSideErrors(this.billForm);
 
     const messages = response.validationMessages;
+    let controlPath: string;
     if (messages) {
       for (const msg of messages) {
         if (msg.type === 'Error') {
+          if (!controlPath) {
+            controlPath = msg.field;
+          }
           const control = this.billForm.get(msg.field);
           let errors = control.errors;
           if (!errors) {
@@ -127,9 +132,9 @@ export class BillDataComponent implements OnInit {
     }
 
     if (messages) {
-      // TODO: set focus to first field with error
       if (this.previewPressed && this.validationInProgress === 0) {
-      this.previewPressed = false;
+        this.previewPressed = false;
+        this.focusControl(controlPath);
       }
     } else {
       // user clicked on "Preview" and is waiting for validation
@@ -194,5 +199,18 @@ export class BillDataComponent implements OnInit {
       value.dueDate = dueDate.toISOString(true).substring(0, 10);
     }
     return value as QrBill;
+  }
+
+  private focusControl(controlPath: string) {
+    const pathElements = controlPath.split('.');
+    const selector = 'qrbill-data *[ng-reflect-name=' + pathElements.join('] *[ng-reflect-name=') + ']';
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        const e = document.querySelector(selector);
+        if (e instanceof HTMLElement) {
+          e.focus();
+        }
+      }, 0);
+    });
   }
 }
