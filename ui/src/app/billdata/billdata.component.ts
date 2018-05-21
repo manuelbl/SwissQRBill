@@ -5,7 +5,7 @@
 // https://opensource.org/licenses/MIT
 //
 import { Component, OnInit, NgZone } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { QrBillService } from '../qrbill-api/qrbill.service';
@@ -17,6 +17,7 @@ import { IBANFormatter } from '../input-fields/iban-formatter';
 import { ReferenceNumberFormatter } from '../input-fields/ref-number-formatter';
 import { AmountFormatter } from '../input-fields/amount-formatter';
 import { Moment, isMoment } from 'moment';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'qrbill-data',
@@ -88,6 +89,7 @@ export class BillDataComponent implements OnInit {
       updateOn: 'blur'
     });
 
+    // Server-side validation on each change
     this.billForm.valueChanges
       .subscribe(val => this.validateServerSide(val));
 
@@ -97,8 +99,9 @@ export class BillDataComponent implements OnInit {
   }
 
   // Send data to server for validation
-  validateServerSide(value: any) {
+  private validateServerSide(value: any): Subscription {
     this.validationInProgress++;
+    this.previewPressed = false;
     const bill = this.getBill(value);
     return this.qrBillService.validate(bill, this.translate.currentLang)
       .subscribe(response => this.updateServerSideErrors(response));
@@ -131,44 +134,48 @@ export class BillDataComponent implements OnInit {
       }
     }
 
-    if (messages) {
-      if (this.previewPressed && this.validationInProgress === 0) {
-        this.previewPressed = false;
+    // user clicked on "Preview" and is waiting for validation
+    if (this.previewPressed && this.validationInProgress === 0) {
+      this.previewPressed = false;
+      if (messages) {
         this.focusControl(controlPath);
-      }
-    } else {
-      // user clicked on "Preview" and is waiting for validation
-      if (this.previewPressed && this.validationInProgress === 0) {
+      } else {
         this.openPreview();
       }
     }
   }
 
   // Remove the errors of type "serverSide"
-  clearServerSideErrors(group: FormGroup) {
-    // tslint:disable-next-line:forin
-    for (const controlName in group.controls.keys) {
-      const control = group.get(controlName);
+  private clearServerSideErrors(group: FormGroup) {
+    const controls = group.controls;
+    for (const controlName of Object.keys(controls)) {
+      const control = controls[controlName];
       if (control instanceof FormGroup) {
         this.clearServerSideErrors(control);
-      } else {
-        if (control.hasError('serverSide')) {
-          let errors = control.errors;
-          delete errors.serverSide;
-          if (Object.keys(errors).length === 0) {
-            errors = null;
-          }
-          control.setErrors(errors);
+      } else if (control.hasError('serverSide')) {
+        let errors = control.errors;
+        delete errors.serverSide;
+        if (Object.keys(errors).length === 0) {
+          errors = null;
         }
+        control.setErrors(errors);
       }
     }
   }
 
+  // User has clicked "Preview" button
   preview() {
+    if (!this.billForm.valid) {
+      // focus invalid field
+      this.focusControl(this.findFirstInvalidControl());
+      return;
+    }
     if (!this.billID) {
+      // validate data if needed
       this.validateServerSide(this.billForm.value);
     }
     if (this.validationInProgress > 0) {
+      // pending validation - postpone opening the preview
       this.previewPressed = true;
       return;
     }
@@ -177,11 +184,6 @@ export class BillDataComponent implements OnInit {
   }
 
   private openPreview() {
-    if (!this.billForm.valid) {
-      return;
-    }
-
-    this.previewPressed = false;
     this.dialog.open(PreviewComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
@@ -193,7 +195,7 @@ export class BillDataComponent implements OnInit {
     });
   }
 
-  getBill(value: any): QrBill {
+  private getBill(value: any): QrBill {
     if (isMoment(value.dueDate)) {
       const dueDate = value.dueDate as Moment;
       value.dueDate = dueDate.toISOString(true).substring(0, 10);
@@ -213,4 +215,20 @@ export class BillDataComponent implements OnInit {
       }, 0);
     });
   }
+
+  private findFirstInvalidControl(root: FormGroup = this.billForm, rootPath: string = ''): string {
+    const controls = root.controls;
+    for (const field of Object.keys(controls)) {
+      const ctrl = controls[field];
+      if (ctrl.invalid) {
+        if (ctrl instanceof FormGroup) {
+          return this.findFirstInvalidControl(ctrl, rootPath + field + '.');
+        } else if (ctrl instanceof FormControl) {
+          return rootPath + field;
+        }
+      }
+    }
+    return null;
+  }
+
 }
