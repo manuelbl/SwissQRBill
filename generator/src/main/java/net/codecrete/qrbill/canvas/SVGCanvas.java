@@ -1,6 +1,6 @@
 //
 // Swiss QR Bill Generator
-// Copyright (c) 2017 Manuel Bleichenbacher
+// Copyright (c) 2018 Manuel Bleichenbacher
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
@@ -52,6 +52,7 @@ public class SVGCanvas extends AbstractCanvas {
         stream.write("<g font-family=\"Helvetica,Arial\" transform=\"translate(0 ");
         stream.write(formatCoordinate(height));
         stream.write(")\">\n");
+        stream.write("<title>Swiss QR Bill</title>\n");
     }
 
     public void close() throws IOException {

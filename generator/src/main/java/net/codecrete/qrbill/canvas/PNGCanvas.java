@@ -194,6 +194,7 @@ public class PNGCanvas  extends AbstractCanvas {
             throw new net.codecrete.qrbill.generator.QRBillUnexpectedException("No valid PNG writer found");
 
         addDpiMetadata(metadata, resolution);
+        addTextMetadata(metadata);
 
         try (ImageOutputStream stream = ImageIO.createImageOutputStream(os)) {
             writer.setOutput(stream);
@@ -240,6 +241,17 @@ public class PNGCanvas  extends AbstractCanvas {
         root = new IIOMetadataNode(PNG_STANDARD_METADATA_FORMAT);
         root.appendChild(dimension);
         metadata.mergeTree(PNG_STANDARD_METADATA_FORMAT, root);
+    }
+
+    private static void addTextMetadata(IIOMetadata metadata) throws IIOInvalidTreeException {
+        IIOMetadataNode textEntry = new IIOMetadataNode("tEXtEntry");
+        textEntry.setAttribute("keyword", "Title");
+        textEntry.setAttribute("value", "Swiss QR Bill");
+        IIOMetadataNode text = new IIOMetadataNode("tEXt");
+        text.appendChild(textEntry);
+        IIOMetadataNode commentMetadata = new IIOMetadataNode(metadata.getNativeMetadataFormatName());
+        commentMetadata.appendChild(text);
+        metadata.mergeTree(metadata.getNativeMetadataFormatName(), commentMetadata);
     }
 
 }

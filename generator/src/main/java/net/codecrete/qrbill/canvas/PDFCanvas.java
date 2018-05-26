@@ -41,6 +41,7 @@ public class PDFCanvas extends AbstractCanvas {
     public void setupPage(double width, double height) throws IOException
     {
         document = new PDDocument();
+        document.getDocumentInformation().setTitle("Swiss QR Bill");
         PDPage page = new PDPage(new PDRectangle((float)(width * MM_TO_PT), (float)(height * MM_TO_PT)));
         document.addPage(page);
         contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.OVERWRITE, true);
