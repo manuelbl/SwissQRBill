@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --base-href /qrbill/ --proxy-config proxy-dev.json",
+    "start": "ng serve --host 0.0.0.0 --base-href /qrbill/",
     "build": "ng build --prod --base-href=/qrbill/",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e --no-serve"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

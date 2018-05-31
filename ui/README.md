@@ -24,7 +24,7 @@ Run `npm test` to execute the unit tests via [Karma](https://karma-runner.github
 
 ## Running end-to-end tests
 
-To exeute the end-to-end tests via [Protractor](http://www.protractortest.org/), first start the QR Bill service, then start a dev server (`npm start`) and finally execute `npm run e2e`.
+To exeute the end-to-end tests via [Protractor](http://www.protractortest.org/), first start the QR Bill service and then execute `npm run e2e`. The end-to-end test will start a development server automatically.
 
 ## Further help
 
