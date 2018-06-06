@@ -17,7 +17,7 @@ public class Bill implements Serializable {
 
     private static final long serialVersionUID = -8104086304378262190L;
 
-	/**
+    /**
      * QR bill language
      */
     public enum Language {
@@ -127,9 +127,9 @@ public class Bill implements Serializable {
     private Address debtor = null;
     private LocalDate dueDate = null;
 
-
     /**
      * Gets the bill language.
+     * 
      * @return the language
      */
     public Language getLanguage() {
@@ -138,6 +138,7 @@ public class Bill implements Serializable {
 
     /**
      * Sets the bill language
+     * 
      * @param language the language
      */
     public void setLanguage(Language language) {
@@ -146,6 +147,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the version of the QR bill standard.
+     * 
      * @return the version
      */
     public Version getVersion() {
@@ -154,6 +156,7 @@ public class Bill implements Serializable {
 
     /**
      * Sets the version of the QR bill standard.
+     * 
      * @param version the version
      */
     public void setVersion(Version version) {
@@ -162,6 +165,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the payment amount
+     * 
      * @return the amount
      */
     public Double getAmount() {
@@ -170,7 +174,10 @@ public class Bill implements Serializable {
 
     /**
      * Sets the payment amount.
-     * <p>Valid values are between 0.01 and 999,999,999.99</p>
+     * <p>
+     * Valid values are between 0.01 and 999,999,999.99
+     * </p>
+     * 
      * @param amount the amount
      */
     public void setAmount(Double amount) {
@@ -179,6 +186,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the payment currency.
+     * 
      * @return the currency
      */
     public String getCurrency() {
@@ -188,8 +196,9 @@ public class Bill implements Serializable {
     /**
      * Sets the payment currency.
      * <p>
-     *     Valid values are "CHF" and "EUR".
+     * Valid values are "CHF" and "EUR".
      * </p>
+     * 
      * @param currency the currency
      */
     public void setCurrency(String currency) {
@@ -198,6 +207,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the payment's due date.
+     * 
      * @return the due date
      */
     public LocalDate getDueDate() {
@@ -207,8 +217,9 @@ public class Bill implements Serializable {
     /**
      * Sets the payment's due date.
      * <p>
-     *     The due date is optional.
+     * The due date is optional.
      * </p>
+     * 
      * @param dueDate the due date
      */
     public void setDueDate(LocalDate dueDate) {
@@ -217,6 +228,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the creditor's account number.
+     * 
      * @return the account number
      */
     public String getAccount() {
@@ -226,10 +238,10 @@ public class Bill implements Serializable {
     /**
      * Sets the creditor's account number.
      * <p>
-     *     Account numbers must be valid IBANs of a bank of
-     *     Switzerland or Liechtenstein. Spaces are allowed
-     *     in the account number.
+     * Account numbers must be valid IBANs of a bank of Switzerland or
+     * Liechtenstein. Spaces are allowed in the account number.
      * </p>
+     * 
      * @param account the account number
      */
     public void setAccount(String account) {
@@ -238,6 +250,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the creditor address.
+     * 
      * @return the creditor address
      */
     public Address getCreditor() {
@@ -246,6 +259,7 @@ public class Bill implements Serializable {
 
     /**
      * Sets the creditor address.
+     * 
      * @param creditor the creditor address.
      */
     public void setCreditor(Address creditor) {
@@ -254,6 +268,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the final creditor address.
+     * 
      * @return the final creditor address
      */
     public Address getFinalCreditor() {
@@ -263,9 +278,11 @@ public class Bill implements Serializable {
     /**
      * Sets the final creditor address.
      * <p>
-     *     The final creditor is optional. If it is not used, both setting this field to {@code null}
-     *     or setting an address with all {@code null} or empty values is ok.
+     * The final creditor is optional. If it is not used, both setting this field to
+     * {@code null} or setting an address with all {@code null} or empty values is
+     * ok.
      * </p>
+     * 
      * @param finalCreditor the final creditor address
      */
     public void setFinalCreditor(Address finalCreditor) {
@@ -274,6 +291,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the payment reference number
+     * 
      * @return the reference number
      */
     public String getReferenceNo() {
@@ -283,29 +301,31 @@ public class Bill implements Serializable {
     /**
      * Sets the payment reference number.
      * <p>
-     *     The reference number is mandatory for QR IBANs, i.e. IBANs in the range
-     *     CHxx30000xxxxxx through CHxx31999xxxxx.
+     * The reference number is mandatory for QR IBANs, i.e. IBANs in the range
+     * CHxx30000xxxxxx through CHxx31999xxxxx.
      * </p>
      * <p>
-     *     If specified, the reference number must be either a valid QR reference
-     *     (which corresponds to the form ISR reference number)
-     *     or a valid creditor reference according to ISO 11649 ("RFxxxx").
-     *     Both may contain spaces for formatting.
+     * If specified, the reference number must be either a valid QR reference (which
+     * corresponds to the form ISR reference number) or a valid creditor reference
+     * according to ISO 11649 ("RFxxxx"). Both may contain spaces for formatting.
      * </p>
+     * 
      * @param referenceNo the payment reference number
      */
     public void setReferenceNo(String referenceNo) {
         this.referenceNo = referenceNo;
     }
-    
+
     /**
-     * Creates and sets a ISO11649 creditor reference from a raw string by prefixing the String with "RF"
-     * and the modulo 97 checksum.
+     * Creates and sets a ISO11649 creditor reference from a raw string by prefixing
+     * the String with "RF" and the modulo 97 checksum.
      * <p>
      * Whitespace is removed from the reference
      * </p>
+     * 
      * @param rawReference The raw string
-     * @throws IllegalArgumentException if {@code rawReference} contains invalid characters
+     * @throws IllegalArgumentException if {@code rawReference} contains invalid
+     *                                  characters
      */
     public void createAndSetCreditorReference(String rawReference) {
         setReferenceNo(Payments.createISO11649Reference(rawReference));
@@ -313,6 +333,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the additional unstructured message.
+     * 
      * @return the additional message
      */
     public String getAdditionalInfo() {
@@ -321,6 +342,7 @@ public class Bill implements Serializable {
 
     /**
      * Sets the additional unstructured message.
+     * 
      * @param additionalInfo the additional message
      */
     public void setAdditionalInfo(String additionalInfo) {
@@ -329,6 +351,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the debtor's address.
+     * 
      * @return the debtor address
      */
     public Address getDebtor() {
@@ -338,35 +361,32 @@ public class Bill implements Serializable {
     /**
      * Sets the debtor's address.
      * <p>
-     *     The debtor is optional. If it is omitted, both setting this field to {@code null}
-     *     or setting an address with all {@code null} or empty values is ok.
+     * The debtor is optional. If it is omitted, both setting this field to
+     * {@code null} or setting an address with all {@code null} or empty values is
+     * ok.
      * </p>
+     * 
      * @param debtor the debtor address
      */
     public void setDebtor(Address debtor) {
         this.debtor = debtor;
     }
 
-
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Bill bill = (Bill) o;
-        return language == bill.language &&
-                version == bill.version &&
-                Objects.equals(amount, bill.amount) &&
-                Objects.equals(currency, bill.currency) &&
-                Objects.equals(account, bill.account) &&
-                Objects.equals(creditor, bill.creditor) &&
-                Objects.equals(finalCreditor, bill.finalCreditor) &&
-                Objects.equals(referenceNo, bill.referenceNo) &&
-                Objects.equals(additionalInfo, bill.additionalInfo) &&
-                Objects.equals(debtor, bill.debtor) &&
-                Objects.equals(dueDate, bill.dueDate);
+        return language == bill.language && version == bill.version && Objects.equals(amount, bill.amount)
+                && Objects.equals(currency, bill.currency) && Objects.equals(account, bill.account)
+                && Objects.equals(creditor, bill.creditor) && Objects.equals(finalCreditor, bill.finalCreditor)
+                && Objects.equals(referenceNo, bill.referenceNo) && Objects.equals(additionalInfo, bill.additionalInfo)
+                && Objects.equals(debtor, bill.debtor) && Objects.equals(dueDate, bill.dueDate);
     }
 
     /**
@@ -374,7 +394,7 @@ public class Bill implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(language, version, amount, currency, account, creditor, finalCreditor,
-                referenceNo, additionalInfo, debtor, dueDate);
+        return Objects.hash(language, version, amount, currency, account, creditor, finalCreditor, referenceNo,
+                additionalInfo, debtor, dueDate);
     }
 }

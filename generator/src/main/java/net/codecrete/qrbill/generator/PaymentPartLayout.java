@@ -16,7 +16,6 @@ import java.util.Locale;
 import net.codecrete.qrbill.canvas.Canvas;
 import net.codecrete.qrbill.canvas.FontMetrics;
 
-
 /**
  * Layouting and drawing of QR bill payment slip
  */
@@ -35,13 +34,12 @@ class PaymentPartLayout {
     private static final double LEFT_COLUMN_WIDTH = 56; // mm
     private static final double AMOUNT_WIDTH = 40; // mm (must not be smaller than 40)
     private static final double AMOUNT_HEIGHT = 15; // mm (must not be smaller than 15)
-    private static final double RIGHT_COLUMN_WIDTH
-            = SLIP_WIDTH - 2 * HORIZ_BORDER - MIDDLE_SPACING - LEFT_COLUMN_WIDTH; // mm (must not be smaller than 65)
+    private static final double RIGHT_COLUMN_WIDTH = SLIP_WIDTH - 2 * HORIZ_BORDER - MIDDLE_SPACING - LEFT_COLUMN_WIDTH; // mm
+    // (must not be smaller than 65)
     private static final double DEBTOR_HEIGHT = 25; // mm (must not be smaller than 25)
     private static final double PREFERRED_LABEL_PADDING_TOP = 8 * PT_TO_MM;
     private static final double PREFERRED_TEXT_PADDING_TOP = 5 * PT_TO_MM;
     private static final double PREFERRED_LEADING = 0.2; // relative to font size
-
 
     private Bill bill;
     private QRCode qrCode;
@@ -63,32 +61,31 @@ class PaymentPartLayout {
     private int fontSizeText;
     private double rightColumnPaddingTop;
 
-
     PaymentPartLayout(Bill bill, Canvas graphics) {
         this.bill = bill;
         this.qrCode = new QRCode(bill);
         this.graphics = graphics;
     }
 
-
     void draw(double offsetX, double offsetY, boolean hasBorder) throws IOException {
 
-        /*
-            Intro to layout:
-            - Main title, labels and remaining text use separate font weight and size.
-            - Depending on the text that needs to fit:
-              - spacing is reduced
-              - if spacing reduction is not sufficient, font size is reduced
-              - even with smaller font size, spacing might still need to be reduced
-            - There is spacing is above labels (labelPaddingTop), spacing above text (textPaddingTop)
-              and leading between lines of multi-line text blocks (creditors and debitors mainly).
-            - If sufficient space is available (few text lines), then the right column starts at
-              the same vertical position as the "Supports" label in the left column. Otherwise it
-              starts at the top (same as main title).
-            - In the left column, the title and the first label/text part is aligned at the top
-              and the currency and amount are aligned at the bottom. The QR code is then vertically
-              centered in-between.
-         */
+        //
+        // Intro to layout:
+        // - Main title, labels and remaining text use separate font weight and size.
+        // - Depending on the text that needs to fit:
+        // -- spacing is reduced
+        // -- if spacing reduction is not sufficient, font size is reduced
+        // -- even with smaller font size, spacing might still need to be reduced
+        // - There is spacing is above labels (labelPaddingTop), spacing above text
+        // (textPaddingTop) and leading between lines of multi-line text blocks
+        // (creditors and debitors mainly).
+        // - If sufficient space is available (few text lines), then the right column
+        // starts at the same vertical position as the "Supports" label in the left
+        // column. Otherwise it starts at the top (same as main title).
+        // - In the left column, the title and the first label/text part is aligned at
+        // the top and the currency and amount are aligned at the bottom. The QR code is
+        // then vertically centered in-between.
+        //
 
         // test regular font size
         fontSizeLabel = FONT_SIZE_LABEL;
@@ -117,20 +114,19 @@ class PaymentPartLayout {
         // title section
         graphics.setTransformation(offsetX + HORIZ_BORDER, offsetY, 1);
         yPos = SLIP_HEIGHT - VERT_BORDER - FontMetrics.getAscender(FONT_SIZE_TITLE);
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_QR_BILL_PAYMENT_PART, bill.getLanguage()),
-                0, yPos, FONT_SIZE_TITLE, true);
+        graphics.putText(MultilingualText.getText(MultilingualText.KEY_QR_BILL_PAYMENT_PART, bill.getLanguage()), 0,
+                yPos, FONT_SIZE_TITLE, true);
         yPos -= FontMetrics.getDescender(FONT_SIZE_TITLE);
-        double upperTextHeight = VERT_BORDER + FontMetrics.getLineHeight(FONT_SIZE_TITLE)
-                + labelPaddingTop + FontMetrics.getLineHeight(fontSizeLabel)
-                + textPaddingTop + FontMetrics.getLineHeight(fontSizeText);
+        double upperTextHeight = VERT_BORDER + FontMetrics.getLineHeight(FONT_SIZE_TITLE) + labelPaddingTop
+                + FontMetrics.getLineHeight(fontSizeLabel) + textPaddingTop + FontMetrics.getLineHeight(fontSizeText);
 
         // scheme section
         drawLabelAndText(MultilingualText.KEY_SUPPORTS,
                 MultilingualText.getText(MultilingualText.KEY_CREDIT_TRANSFER, bill.getLanguage()));
 
         // currency
-        double lowerTextHeight = VERT_BORDER + AMOUNT_HEIGHT
-                + textPaddingTop + FontMetrics.getLineHeight(fontSizeLabel);
+        double lowerTextHeight = VERT_BORDER + AMOUNT_HEIGHT + textPaddingTop
+                + FontMetrics.getLineHeight(fontSizeLabel);
         yPos = lowerTextHeight + labelPaddingTop;
         drawLabelAndText(MultilingualText.KEY_CURRENCY, bill.getCurrency());
 
@@ -189,7 +185,7 @@ class PaymentPartLayout {
     // Draws a label at (0, yPos) and advances vertically
     private void drawLabel(String labelKey) throws IOException {
         yPos -= labelPaddingTop + FontMetrics.getAscender(fontSizeLabel);
-        graphics.putText(MultilingualText.getText(labelKey, bill.getLanguage()),0, yPos, fontSizeLabel, true);
+        graphics.putText(MultilingualText.getText(labelKey, bill.getLanguage()), 0, yPos, fontSizeLabel, true);
         yPos -= FontMetrics.getDescender(fontSizeLabel);
     }
 
@@ -201,21 +197,25 @@ class PaymentPartLayout {
         yPos -= FontMetrics.getDescender(fontSizeText);
     }
 
-    // Draws a label and a multiple lines of text at (0, yPos) and advances vertically
+    // Draws a label and a multiple lines of text at (0, yPos) and advances
+    // vertically
     private void drawLabelAndTextLines(String labelKey, String[] textLines) throws IOException {
         drawLabel(labelKey);
         yPos -= textPaddingTop + FontMetrics.getAscender(fontSizeText);
         graphics.putTextLines(textLines, 0, yPos, fontSizeText, textLeading);
-        yPos -= FontMetrics.getDescender(fontSizeText) + (textLines.length - 1) * (FontMetrics.getLineHeight(fontSizeText) + textLeading);
+        yPos -= FontMetrics.getDescender(fontSizeText)
+                + (textLines.length - 1) * (FontMetrics.getLineHeight(fontSizeText) + textLeading);
     }
 
     // Prepare the text in the right column (mainly formatting and line breaking)
     private void prepareRightColumnText() {
         account = Payments.formatIBAN(bill.getAccount());
-        creditor = FontMetrics.splitLines(formatPersonForDisplay(bill.getCreditor()), RIGHT_COLUMN_WIDTH * MM_TO_PT, fontSizeText);
+        creditor = FontMetrics.splitLines(formatPersonForDisplay(bill.getCreditor()), RIGHT_COLUMN_WIDTH * MM_TO_PT,
+                fontSizeText);
         finalCreditor = null;
         if (bill.getFinalCreditor() != null)
-            finalCreditor = FontMetrics.splitLines(formatPersonForDisplay(bill.getFinalCreditor()), RIGHT_COLUMN_WIDTH * MM_TO_PT, fontSizeText);
+            finalCreditor = FontMetrics.splitLines(formatPersonForDisplay(bill.getFinalCreditor()),
+                    RIGHT_COLUMN_WIDTH * MM_TO_PT, fontSizeText);
         refNo = formatReferenceNumber(bill.getReferenceNo());
         additionalInfo = null;
         String info = bill.getAdditionalInfo();
@@ -227,7 +227,8 @@ class PaymentPartLayout {
         }
         debtor = null;
         if (bill.getDebtor() != null)
-            debtor = FontMetrics.splitLines(formatPersonForDisplay(bill.getDebtor()), RIGHT_COLUMN_WIDTH * MM_TO_PT, fontSizeText);
+            debtor = FontMetrics.splitLines(formatPersonForDisplay(bill.getDebtor()), RIGHT_COLUMN_WIDTH * MM_TO_PT,
+                    fontSizeText);
 
         dueDate = null;
         if (bill.getDueDate() != null)
@@ -263,14 +264,10 @@ class PaymentPartLayout {
         final int numExtraLines = debtor != null ? numTextLines - numLabels : (numTextLines + 1) - numLabels;
         final double preferredTextLeading = PREFERRED_LEADING * fontSizeText * PT_TO_MM;
 
-        double heightWithoutSpacing =
-                numLabels * FontMetrics.getLineHeight(fontSizeLabel)
-                + numTextLines * FontMetrics.getLineHeight(fontSizeText)
-                + (debtor == null ? DEBTOR_HEIGHT : 0);
-        double uncompressedSpacing =
-                (numLabels - 1) * PREFERRED_LABEL_PADDING_TOP
-                + numLabels * PREFERRED_TEXT_PADDING_TOP
-                + numExtraLines * preferredTextLeading;
+        double heightWithoutSpacing = numLabels * FontMetrics.getLineHeight(fontSizeLabel)
+                + numTextLines * FontMetrics.getLineHeight(fontSizeText) + (debtor == null ? DEBTOR_HEIGHT : 0);
+        double uncompressedSpacing = (numLabels - 1) * PREFERRED_LABEL_PADDING_TOP
+                + numLabels * PREFERRED_TEXT_PADDING_TOP + numExtraLines * preferredTextLeading;
 
         double regularHeight = heightWithoutSpacing + uncompressedSpacing;
         if (regularHeight <= SLIP_HEIGHT - 2 * VERT_BORDER) {
@@ -324,7 +321,6 @@ class PaymentPartLayout {
         graphics.strokePath(1, 0);
     }
 
-
     private static final DecimalFormat amountDisplayFormat;
     private static final DateTimeFormatter dateDisplayFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
@@ -343,7 +339,6 @@ class PaymentPartLayout {
     private static String formatDateForDisplay(LocalDate date) {
         return date.format(dateDisplayFormat);
     }
-
 
     private static String formatPersonForDisplay(Address address) {
         StringBuilder sb = new StringBuilder();
@@ -367,7 +362,6 @@ class PaymentPartLayout {
         return sb.toString();
     }
 
-    
     private static String formatReferenceNumber(String refNo) {
         if (refNo == null)
             return null;

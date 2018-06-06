@@ -22,12 +22,13 @@ import net.codecrete.qrbill.generator.ValidationMessage.Type;
 /**
  * Generates the QR code for the Swiss QR bill.
  * <p>
- *     Also provides functions to generate and decode the string embedded in the QR code.
+ * Also provides functions to generate and decode the string embedded in the QR
+ * code.
  * </p>
  */
 class QRCode {
-    
-	static final double SIZE = 46; // mm
+
+    static final double SIZE = 46; // mm
     private static final String CRLF = "\r\n";
 
     private Bill bill;
@@ -38,6 +39,7 @@ class QRCode {
      * <p>
      * The bill data must have been validated and cleaned.
      * </p>
+     * 
      * @param bill bill data
      */
     QRCode(Bill bill) {
@@ -46,7 +48,9 @@ class QRCode {
     }
 
     /**
-     * Gets the text embedded in the QR code (according to the data structure defined by SIX)
+     * Gets the text embedded in the QR code (according to the data structure
+     * defined by SIX)
+     * 
      * @return QR code text
      */
     String getText() {
@@ -54,10 +58,12 @@ class QRCode {
     }
 
     /**
-     * Draws the QR code to the specified graphics context (canvas). The QR code is always 46 mm by 46 mm.
+     * Draws the QR code to the specified graphics context (canvas). The QR code is
+     * always 46 mm by 46 mm.
+     * 
      * @param graphics graphics context
-     * @param offsetX x offset
-     * @param offsetY y offset
+     * @param offsetX  x offset
+     * @param offsetY  y offset
      * @throws IOException exception thrown in case of error in graphics context
      */
     void draw(Canvas graphics, double offsetX, double offsetY) throws IOException {
@@ -96,7 +102,8 @@ class QRCode {
         }
     }
 
-    // Simple algorithms to reduce the number of rectangles for drawing the QR code and reduce SVG size
+    // Simple algorithms to reduce the number of rectangles for drawing the QR code
+    // and reduce SVG size
     private void drawLargestRectangle(Canvas graphics, boolean[][] modules, int x, int y) throws IOException {
         int size = modules.length;
 
@@ -130,7 +137,7 @@ class QRCode {
         // the QR code, which is 46 by 46 mm.
         // We clear sufficient modules to make room for the cross.
         int size = modules.length;
-        int start = (int)Math.floor((46 - 6.8) / 2 * size / 46);
+        int start = (int) Math.floor((46 - 6.8) / 2 * size / 46);
         clearRectangle(modules, start, start, size - 2 * start, size - 2 * start);
     }
 
@@ -224,13 +231,14 @@ class QRCode {
     /**
      * Decodes the specified text and returns the bill data.
      * <p>
-     *     The Text is assumed to be in the data structured for the QR code
-     *     defined by SIX.
+     * The Text is assumed to be in the data structured for the QR code defined by
+     * SIX.
      * </p>
      * <p>
-     *     The returned data is only minimally validated. The format and the header are checked.
-     *     Amount and date must be parsable.
+     * The returned data is only minimally validated. The format and the header are
+     * checked. Amount and date must be parsable.
      * </p>
+     * 
      * @param text the text to decode
      * @return the bill data
      * @throws QRBillValidationError if a validation error occurs
@@ -289,8 +297,9 @@ class QRCode {
 
     /**
      * Process six lines and extract and address
-     * @param lines line array
-     * @param startLine index of first line to process
+     * 
+     * @param lines      line array
+     * @param startLine  index of first line to process
      * @param isOptional indicates if address is optional
      * @return decoded address or {@code null} if address is optional and empty
      */

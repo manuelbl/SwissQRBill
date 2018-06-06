@@ -7,12 +7,10 @@
 
 package net.codecrete.qrbill.generator;
 
-
 /**
  * Helper function for processing strings.
  */
 public class Strings {
-
 
     private Strings() {
         // Do not create instances
@@ -21,8 +19,9 @@ public class Strings {
     /**
      * Returns string with leading and trailing whitespace removed
      * <p>
-     *   For empty strings or {@code null}, {@code null} is returned.
+     * For empty strings or {@code null}, {@code null} is returned.
      * </p>
+     * 
      * @param value string to trim or {@code null}
      * @return trimmed string
      */
@@ -63,22 +62,20 @@ public class Strings {
 
             if (lastCopied == len)
                 return "";
-            
+
             return value.substring(lastCopied, len);
         }
 
         if (lastCopied < len)
             sb.append(value, lastCopied, len);
-        
+
         return sb.toString();
     }
-
 
     /**
      * Tests if a string is null or empty
      * <p>
-     *    A string consisting of all whitespace is
-     *    considered empty.
+     * A string consisting of all whitespace is considered empty.
      * </p>
      * 
      * @param value string to test

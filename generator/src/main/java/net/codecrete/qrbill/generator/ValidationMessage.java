@@ -15,19 +15,23 @@ public class ValidationMessage implements Serializable {
 
     private static final long serialVersionUID = -243381506848710081L;
 
-	/**
+    /**
      * Type of validatin message
      */
     public enum Type {
         /**
          * Warning.
-         * <p>A warning does not prevent the QR bill from being generated.
-         * Warnings usually indicate that data was truncated or otherwise modified.</p>
+         * <p>
+         * A warning does not prevent the QR bill from being generated. Warnings usually
+         * indicate that data was truncated or otherwise modified.
+         * </p>
          */
         WARNING,
         /**
          * Error.
-         * <p>Errors prevent the QR bill from being generated.</p>
+         * <p>
+         * Errors prevent the QR bill from being generated.
+         * </p>
          */
         ERROR
     }
@@ -45,8 +49,9 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Constructs a new validation message with the given values.
-     * @param type the message type
-     * @param field the affect field
+     * 
+     * @param type       the message type
+     * @param field      the affect field
      * @param messageKey the language-neutral key of the message
      */
     public ValidationMessage(Type type, String field, String messageKey) {
@@ -57,10 +62,12 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Constructs a new validation message with the given values.
-     * @param type the message type
-     * @param field the affect field
-     * @param messageKey the language-neutral key of the message
-     * @param messageParameters variable text parts that will be inserted into the localized message
+     * 
+     * @param type              the message type
+     * @param field             the affect field
+     * @param messageKey        the language-neutral key of the message
+     * @param messageParameters variable text parts that will be inserted into the
+     *                          localized message
      */
     public ValidationMessage(Type type, String field, String messageKey, String[] messageParameters) {
         this.type = type;
@@ -71,6 +78,7 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Gets the type of message
+     * 
      * @return the message type
      */
     public Type getType() {
@@ -79,6 +87,7 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Sets the type of message
+     * 
      * @param type message type
      */
     public void setType(Type type) {
@@ -87,8 +96,11 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Gets the name of the affected field.
-     * <p>All field names are available as constants in {@link Bill}.
-     * Examples are: "account", "creditor.street"</p>
+     * <p>
+     * All field names are available as constants in {@link Bill}. Examples are:
+     * "account", "creditor.street"
+     * </p>
+     * 
      * @return the field name
      */
     public String getField() {
@@ -97,8 +109,11 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Sets the name of the affected field.
-     * <p>All field names are available as constants in {@link Bill}.
-     * Examples are: "account", "creditor.street"</p>
+     * <p>
+     * All field names are available as constants in {@link Bill}. Examples are:
+     * "account", "creditor.street"
+     * </p>
+     * 
      * @param field the field name
      */
     public void setField(String field) {
@@ -107,6 +122,7 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Gets the language neutral key of the message.
+     * 
      * @return the message key
      */
     public String getMessageKey() {
@@ -115,6 +131,7 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Sets the language neutral key of the message.
+     * 
      * @param messageKey the message key
      */
     public void setMessageKey(String messageKey) {
@@ -122,7 +139,9 @@ public class ValidationMessage implements Serializable {
     }
 
     /**
-     * Gets additional message parameters (text) that are inserted into the localized message.
+     * Gets additional message parameters (text) that are inserted into the
+     * localized message.
+     * 
      * @return the additional message parameters
      */
     public String[] getMessageParameters() {
@@ -130,7 +149,9 @@ public class ValidationMessage implements Serializable {
     }
 
     /**
-     * Sets additional message parameters (text) that are inserted into the localized message.
+     * Sets additional message parameters (text) that are inserted into the
+     * localized message.
+     * 
      * @param messageParameters the additional message parameters
      */
     public void setMessageParameters(String[] messageParameters) {

@@ -25,7 +25,6 @@ public class SVGCanvas extends AbstractCanvas {
     private double lastPositionY;
     private int approxPathLength;
 
-
     /**
      * Creates a new instance
      */
@@ -33,14 +32,12 @@ public class SVGCanvas extends AbstractCanvas {
         // no further initialization needed here
     }
 
-
     public void setupPage(double width, double height) throws IOException {
         buffer = new ByteArrayOutputStream();
         stream = new OutputStreamWriter(buffer, StandardCharsets.UTF_8);
-        stream.write(
-                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
-                "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n" +
-                "<svg width=\"");
+        stream.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
+                + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n"
+                + "<svg width=\"");
         stream.write(formatNumber(width));
         stream.write("mm\" height=\"");
         stream.write(formatNumber(height));
@@ -118,7 +115,7 @@ public class SVGCanvas extends AbstractCanvas {
         stream.write("z");
         approxPathLength += 24;
     }
-    
+
     private void addPathNewlines(int expectedLength) throws IOException {
         if (approxPathLength + expectedLength > 255) {
             stream.write("\n");
@@ -210,20 +207,20 @@ public class SVGCanvas extends AbstractCanvas {
                     result.append(text, lastCopiedPosition, i);
                 String entity;
                 switch (ch) {
-                    case '<':
-                        entity = "&lt;";
-                        break;
-                    case '>':
-                        entity = "&gt;";
-                        break;
-                    case '&':
-                        entity = "&amp;";
-                        break;
-                    case '\'':
-                        entity = "&apos;";
-                        break;
-                    default:
-                        entity = "&quot;";
+                case '<':
+                    entity = "&lt;";
+                    break;
+                case '>':
+                    entity = "&gt;";
+                    break;
+                case '&':
+                    entity = "&amp;";
+                    break;
+                case '\'':
+                    entity = "&apos;";
+                    break;
+                default:
+                    entity = "&quot;";
                 }
                 result.append(entity);
                 lastCopiedPosition = i + 1;

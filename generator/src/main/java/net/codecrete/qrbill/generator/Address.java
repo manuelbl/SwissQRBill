@@ -13,10 +13,10 @@ import java.util.Objects;
  * Address of creditor, final creditor or debtor.
  */
 public class Address implements Serializable {
-    
+
     private static final long serialVersionUID = -8833174154173397772L;
-    
-	private String name;
+
+    private String name;
     private String street;
     private String houseNo;
     private String postalCode;
@@ -24,7 +24,9 @@ public class Address implements Serializable {
     private String countryCode;
 
     /**
-     * Gets the name, either the first and last name of a natural person or the company name of a legal person.
+     * Gets the name, either the first and last name of a natural person or the
+     * company name of a legal person.
+     * 
      * @return the name
      */
     public String getName() {
@@ -32,8 +34,13 @@ public class Address implements Serializable {
     }
 
     /**
-     * Sets the name, either the first and last name of a natural person or the company name of a legal person.
-     * <p>The name is mandatory unless the entire address contains {@code null} or empty values.</p>
+     * Sets the name, either the first and last name of a natural person or the
+     * company name of a legal person.
+     * <p>
+     * The name is mandatory unless the entire address contains {@code null} or
+     * empty values.
+     * </p>
+     * 
      * @param name the name
      */
     public void setName(String name) {
@@ -42,6 +49,7 @@ public class Address implements Serializable {
 
     /**
      * Gets the street.
+     * 
      * @return the street
      */
     public String getStreet() {
@@ -50,8 +58,13 @@ public class Address implements Serializable {
 
     /**
      * Sets the street.
-     * <p>This field must not contain the house or building number.</p>
-     * <p>This field is optional.</p>
+     * <p>
+     * This field must not contain the house or building number.
+     * </p>
+     * <p>
+     * This field is optional.
+     * </p>
+     * 
      * @param street the street
      */
     public void setStreet(String street) {
@@ -60,6 +73,7 @@ public class Address implements Serializable {
 
     /**
      * Gets the house or building number.
+     * 
      * @return the house number
      */
     public String getHouseNo() {
@@ -68,7 +82,10 @@ public class Address implements Serializable {
 
     /**
      * Sets the house or building number.
-     * <p>This field is optional.</p>
+     * <p>
+     * This field is optional.
+     * </p>
+     * 
      * @param houseNo the house number
      */
     public void setHouseNo(String houseNo) {
@@ -77,6 +94,7 @@ public class Address implements Serializable {
 
     /**
      * Gets the postal code
+     * 
      * @return the postal code
      */
     public String getPostalCode() {
@@ -85,7 +103,11 @@ public class Address implements Serializable {
 
     /**
      * Sets the postal code
-     * <p>The postal code is mandatory unless the entire address contains {@code null} or empty values.</p>
+     * <p>
+     * The postal code is mandatory unless the entire address contains {@code null}
+     * or empty values.
+     * </p>
+     * 
      * @param postalCode the postal code
      */
     public void setPostalCode(String postalCode) {
@@ -94,6 +116,7 @@ public class Address implements Serializable {
 
     /**
      * Gets the town.
+     * 
      * @return the town
      */
     public String getTown() {
@@ -102,7 +125,11 @@ public class Address implements Serializable {
 
     /**
      * Sets the town
-     * <p>The town is mandatory unless the entire address contains {@code null} or empty values.</p>
+     * <p>
+     * The town is mandatory unless the entire address contains {@code null} or
+     * empty values.
+     * </p>
+     * 
      * @param town the town
      */
     public void setTown(String town) {
@@ -111,6 +138,7 @@ public class Address implements Serializable {
 
     /**
      * Gets the two-letter ISO country code.
+     * 
      * @return the ISO country code
      */
     public String getCountryCode() {
@@ -119,7 +147,11 @@ public class Address implements Serializable {
 
     /**
      * Sets the two-letter ISO country code
-     * <p>The country code is mandatory unless the entire address contains {@code null} or empty values.</p>
+     * <p>
+     * The country code is mandatory unless the entire address contains {@code null}
+     * or empty values.
+     * </p>
+     * 
      * @param countryCode the ISO country code
      */
     public void setCountryCode(String countryCode) {
@@ -131,15 +163,14 @@ public class Address implements Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Address address = (Address) o;
-        return Objects.equals(name, address.name) &&
-                Objects.equals(street, address.street) &&
-                Objects.equals(houseNo, address.houseNo) &&
-                Objects.equals(postalCode, address.postalCode) &&
-                Objects.equals(town, address.town) &&
-                Objects.equals(countryCode, address.countryCode);
+        return Objects.equals(name, address.name) && Objects.equals(street, address.street)
+                && Objects.equals(houseNo, address.houseNo) && Objects.equals(postalCode, address.postalCode)
+                && Objects.equals(town, address.town) && Objects.equals(countryCode, address.countryCode);
     }
 
     /**

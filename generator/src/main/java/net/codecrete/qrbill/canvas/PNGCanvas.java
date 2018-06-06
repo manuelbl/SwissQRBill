@@ -29,16 +29,14 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
 
-
 /**
  * Canvas for generating PNG files.
  * <p>
- * PNGs are not an optimal file format for QR bills.
- * Vector formats such a SVG or PDF are of better
- * quality and use far less processing power to generate.
+ * PNGs are not an optimal file format for QR bills. Vector formats such a SVG
+ * or PDF are of better quality and use far less processing power to generate.
  * </p>
  */
-public class PNGCanvas  extends AbstractCanvas {
+public class PNGCanvas extends AbstractCanvas {
 
     private final int resolution;
     private final float coordinateScale;
@@ -50,22 +48,22 @@ public class PNGCanvas  extends AbstractCanvas {
     /**
      * Creates a new instance
      * <p>
-     * It is recommended to use at least 144 dpi for
-     * a readable result.
+     * It is recommended to use at least 144 dpi for a readable result.
      * </p>
+     * 
      * @param resolution resolution of the result (in dpi)
      */
     public PNGCanvas(int resolution) {
         this.resolution = resolution;
-        coordinateScale = (float)(resolution / 25.4);
-        fontScale = (float)(resolution / 72.0);
+        coordinateScale = (float) (resolution / 25.4);
+        fontScale = (float) (resolution / 72.0);
     }
 
     @Override
     public void setupPage(double width, double height) {
         // create image
-        int w = (int)(width * coordinateScale + 0.5);
-        int h = (int)(height * coordinateScale + 0.5);
+        int w = (int) (width * coordinateScale + 0.5);
+        int h = (int) (height * coordinateScale + 0.5);
         image = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
 
         // create graphics context
@@ -87,12 +85,11 @@ public class PNGCanvas  extends AbstractCanvas {
 
     @Override
     public void setTransformation(double translateX, double translateY, double scale) {
-        // Our coorinate system extends from the bottom up. Java Graphics2D's system extends
-        // from the top down. So Y coordinates need to be treated specially.
+        // Our coorinate system extends from the bottom up. Java Graphics2D's system
+        // extends from the top down. So Y coordinates need to be treated specially.
         translateX *= coordinateScale;
         translateY *= coordinateScale;
-        AffineTransform at
-                = new AffineTransform(scale, 0, 0, scale, translateX, image.getHeight() - translateY);
+        AffineTransform at = new AffineTransform(scale, 0, 0, scale, translateX, image.getHeight() - translateY);
         graphics.setTransform(at);
     }
 
@@ -101,9 +98,9 @@ public class PNGCanvas  extends AbstractCanvas {
         x *= coordinateScale;
         y *= -coordinateScale;
         graphics.setColor(new Color(0));
-        Font font = new Font("Helvetica", isBold ? Font.BOLD : Font.PLAIN, (int)(fontSize * fontScale + 0.5));
+        Font font = new Font("Helvetica", isBold ? Font.BOLD : Font.PLAIN, (int) (fontSize * fontScale + 0.5));
         graphics.setFont(font);
-        graphics.drawString(text, (float)x, (float)y);
+        graphics.drawString(text, (float) x, (float) y);
     }
 
     @Override
@@ -147,7 +144,8 @@ public class PNGCanvas  extends AbstractCanvas {
     @Override
     public void strokePath(double strokeWidth, int color) {
         graphics.setColor(new Color(color));
-        graphics.setStroke(new BasicStroke((float)(strokeWidth * fontScale), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+        graphics.setStroke(
+                new BasicStroke((float) (strokeWidth * fontScale), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
         graphics.draw(currentPath);
     }
 
@@ -170,7 +168,6 @@ public class PNGCanvas  extends AbstractCanvas {
         }
         image = null;
     }
-
 
     /**
      * Saves image as PDF and stores meta data to indicate the resolution.
@@ -201,10 +198,8 @@ public class PNGCanvas  extends AbstractCanvas {
             writer.write(metadata, new IIOImage(image, null, metadata), writeParam);
         }
     }
-    
 
     private static final String PNG_STANDARD_METADATA_FORMAT = "javax_imageio_1.0";
-
 
     /**
      * Add meta data to specify the resolution
@@ -213,7 +208,7 @@ public class PNGCanvas  extends AbstractCanvas {
 
         // native metadata format ("pHYs")
         double pixelsPerMeter = dpi / 25.4 * 1000;
-        String pixelsPerMeterString = Integer.toString((int)(pixelsPerMeter + 0.5));
+        String pixelsPerMeterString = Integer.toString((int) (pixelsPerMeter + 0.5));
 
         IIOMetadataNode physNode = new IIOMetadataNode("pHYs");
         physNode.setAttribute("pixelsPerUnitXAxis", pixelsPerMeterString);

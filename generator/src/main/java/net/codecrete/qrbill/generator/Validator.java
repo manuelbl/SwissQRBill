@@ -11,7 +11,6 @@ import java.util.Locale;
 import net.codecrete.qrbill.generator.Payments.CleaningResult;
 import net.codecrete.qrbill.generator.ValidationMessage.Type;
 
-
 /**
  * Validates and cleans QR bill data.
  */
@@ -21,9 +20,9 @@ class Validator {
     private final Bill billOut;
     private final ValidationResult validationResult;
 
-
     /**
-     * Validates the QR bill data and returns the validation messages (if any) and the cleaned bill data.
+     * Validates the QR bill data and returns the validation messages (if any) and
+     * the cleaned bill data.
      * 
      * @param bill bill data to validate
      * @return validation result
@@ -125,7 +124,8 @@ class Validator {
         referenceNo = Strings.whiteSpaceRemoved(referenceNo);
         if (referenceNo.startsWith("RF")) {
             if (!Payments.isValidISO11649Reference(referenceNo)) {
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, QRBill.KEY_VALID_ISO11649_CREDITOR_REF);
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO,
+                        QRBill.KEY_VALID_ISO11649_CREDITOR_REF);
             } else {
                 billOut.setReferenceNo(referenceNo);
             }
@@ -159,9 +159,11 @@ class Validator {
         if (addressOut == null) {
             if (mandatory) {
                 validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_NAME, QRBill.KEY_FIELD_IS_MANDATORY);
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_POSTAL_CODE, QRBill.KEY_FIELD_IS_MANDATORY);
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_POSTAL_CODE,
+                        QRBill.KEY_FIELD_IS_MANDATORY);
                 validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_TOWN, QRBill.KEY_FIELD_IS_MANDATORY);
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE, QRBill.KEY_FIELD_IS_MANDATORY);
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE,
+                        QRBill.KEY_FIELD_IS_MANDATORY);
             }
             return null;
         }
@@ -181,9 +183,9 @@ class Validator {
         addressOut.setTown(clippedValue(addressOut.getTown(), 35, fieldRoot, Bill.SUBFIELD_TOWN));
 
         if (addressOut.getCountryCode() != null
-            && (addressOut.getCountryCode().length() != 2
-                    || !Payments.isAlphaNumeric(addressOut.getCountryCode())))
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE, QRBill.KEY_VALID_COUNTRY_CODE);
+                && (addressOut.getCountryCode().length() != 2 || !Payments.isAlphaNumeric(addressOut.getCountryCode())))
+            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE,
+                    QRBill.KEY_VALID_COUNTRY_CODE);
 
         return addressOut;
     }
@@ -207,9 +209,9 @@ class Validator {
         addressOut.setTown(cleanedValue(addressIn.getTown(), fieldRoot, Bill.SUBFIELD_TOWN));
         addressOut.setCountryCode(Strings.trimmed(addressIn.getCountryCode()));
 
-        if (addressOut.getName() == null && addressOut.getStreet() == null
-                && addressOut.getHouseNo() == null && addressOut.getPostalCode() == null
-                && addressOut.getTown() == null && addressOut.getCountryCode() == null)
+        if (addressOut.getName() == null && addressOut.getStreet() == null && addressOut.getHouseNo() == null
+                && addressOut.getPostalCode() == null && addressOut.getTown() == null
+                && addressOut.getCountryCode() == null)
             return null;
 
         return addressOut;
@@ -231,7 +233,8 @@ class Validator {
 
     private String clippedValue(String value, int maxLength, String field) {
         if (value != null && value.length() > maxLength) {
-            validationResult.addMessage(Type.WARNING, field, QRBill.KEY_FIELD_CLIPPED, new String[] { Integer.toString(maxLength) });
+            validationResult.addMessage(Type.WARNING, field, QRBill.KEY_FIELD_CLIPPED,
+                    new String[] { Integer.toString(maxLength) });
             return value.substring(0, maxLength);
         }
 
@@ -240,13 +243,13 @@ class Validator {
 
     private String clippedValue(String value, int maxLength, String fieldRoot, String subfield) {
         if (value != null && value.length() > maxLength) {
-            validationResult.addMessage(Type.WARNING, fieldRoot + subfield, QRBill.KEY_FIELD_CLIPPED, new String[] { Integer.toString(maxLength) });
+            validationResult.addMessage(Type.WARNING, fieldRoot + subfield, QRBill.KEY_FIELD_CLIPPED,
+                    new String[] { Integer.toString(maxLength) });
             return value.substring(0, maxLength);
         }
 
         return value;
     }
-
 
     private String cleanedValue(String value, String fieldRoot, String subfield) {
         CleaningResult result = new CleaningResult();

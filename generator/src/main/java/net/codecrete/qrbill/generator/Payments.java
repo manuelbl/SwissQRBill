@@ -9,7 +9,6 @@ package net.codecrete.qrbill.generator;
 
 import java.text.Normalizer;
 
-
 /**
  * Field validations related to Swiss Payment standards
  */
@@ -30,23 +29,23 @@ public class Payments {
     /**
      * Cleans a string value to make it viable for the Swiss Payment Standards 2018.
      * <p>
-     *     Unsupported characters (according to Swiss Payment Standards 2018,
-     *     ch. 2.4.1 and appendix D) are replaced with spaces (unsupported
-     *     whitespace) or dots (all other unsupported characters). Leading and
-     *     trailing whitespace is removed.
+     * Unsupported characters (according to Swiss Payment Standards 2018, ch. 2.4.1
+     * and appendix D) are replaced with spaces (unsupported whitespace) or dots
+     * (all other unsupported characters). Leading and trailing whitespace is
+     * removed.
      * </p>
      * <p>
-     *     If characters beyond 0xff are detected, the string is first normalized
-     *     such that letters with umlauts or accents expressed with two code points
-     *     are merged into a single code point (if possible), some of which might
-     *     become valid.
+     * If characters beyond 0xff are detected, the string is first normalized such
+     * that letters with umlauts or accents expressed with two code points are
+     * merged into a single code point (if possible), some of which might become
+     * valid.
      * </p>
      * <p>
-     *     If the resulting strings is all white space, {@code null} is
-     *     returned.
+     * If the resulting strings is all white space, {@code null} is returned.
      * </p>
-     * @param value string value to clean
-     * @param result result to be filled with cleaned string and flag 
+     * 
+     * @param value  string value to clean
+     * @param result result to be filled with cleaned string and flag
      */
     static void cleanValue(String value, CleaningResult result) {
         result.cleanedString = null;
@@ -66,8 +65,9 @@ public class Payments {
         StringBuilder sb = null; // String builder for result
         int lastCopiedPos = 0; // last position (excluding) copied to the result
 
-        // String processing pattern: Iterate all characters and focus on runs of valid characters
-        // that can simply be copied. If all characters are valid, no memory is allocated.
+        // String processing pattern: Iterate all characters and focus on runs of valid
+        // characters that can simply be copied. If all characters are valid, no memory
+        // is allocated.
         int pos = 0;
         while (pos < len) {
             char ch = value.charAt(pos); // current character
@@ -92,7 +92,8 @@ public class Payments {
             if (sb == null)
                 sb = new StringBuilder(value.length());
 
-            // copy processed characters to result before taking care of the invalid character
+            // copy processed characters to result before taking care of the invalid
+            // character
             if (pos > lastCopiedPos)
                 sb.append(value, lastCopiedPos, pos);
 
@@ -133,9 +134,10 @@ public class Payments {
     /**
      * Validates if the string is a valid IBAN number
      * <p>
-     *   The string is checked for valid characters, valid length
-     *   and for a valid check digit. White space is ignored.
+     * The string is checked for valid characters, valid length and for a valid
+     * check digit. White space is ignored.
      * </p>
+     * 
      * @param iban IBAN to validate
      * @return {@code true} if the IBAN is valid, {@code false} otherwise
      */
@@ -164,13 +166,12 @@ public class Payments {
 
         return hasValidMod97CheckDigits(iban);
     }
-    
+
     /**
      * Formats an IBAN or creditor reference by inserting spaces.
      * <p>
-     * Spaces are inserted to form groups of 4 letters/digits.
-     * If a group of less than 4 letters/digits is needed, it
-     * appears at the end.
+     * Spaces are inserted to form groups of 4 letters/digits. If a group of less
+     * than 4 letters/digits is needed, it appears at the end.
      * </p>
      * 
      * @param iban IBAN or creditor reference without spaces
@@ -194,11 +195,13 @@ public class Payments {
     /**
      * Validates if the string is a valid ISO 11649 reference number.
      * <p>
-     *   The string is checked for valid characters, valid length
-     *   and a valid check digit. White space is ignored.
+     * The string is checked for valid characters, valid length and a valid check
+     * digit. White space is ignored.
      * </p>
+     * 
      * @param referenceNo ISO 11649 creditor reference to validate
-     * @return {@code true} if the creditor reference is valid, {@code false} otherwise
+     * @return {@code true} if the creditor reference is valid, {@code false}
+     *         otherwise
      */
     public static boolean isValidISO11649Reference(String referenceNo) {
 
@@ -220,19 +223,21 @@ public class Payments {
     }
 
     /**
-     * Creates a ISO11649 creditor reference from a raw string by prefixing the string with "RF"
-     * and the modulo 97 checksum.
+     * Creates a ISO11649 creditor reference from a raw string by prefixing the
+     * string with "RF" and the modulo 97 checksum.
      * <p>
      * Whitespace is removed from the reference
      * </p>
+     * 
      * @param rawReference The raw string
      * @return ISO11649 creditor reference
-     * @throws IllegalArgumentException if {@code rawReference} contains invalid characters
+     * @throws IllegalArgumentException if {@code rawReference} contains invalid
+     *                                  characters
      */
     public static String createISO11649Reference(String rawReference) {
         final String whiteSpaceRemoved = Strings.whiteSpaceRemoved(rawReference);
         final int modulo = Payments.calculateMod97("RF00" + whiteSpaceRemoved);
-        return String.format("RF%02d", 98-modulo) + whiteSpaceRemoved;
+        return String.format("RF%02d", 98 - modulo) + whiteSpaceRemoved;
     }
 
     private static boolean hasValidMod97CheckDigits(String number) {
@@ -240,15 +245,18 @@ public class Payments {
     }
 
     /**
-	 * Calculate the reference's modulo 97 checksum according to ISO11649 and IBAN standard.
+     * Calculate the reference's modulo 97 checksum according to ISO11649 and IBAN
+     * standard.
      * <p>
-     * The string may only contains digits, letters ('A' to 'Z' and 'a' to 'z', no accents).
-     * It must not contain white space.
+     * The string may only contains digits, letters ('A' to 'Z' and 'a' to 'z', no
+     * accents). It must not contain white space.
      * </p>
-	 * @param reference the reference
-	 * @return the checksum (0 to 96)
-     * @throws IllegalArgumentException thrown if the reference contains an invalid character
-	 */
+     * 
+     * @param reference the reference
+     * @return the checksum (0 to 96)
+     * @throws IllegalArgumentException thrown if the reference contains an invalid
+     *                                  character
+     */
     private static int calculateMod97(String reference) {
         int len = reference.length();
         if (len < 5)
@@ -274,20 +282,22 @@ public class Payments {
         sum = sum % 97;
         return sum;
     }
-    
+
     private static final int[] MOD_10 = { 0, 9, 4, 6, 8, 2, 7, 1, 3, 5 };
 
     /**
      * Validates if the string is a valid QR reference number.
      * <p>
-     *   A valid QR reference is a valid ISR reference number.
+     * A valid QR reference is a valid ISR reference number.
      * </p>
      * <p>
-     *   The string is checked for valid characters, valid length
-     *   and a valid check digit. White space is ignored.
+     * The string is checked for valid characters, valid length and a valid check
+     * digit. White space is ignored.
      * </p>
+     * 
      * @param referenceNo QR reference number to validate
-     * @return {@code true} if the reference number is valid, {@code false} otherwise
+     * @return {@code true} if the reference number is valid, {@code false}
+     *         otherwise
      */
     public static boolean isValidQRReferenceNo(String referenceNo) {
 
@@ -312,9 +322,8 @@ public class Payments {
     /**
      * Formats a QR reference number by inserting spaces.
      * <p>
-     * Spaces are inserted to create groups of 5 digits.
-     * If a group of less than 5 digits is needed, it
-     * appears at the start of the formatted reference number.
+     * Spaces are inserted to create groups of 5 digits. If a group of less than 5
+     * digits is needed, it appears at the start of the formatted reference number.
      * </p>
      * 
      * @param refNo reference number without white space

@@ -28,7 +28,6 @@ public class MultilingualText {
 
     private static final ResourceBundle[] messageBundles = new ResourceBundle[4];
 
-
     public static String getText(String key, Bill.Language language) {
 
         int index = getLanguageIndex(language);
@@ -46,17 +45,17 @@ public class MultilingualText {
     private static int getLanguageIndex(Bill.Language language) {
         int index;
         switch (language) {
-            case DE:
-                index = 0;
-                break;
-            case FR:
-                index = 1;
-                break;
-            case IT:
-                index = 2;
-                break;
-            default:
-                index = 3;
+        case DE:
+            index = 0;
+            break;
+        case FR:
+            index = 1;
+            break;
+        case IT:
+            index = 2;
+            break;
+        default:
+            index = 3;
         }
 
         return index;

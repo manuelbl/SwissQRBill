@@ -9,9 +9,12 @@ package net.codecrete.qrbill.canvas;
 import java.util.ArrayList;
 
 /**
- * Simple font metrics class to be independent of graphics subsystems and installed fonts.
+ * Simple font metrics class to be independent of graphics subsystems and
+ * installed fonts.
  *
- * <p>Only supports Helvetica font.</p>
+ * <p>
+ * Only supports Helvetica font.
+ * </p>
  */
 public class FontMetrics {
 
@@ -19,6 +22,7 @@ public class FontMetrics {
 
     /**
      * Distance between baseline and top of highest letter.
+     * 
      * @param fontSize the font size (in pt)
      * @return the distance (in mm)
      */
@@ -27,7 +31,9 @@ public class FontMetrics {
     }
 
     /**
-     * Distance between baseline and bottom of letter extending the farest below the baseline.
+     * Distance between baseline and bottom of letter extending the farest below the
+     * baseline.
+     * 
      * @param fontSize the font size (in pt)
      * @return the distance (in mm)
      */
@@ -37,6 +43,7 @@ public class FontMetrics {
 
     /**
      * Distance between the baselines of two consecutive text lines.
+     * 
      * @param fontSize the font size (in pt)
      * @return the distance (in mm)
      */
@@ -47,12 +54,13 @@ public class FontMetrics {
     /**
      * Splits the text into lines.
      * <p>
-     *     If a line would exceed the specified maximum length, line breaks are inserted.
-     *     Newlines are treated as fixed line breaks.
+     * If a line would exceed the specified maximum length, line breaks are
+     * inserted. Newlines are treated as fixed line breaks.
      * </p>
-     * @param text the text
+     * 
+     * @param text      the text
      * @param maxLength the maximum line length (in pt)
-     * @param fontSize the font size (in pt)
+     * @param fontSize  the font size (in pt)
      * @return an array of text lines
      */
     public static String[] splitLines(String text, double maxLength, int fontSize) {
@@ -60,7 +68,7 @@ public class FontMetrics {
         /* Yes, this code has a cognitive complexity of 37. Deal with it. */
 
         ArrayList<String> lines = new ArrayList<>();
-        int max = (int)(maxLength * 1000 / fontSize);
+        int max = (int) (maxLength * 1000 / fontSize);
 
         int len = text.length(); // length of line
         int pos = 0; // current position (0 ..< end)
@@ -147,12 +155,13 @@ public class FontMetrics {
     /**
      * Add the specified text range to the resulting lines.
      * <p>
-     *     Trim trailing white space
+     * Trim trailing white space
      * </p>
+     * 
      * @param lines resulting lines array
-     * @param text text
+     * @param text  text
      * @param start start of text range (including)
-     * @param end end of text range (excluding)
+     * @param end   end of text range (excluding)
      */
     private static void addResultLine(ArrayList<String> lines, String text, int start, int end) {
         while (end > start && text.charAt(end - 1) == ' ')
@@ -160,19 +169,19 @@ public class FontMetrics {
         lines.add(text.substring(start, end));
     }
 
-
     /**
      * Returns the width of the specified character.
      * <p>
-     *     The width is given in 0.0001 pt for a font size of 1 pt.
-     *     So to get the effective width in pt (1/72 in), it must
-     *     be multiplied with the font size and divided by 1000.
+     * The width is given in 0.0001 pt for a font size of 1 pt. So to get the
+     * effective width in pt (1/72 in), it must be multiplied with the font size and
+     * divided by 1000.
      * </p>
      * <p>
-     *     The method only supports characters as defined in
-     *     "Swiss Implementation Guidelines for Credit Transfer Initiation".
-     *     For all other characters, a default width is returned.
+     * The method only supports characters as defined in "Swiss Implementation
+     * Guidelines for Credit Transfer Initiation". For all other characters, a
+     * default width is returned.
      * </p>
+     * 
      * @param ch the character
      * @return the width of the character
      */
@@ -190,7 +199,7 @@ public class FontMetrics {
 
     private static final char DEFAULT_WIDTH = 556;
 
-    private static final char[] CHAR_WIDTH_20_7F = {
+    private static final char[] CHAR_WIDTH_20_7F = { // start
             278, // 0x20
             278, // 0x21 !
             355, // 0x22 "
@@ -253,7 +262,7 @@ public class FontMetrics {
             278, // 0x5B [
             278, // 0x5C \
             278, // 0x5D ]
-            0,
+            0, // unused
             556, // 0x5F _
             222, // 0x60 `
             556, // 0x61 a
@@ -283,84 +292,84 @@ public class FontMetrics {
             500, // 0x79 y
             500, // 0x7A z
             334, // 0x7B {
-            0,
+            0, // unused
             334, // 0x7D }
             584, // 0x7E ~
-            0
+            0 // unused
     };
 
-    private static final char[] CHAR_WIDTH_A0_FF = {
-            0,
-            0,
-            0,
+    private static final char[] CHAR_WIDTH_A0_FF = { // start
+            0, // unused
+            0, // unused
+            0, // unused
             556, // 0xA3 £ Pound sign
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
             222, // 0xB4 ´ Acute accent
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
             667, // 0xC0 À Latin Capital Letter A with grave
             667, // 0xC1 Á Latin Capital letter A with acute
             667, // 0xC2 Â Latin Capital letter A with circumflex
-            0,
+            0, // unused
             667, // 0xC4 Ä Latin Capital letter A with diaeresis
-            0,
-            0,
+            0, // unused
+            0, // unused
             722, // 0xC7 Ç Latin Capital letter C with cedilla
             667, // 0xC8 È Latin Capital letter E with grave
             667, // 0xC9 É Latin Capital letter E with acute
-            667, // 0xCA  Latin Capital letter E with circumflex
+            667, // 0xCA Latin Capital letter E with circumflex
             667, // 0xCB Ë Latin Capital letter E with diaeresis
             278, // 0xCC Ì Latin Capital letter I with grave
             278, // 0xCD Í Latin Capital letter I with acute
             278, // 0xCE Î Latin Capital letter I with circumflex
             278, // 0xCF Ï Latin Capital letter I with diaeresis
-            0,
+            0, // unused
             722, // 0xD1 Ñ Latin Capital letter N with tilde
             778, // 0xD2 Ò Latin Capital letter O with grave
             778, // 0xD3 Ó Latin Capital letter O with acute
             778, // 0xD4 Ô Latin Capital letter O with circumflex
-            0,
+            0, // unused
             778, // 0xD6 Ö Latin Capital letter O with diaeresis
-            0,
-            0,
+            0, // unused
+            0, // unused
             722, // 0xD9 Ù Latin Capital letter U with grave
             722, // 0xDA Ú Latin Capital letter U with acute
             722, // 0xDB Û Latin Capital Letter U with circumflex
             722, // 0xDC Ü Latin Capital Letter U with diaeresis
-            0,
-            0,
+            0, // unused
+            0, // unused
             611, // 0xDF ß Latin Small Letter sharp S
             556, // 0xE0 à Latin Small Letter A with grave
             556, // 0xE1 á Latin Small Letter A with acute
             556, // 0xE2 â Latin Small Letter A with circumflex
-            0,
+            0, // unused
             556, // 0xE4 ä Latin Small Letter A with diaeresis
-            0,
-            0,
+            0, // unused
+            0, // unused
             500, // 0xE7 ç Latin Small Letter C with cedilla
             556, // 0xE8 è Latin Small Letter E with grave
             556, // 0xE9 é Latin Small Letter E with acute
@@ -370,22 +379,22 @@ public class FontMetrics {
             278, // 0xED í Latin Small Letter I with acute
             278, // 0xEE î Latin Small Letter I with circumflex
             278, // 0xEF ï Latin Small Letter I with diaeresis
-            0,
+            0, // unused
             556, // 0xF1 ñ Latin Small Letter N with tilde
             556, // 0xF2 ò Latin Small Letter O with grave
             556, // 0xF3 ó Latin Small Letter O with acute
             556, // 0xF4 ô Latin Small Letter O with circumflex
-            0,
+            0, // unused
             556, // 0xF6 ö Latin Small Letter O with diaeresis
             556, // 0xF7 ÷ Division sign
-            0,
+            0, // unused
             556, // 0xF9 ù Latin Small Letter U with grave
             556, // 0xFA ú Latin Small Letter U with acute
             556, // 0xFB û Latin Small Letter U with circumflex
             556, // 0xFC ü Latin Small Letter U with diaeresis
             500, // 0xFD ý Latin Small Letter Y with acute
-            0,
-            0
+            0, // unused
+            0 // unused
     };
 
     private FontMetrics() {

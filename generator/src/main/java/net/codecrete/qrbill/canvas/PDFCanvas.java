@@ -16,7 +16,6 @@ import org.apache.pdfbox.util.Matrix;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-
 /**
  * PDF graphics generator
  */
@@ -29,7 +28,6 @@ public class PDFCanvas extends AbstractCanvas {
     private double lastLineWidth = 1;
     private boolean hasSavedGraphicsState = false;
 
-
     /**
      * Creates a new instance of the graphics generator
      */
@@ -38,11 +36,10 @@ public class PDFCanvas extends AbstractCanvas {
     }
 
     @Override
-    public void setupPage(double width, double height) throws IOException
-    {
+    public void setupPage(double width, double height) throws IOException {
         document = new PDDocument();
         document.getDocumentInformation().setTitle("Swiss QR Bill");
-        PDPage page = new PDPage(new PDRectangle((float)(width * MM_TO_PT), (float)(height * MM_TO_PT)));
+        PDPage page = new PDPage(new PDRectangle((float) (width * MM_TO_PT), (float) (height * MM_TO_PT)));
         document.addPage(page);
         contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.OVERWRITE, true);
     }
@@ -62,8 +59,8 @@ public class PDFCanvas extends AbstractCanvas {
         contentStream.saveGraphicsState();
         hasSavedGraphicsState = true;
         Matrix matrix = new Matrix();
-        matrix.translate((float)translateX, (float)translateY);
-        matrix.scale((float)scale, (float)scale);
+        matrix.translate((float) translateX, (float) translateY);
+        matrix.scale((float) scale, (float) scale);
         contentStream.transform(matrix);
     }
 
@@ -73,7 +70,7 @@ public class PDFCanvas extends AbstractCanvas {
         y *= MM_TO_PT;
         contentStream.setFont(isBold ? PDType1Font.HELVETICA_BOLD : PDType1Font.HELVETICA, fontSize);
         contentStream.beginText();
-        contentStream.newLineAtOffset((float)x, (float)y);
+        contentStream.newLineAtOffset((float) x, (float) y);
         contentStream.showText(text);
         contentStream.endText();
     }
@@ -82,10 +79,10 @@ public class PDFCanvas extends AbstractCanvas {
     public void putTextLines(String[] lines, double x, double y, int fontSize, double leading) throws IOException {
         x *= MM_TO_PT;
         y *= MM_TO_PT;
-        float lineHeight = (float)((FontMetrics.getLineHeight(fontSize) + leading) * MM_TO_PT);
+        float lineHeight = (float) ((FontMetrics.getLineHeight(fontSize) + leading) * MM_TO_PT);
         contentStream.setFont(PDType1Font.HELVETICA, fontSize);
         contentStream.beginText();
-        contentStream.newLineAtOffset((float)x, (float)y);
+        contentStream.newLineAtOffset((float) x, (float) y);
         boolean isFirstLine = true;
         for (String line : lines) {
             if (isFirstLine) {
@@ -107,14 +104,14 @@ public class PDFCanvas extends AbstractCanvas {
     public void moveTo(double x, double y) throws IOException {
         x *= MM_TO_PT;
         y *= MM_TO_PT;
-        contentStream.moveTo((float)x, (float)y);
+        contentStream.moveTo((float) x, (float) y);
     }
 
     @Override
     public void lineTo(double x, double y) throws IOException {
         x *= MM_TO_PT;
         y *= MM_TO_PT;
-        contentStream.lineTo((float)x, (float)y);
+        contentStream.lineTo((float) x, (float) y);
     }
 
     @Override
@@ -123,7 +120,7 @@ public class PDFCanvas extends AbstractCanvas {
         y *= MM_TO_PT;
         width *= MM_TO_PT;
         height *= MM_TO_PT;
-        contentStream.addRect((float)x, (float)y, (float)width, (float)height);
+        contentStream.addRect((float) x, (float) y, (float) width, (float) height);
     }
 
     @Override
@@ -149,7 +146,7 @@ public class PDFCanvas extends AbstractCanvas {
         }
         if (strokeWidth != lastLineWidth) {
             lastLineWidth = strokeWidth;
-            contentStream.setLineWidth((float)(strokeWidth));
+            contentStream.setLineWidth((float) (strokeWidth));
         }
         contentStream.stroke();
     }

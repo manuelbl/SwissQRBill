@@ -12,7 +12,6 @@ import net.codecrete.qrbill.canvas.Canvas;
 import net.codecrete.qrbill.canvas.PDFCanvas;
 import net.codecrete.qrbill.canvas.SVGCanvas;
 
-
 /**
  * Generates Swiss QR bill payment part.
  */
@@ -22,25 +21,44 @@ public class QRBill {
     public static final String KEY_CURRENCY_IS_CHF_OR_EUR = "currency_is_chf_or_eur";
     /** Validation message key: amount must be between 0.01 and 999999999.99 */
     public static final String KEY_AMOUNT_IS_IN_VALID_RANGE = "amount_in_valid_range";
-    /** Validation message key: IBAN must be from bank in Switzerland or Liechtenstein */
+    /**
+     * Validation message key: IBAN must be from bank in Switzerland or
+     * Liechtenstein
+     */
     public static final String KEY_ACCOUNT_IS_CH_LI_IBAN = "account_is_ch_li_iban";
-    /** Validation message key: IBAN number must have valid format and check digit */
+    /**
+     * Validation message key: IBAN number must have valid format and check digit
+     */
     public static final String KEY_ACCOUNT_IS_VALID_IBAN = "account_is_valid_iban";
-    /** Validation message key: ISO 11649 reference number must have valid format and check digit */
+    /**
+     * Validation message key: ISO 11649 reference number must have valid format and
+     * check digit
+     */
     public static final String KEY_VALID_ISO11649_CREDITOR_REF = "valid_iso11649_creditor_ref";
-    /** Validation message key: QR reference number must have valid format and check digit */
+    /**
+     * Validation message key: QR reference number must have valid format and check
+     * digit
+     */
     public static final String KEY_VALID_QR_REF_NO = "valid_qr_ref_no";
-    /** Validation message key: Reference number is mandatory for IBANs with QR-IID */
+    /**
+     * Validation message key: Reference number is mandatory for IBANs with QR-IID
+     */
     public static final String KEY_MANDATORY_FOR_QR_IBAN = "mandatory_for_qr_iban";
     /** Validation message key: Field is mandatory */
     public static final String KEY_FIELD_IS_MANDATORY = "field_is_mandatory";
     /** Validation message key: Country code must consist of two letters */
     public static final String KEY_VALID_COUNTRY_CODE = "valid_country_code";
-    /** Validation message key: Field has been clipped to not exceed the maximum length */
+    /**
+     * Validation message key: Field has been clipped to not exceed the maximum
+     * length
+     */
     public static final String KEY_FIELD_CLIPPED = "field_clipped";
     /** Validation message key: Unsupported characters have been replaced */
     public static final String KEY_REPLACED_UNSUPPORTED_CHARACTERS = "replaced_unsupported_characters";
-    /** Validation message key: Valid data structure starts with "SPC" and consists of 28 to 30 lines of text */
+    /**
+     * Validation message key: Valid data structure starts with "SPC" and consists
+     * of 28 to 30 lines of text
+     */
     public static final String KEY_VALID_DATA_STRUCTURE = "valid_data_structure";
     /** Validation message key: Version 01.00 is supported only */
     public static final String KEY_SUPPORTED_VERSION = "supported_version";
@@ -75,17 +93,18 @@ public class QRBill {
         QR_CODE_ONLY
     }
 
-
     /**
      * Validates and cleans the bill data.
      * <p>
-     *     The validation result contains the error and warning
-     *     messages (if any) and the cleaned bill data.
+     * The validation result contains the error and warning messages (if any) and
+     * the cleaned bill data.
      * </p>
      * <p>
-     *     For details about the validation result, see
-     *     <a href="https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data validation</a>
+     * For details about the validation result, see <a href=
+     * "https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data
+     * validation</a>
      * </p>
+     * 
      * @param bill bill data
      * @return validation result
      */
@@ -93,16 +112,18 @@ public class QRBill {
         return Validator.validate(bill);
     }
 
-
     /**
      * Generates a QR bill payment part.
      * <p>
-     *     If the bill data does not validate, a {@link QRBillValidationError} is thrown,
-     *     which contains the validation result. For details about the validation result, see
-     *     <a href="https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data validation</a>
+     * If the bill data does not validate, a {@link QRBillValidationError} is
+     * thrown, which contains the validation result. For details about the
+     * validation result, see <a href=
+     * "https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data
+     * validation</a>
      * </p>
-     * @param bill the bill data
-     * @param billFormat the bill's output size
+     * 
+     * @param bill           the bill data
+     * @param billFormat     the bill's output size
      * @param graphicsFormat the bill's output format
      * @return the generated QR bill (as a byte array)
      * @throws QRBillValidationError thrown if the bill data does not validate
@@ -115,21 +136,23 @@ public class QRBill {
         }
     }
 
-
     /**
      * Generates a QR bill payment part using the specified canvas.
      * <p>
-     *     If the bill data does not validate, a {@link QRBillValidationError} is thrown,
-     *     which contains the validation result. For details about the validation result, see
-     *     <a href="https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data validation</a>
+     * If the bill data does not validate, a {@link QRBillValidationError} is
+     * thrown, which contains the validation result. For details about the
+     * validation result, see <a href=
+     * "https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data
+     * validation</a>
      * </p>
      * <p>
-     *     The canvas will be initialized with {@code Canvas#setupPage} and it will
-     *     be closed before returning the generated QR bill
+     * The canvas will be initialized with {@code Canvas#setupPage} and it will be
+     * closed before returning the generated QR bill
      * </p>
-     * @param bill the bill data
+     * 
+     * @param bill       the bill data
      * @param billFormat the bill's output size
-     * @param canvas the canvas to draw to
+     * @param canvas     the canvas to draw to
      * @return the generated QR bill (as a byte array)
      * @throws QRBillValidationError thrown if the bill data does not validate
      */
@@ -140,7 +163,6 @@ public class QRBill {
             throw new QRBillUnexpectedException(e);
         }
     }
-
 
     private static byte[] validateAndGenerate(Bill bill, BillFormat billFormat, Canvas canvas) throws IOException {
         ValidationResult result = Validator.validate(bill);
@@ -155,17 +177,19 @@ public class QRBill {
         }
     }
 
-
     /**
      * Encodes the text embedded in the QR code from the specified bill data.
      * <p>
-     *     The specified bill data is first validated and cleaned.
+     * The specified bill data is first validated and cleaned.
      * </p>
      * <p>
-     *     If the bill data does not validate, a {@link QRBillValidationError} is thrown,
-     *     which contains the validation result. For details about the validation result, see
-     *     <a href="https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data validation</a>
+     * If the bill data does not validate, a {@link QRBillValidationError} is
+     * thrown, which contains the validation result. For details about the
+     * validation result, see <a href=
+     * "https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data
+     * validation</a>
      * </p>
+     * 
      * @param bill the bill data to encode
      * @return the QR code text
      * @throws QRBillValidationError thrown if the bill data does not validate
@@ -180,15 +204,18 @@ public class QRBill {
         return qrCode.getText();
     }
 
-
     /**
-     * Decodes the text embedded in the QR code and fills it into a {@link Bill} data structure.
+     * Decodes the text embedded in the QR code and fills it into a {@link Bill}
+     * data structure.
      * <p>
-     * A subset of the validations related to embedded QR code text is run. It the validation fails,
-     * a {@link QRBillValidationError} is thrown, which contains the validation result.
-     * See the error messages marked with a dagger in
-     * <a href="https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data validation</a>.
+     * A subset of the validations related to embedded QR code text is run. It the
+     * validation fails, a {@link QRBillValidationError} is thrown, which contains
+     * the validation result. See the error messages marked with a dagger in
+     * <a href=
+     * "https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data
+     * validation</a>.
      * </p>
+     * 
      * @param text the text to decode
      * @return the decoded bill data
      * @throws QRBillValidationError thrown if the bill data does not validate
@@ -197,13 +224,12 @@ public class QRBill {
         return QRCode.decodeQRCodeText(text);
     }
 
-
     /**
      * Generates the payment part as a byte array
      *
-     * @param bill the cleaned bill data
+     * @param bill       the cleaned bill data
      * @param billFormat the output size
-     * @param canvas the canvas to draw to
+     * @param canvas     the canvas to draw to
      * @return byte array containing the binary data in the selected format
      */
     private static byte[] generatePaymentPart(Bill bill, BillFormat billFormat, Canvas canvas) throws IOException {
@@ -213,19 +239,19 @@ public class QRBill {
 
         // define page size
         switch (billFormat) {
-            case A6_LANDSCAPE_SHEET:
-                drawingWidth = 148.5;
-                drawingHeight = 105;
-                break;
-            case A5_LANDSCAPE_SHEET:
-                drawingWidth = 210;
-                drawingHeight = 148.5;
-                break;
-            case A4_PORTRAIT_SHEET:
-            default:
-                drawingWidth = 210;
-                drawingHeight = 297;
-                break;
+        case A6_LANDSCAPE_SHEET:
+            drawingWidth = 148.5;
+            drawingHeight = 105;
+            break;
+        case A5_LANDSCAPE_SHEET:
+            drawingWidth = 210;
+            drawingHeight = 148.5;
+            break;
+        case A4_PORTRAIT_SHEET:
+        default:
+            drawingWidth = 210;
+            drawingHeight = 297;
+            break;
         }
 
         canvas.setupPage(drawingWidth, drawingHeight);
@@ -234,11 +260,10 @@ public class QRBill {
         return canvas.getResult();
     }
 
-
     /**
      * Generate the QR code only
      * 
-     * @param bill the bill data
+     * @param bill   the bill data
      * @param canvas the canvas to draw to
      * @return byte array containing the binary data in the selected format
      */
@@ -250,19 +275,18 @@ public class QRBill {
         return canvas.getResult();
     }
 
-
     private static Canvas createCanvas(GraphicsFormat graphicsFormat) {
         Canvas canvas;
         switch (graphicsFormat) {
-            case SVG:
-                canvas = new SVGCanvas();
-                break;
-            case PDF:
-                canvas = new PDFCanvas();
-                break;
-            default:
-                throw new QRBillUnexpectedException("Invalid graphics format specified");
+        case SVG:
+            canvas = new SVGCanvas();
+            break;
+        case PDF:
+            canvas = new PDFCanvas();
+            break;
+        default:
+            throw new QRBillUnexpectedException("Invalid graphics format specified");
         }
         return canvas;
     }
-}   
+}
