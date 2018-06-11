@@ -32,7 +32,8 @@ public class PostalCodeController {
 
     @RequestMapping(value = "/postal-codes/suggest")
     @ResponseBody
-    public PostalCode[] suggestPostalCodes(@RequestParam(name = "country", defaultValue = "") String country, @RequestParam("substring") String substring) {
+    public PostalCode[] suggestPostalCodes(@RequestParam(name = "country", defaultValue = "") String country,
+            @RequestParam("substring") String substring) {
 
         // get postal code
         List<PostalCodeData.PostalCode> postalCodeList = postalCodeData.suggestPostalCodes(country, substring);
@@ -49,5 +50,3 @@ public class PostalCodeController {
         return postalCodes;
     }
 }
-
-

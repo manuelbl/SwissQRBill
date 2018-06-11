@@ -69,15 +69,14 @@ public class Address {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Address address = (Address) o;
-        return Objects.equals(name, address.name) &&
-                Objects.equals(street, address.street) &&
-                Objects.equals(houseNo, address.houseNo) &&
-                Objects.equals(postalCode, address.postalCode) &&
-                Objects.equals(town, address.town) &&
-                Objects.equals(countryCode, address.countryCode);
+        return Objects.equals(name, address.name) && Objects.equals(street, address.street)
+                && Objects.equals(houseNo, address.houseNo) && Objects.equals(postalCode, address.postalCode)
+                && Objects.equals(town, address.town) && Objects.equals(countryCode, address.countryCode);
     }
 
     @Override

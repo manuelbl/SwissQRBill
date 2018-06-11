@@ -29,7 +29,6 @@ public class PostalCodeData {
     private PostalCode[] sortedByPostalCode;
     private PostalCode[] sortedByTown;
 
-
     public List<PostalCode> suggestPostalCodes(String country, String substring) {
 
         if (country != null && country.length() != 0 && !country.equals("CH"))
@@ -114,13 +113,16 @@ public class PostalCodeData {
     /**
      * Searches the array for the specified postal code.
      * <p>
-     *     In contrast to {@link Arrays#binarySearch(Object[], Object)}, the first matching element
-     *     is returned if the the array contains several matching ones.
+     * In contrast to {@link Arrays#binarySearch(Object[], Object)}, the first
+     * matching element is returned if the the array contains several matching ones.
      * </p>
-     * @param a the array to be searched (must be sorted in ascending order)
+     * 
+     * @param a          the array to be searched (must be sorted in ascending
+     *                   order)
      * @param postalCode the postal code to search for
-     * @return the index of the first matching element (if found) or the index where the element would need to
-     * be inserted to retain the order (if not found)
+     * @return the index of the first matching element (if found) or the index where
+     *         the element would need to be inserted to retain the order (if not
+     *         found)
      */
     private static int binarySearchForPostalCode(PostalCode[] a, String postalCode) {
         int lower = 0;
@@ -140,17 +142,18 @@ public class PostalCodeData {
         return lower;
     }
 
-
     /**
      * Searches the array for the specified town.
      * <p>
-     *     In contrast to {@link Arrays#binarySearch(Object[], Object)}, the first matching element
-     *     is returned if the the array contains several matching ones.
+     * In contrast to {@link Arrays#binarySearch(Object[], Object)}, the first
+     * matching element is returned if the the array contains several matching ones.
      * </p>
-     * @param a the array to be searched (must be sorted in ascending order)
+     * 
+     * @param a    the array to be searched (must be sorted in ascending order)
      * @param town the towb to search for
-     * @return the index of the first matching element (if found) or the index where the element would need to
-     * be inserted to retain the order (if not found)
+     * @return the index of the first matching element (if found) or the index where
+     *         the element would need to be inserted to retain the order (if not
+     *         found)
      */
     private static int binarySearchForTown(PostalCode[] a, String town) {
         int lower = 0;
@@ -170,7 +173,6 @@ public class PostalCodeData {
         return lower;
     }
 
-
     private synchronized void checkData() {
         if (sortedByPostalCode == null)
             load();
@@ -183,12 +185,11 @@ public class PostalCodeData {
             HttpURLConnection connection = (HttpURLConnection) u.openConnection();
             connection.setInstanceFollowRedirects(true);
             connection.connect();
-            try (InputStream in = connection.getInputStream();
-                 ZipInputStream zis = new ZipInputStream(in)) {
+            try (InputStream in = connection.getInputStream(); ZipInputStream zis = new ZipInputStream(in)) {
                 zis.getNextEntry();
 
                 try (InputStreamReader reader = new InputStreamReader(zis, StandardCharsets.UTF_8);
-                     BufferedReader lineReader = new BufferedReader(reader)) {
+                        BufferedReader lineReader = new BufferedReader(reader)) {
 
                     lineReader.readLine();
 
@@ -226,7 +227,6 @@ public class PostalCodeData {
         sortedByTown = postalCodeList.toArray(sortedByTown);
         Arrays.sort(sortedByTown, Comparator.comparing(pc -> pc.townLowercase));
     }
-
 
     public static class PostalCode {
 

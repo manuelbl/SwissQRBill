@@ -19,16 +19,12 @@ public class QrBill {
 
     // Itentionally use lowercase
     public enum Language {
-        de,
-        fr,
-        it,
-        en
+        de, fr, it, en
     }
 
     public enum Version {
         V1_0
     }
-
 
     private Language language = Language.en;
     private Version version = Version.V1_0;
@@ -42,7 +38,6 @@ public class QrBill {
     private String additionalInfo = null;
     private Address debtor = null;
     private LocalDate dueDate = null;
-
 
     public Language getLanguage() {
         return language;
@@ -134,28 +129,23 @@ public class QrBill {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         QrBill bill = (QrBill) o;
-        return language == bill.language &&
-                version == bill.version &&
-                Objects.equals(amount, bill.amount) &&
-                Objects.equals(currency, bill.currency) &&
-                Objects.equals(account, bill.account) &&
-                Objects.equals(creditor, bill.creditor) &&
-                Objects.equals(finalCreditor, bill.finalCreditor) &&
-                Objects.equals(referenceNo, bill.referenceNo) &&
-                Objects.equals(additionalInfo, bill.additionalInfo) &&
-                Objects.equals(debtor, bill.debtor) &&
-                Objects.equals(dueDate, bill.dueDate);
+        return language == bill.language && version == bill.version && Objects.equals(amount, bill.amount)
+                && Objects.equals(currency, bill.currency) && Objects.equals(account, bill.account)
+                && Objects.equals(creditor, bill.creditor) && Objects.equals(finalCreditor, bill.finalCreditor)
+                && Objects.equals(referenceNo, bill.referenceNo) && Objects.equals(additionalInfo, bill.additionalInfo)
+                && Objects.equals(debtor, bill.debtor) && Objects.equals(dueDate, bill.dueDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(language, version, amount, currency, account, creditor, finalCreditor,
-                referenceNo, additionalInfo, debtor, dueDate);
+        return Objects.hash(language, version, amount, currency, account, creditor, finalCreditor, referenceNo,
+                additionalInfo, debtor, dueDate);
     }
-
 
     public static QrBill from(Bill bill) {
         QrBill qrBill = new QrBill();

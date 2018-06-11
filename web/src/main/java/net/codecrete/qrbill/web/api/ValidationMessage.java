@@ -12,8 +12,7 @@ import java.util.List;
 public class ValidationMessage {
 
     public enum Type {
-        Warning,
-        Error
+        Warning, Error
     }
 
     private Type type;
@@ -92,7 +91,7 @@ public class ValidationMessage {
 
     public static List<ValidationMessage> fromList(List<net.codecrete.qrbill.generator.ValidationMessage> list) {
         List<ValidationMessage> msgList = new ArrayList<>(list.size());
-        for (net.codecrete.qrbill.generator.ValidationMessage msg: list) {
+        for (net.codecrete.qrbill.generator.ValidationMessage msg : list) {
             msgList.add(from(msg));
         }
 

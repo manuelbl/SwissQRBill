@@ -62,9 +62,11 @@ public class QRBillController {
 
     /**
      * Validates the QR bill data
+     * 
      * @param bill the QR bill data
-     * @return returns the validation result: validated, possibly modified bill, the validation messages (if any),
-     *  a bill ID (if the bill is valid) and the QR code text (if the bill is valid)
+     * @return returns the validation result: validated, possibly modified bill, the
+     *         validation messages (if any), a bill ID (if the bill is valid) and
+     *         the QR code text (if the bill is valid)
      */
     @RequestMapping(value = "/bill/validate", method = RequestMethod.POST)
     @ResponseBody
@@ -75,9 +77,11 @@ public class QRBillController {
 
     /**
      * Decodes the text from the QR code and validates the information.
+     * 
      * @param info the text from the QR code
-     * @return returns the validation result: decoded bill data, the validation messages (if any),
-     *  a bill ID (if the bill is valid) and the QR code text
+     * @return returns the validation result: decoded bill data, the validation
+     *         messages (if any), a bill ID (if the bill is valid) and the QR code
+     *         text
      */
     @RequestMapping(value = "/bill/decode", method = RequestMethod.POST)
     @ResponseBody
@@ -114,9 +118,12 @@ public class QRBillController {
 
     /**
      * Generates the QR bill as an SVG.
-     * @param bill the QR bill data
-     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
-     * @return the generated bill if the data is valid; a list of validation messages otherwise
+     * 
+     * @param bill   the QR bill data
+     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape,
+     *               a4Portrait)
+     * @return the generated bill if the data is valid; a list of validation
+     *         messages otherwise
      */
     @RequestMapping(value = "/bill/svg/{format}", method = RequestMethod.POST)
     public ResponseEntity<Object> generateSvgBillPost(@RequestBody QrBill bill, @PathVariable("format") String format) {
@@ -125,20 +132,26 @@ public class QRBillController {
 
     /**
      * Generates the QR bill as an SVG.
-     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
+     * 
+     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape,
+     *               a4Portrait)
      * @param billId the ID of the QR bill (as returned by /validate)
      * @return the generated bill
      */
     @RequestMapping(value = "/bill/svg/{format}/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> generateSvgBillGet(@PathVariable("id") String billId, @PathVariable("format") String format) {
+    public ResponseEntity<Object> generateSvgBillGet(@PathVariable("id") String billId,
+            @PathVariable("format") String format) {
         return generateBillFromID(billId, format, GraphicsFormat.SVG);
     }
 
     /**
      * Generates the QR bill as a PDF.
-     * @param bill the QR bill data
-     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
-     * @return the generated bill if the data is valid; a list of validation messages otherwise
+     * 
+     * @param bill   the QR bill data
+     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape,
+     *               a4Portrait)
+     * @return the generated bill if the data is valid; a list of validation
+     *         messages otherwise
      */
     @RequestMapping(value = "/bill/pdf/{format}", method = RequestMethod.POST)
     public ResponseEntity<Object> generatePdfBill(@RequestBody QrBill bill, @PathVariable("format") String format) {
@@ -147,27 +160,30 @@ public class QRBillController {
 
     /**
      * Generates the QR bill as a PDF.
-     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
+     * 
+     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape,
+     *               a4Portrait)
      * @param billId the ID of the QR bill (as returned by /validate)
      * @return the generated bill
      */
     @RequestMapping(value = "/bill/pdf/{format}/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> generatePdfBillGet(@PathVariable("id") String billId, @PathVariable("format") String format) {
+    public ResponseEntity<Object> generatePdfBillGet(@PathVariable("id") String billId,
+            @PathVariable("format") String format) {
         return generateBillFromID(billId, format, GraphicsFormat.PDF);
     }
-
 
     private ResponseEntity<Object> generateBill(QrBill bill, String format, GraphicsFormat graphicsFormat) {
         BillFormat billFormat = getBillFormat(format);
         if (billFormat == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    "Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
 
         try {
             byte[] result = generate(QrBill.toGeneratorBill(bill), billFormat, graphicsFormat);
             return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(result);
         } catch (QRBillValidationError e) {
-            List<ValidationMessage> messages = ValidationMessage.fromList(e.getValidationResult().getValidationMessages());
+            List<ValidationMessage> messages = ValidationMessage
+                    .fromList(e.getValidationResult().getValidationMessages());
             addLocalMessages(messages);
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(messages);
         }
@@ -176,8 +192,8 @@ public class QRBillController {
     private ResponseEntity<Object> generateBillFromID(String billId, String format, GraphicsFormat graphicsFormat) {
         BillFormat billFormat = getBillFormat(format);
         if (billFormat == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    "Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
 
         Bill bill;
         try {
@@ -199,24 +215,24 @@ public class QRBillController {
     private static BillFormat getBillFormat(String value) {
         BillFormat format;
         switch (value) {
-            case "qrCodeOnly":
-            case "qr-code-only":
-                format = BillFormat.QR_CODE_ONLY;
-                break;
-            case "a6Landscape":
-            case "a6-landscape":
-                format = BillFormat.A6_LANDSCAPE_SHEET;
-                break;
-            case "a5Landscape":
-            case "a5-landscape":
-                format = BillFormat.A5_LANDSCAPE_SHEET;
-                break;
-            case "a4Portrait":
-            case "a4-portrait":
-                format = BillFormat.A4_PORTRAIT_SHEET;
-                break;
-            default:
-                format = null;
+        case "qrCodeOnly":
+        case "qr-code-only":
+            format = BillFormat.QR_CODE_ONLY;
+            break;
+        case "a6Landscape":
+        case "a6-landscape":
+            format = BillFormat.A6_LANDSCAPE_SHEET;
+            break;
+        case "a5Landscape":
+        case "a5-landscape":
+            format = BillFormat.A5_LANDSCAPE_SHEET;
+            break;
+        case "a4Portrait":
+        case "a4-portrait":
+            format = BillFormat.A4_PORTRAIT_SHEET;
+            break;
+        default:
+            format = null;
         }
         return format;
     }
@@ -232,7 +248,7 @@ public class QRBillController {
             return;
 
         Locale currentLocale = LocaleContextHolder.getLocale();
-        for (ValidationMessage message: messages) {
+        for (ValidationMessage message : messages) {
             message.setMessage(messageSource.getMessage(message.getMessageKey(), null, currentLocale));
         }
     }
@@ -242,15 +258,17 @@ public class QRBillController {
     /**
      * Generates an ID that encodes the entire bill data.
      * <p>
-     *     The ID is the Base 64 (URL safe version) of the compressed (deflate) JSON data
-     *     consisting of version, language and the text string would be embedded in the QR code.
+     * The ID is the Base 64 (URL safe version) of the compressed (deflate) JSON
+     * data consisting of version, language and the text string would be embedded in
+     * the QR code.
      * </p>
      * <p>
-     *     The ID is made URL safe by using the URL-safe RFC4648 Base 64 encoding and replacing
-     *     all equal signs (=) with tildes (~).
+     * The ID is made URL safe by using the URL-safe RFC4648 Base 64 encoding and
+     * replacing all equal signs (=) with tildes (~).
      * </p>
+     * 
      * @param qrCodeText the QR code text
-     * @param language the ISO language code
+     * @param language   the ISO language code
      * @return the generated ID
      */
     private String generateID(String qrCodeText, String language) {
@@ -263,8 +281,8 @@ public class QRBillController {
         Base64.Encoder base64 = Base64.getUrlEncoder();
         byte[] encodedData;
         try (ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-             OutputStream intermediate = base64.wrap(buffer);
-             DeflaterOutputStream head = new DeflaterOutputStream(intermediate)) {
+                OutputStream intermediate = base64.wrap(buffer);
+                DeflaterOutputStream head = new DeflaterOutputStream(intermediate)) {
 
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(head, payload);
@@ -282,9 +300,10 @@ public class QRBillController {
     /**
      * Decodes an bill ID and returns the bill data
      * <p>
-     *     The bill ID is assumed to have been generated
-     *     by {@link #generateID(String, String)}.
+     * The bill ID is assumed to have been generated by
+     * {@link #generateID(String, String)}.
      * </p>
+     * 
      * @param id the ID
      * @return the bill data
      */
@@ -296,8 +315,8 @@ public class QRBillController {
         Base64.Decoder base64 = Base64.getUrlDecoder();
         BillPayload payload;
         try (InputStream dataStream = new ByteArrayInputStream(encodedData);
-             InputStream intermediate = base64.wrap(dataStream);
-             InflaterInputStream head = new InflaterInputStream(intermediate)) {
+                InputStream intermediate = base64.wrap(dataStream);
+                InflaterInputStream head = new InflaterInputStream(intermediate)) {
 
             ObjectMapper mapper = new ObjectMapper();
             payload = mapper.readValue(head, BillPayload.class);
