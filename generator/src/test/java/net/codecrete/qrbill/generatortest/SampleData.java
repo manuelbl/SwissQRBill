@@ -48,7 +48,8 @@ class SampleData {
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
         bill.setReferenceNo("210000 000 00313 9471430009017");
-        bill.setAdditionalInfo("Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
+        bill.setAdditionalInfo(
+                "Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
         return bill;
     }
 

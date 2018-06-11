@@ -22,41 +22,43 @@ import net.codecrete.qrbill.generator.QRBillValidationError;
 import net.codecrete.qrbill.generator.ValidationMessage;
 import net.codecrete.qrbill.generator.ValidationResult;
 
-
 /**
  * Unit tests for decoding the embedded QR code text
  */
 @DisplayName("Decoding of embedded QR code text")
 class DecodedTextTest {
 
-    private static final String VALID_TEXT = "SPC\r\n" +
-    "0100\r\n" +
-    "1\r\n" +
-    "CH4431999123000889012\r\n" +
-    "Robert Schneider AG\r\n" +
-    "Rue du Lac\r\n" +
-    "1268/2/22\r\n" +
-    "2501\r\n" +
-    "Biel\r\n" +
-    "CH\r\n" +
-    "Robert Schneider Services Switzerland AG\r\n" +
-    "Rue du Lac\r\n" +
-    "1268/3/1\r\n" +
-    "2501\r\n" +
-    "Biel\r\n" +
-    "CH\r\n" +
-    "123949.75\r\n" +
-    "CHF\r\n" +
-    "2019-10-31\r\n" +
-    "Pia-Maria Rutschmann-Schnyder\r\n" +
-    "Grosse Marktgasse\r\n" +
-    "28\r\n" +
-    "9400\r\n" +
-    "Rorschach\r\n" +
-    "CH\r\n" +
-    "QRR\r\n" +
-    "210000000003139471430009017\r\n" +
-    "Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010";
+    //@formatter:off
+    private static final String VALID_TEXT =
+            "SPC\r\n" +
+            "0100\r\n" +
+            "1\r\n" +
+            "CH4431999123000889012\r\n" +
+            "Robert Schneider AG\r\n" +
+            "Rue du Lac\r\n" +
+            "1268/2/22\r\n" +
+            "2501\r\n" +
+            "Biel\r\n" +
+            "CH\r\n" +
+            "Robert Schneider Services Switzerland AG\r\n" +
+            "Rue du Lac\r\n" +
+            "1268/3/1\r\n" +
+            "2501\r\n" +
+            "Biel\r\n" +
+            "CH\r\n" +
+            "123949.75\r\n" +
+            "CHF\r\n" +
+            "2019-10-31\r\n" +
+            "Pia-Maria Rutschmann-Schnyder\r\n" +
+            "Grosse Marktgasse\r\n" +
+            "28\r\n" +
+            "9400\r\n" +
+            "Rorschach\r\n" +
+            "CH\r\n" +
+            "QRR\r\n" +
+            "210000000003139471430009017\r\n" +
+            "Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010";
+    //@formatter:on
 
     @Test
     void decodeText1() {
@@ -111,24 +113,21 @@ class DecodedTextTest {
     @Test
     void decodeInvalidFormat3() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
-                "SPC1\r\n0100\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
-        ));
+                "SPC1\r\n0100\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
         assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_QR_TYPE);
     }
 
     @Test
     void decodeInvalidVersion() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
-                "SPC\r\n0101\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
-        ));
+                "SPC\r\n0101\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
         assertSingleError(err.getValidationResult(), QRBill.KEY_SUPPORTED_VERSION, Bill.FIELD_VERSION);
     }
 
     @Test
     void decodeInvalidCodingType() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
-                "SPC\r\n0100\r\n0\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
-        ));
+                "SPC\r\n0100\r\n0\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
         assertSingleError(err.getValidationResult(), QRBill.KEY_SUPPORTED_CODING_TYPE, Bill.FIELD_CODING_TYPE);
     }
 
@@ -136,7 +135,7 @@ class DecodedTextTest {
     void decodeInvalidNumber() {
         String invalidText = VALID_TEXT.replace("123949.75", "1239d49.75");
         QRBillValidationError err = assertThrows(QRBillValidationError.class,
-                () ->  QRBill.decodeQrCodeText(invalidText));
+                () -> QRBill.decodeQrCodeText(invalidText));
         assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_NUMBER, Bill.FIELD_AMOUNT);
     }
 

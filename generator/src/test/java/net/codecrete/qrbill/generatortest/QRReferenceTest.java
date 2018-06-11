@@ -54,6 +54,7 @@ class QRReferenceTest {
 
     @Test
     void formatQRReference() {
-        assertEquals("12 34560 00000 00129 11462 90514", Payments.formatQRReferenceNumber("123456000000001291146290514"));
+        assertEquals("12 34560 00000 00129 11462 90514",
+                Payments.formatQRReferenceNumber("123456000000001291146290514"));
     }
 }

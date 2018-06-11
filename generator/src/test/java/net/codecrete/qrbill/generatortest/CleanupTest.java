@@ -25,7 +25,8 @@ import net.codecrete.qrbill.canvas.PNGCanvas;
 class CleanupTest {
 
     @Test
-    void closePNGFreesResources() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+    void closePNGFreesResources()
+            throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         PNGCanvas pngCanvas;
         try (PNGCanvas canvas = new PNGCanvas(300)) {
             canvas.setupPage(200, 100);
@@ -38,7 +39,8 @@ class CleanupTest {
     }
 
     @Test
-    void closePDFFreesResources() throws IOException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
+    void closePDFFreesResources() throws IOException, SecurityException, IllegalArgumentException,
+            IllegalAccessException, NoSuchFieldException {
         PDFCanvas pdfCanvas;
         try (PDFCanvas canvas = new PDFCanvas()) {
             canvas.setupPage(200, 100);

@@ -36,7 +36,7 @@ class QRBillUnexpectedExceptionTest {
     void messageAndCause() {
         QRBillUnexpectedException e = assertThrows(QRBillUnexpectedException.class, () -> {
             try {
-                ((String)null).length();
+                ((String) null).length();
             } catch (Exception npe) {
                 throw new QRBillUnexpectedException("QRS", npe);
             }

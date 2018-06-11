@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Strings;
 
-
 /**
  * Unit tests for {@link Strings#trimmed(String)}
  */

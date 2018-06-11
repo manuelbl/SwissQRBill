@@ -85,12 +85,12 @@ class ValidationResultTest {
         List<ValidationMessage> messages = result.getValidationMessages();
         assertNotNull(messages);
         assertEquals(2, messages.size());
-        
+
         assertEquals(Type.ERROR, messages.get(0).getType());
         assertEquals("abd-fds", messages.get(0).getField());
         assertEquals("asdf.asdfe.werk", messages.get(0).getMessageKey());
         assertNull(messages.get(0).getMessageParameters());
-        
+
         assertEquals(Type.WARNING, messages.get(1).getType());
         assertEquals("ieow.se3", messages.get(1).getField());
         assertEquals("iwer.asdfwerk.asdf", messages.get(1).getMessageKey());
@@ -100,7 +100,7 @@ class ValidationResultTest {
     @Test
     void messageWithMessageParameters() {
         ValidationResult result = new ValidationResult();
-        result.addMessage(Type.WARNING, "jkr", "wcw.dw", new String[] { ")(*$" } );
+        result.addMessage(Type.WARNING, "jkr", "wcw.dw", new String[] { ")(*$" });
         assertTrue(result.isValid());
         assertTrue(result.hasMessages());
         assertTrue(result.hasWarnings());

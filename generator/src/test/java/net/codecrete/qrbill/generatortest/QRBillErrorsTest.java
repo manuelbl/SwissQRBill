@@ -26,26 +26,25 @@ import net.codecrete.qrbill.generator.QRBillValidationError;
 @DisplayName("QR bill generatio exception")
 class QRBillErrorsTest {
 
-    @Test
-    void throwsRuntimeException() {
+	@Test
+	void throwsRuntimeException() {
 		assertThrows(QRBillUnexpectedException.class, () -> {
 			Bill bill = SampleData.getExample1();
 			FailingCanvas canvas = new FailingCanvas();
 			QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, canvas);
 		});
-    }
+	}
 
-    @Test
-    void throwsValidationError() {
+	@Test
+	void throwsValidationError() {
 		assertThrows(QRBillValidationError.class, () -> {
 			Bill bill = SampleData.getExample1();
 			bill.getCreditor().setName(" ");
 			QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.PDF);
 		});
-    }
+	}
 
-
-    static class FailingCanvas extends AbstractCanvas {
+	static class FailingCanvas extends AbstractCanvas {
 
 		@Override
 		public void setupPage(double width, double height) throws IOException {
@@ -102,5 +101,5 @@ class QRBillErrorsTest {
 			throw new IOException("not implemented");
 		}
 
-    }
+	}
 }

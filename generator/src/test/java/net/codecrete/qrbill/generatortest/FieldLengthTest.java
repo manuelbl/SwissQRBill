@@ -29,7 +29,8 @@ class FieldLengthTest extends BillDataValidationBase {
         bill.setCreditor(address);
         validate();
         assertNoMessages();
-        assertEquals("Name567890123456789012345678901234567890123456789012345678901234567890", validatedBill.getCreditor().getName());
+        assertEquals("Name567890123456789012345678901234567890123456789012345678901234567890",
+                validatedBill.getCreditor().getName());
     }
 
     @Test
@@ -40,7 +41,8 @@ class FieldLengthTest extends BillDataValidationBase {
         bill.setCreditor(address);
         validate();
         assertSingleWarningMessage(Bill.FIELD_CREDITOR_NAME, "field_clipped");
-        assertEquals("Name567890123456789012345678901234567890123456789012345678901234567890", validatedBill.getCreditor().getName());
+        assertEquals("Name567890123456789012345678901234567890123456789012345678901234567890",
+                validatedBill.getCreditor().getName());
     }
 
     @Test
@@ -51,7 +53,8 @@ class FieldLengthTest extends BillDataValidationBase {
         bill.setCreditor(address);
         validate();
         assertNoMessages();
-        assertEquals("Street7890123456789012345678901234567890123456789012345678901234567890", validatedBill.getCreditor().getStreet());
+        assertEquals("Street7890123456789012345678901234567890123456789012345678901234567890",
+                validatedBill.getCreditor().getStreet());
     }
 
     @Test
@@ -62,7 +65,8 @@ class FieldLengthTest extends BillDataValidationBase {
         bill.setCreditor(address);
         validate();
         assertSingleWarningMessage(Bill.FIELD_CREDITOR_STREET, "field_clipped");
-        assertEquals("Street7890123456789012345678901234567890123456789012345678901234567890", validatedBill.getCreditor().getStreet());
+        assertEquals("Street7890123456789012345678901234567890123456789012345678901234567890",
+                validatedBill.getCreditor().getStreet());
     }
 
     @Test

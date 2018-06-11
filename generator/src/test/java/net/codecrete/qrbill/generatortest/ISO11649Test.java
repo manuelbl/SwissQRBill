@@ -11,7 +11,8 @@ import org.junit.jupiter.api.Test;
 import net.codecrete.qrbill.generator.Payments;
 
 /**
- * Unit tests for ISO 11649 creditor reference related methods in {@link Payments}
+ * Unit tests for ISO 11649 creditor reference related methods in
+ * {@link Payments}
  */
 @DisplayName("ISO 11649 creditor reference validation and generation")
 class ISO11649Test {

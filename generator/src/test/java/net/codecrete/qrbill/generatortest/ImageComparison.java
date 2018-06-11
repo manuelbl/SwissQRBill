@@ -25,7 +25,7 @@ class ImageComparison {
         // quick check based on file content
         if (Arrays.equals(expectedContent, actualContent))
             return;
-        
+
         // read images
         BufferedImage expectedImage;
         BufferedImage actualImage;
@@ -48,13 +48,15 @@ class ImageComparison {
         assertEquals(expectedImage.getSampleModel(), actualImage.getSampleModel(), "matching sample model");
 
         // retrieve pixels
-        int[] expectedPixels = expectedImage.getData().getPixels(0, 0, expectedImage.getWidth(), expectedImage.getHeight(), (int[])null);
-        int[] actualPixels = actualImage.getData().getPixels(0, 0, actualImage.getWidth(), actualImage.getHeight(), (int[])null);
+        int[] expectedPixels = expectedImage.getData().getPixels(0, 0, expectedImage.getWidth(),
+                expectedImage.getHeight(), (int[]) null);
+        int[] actualPixels = actualImage.getData().getPixels(0, 0, actualImage.getWidth(), actualImage.getHeight(),
+                (int[]) null);
 
         // compare pixels
         int length = expectedPixels.length;
         int diff = 0;
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             if (expectedPixels[i] != actualPixels[i]) {
                 int d = Math.abs(expectedPixels[i] - actualPixels[i]);
                 assertTrue(d < 50, "singe pixel difference");

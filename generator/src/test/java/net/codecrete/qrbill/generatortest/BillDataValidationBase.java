@@ -26,7 +26,6 @@ class BillDataValidationBase {
     ValidationResult result;
     Bill validatedBill;
 
-
     void validate() {
         result = QRBill.validate(bill);
         validatedBill = result.getCleanedBill();
@@ -44,7 +43,8 @@ class BillDataValidationBase {
 
     /**
      * Asserts that the validation produced a single validation error message
-     * @param field the field that triggered the validation error
+     * 
+     * @param field      the field that triggered the validation error
      * @param messageKey the message key of the validation error
      */
     void assertSingleErrorMessage(String field, String messageKey) {
@@ -61,7 +61,8 @@ class BillDataValidationBase {
 
     /**
      * Asserts thta the validation succeeded with a single warning
-     * @param field the field that triggered the validation warning
+     * 
+     * @param field      the field that triggered the validation warning
      * @param messageKey the message key of the validation warning
      */
     void assertSingleWarningMessage(String field, String messageKey) {
@@ -78,6 +79,7 @@ class BillDataValidationBase {
 
     /**
      * Creates an address with valid person data
+     * 
      * @return the address
      */
     Address createValidPerson() {

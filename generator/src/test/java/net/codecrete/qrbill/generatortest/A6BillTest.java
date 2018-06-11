@@ -15,7 +15,7 @@ import net.codecrete.qrbill.generator.QRBill;
 /**
  * Unit tests for generation of A6 bills (PDF and SVG)
  * <p>
- *     Resulting output is compared byte by byte.
+ * Resulting output is compared byte by byte.
  * </p>
  */
 @DisplayName("A6 bill generation (PDF and SVG)")

@@ -132,9 +132,8 @@ class CharacterSetTest extends BillDataValidationBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "^", "\u007f", "\u0080", "\u00a0", "\u00A0", "¡",
-        "¤", "©", "±", "µ", "¼", "Å", "Æ", "Ð", "×", "Ø", "Ý", "Þ", "å", "æ",
-        "ø", "€", "¿", "Ý", "Ą", "Ď", "ð", "õ", "ã", "Ã" })
+    @ValueSource(strings = { "^", "\u007f", "\u0080", "\u00a0", "\u00A0", "¡", "¤", "©", "±", "µ", "¼", "Å", "Æ", "Ð",
+            "×", "Ø", "Ý", "Þ", "å", "æ", "ø", "€", "¿", "Ý", "Ą", "Ď", "ð", "õ", "ã", "Ã" })
     void invalidChars(String invalidChar) {
         bill = SampleData.getExample1();
         Address address = createValidPerson();
