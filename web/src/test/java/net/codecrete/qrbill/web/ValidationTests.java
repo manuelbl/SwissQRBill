@@ -24,7 +24,6 @@ import net.codecrete.qrbill.web.api.QrBill;
 import net.codecrete.qrbill.web.api.ValidationMessage;
 import net.codecrete.qrbill.web.api.ValidationResponse;
 
-
 /**
  * Unit tests for bill data validation API
  */

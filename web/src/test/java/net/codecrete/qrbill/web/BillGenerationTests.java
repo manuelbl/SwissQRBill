@@ -23,7 +23,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import net.codecrete.qrbill.web.api.QrBill;
 import net.codecrete.qrbill.web.api.ValidationMessage;
 
-
 /**
  * Unit test for QR bill generation API (PDF and SVG)
  */
@@ -87,7 +86,8 @@ class BillGenerationTests {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown(null);
 
-        ValidationMessage[] response = restTemplate.postForObject("/bill/svg/a4Portrait", bill, ValidationMessage[].class);
+        ValidationMessage[] response = restTemplate.postForObject("/bill/svg/a4Portrait", bill,
+                ValidationMessage[].class);
 
         assertNotNull(response);
         assertEquals(1, response.length);

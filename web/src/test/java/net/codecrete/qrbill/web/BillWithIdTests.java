@@ -22,7 +22,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import net.codecrete.qrbill.web.api.QrBill;
 import net.codecrete.qrbill.web.api.ValidationResponse;
 
-
 /**
  * Unit test for retrieving a bill by ID (API test)
  */

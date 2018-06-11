@@ -22,7 +22,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import net.codecrete.qrbill.web.api.QrCodeInformation;
 import net.codecrete.qrbill.web.api.ValidationResponse;
 
-
 /**
  * Unit test for QR code decoding API
  */
@@ -31,6 +30,7 @@ import net.codecrete.qrbill.web.api.ValidationResponse;
 @DisplayName("Decode QR code text")
 class DecodeTests {
 
+    //@formatter:off
     private static final String VALID_QR_CODE_TEXT =
             "SPC\r\n" +
             "0100\r\n" +
@@ -59,14 +59,14 @@ class DecodeTests {
             "CH\r\n" +
             "QRR\r\n" +
             "829300097829382938291172974\r\n";
+    //@formatter:on
 
     private final TestRestTemplate restTemplate;
 
     DecodeTests(@Autowired TestRestTemplate template) {
         restTemplate = template;
     }
-        
-        
+
     @Test
     void decodeText() {
 

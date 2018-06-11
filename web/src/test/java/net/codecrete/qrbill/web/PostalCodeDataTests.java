@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.web.controller.PostalCodeData;
 
-
 /**
  * Unit test for the {@link PostalCodeData} class
  */
@@ -80,7 +79,7 @@ class PostalCodeDataTests {
             if (previousTown.startsWith("Dorf") && !pc.town.startsWith("Dorf"))
                 previousTown = ""; // Reset between "Dorf...." towns and "...dorf..." towns
             assertTrue(previousTown.compareTo(pc.town) < 0,
-                String.format("%s alphabetically before %s", previousTown, pc.town));
+                    String.format("%s alphabetically before %s", previousTown, pc.town));
             previousTown = pc.town;
         }
     }
@@ -95,8 +94,7 @@ class PostalCodeDataTests {
             assertTrue(pc.code.contains("203"));
             if (previousCode.startsWith("203") && !pc.code.startsWith("203"))
                 previousCode = "";
-            assertTrue(previousCode.compareTo(pc.code) <= 0,
-                String.format("%s <= %s", previousCode, pc.code));
+            assertTrue(previousCode.compareTo(pc.code) <= 0, String.format("%s <= %s", previousCode, pc.code));
             previousCode = pc.code;
         }
     }
@@ -109,8 +107,7 @@ class PostalCodeDataTests {
         for (PostalCodeData.PostalCode pc : result) {
             assertNotNull(pc.town);
             assertTrue(pc.code.startsWith("880"));
-            assertTrue(previousCode.compareTo(pc.code) <= 0,
-                String.format("%s <= %s", previousCode, pc.code));
+            assertTrue(previousCode.compareTo(pc.code) <= 0, String.format("%s <= %s", previousCode, pc.code));
             previousCode = pc.code;
         }
     }
@@ -124,7 +121,7 @@ class PostalCodeDataTests {
             assertTrue(pc.town.startsWith("Rickenbach"));
             assertNotNull(pc.code);
             assertTrue(previousTown.compareTo(pc.town.toLowerCase(Locale.FRENCH)) <= 0,
-                String.format("%s alphabetically before %s", previousTown, pc.town));
+                    String.format("%s alphabetically before %s", previousTown, pc.town));
             previousTown = pc.town.toLowerCase(Locale.FRENCH);
         }
     }

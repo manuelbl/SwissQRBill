@@ -20,7 +20,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import net.codecrete.qrbill.web.api.PostalCode;
 
-
 /**
  * Unit test for postal code lookup API
  */
@@ -38,10 +37,11 @@ class PostalCodeServiceTests {
     private PostalCode[] suggestPostalCodes(String country, String substring) {
         if (country == null)
             country = "";
-        // Somehow the request isn't pass through the normal processing pipeline. If we correctly escape
-        // query parameters with characters outside the ASCII range, it doesn't work anymore.
-        return restTemplate.getForObject(String.format("/postal-codes/suggest?country=%s&substring=%s",
-                country, substring), PostalCode[].class);
+        // Somehow the request isn't pass through the normal processing pipeline. If we
+        // correctly escape query parameters with characters outside the ASCII range, it
+        // doesn't work anymore.
+        return restTemplate.getForObject(
+                String.format("/postal-codes/suggest?country=%s&substring=%s", country, substring), PostalCode[].class);
     }
 
     @Test
