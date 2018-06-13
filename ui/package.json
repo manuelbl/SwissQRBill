@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --base-href /qrbill/",
+    "serve-prod": "ng serve --prod --host 0.0.0.0 --base-href /qrbill/",
     "build": "ng build --prod --base-href=/qrbill/",
     "test": "ng test",
     "lint": "ng lint",

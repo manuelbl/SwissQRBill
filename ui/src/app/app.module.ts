@@ -20,7 +20,8 @@ import {
   MatDialogModule,
   MatIconModule,
   MatInputModule,
-  MatSelectModule
+  MatSelectModule,
+  MatDialogConfig
 } from '@angular/material';
 import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -77,9 +78,9 @@ export function createTranslateLoader(http: HttpClient) {
     })
   ],
   providers: [
-
     { provide: DateAdapter, useClass: MomentDateAdapter },
-    AmountFormatter
+    AmountFormatter,
+    MatDialogConfig
   ],
   bootstrap: [AppComponent]
 })
