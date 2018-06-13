@@ -18,7 +18,7 @@
         <dependency>
             <groupId>net.codecrete.qrbill</groupId>
             <artifactId>qrbill-generator</artifactId>
-            <version>0.9.6</version>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 
