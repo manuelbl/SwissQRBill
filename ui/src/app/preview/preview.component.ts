@@ -5,7 +5,7 @@
 // https://opensource.org/licenses/MIT
 //
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'qrbill-preview',
@@ -17,16 +17,11 @@ export class PreviewComponent implements OnInit {
   public billID: string;
   public outputSize = 'a6-landscape';
 
-  constructor(public dialogRef: MatDialogRef<PreviewComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any) {
+  constructor(@Inject(MAT_DIALOG_DATA) private data: any) {
       this.billID = data.billID;
       this.outputSize = data.outputSize;
     }
 
   ngOnInit() {
-  }
-
-  closeDialog() {
-    this.dialogRef.close();
   }
 }

@@ -6,12 +6,9 @@
 //
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatButtonToggleModule, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatButtonToggleModule, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material';
 
 import { PreviewComponent } from './preview.component';
-
-class MatDialogRefMock {
-}
 
 class DialogDataMock {
   // tslint:disable-next-line:max-line-length
@@ -34,10 +31,6 @@ describe('PreviewComponent', () => {
         MatDialogModule
       ],
       providers: [
-        {
-          provide: MatDialogRef,
-          useClass: MatDialogRefMock
-        },
         {
           provide: MAT_DIALOG_DATA,
           useClass: DialogDataMock
