@@ -5,7 +5,13 @@
 // https://opensource.org/licenses/MIT
 //
 import { Component, OnInit, NgZone } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormBuilder,
+  Validators,
+  AbstractControl
+} from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { QrBillService } from '../qrbill-api/qrbill.service';
@@ -23,10 +29,9 @@ import { Observable, Subscription } from 'rxjs';
   selector: 'qrbill-data',
   templateUrl: './billdata.component.html',
   styleUrls: ['./billdata.component.css'],
-  providers: [ IBANFormatter, ReferenceNumberFormatter ]
+  providers: [IBANFormatter, ReferenceNumberFormatter]
 })
 export class BillDataComponent implements OnInit {
-
   public bill: QrBill;
   public outputSize: string;
   public billForm: FormGroup;
@@ -39,11 +44,17 @@ export class BillDataComponent implements OnInit {
     return ('00' + n).slice(-2);
   }
 
-  constructor(private formBuilder: FormBuilder, private qrBillService: QrBillService,
-    private dialog: MatDialog, private translate: TranslateService,
-    private billSingleton: BillSingletonService, public amountFormatter: AmountFormatter,
-    public ibanFormatter: IBANFormatter, public refNumberFormatter: ReferenceNumberFormatter,
-    private ngZone: NgZone) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private qrBillService: QrBillService,
+    private dialog: MatDialog,
+    private translate: TranslateService,
+    private billSingleton: BillSingletonService,
+    public amountFormatter: AmountFormatter,
+    public ibanFormatter: IBANFormatter,
+    public refNumberFormatter: ReferenceNumberFormatter,
+    private ngZone: NgZone
+  ) {
     this.bill = billSingleton.getBill();
     this.outputSize = 'a6-landscape';
   }
@@ -51,47 +62,71 @@ export class BillDataComponent implements OnInit {
   ngOnInit() {
     // The below validations are only for a quick feedback. The real validation is performed server-side and
     // only server-side messages are displayed.
-    this.billForm = new FormGroup({
-      account: new FormControl(this.bill.account, { validators: [Validators.required, Validators.pattern('[A-Za-z0-9 ]{5,30}')]}),
-      creditor: new FormGroup({
-        name: new FormControl(this.bill.creditor.name, { validators: Validators.required}),
-        street: new FormControl(this.bill.creditor.street),
-        houseNo: new FormControl(this.bill.creditor.houseNo),
-        countryCode: new FormControl(this.bill.creditor.countryCode,
-          { validators: [Validators.required, Validators.pattern('[A-Za-z]{2}')]}),
-        postalCode: new FormControl(this.bill.creditor.postalCode, { validators: Validators.required}),
-        town: new FormControl(this.bill.creditor.town, { validators: Validators.required})
-      }),
-      finalCreditor: this.formBuilder.group({
-        name: new FormControl(this.bill.finalCreditor.name),
-        street: new FormControl(this.bill.finalCreditor.street),
-        houseNo: new FormControl(this.bill.finalCreditor.houseNo),
-        countryCode: new FormControl(this.bill.finalCreditor.countryCode, { validators: Validators.pattern('[A-Za-z]{2}')}),
-        postalCode: new FormControl(this.bill.finalCreditor.postalCode),
-        town: new FormControl(this.bill.finalCreditor.town)
-      }),
-      currency: new FormControl(this.bill.currency, { validators: [Validators.required, Validators.pattern('[A-Za-z]{3}')]}),
-      amount: new FormControl(this.bill.amount, { validators: [Validators.min(0.01), Validators.max(999999999.99)]}),
-      referenceNo: new FormControl(this.bill.referenceNo, { validators: [Validators.pattern('[A-Za-z0-9 ]{5,40}')]}),
-      additionalInfo: new FormControl(this.bill.additionalInfo),
-      language: new FormControl(this.bill.language),
-      outputSize: new FormControl(this.outputSize),
-      debtor: this.formBuilder.group({
-        name: new FormControl(this.bill.debtor.name),
-        street: new FormControl(this.bill.debtor.street),
-        houseNo: new FormControl(this.bill.debtor.houseNo),
-        countryCode: new FormControl(this.bill.debtor.countryCode, { validators: Validators.pattern('[A-Za-z]{2}')}),
-        postalCode: new FormControl(this.bill.debtor.postalCode),
-        town: new FormControl(this.bill.debtor.town)
-      }),
-      dueDate: new FormControl(this.bill.dueDate)
-    }, {
-      updateOn: 'blur'
-    });
+    this.billForm = new FormGroup(
+      {
+        account: new FormControl(this.bill.account, {
+          validators: [
+            Validators.required,
+            Validators.pattern('[A-Za-z0-9 ]{5,30}')
+          ]
+        }),
+        creditor: new FormGroup({
+          name: new FormControl(this.bill.creditor.name, {
+            validators: Validators.required
+          }),
+          street: new FormControl(this.bill.creditor.street),
+          houseNo: new FormControl(this.bill.creditor.houseNo),
+          countryCode: new FormControl(this.bill.creditor.countryCode, {
+            validators: [Validators.required, Validators.pattern('[A-Za-z]{2}')]
+          }),
+          postalCode: new FormControl(this.bill.creditor.postalCode, {
+            validators: Validators.required
+          }),
+          town: new FormControl(this.bill.creditor.town, {
+            validators: Validators.required
+          })
+        }),
+        finalCreditor: this.formBuilder.group({
+          name: new FormControl(this.bill.finalCreditor.name),
+          street: new FormControl(this.bill.finalCreditor.street),
+          houseNo: new FormControl(this.bill.finalCreditor.houseNo),
+          countryCode: new FormControl(this.bill.finalCreditor.countryCode, {
+            validators: Validators.pattern('[A-Za-z]{2}')
+          }),
+          postalCode: new FormControl(this.bill.finalCreditor.postalCode),
+          town: new FormControl(this.bill.finalCreditor.town)
+        }),
+        currency: new FormControl(this.bill.currency, {
+          validators: [Validators.required, Validators.pattern('[A-Za-z]{3}')]
+        }),
+        amount: new FormControl(this.bill.amount, {
+          validators: [Validators.min(0.01), Validators.max(999999999.99)]
+        }),
+        referenceNo: new FormControl(this.bill.referenceNo, {
+          validators: [Validators.pattern('[A-Za-z0-9 ]{5,40}')]
+        }),
+        additionalInfo: new FormControl(this.bill.additionalInfo),
+        language: new FormControl(this.bill.language),
+        outputSize: new FormControl(this.outputSize),
+        debtor: this.formBuilder.group({
+          name: new FormControl(this.bill.debtor.name),
+          street: new FormControl(this.bill.debtor.street),
+          houseNo: new FormControl(this.bill.debtor.houseNo),
+          countryCode: new FormControl(this.bill.debtor.countryCode, {
+            validators: Validators.pattern('[A-Za-z]{2}')
+          }),
+          postalCode: new FormControl(this.bill.debtor.postalCode),
+          town: new FormControl(this.bill.debtor.town)
+        }),
+        dueDate: new FormControl(this.bill.dueDate)
+      },
+      {
+        updateOn: 'blur'
+      }
+    );
 
     // Server-side validation on each change
-    this.billForm.valueChanges
-      .subscribe(val => this.validateServerSide(val));
+    this.billForm.valueChanges.subscribe(val => this.validateServerSide(val));
 
     this.translate.onLangChange.subscribe((params: LangChangeEvent) => {
       this.validateServerSide(this.billForm.value);
@@ -103,7 +138,8 @@ export class BillDataComponent implements OnInit {
     this.validationInProgress++;
     this.previewPressed = false;
     const bill = this.getBill(value);
-    return this.qrBillService.validate(bill, this.translate.currentLang)
+    return this.qrBillService
+      .validate(bill, this.translate.currentLang)
       .subscribe(response => this.updateServerSideErrors(response));
   }
 
@@ -126,7 +162,7 @@ export class BillDataComponent implements OnInit {
           const control = this.billForm.get(msg.field);
           let errors = control.errors;
           if (!errors) {
-            errors = { };
+            errors = {};
           }
           errors['serverSide'] = msg.message;
           control.setErrors(errors);
@@ -205,7 +241,10 @@ export class BillDataComponent implements OnInit {
 
   private focusControl(controlPath: string) {
     const pathElements = controlPath.split('.');
-    const selector = 'qrbill-data *[ng-reflect-name=' + pathElements.join('] *[ng-reflect-name=') + ']';
+    const selector =
+      'qrbill-data *[ng-reflect-name=' +
+      pathElements.join('] *[ng-reflect-name=') +
+      ']';
     this.ngZone.runOutsideAngular(() => {
       setTimeout(() => {
         const e = document.querySelector(selector);
@@ -216,7 +255,10 @@ export class BillDataComponent implements OnInit {
     });
   }
 
-  private findFirstInvalidControl(root: FormGroup = this.billForm, rootPath: string = ''): string {
+  private findFirstInvalidControl(
+    root: FormGroup = this.billForm,
+    rootPath: string = ''
+  ): string {
     const controls = root.controls;
     for (const field of Object.keys(controls)) {
       const ctrl = controls[field];
@@ -230,5 +272,4 @@ export class BillDataComponent implements OnInit {
     }
     return null;
   }
-
 }

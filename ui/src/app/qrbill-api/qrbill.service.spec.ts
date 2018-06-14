@@ -9,12 +9,9 @@ import { HttpClient } from '@angular/common/http';
 
 import { QrBillService } from './qrbill.service';
 
-class HttpClientMock {
-
-}
+class HttpClientMock {}
 
 describe('QrBillService', () => {
-
   let qrBillService: QrBillService;
 
   beforeEach(() => {
@@ -35,8 +32,10 @@ describe('QrBillService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('Service injected via inject(...) and TestBed.get(...) should be the same instance',
-    inject([QrBillService], (injectService: QrBillService) => {
+  it('Service injected via inject(...) and TestBed.get(...) should be the same instance', inject(
+    [QrBillService],
+    (injectService: QrBillService) => {
       expect(injectService).toBe(qrBillService);
-  }));
+    }
+  ));
 });

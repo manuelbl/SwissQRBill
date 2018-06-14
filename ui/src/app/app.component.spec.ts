@@ -82,6 +82,8 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.navbar-button').textContent).toContain('Swiss QR Bill');
+    expect(compiled.querySelector('.navbar-button').textContent).toContain(
+      'Swiss QR Bill'
+    );
   }));
 });

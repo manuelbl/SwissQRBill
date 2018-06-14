@@ -18,7 +18,7 @@ describe('SettingsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsComponent ],
+      declarations: [SettingsComponent],
       imports: [
         FormsModule,
         MatButtonToggleModule,
@@ -27,8 +27,7 @@ describe('SettingsComponent', () => {
           loader: { provide: TranslateLoader, useClass: TranslateMockLoader }
         })
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -43,7 +42,9 @@ describe('SettingsComponent', () => {
 
   it('should render radio buttons', async(() => {
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('mat-button-toggle').textContent).toEqual('Deutsch');
+    expect(compiled.querySelector('mat-button-toggle').textContent).toEqual(
+      'Deutsch'
+    );
   }));
 
   it('should call swtichLanguage()', async(() => {
@@ -52,5 +53,4 @@ describe('SettingsComponent', () => {
     compiled.querySelector('input').click(); // yes, it's an radio button in Karma
     expect(component.switchLanguage).toHaveBeenCalled();
   }));
-
 });

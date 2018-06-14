@@ -13,10 +13,9 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-
   language: string;
 
-  constructor(private translate: TranslateService) { }
+  constructor(private translate: TranslateService) {}
 
   ngOnInit() {
     this.language = this.translate.currentLang;

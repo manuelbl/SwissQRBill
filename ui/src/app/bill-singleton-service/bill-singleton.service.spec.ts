@@ -15,10 +15,7 @@ describe('BillSingletonService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        BillSingletonService,
-        ExampleService
-      ]
+      providers: [BillSingletonService, ExampleService]
     });
 
     singletonService = TestBed.get(BillSingletonService);
@@ -28,10 +25,12 @@ describe('BillSingletonService', () => {
     expect(singletonService).toBeTruthy();
   });
 
-  it('Service injected via inject(...) and TestBed.get(...) should be the same instance',
-    inject([BillSingletonService], (injectService: BillSingletonService) => {
+  it('Service injected via inject(...) and TestBed.get(...) should be the same instance', inject(
+    [BillSingletonService],
+    (injectService: BillSingletonService) => {
       expect(injectService).toBe(singletonService);
-  }));
+    }
+  ));
 
   it('should retain singleton data', () => {
     const bill: QrBill = {
@@ -47,7 +46,11 @@ describe('BillSingletonService', () => {
     singletonService.setBill(bill);
 
     expect(singletonService.getBill() === bill).toBeFalsy(); // must be copy, not same instance
-    expect(singletonService.getBill().creditor.name).toEqual(bill.creditor.name);
-    expect(singletonService.getBill().creditor.postalCode).toEqual(bill.creditor.postalCode);
+    expect(singletonService.getBill().creditor.name).toEqual(
+      bill.creditor.name
+    );
+    expect(singletonService.getBill().creditor.postalCode).toEqual(
+      bill.creditor.postalCode
+    );
   });
 });

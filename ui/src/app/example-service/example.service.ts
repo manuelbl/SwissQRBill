@@ -11,11 +11,9 @@ import { Example } from './example';
   providedIn: 'root'
 })
 export class ExampleService {
-
   private readonly examples: Example[];
 
   constructor() {
-
     const e1 = new Example(
       {
         language: 'de',
@@ -31,12 +29,10 @@ export class ExampleService {
           town: 'Hunzenschwil',
           countryCode: 'CH'
         },
-        finalCreditor: {
-        },
+        finalCreditor: {},
         additionalInfo: '',
         referenceNo: '',
-        debtor: {
-        },
+        debtor: {},
         dueDate: '2018-03-31'
       },
       // tslint:disable-next-line:max-line-length
@@ -52,7 +48,7 @@ export class ExampleService {
           street: 'Avenue Fornachon',
           houseNo: '34',
           countryCode: 'CH',
-        postalCode: '2034',
+          postalCode: '2034',
           town: 'Peseux'
         },
         finalCreditor: {
@@ -133,14 +129,12 @@ export class ExampleService {
           postalCode: '6900',
           town: 'Lugano'
         },
-        finalCreditor: {
-        },
+        finalCreditor: {},
         additionalInfo: '',
         referenceNo: '',
-        debtor: {
-        },
+        debtor: {},
         currency: 'CHF',
-        language: 'it',
+        language: 'it'
       },
       // tslint:disable-next-line:max-line-length
       'eJyFTU0LwjAM_SshZ4V2B3G7FmQHmWLF0y5BQynMVrtuyMT_bjvxqoHk5ePlvSeOHHrrHVZygR05M5BhrNBGXOA9HPkR06T3qg2tE1KIjDIXVctSlGKOVcJiXchyPgR_Zjj4vifQo50mDgRL0DwlH4YLd6B9jInkONj8cbIE1HUEiq43Mo7yctbKwhm3gyHnP7a5_kpVb_5Rml3zbfH1BiqXWw0~'
@@ -148,38 +142,39 @@ export class ExampleService {
 
     const e5 = new Example(
       {
-        'language': 'en',
-        'version': 'V1_0',
-        'amount': 123949.75,
-        'currency': 'CHF',
-        'account': 'CH4431999123000889012',
-        'creditor': {
-          'name': 'Robert Schneider AG',
-          'street': 'Rue du Lac',
-          'houseNo': '1268/2/22',
-          'postalCode': '2501',
-          'town': 'Biel',
-          'countryCode': 'CH'
+        language: 'en',
+        version: 'V1_0',
+        amount: 123949.75,
+        currency: 'CHF',
+        account: 'CH4431999123000889012',
+        creditor: {
+          name: 'Robert Schneider AG',
+          street: 'Rue du Lac',
+          houseNo: '1268/2/22',
+          postalCode: '2501',
+          town: 'Biel',
+          countryCode: 'CH'
         },
-        'finalCreditor': {
-          'name': 'Robert Schneider Services Switzerland AG',
-          'street': 'Rue du Lac',
-          'houseNo': '1268/3/1',
-          'postalCode': '2501',
-          'town': 'Biel',
-          'countryCode': 'CH'
+        finalCreditor: {
+          name: 'Robert Schneider Services Switzerland AG',
+          street: 'Rue du Lac',
+          houseNo: '1268/3/1',
+          postalCode: '2501',
+          town: 'Biel',
+          countryCode: 'CH'
         },
-        'referenceNo': '210000000003139471430009017',
-        'additionalInfo': 'Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010',
-        'debtor': {
-          'name': 'Pia-Maria Rutschmann-Schnyder',
-          'street': 'Grosse Marktgasse',
-          'houseNo': '28',
-          'postalCode': '9400',
-          'town': 'Rorschach',
-          'countryCode': 'CH'
+        referenceNo: '210000000003139471430009017',
+        additionalInfo:
+          'Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010',
+        debtor: {
+          name: 'Pia-Maria Rutschmann-Schnyder',
+          street: 'Grosse Marktgasse',
+          houseNo: '28',
+          postalCode: '9400',
+          town: 'Rorschach',
+          countryCode: 'CH'
         },
-        'dueDate': '2019-10-30'
+        dueDate: '2019-10-30'
       },
       // tslint:disable-next-line:max-line-length
       'eJx1UctOwzAQ_BXLvTb1buI83BtUokUCqSQ99mJS01oURzhJeYl_Z-0icaE-rHe9s-Px-IufjO9t5_gcp_yo3X7Ue8Pn3Dg-5a9-Y94Hqpr1Yuu3DhAg7BjCYiVlhkopTDMAqCoFmIZG3T0aP7CmPThjd8azq2U8Hg3bjexOt5EiLSqRijROpDlEymtrjmfqf3ka40-2NT1r3uzwaTzJ3V0mzwRe5ibNSqpZmZ-PbiISUCUISRbfuLY6udfealaPQ98eXrRzSdDyQVICYOm7vjeMMM_DXlMaOaoQlTz7VHeeJnV7-Lv4oa4jjpz8XRmSlBJlMJEsLEP71vWDH9uBPoZ1TwzzGahZ0DeZNCgABeUlZKAEokCgSlKegqA9LjJWZIXKyQYQixVCEQaqQkiIeCGROgj8-wfJDZzJ'
@@ -187,22 +182,22 @@ export class ExampleService {
 
     const e6 = new Example(
       {
-        'language': 'fr',
-        'version': 'V1_0',
-        'amount': null,
-        'currency': 'CHF',
-        'account': 'CH37 0900 0000 3044 4222 5',
-        'creditor': {
-          'name': 'Salvation Army Foundation Switzerland',
-          'postalCode': '3000',
-          'town': 'Bern',
-          'countryCode': 'CH'
+        language: 'fr',
+        version: 'V1_0',
+        amount: null,
+        currency: 'CHF',
+        account: 'CH37 0900 0000 3044 4222 5',
+        creditor: {
+          name: 'Salvation Army Foundation Switzerland',
+          postalCode: '3000',
+          town: 'Bern',
+          countryCode: 'CH'
         },
-        'finalCreditor': { },
-        'referenceNo': null,
-        'additionalInfo': 'Donation to the Winterfest campaign',
-        'debtor': { },
-        'dueDate': null
+        finalCreditor: {},
+        referenceNo: null,
+        additionalInfo: 'Donation to the Winterfest campaign',
+        debtor: {},
+        dueDate: null
       },
       // tslint:disable-next-line:max-line-length
       'eJyFTcsKwjAQ_JWQcw_pQ8TetFJ6qkIFL70Eu9ZAu9FtWl_47zaGggfBhdndYYaZJx-AOqWRx77HG4l1L2vgMT8S9_iFdnAzIyu2SUklCl8Ie327kiyci4X4TCiiKAqCYGaFQjaDNGMmW1J7Z6nusXK8uCrzABprKmucEAoXuwJCl_yt_kKSpf8s-Saf3rVG1280Mydge4UG6AidYQfZnqWqkb_eEPdeig~~'
@@ -214,5 +209,4 @@ export class ExampleService {
   public getExamples(): Example[] {
     return this.examples;
   }
-
 }

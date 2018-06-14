@@ -12,7 +12,6 @@ import { ExampleService } from '../example-service/example.service';
   providedIn: 'root'
 })
 export class BillSingletonService {
-
   private bill: QrBill;
 
   constructor(private exampleService: ExampleService) {

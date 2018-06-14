@@ -16,11 +16,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./examples.component.css']
 })
 export class ExamplesComponent implements OnInit {
-
   examples: Example[];
 
-  constructor(private exampleService: ExampleService, private billSingleton: BillSingletonService,
-    private router: Router) { }
+  constructor(
+    private exampleService: ExampleService,
+    private billSingleton: BillSingletonService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.examples = this.exampleService.getExamples();

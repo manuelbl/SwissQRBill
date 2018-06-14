@@ -23,10 +23,12 @@ describe('ExampleService', () => {
     expect(exampleService).toBeTruthy();
   });
 
-  it('Service injected via inject(...) and TestBed.get(...) should be the same instance',
-    inject([ExampleService], (injectService: ExampleService) => {
+  it('Service injected via inject(...) and TestBed.get(...) should be the same instance', inject(
+    [ExampleService],
+    (injectService: ExampleService) => {
       expect(injectService).toBe(exampleService);
-  }));
+    }
+  ));
 
   it('should return examples', () => {
     const examples = exampleService.getExamples();

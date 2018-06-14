@@ -20,9 +20,7 @@ describe('ExamplesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ExamplesComponent
-      ],
+      declarations: [ExamplesComponent],
       imports: [
         MatCardModule,
         RouterTestingModule,
@@ -30,8 +28,7 @@ describe('ExamplesComponent', () => {
           loader: { provide: TranslateLoader, useClass: TranslateMockLoader }
         })
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     exampleService = TestBed.get(ExampleService);
   }));
@@ -49,8 +46,13 @@ describe('ExamplesComponent', () => {
   it('should render cards', async(() => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('button').textContent).toContain('use');
-    expect(compiled.querySelector('img').src.endsWith('/' + exampleService.getExamples()[0].billID)).toBeTruthy();
-    expect(compiled.querySelectorAll('mat-card').length).toEqual(exampleService.getExamples().length);
+    expect(
+      compiled
+        .querySelector('img')
+        .src.endsWith('/' + exampleService.getExamples()[0].billID)
+    ).toBeTruthy();
+    expect(compiled.querySelectorAll('mat-card').length).toEqual(
+      exampleService.getExamples().length
+    );
   }));
-
 });

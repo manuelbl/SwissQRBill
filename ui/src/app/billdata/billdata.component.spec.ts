@@ -20,7 +20,10 @@ import { TranslateMockLoader } from '../mock/translate-mock.loader';
 import { HttpClientModule } from '@angular/common/http';
 import { AmountFormatter } from '../input-fields/amount-formatter';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
+import {
+  MatMomentDateModule,
+  MomentDateAdapter
+} from '@angular/material-moment-adapter';
 
 describe('BillDataComponent', () => {
   let component: BillDataComponent;
@@ -28,10 +31,7 @@ describe('BillDataComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        BillDataComponent,
-        InputWithFormatDirective
-      ],
+      declarations: [BillDataComponent, InputWithFormatDirective],
       imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -55,8 +55,7 @@ describe('BillDataComponent', () => {
         { provide: DateAdapter, useClass: MomentDateAdapter },
         AmountFormatter
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

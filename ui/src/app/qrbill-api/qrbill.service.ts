@@ -14,10 +14,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class QrBillService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   validate(bill: QrBill, language: string): Observable<ValidationResponse> {
-    return this.http.post<ValidationResponse>('../qrbill-api/bill/validate', bill, { headers: { 'Accept-Language': language } });
+    return this.http.post<ValidationResponse>(
+      '../qrbill-api/bill/validate',
+      bill,
+      { headers: { 'Accept-Language': language } }
+    );
   }
 }

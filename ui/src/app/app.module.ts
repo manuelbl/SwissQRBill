@@ -23,7 +23,10 @@ import {
   MatSelectModule,
   MatDialogConfig
 } from '@angular/material';
-import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
+import {
+  MatMomentDateModule,
+  MomentDateAdapter
+} from '@angular/material-moment-adapter';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -50,9 +53,7 @@ export function createTranslateLoader(http: HttpClient) {
     ExamplesComponent,
     InputWithFormatDirective
   ],
-  entryComponents: [
-    PreviewComponent
-  ],
+  entryComponents: [PreviewComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -72,8 +73,8 @@ export function createTranslateLoader(http: HttpClient) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [ HttpClient ]
+        useFactory: createTranslateLoader,
+        deps: [HttpClient]
       }
     })
   ],

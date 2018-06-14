@@ -7,11 +7,11 @@
 import { QrBill } from '../qrbill-api/qrbill';
 
 export class Example {
-    bill: QrBill;
-    billID: string;
+  bill: QrBill;
+  billID: string;
 
-    constructor(bill: QrBill, billID: string) {
-        this.bill = bill;
-        this.billID = billID;
-    }
+  constructor(bill: QrBill, billID: string) {
+    this.bill = bill;
+    this.billID = billID;
+  }
 }
