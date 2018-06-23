@@ -20,3 +20,7 @@ h2 {
     position: sticky;
     bottom: 0;
 }
+
+.gen {
+    color: rgba(0, 0, 0, 0.5);
+}
