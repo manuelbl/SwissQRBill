@@ -133,9 +133,12 @@
 
         <div class="form-line">
           <mat-form-field class="form-field s12">
-            <input qrbillInputWithFormat [inputFormatter]="refNumberFormatter" placeholder="{{ 'reference_no' | translate }}" formControlName="referenceNo">
+            <input qrbillInputWithFormat [inputFormatter]="refNumberFormatter" [matAutocomplete]="refNoAuto" [qrBillAutoComplete]="refNoAuto" (input)="refNoChanges.next($event.target.value)" placeholder="{{ 'reference_no' | translate }}" formControlName="referenceNo">
             <mat-error *ngIf="billForm.hasError('serverSide', ['referenceNo'])">{{billForm.getError('serverSide', 'referenceNo')}}</mat-error>
           </mat-form-field>
+          <mat-autocomplete #refNoAuto="matAutocomplete">
+            <mat-option *ngFor="let option of refNoSuggestions | async" [value]="option">{{ option }}</mat-option>
+          </mat-autocomplete>
         </div>
 
         <div class="form-line">

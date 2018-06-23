@@ -34,7 +34,8 @@ import {
   MatFormFieldControl,
   _MatInputMixinBase,
   CanUpdateErrorState,
-  ErrorStateMatcher
+  ErrorStateMatcher,
+  MatAutocomplete
 } from '@angular/material';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Platform } from '@angular/cdk/platform';
@@ -211,6 +212,16 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase
   }
   private _readonly = false;
 
+  /** Autocomplete element linked to the input field */
+  @Input('qrBillAutoComplete')
+  get autoComplete(): MatAutocomplete {
+    return this._matAutoComplete;
+  }
+  set autoComplete(value: MatAutocomplete) {
+    this._matAutoComplete = value;
+  }
+  private _matAutoComplete: MatAutocomplete = null;
+
   constructor(
     protected _elementRef: ElementRef,
     protected _platform: Platform,
@@ -295,6 +306,9 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase
 
   @HostListener('blur')
   _onBlur() {
+    if (!!this.autoComplete && this.autoComplete.isOpen) {
+      return;
+    }
     this._focusChanged(false);
   }
 

@@ -9,8 +9,7 @@ import {
   FormControl,
   FormGroup,
   FormBuilder,
-  Validators,
-  AbstractControl
+  Validators
 } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
@@ -23,7 +22,9 @@ import { IBANFormatter } from '../input-fields/iban-formatter';
 import { ReferenceNumberFormatter } from '../input-fields/ref-number-formatter';
 import { AmountFormatter } from '../input-fields/amount-formatter';
 import { Moment, isMoment } from 'moment';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
+import { Payments } from '../payments/payments';
+import { startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: 'qrbill-data',
@@ -35,6 +36,8 @@ export class BillDataComponent implements OnInit {
   public bill: QrBill;
   public outputSize: string;
   public billForm: FormGroup;
+  public readonly refNoChanges: Subject<string> = new Subject<string>();
+  public refNoSuggestions: Observable<string[]>;
   private validatedBill: QrBill;
   private billID: string;
   private validationInProgress = 0;
@@ -131,6 +134,11 @@ export class BillDataComponent implements OnInit {
     this.translate.onLangChange.subscribe((params: LangChangeEvent) => {
       this.validateServerSide(this.billForm.value);
     });
+
+    this.refNoSuggestions = this.refNoChanges.pipe(
+      startWith(''),
+      map(val => this.generateRefNos(val))
+    );
   }
 
   // Send data to server for validation
@@ -253,6 +261,22 @@ export class BillDataComponent implements OnInit {
         }
       }, 0);
     });
+  }
+
+  private generateRefNos(rawReference: string): string[] {
+    const suggestions: string[] = [];
+    let str = rawReference.toUpperCase();
+    str = str.replace(/\W/g, '');
+    if (str.startsWith('RF') && str.length > 4) {
+      suggestions.push(Payments.createISO11649(str.substring(4)));
+    }
+    if (str.length > 0 && str.length <= 21) {
+      suggestions.push(Payments.createISO11649(str));
+    }
+    if (str.length > 0 && str.length <= 26 && str.replace(/\D/g, '') === str) {
+      suggestions.push(Payments.createQRReference(str));
+    }
+    return suggestions;
   }
 
   private findFirstInvalidControl(
