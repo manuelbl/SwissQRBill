@@ -137,7 +137,7 @@
             <mat-error *ngIf="billForm.hasError('serverSide', ['referenceNo'])">{{billForm.getError('serverSide', 'referenceNo')}}</mat-error>
           </mat-form-field>
           <mat-autocomplete #refNoAuto="matAutocomplete">
-            <mat-option *ngFor="let option of refNoSuggestions | async" [value]="option">{{ option }}</mat-option>
+            <mat-option *ngFor="let option of refNoSuggestions | async" [value]="option"><span *ngIf="option.startsWith('RF')" class="gen">{{ option.substr(0, 4) }}</span>{{ option.startsWith('RF') ? option.substring(4) : option.substr(0, option.length - 1)}}<span *ngIf="!option.startsWith('RF')" class="gen">{{ option.substr(-1) }}</span></mat-option>
           </mat-autocomplete>
         </div>
 
