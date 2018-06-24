@@ -43,10 +43,6 @@ export class BillDataComponent implements OnInit {
   private validationInProgress = 0;
   private previewPressed = false;
 
-  private static _2digit(n: number) {
-    return ('00' + n).slice(-2);
-  }
-
   constructor(
     private formBuilder: FormBuilder,
     private qrBillService: QrBillService,

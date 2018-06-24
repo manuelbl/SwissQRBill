@@ -20,7 +20,7 @@ export class ExampleService {
         version: 'V1_0',
         currency: 'CHF',
         amount: 100,
-        account: 'CH93 0076 2011 6238 5295 7',
+        account: 'CH9300762011623852957',
         creditor: {
           name: 'Lea Simmen',
           street: 'Weinbergstrasse',
@@ -42,7 +42,7 @@ export class ExampleService {
     const e2 = new Example(
       {
         version: 'V1_0',
-        account: 'CH95 0020 6206 1057 2901 J',
+        account: 'CH950020620610572901J',
         creditor: {
           name: 'Gromion SA',
           street: 'Avenue Fornachon',
@@ -61,7 +61,7 @@ export class ExampleService {
         },
         currency: 'CHF',
         amount: 371.2,
-        referenceNo: '0 00038 38000 01776',
+        referenceNo: '0000383800001776',
         additionalInfo: '',
         language: 'fr',
         debtor: {
@@ -81,7 +81,7 @@ export class ExampleService {
     const e3 = new Example(
       {
         version: 'V1_0',
-        account: 'CH45 0023 0230 9999 9999 A',
+        account: 'CH450023023099999999A',
         creditor: {
           name: 'UBS Switzerland AG',
           street: 'Postfach',
@@ -100,7 +100,7 @@ export class ExampleService {
         },
         currency: 'EUR',
         amount: 287.3,
-        referenceNo: '87 00129 38238 13990 00012 38028',
+        referenceNo: '870012938238139900001238028',
         additionalInfo: 'Rechnungsnr. 10978 / Auftragsrnr. 3987',
         language: 'de',
         debtor: {
@@ -120,7 +120,7 @@ export class ExampleService {
     const e4 = new Example(
       {
         version: 'V1_0',
-        account: 'CH19 0900 0000 6900 2821 9',
+        account: 'CH1909000000690028219',
         creditor: {
           name: 'Croce Rossa Svizzera - Sezione del Sottoceneri',
           street: 'Via alla Campagna',
@@ -186,7 +186,7 @@ export class ExampleService {
         version: 'V1_0',
         amount: null,
         currency: 'CHF',
-        account: 'CH37 0900 0000 3044 4222 5',
+        account: 'CH3709000000304442225',
         creditor: {
           name: 'Salvation Army Foundation Switzerland',
           postalCode: '3000',
