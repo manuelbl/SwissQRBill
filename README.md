@@ -2,19 +2,13 @@
 
 Open-source Java library to generate Swiss QR bills.
 
-For demonstration pruposes, there is code for an Angular UI and a web service in addition to the Java library.
-Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill).
+For demonstration pruposes, there is code for an Angular UI and a web service in addition to the Java library. Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill).
 
 ## Introduction
 
-The Swiss QR bill is the new QR code based payment format that will replace the current payment slip.
-The new payment slip with the QR code is either directly printed at the bottom of an invoice
-or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app
-to initiate the payment. No other data needs to be entered. The payment just needs to be confirmed.
+The Swiss QR bill is the new QR code based payment format that will replace the current payment slip starting at 30 June, 2020. The new payment slip with the QR code is either directly printed at the bottom of an invoice or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app to initiate the payment. No other data needs to be entered. The payment just needs to be confirmed.
 
-The invoicing party can easily synchronize the received payment with the accounts-receivable accounting as
-they payment comes with a full set of data including the reference number used on the invoice. So the Swiss QR bill
-is convenient for the payer and payee.
+The invoicing party can easily synchronize the received payment with the accounts-receivable accounting as they payment comes with a full set of data including the reference number used on the invoice. So the Swiss QR bill is convenient for the payer and payee.
 
 ![QR Bill](https://raw.githubusercontent.com/wiki/manuelbl/SwissQRBill/images/qr-invoice-e1.svg?sanitize=true)
 
@@ -35,6 +29,7 @@ The Swiss QR bill library:
 - is free – even for commecial use (MIT License)
 - is available on Maven Central
 
+**Note**: This library implements version 1.0 of the *Swiss Implementation Guidelines QR-bill*. The document is currently undergoing a revsion. A new version is expected by mid of November 2018. The library will be updated by the end of 2018 to confirm with the revised version of the document.
 
 ## Getting started
 
