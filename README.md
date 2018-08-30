@@ -29,7 +29,7 @@ The Swiss QR bill library:
 - is free – even for commecial use (MIT License)
 - is available on Maven Central
 
-**Note**: This library implements version 1.0 of the *Swiss Implementation Guidelines QR-bill*. The document is currently undergoing a revsion. A new version is expected by mid of November 2018. The library will be updated by the end of 2018 to confirm with the revised version of the document.
+**Note**: This library implements version 1.0 of the *Swiss Implementation Guidelines QR-bill*. The document is currently undergoing a revsion. A new version is expected by mid of November 2018. The library will be updated by the end of 2018 to conform to the revised version of the document.
 
 ## Getting started
 
