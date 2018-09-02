@@ -139,6 +139,13 @@ public interface Canvas extends Closeable {
     void addRectangle(double x, double y, double width, double height) throws IOException;
 
     /**
+     * Closes the current subpath
+     * 
+     * @throws IOException thrown if the graphics cannot be generated
+     */
+    void closeSubpath() throws IOException;
+
+    /**
      * Fills the current path and ends it
      * 
      * @param color the fill color (expressed similar to HTML, e.g. 0xffffff for
