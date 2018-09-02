@@ -32,6 +32,7 @@ public class SVGCanvas extends AbstractCanvas {
         // no further initialization needed here
     }
 
+    @Override
     public void setupPage(double width, double height) throws IOException {
         buffer = new ByteArrayOutputStream();
         stream = new OutputStreamWriter(buffer, StandardCharsets.UTF_8);
@@ -52,6 +53,7 @@ public class SVGCanvas extends AbstractCanvas {
         stream.write("<title>Swiss QR Bill</title>\n");
     }
 
+    @Override
     public void close() throws IOException {
         if (isInGroup) {
             stream.write("</g>\n");
@@ -65,12 +67,14 @@ public class SVGCanvas extends AbstractCanvas {
         }
     }
 
+    @Override
     public void startPath() throws IOException {
         stream.write("<path d=\"");
         isFirstMoveInPath = true;
         approxPathLength = 0;
     }
 
+    @Override
     public void moveTo(double x, double y) throws IOException {
         y = -y;
         if (isFirstMoveInPath) {
@@ -91,6 +95,7 @@ public class SVGCanvas extends AbstractCanvas {
         approxPathLength += 16;
     }
 
+    @Override
     public void lineTo(double x, double y) throws IOException {
         y = -y;
         addPathNewlines(16);
@@ -103,6 +108,7 @@ public class SVGCanvas extends AbstractCanvas {
         approxPathLength += 16;
     }
 
+    @Override
     public void cubicCurveTo(double x1, double y1, double x2, double y2, double x, double y) throws IOException {
         y1 = -y1;
         y2 = -y2;
@@ -125,6 +131,7 @@ public class SVGCanvas extends AbstractCanvas {
         approxPathLength += 48;
     }
 
+    @Override
     public void addRectangle(double x, double y, double width, double height) throws IOException {
         addPathNewlines(40);
         moveTo(x, y + height);
@@ -138,6 +145,13 @@ public class SVGCanvas extends AbstractCanvas {
         approxPathLength += 24;
     }
 
+    @Override
+    public void closeSubpath() throws IOException {
+        addPathNewlines(1);
+        stream.write("z");
+        approxPathLength += 1;
+    }
+
     private void addPathNewlines(int expectedLength) throws IOException {
         if (approxPathLength + expectedLength > 255) {
             stream.write("\n");
@@ -145,6 +159,7 @@ public class SVGCanvas extends AbstractCanvas {
         }
     }
 
+    @Override
     public void fillPath(int color) throws IOException {
         stream.write("\" fill=\"#");
         stream.write(formatColor(color));
@@ -152,6 +167,7 @@ public class SVGCanvas extends AbstractCanvas {
         isFirstMoveInPath = true;
     }
 
+    @Override
     public void strokePath(double strokeWidth, int color) throws IOException {
         stream.write("\" stroke=\"#");
         stream.write(formatColor(color));
@@ -163,6 +179,7 @@ public class SVGCanvas extends AbstractCanvas {
         isFirstMoveInPath = true;
     }
 
+    @Override
     public void putText(String text, double x, double y, int fontSize, boolean isBold) throws IOException {
         y = -y;
         stream.write("<text x=\"");
@@ -178,6 +195,7 @@ public class SVGCanvas extends AbstractCanvas {
         stream.write("</text>\n");
     }
 
+    @Override
     public void setTransformation(double translateX, double translateY, double scaleX, double scaleY) throws IOException {
         if (isInGroup) {
             stream.write("</g>\n");
@@ -201,6 +219,7 @@ public class SVGCanvas extends AbstractCanvas {
         }
     }
 
+    @Override
     public byte[] getResult() throws IOException {
         close();
         return buffer.toByteArray();

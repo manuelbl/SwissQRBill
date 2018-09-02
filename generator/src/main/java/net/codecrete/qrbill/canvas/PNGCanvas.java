@@ -147,6 +147,11 @@ public class PNGCanvas extends AbstractCanvas {
     }
 
     @Override
+    public void closeSubpath() throws IOException {
+        currentPath.closePath();
+    }
+
+    @Override
     public void fillPath(int color) {
         graphics.setColor(new Color(color));
         graphics.fill(currentPath);

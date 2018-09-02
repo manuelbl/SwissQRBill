@@ -102,14 +102,8 @@ class PaymentPartLayout {
         }
 
         // border
-        if (hasBorder) {
-            graphics.setTransformation(offsetX, offsetY, 1, 1);
-            graphics.startPath();
-            graphics.moveTo(0, 0);
-            graphics.lineTo(0, SLIP_HEIGHT);
-            graphics.lineTo(SLIP_WIDTH, SLIP_HEIGHT);
-            graphics.strokePath(0.5, 0);
-        }
+        if (hasBorder)
+            drawBorder(offsetX, offsetY);
 
         // title section
         graphics.setTransformation(offsetX + HORIZ_BORDER, offsetY, 1, 1);
@@ -180,6 +174,47 @@ class PaymentPartLayout {
         // due date
         if (dueDate != null)
             drawLabelAndText(MultilingualText.KEY_DUE_DATE, dueDate);
+    }
+
+	private void drawBorder(double offsetX, double offsetY) throws IOException {
+		graphics.setTransformation(offsetX, offsetY, 1, 1);
+		graphics.startPath();
+		graphics.moveTo(0, 0);
+		graphics.lineTo(0, SLIP_HEIGHT - 16);
+		graphics.moveTo(0, SLIP_HEIGHT - 9);
+		graphics.lineTo(0, SLIP_HEIGHT);
+		graphics.lineTo(SLIP_WIDTH, SLIP_HEIGHT);
+        graphics.strokePath(0.5, 0);
+        
+        drawScissors(offsetX, offsetY + SLIP_HEIGHT - 16, 6);
+    }
+    
+    private void drawScissors(double x, double y, double size) throws IOException {
+        drawScissorsBlade(x, y, size, false);
+        drawScissorsBlade(x, y, size, true);
+    }
+
+    private void drawScissorsBlade(double x, double y, double size, boolean mirrored) throws IOException {
+        graphics.setTransformation(x + size * (mirrored ? 0.37 : -0.37), y, (mirrored ? -size : size) / 476.0, size / 476.0);
+		graphics.startPath();
+        graphics.moveTo(46.48, 126.784);
+        graphics.cubicCurveTo(34.824, 107.544, 28.0, 87.924, 28.0, 59.0);
+        graphics.cubicCurveTo(28.0, 36.88, 33.387, 16.436, 42.507, -0.124);
+        graphics.lineTo(242.743, 326.63);
+        graphics.cubicCurveTo(246.359, 332.53, 254.836, 334.776, 265.31, 328.678);
+        graphics.cubicCurveTo(276.973, 321.89, 290.532, 318.0, 305.0, 318.0);
+        graphics.cubicCurveTo(348.63, 318.0, 384.0, 353.37, 384.0, 397.0);
+        graphics.cubicCurveTo(384.0, 440.63, 348.63, 476.0, 305.0, 476.0);
+        graphics.cubicCurveTo(278.066, 476.0, 254.28, 462.521, 240.02, 441.94);
+        graphics.lineTo(46.48, 126.785);
+        graphics.closeSubpath();
+        graphics.moveTo(303.5, 446.0);
+        graphics.cubicCurveTo(330.286, 446.0, 352.0, 424.286, 352.0, 397.5);
+        graphics.cubicCurveTo(352.0, 370.714, 330.286, 349.0, 303.5, 349.0);
+        graphics.cubicCurveTo(276.714, 349.0, 255.0, 370.714, 255.0, 397.5);
+        graphics.cubicCurveTo(255.0, 424.286, 276.714, 446.0, 303.5, 446.0);
+        graphics.closeSubpath();
+        graphics.fillPath(0);
     }
 
     // Draws a label at (0, yPos) and advances vertically

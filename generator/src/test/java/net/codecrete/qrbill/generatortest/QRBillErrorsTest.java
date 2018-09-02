@@ -87,6 +87,11 @@ class QRBillErrorsTest {
 		}
 
 		@Override
+		public void closeSubpath() throws IOException {
+			throw new IOException("not implemented");
+		}
+		
+		@Override
 		public void fillPath(int color) throws IOException {
 			throw new IOException("not implemented");
 		}

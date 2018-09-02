@@ -133,6 +133,11 @@ public class PDFCanvas extends AbstractCanvas {
         height *= MM_TO_PT;
         contentStream.addRect((float) x, (float) y, (float) width, (float) height);
     }
+    
+    @Override
+    public void closeSubpath() throws IOException {
+        contentStream.closePath();
+    }
 
     @Override
     public void fillPath(int color) throws IOException {
