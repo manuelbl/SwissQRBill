@@ -80,16 +80,16 @@ public class PNGCanvas extends AbstractCanvas {
         graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
         // initialize transformation
-        setTransformation(0, 0, 1);
+        setTransformation(0, 0, 1, 1);
     }
 
     @Override
-    public void setTransformation(double translateX, double translateY, double scale) {
+    public void setTransformation(double translateX, double translateY, double scaleX, double scaleY) {
         // Our coorinate system extends from the bottom up. Java Graphics2D's system
         // extends from the top down. So Y coordinates need to be treated specially.
         translateX *= coordinateScale;
         translateY *= coordinateScale;
-        AffineTransform at = new AffineTransform(scale, 0, 0, scale, translateX, image.getHeight() - translateY);
+        AffineTransform at = new AffineTransform(scaleX, 0, 0, scaleY, translateX, image.getHeight() - translateY);
         graphics.setTransform(at);
     }
 
@@ -120,6 +120,17 @@ public class PNGCanvas extends AbstractCanvas {
         x *= coordinateScale;
         y *= -coordinateScale;
         currentPath.lineTo(x, y);
+    }
+
+    @Override
+    public void cubicCurveTo(double x1, double y1, double x2, double y2, double x, double y) throws IOException {
+        x1 *= coordinateScale;
+        y1 *= -coordinateScale;
+        x2 *= coordinateScale;
+        y2 *= -coordinateScale;
+        x *= coordinateScale;
+        y *= -coordinateScale;
+        currentPath.curveTo(x1, y1, x2, y2, x, y);
     }
 
     @Override

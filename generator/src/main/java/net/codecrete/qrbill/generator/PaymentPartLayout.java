@@ -103,7 +103,7 @@ class PaymentPartLayout {
 
         // border
         if (hasBorder) {
-            graphics.setTransformation(offsetX, offsetY, 1);
+            graphics.setTransformation(offsetX, offsetY, 1, 1);
             graphics.startPath();
             graphics.moveTo(0, 0);
             graphics.lineTo(0, SLIP_HEIGHT);
@@ -112,7 +112,7 @@ class PaymentPartLayout {
         }
 
         // title section
-        graphics.setTransformation(offsetX + HORIZ_BORDER, offsetY, 1);
+        graphics.setTransformation(offsetX + HORIZ_BORDER, offsetY, 1, 1);
         yPos = SLIP_HEIGHT - VERT_BORDER - FontMetrics.getAscender(FONT_SIZE_TITLE);
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_QR_BILL_PAYMENT_PART, bill.getLanguage()), 0,
                 yPos, FONT_SIZE_TITLE, true);
@@ -131,7 +131,7 @@ class PaymentPartLayout {
         drawLabelAndText(MultilingualText.KEY_CURRENCY, bill.getCurrency());
 
         // amount
-        graphics.setTransformation(offsetX + HORIZ_BORDER + LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, offsetY, 1);
+        graphics.setTransformation(offsetX + HORIZ_BORDER + LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, offsetY, 1, 1);
         yPos = lowerTextHeight + labelPaddingTop;
         if (bill.getAmount() != null) {
             drawLabelAndText(MultilingualText.KEY_AMOUNT, formatAmountForDisplay(bill.getAmount()));
@@ -147,7 +147,7 @@ class PaymentPartLayout {
         qrCode.draw(graphics, offsetX + HORIZ_BORDER, offsetY + yPos);
 
         // information section
-        graphics.setTransformation(offsetX + HORIZ_BORDER + LEFT_COLUMN_WIDTH + MIDDLE_SPACING, offsetY, 1);
+        graphics.setTransformation(offsetX + HORIZ_BORDER + LEFT_COLUMN_WIDTH + MIDDLE_SPACING, offsetY, 1, 1);
         yPos = SLIP_HEIGHT - VERT_BORDER - rightColumnPaddingTop + labelPaddingTop;
 
         // account

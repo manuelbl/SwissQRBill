@@ -103,6 +103,28 @@ public class SVGCanvas extends AbstractCanvas {
         approxPathLength += 16;
     }
 
+    public void cubicCurveTo(double x1, double y1, double x2, double y2, double x, double y) throws IOException {
+        y1 = -y1;
+        y2 = -y2;
+        y = -y;
+        addPathNewlines(48);
+        stream.write("c");
+        stream.write(formatCoordinate(x1 - lastPositionX));
+        stream.write(",");
+        stream.write(formatCoordinate(y1 - lastPositionY));
+        stream.write(",");
+        stream.write(formatCoordinate(x2 - lastPositionX));
+        stream.write(",");
+        stream.write(formatCoordinate(y2 - lastPositionY));
+        stream.write(",");
+        stream.write(formatCoordinate(x - lastPositionX));
+        stream.write(",");
+        stream.write(formatCoordinate(y - lastPositionY));
+        lastPositionX = x;
+        lastPositionY = y;
+        approxPathLength += 48;
+    }
+
     public void addRectangle(double x, double y, double width, double height) throws IOException {
         addPathNewlines(40);
         moveTo(x, y + height);
@@ -156,19 +178,23 @@ public class SVGCanvas extends AbstractCanvas {
         stream.write("</text>\n");
     }
 
-    public void setTransformation(double translateX, double translateY, double scale) throws IOException {
+    public void setTransformation(double translateX, double translateY, double scaleX, double scaleY) throws IOException {
         if (isInGroup) {
             stream.write("</g>\n");
             isInGroup = false;
         }
-        if (translateX != 0 || translateY != 0 || scale != 1) {
+        if (translateX != 0 || translateY != 0 || scaleX != 1 || scaleY != 1) {
             stream.write("<g transform=\"translate(");
             stream.write(formatCoordinate(translateX));
             stream.write(" ");
             stream.write(formatCoordinate(-translateY));
-            if (scale != 1) {
+            if (scaleX != 1 || scaleY != 1) {
                 stream.write(") scale(");
-                stream.write(formatNumber(scale));
+                stream.write(formatNumber(scaleX));
+                if (scaleX != scaleY) {
+                    stream.write(" ");
+                    stream.write(formatNumber(scaleY));
+                }
             }
             stream.write(")\">\n");
             isInGroup = true;

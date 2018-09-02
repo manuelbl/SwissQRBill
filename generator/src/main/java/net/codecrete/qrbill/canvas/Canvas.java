@@ -50,10 +50,11 @@ public interface Canvas extends Closeable {
      * 
      * @param translateX translation in x direction (in mm)
      * @param translateY translation in y direction (in mm)
-     * @param scale      scale fator (1.0 = no scaling)
+     * @param scaleX     scale fator in x directipm (1.0 = no scaling)
+     * @param scaleY     scale fator in y direction (1.0 = no scaling)
      * @throws IOException thrown if the graphics cannot be generated
      */
-    void setTransformation(double translateX, double translateY, double scale) throws IOException;
+    void setTransformation(double translateX, double translateY, double scaleX, double scaleY) throws IOException;
 
     /**
      * Adds text to the graphics.
@@ -111,6 +112,20 @@ public interface Canvas extends Closeable {
      * @throws IOException thrown if the graphics cannot be generated
      */
     void lineTo(double x, double y) throws IOException;
+
+    /**
+     * Adds a cubic Beziér curve to the open path going from the previous point to the speicifed
+     * position. Two control points control the curve
+     * 
+     * @param x1 x-coordinate of first control point
+     * @param y1 y-coordinate of first control point
+     * @param x2 x-coordinate of second control point
+     * @param y2 y-coordinate of second control point
+     * @param x x-coordinate of position
+     * @param y y-coordinate of position
+     * @throws IOException thrown if the graphics cannot be generated
+     */
+    void cubicCurveTo(double x1, double y1, double x2, double y2, double x, double y) throws IOException;
 
     /**
      * Adds a rectangle to the path

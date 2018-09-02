@@ -45,7 +45,7 @@ public class PDFCanvas extends AbstractCanvas {
     }
 
     @Override
-    public void setTransformation(double translateX, double translateY, double scale) throws IOException {
+    public void setTransformation(double translateX, double translateY, double scaleX, double scaleY) throws IOException {
         translateX *= MM_TO_PT;
         translateY *= MM_TO_PT;
 
@@ -60,7 +60,7 @@ public class PDFCanvas extends AbstractCanvas {
         hasSavedGraphicsState = true;
         Matrix matrix = new Matrix();
         matrix.translate((float) translateX, (float) translateY);
-        matrix.scale((float) scale, (float) scale);
+        matrix.scale((float) scaleX, (float) scaleY);
         contentStream.transform(matrix);
     }
 
@@ -114,6 +114,17 @@ public class PDFCanvas extends AbstractCanvas {
         contentStream.lineTo((float) x, (float) y);
     }
 
+    @Override
+    public void cubicCurveTo(double x1, double y1, double x2, double y2, double x, double y) throws IOException {
+        x1 *= MM_TO_PT;
+        y1 *= MM_TO_PT;
+        x2 *= MM_TO_PT;
+        y2 *= MM_TO_PT;
+        x *= MM_TO_PT;
+        y *= MM_TO_PT;
+        contentStream.curveTo((float) x1, (float) y1, (float) x2, (float) y2, (float) x, (float) y);
+    }
+    
     @Override
     public void addRectangle(double x, double y, double width, double height) throws IOException {
         x *= MM_TO_PT;

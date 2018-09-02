@@ -72,11 +72,11 @@ class QRCode {
         boolean[][] modules = copyModules(qrCode);
         clearSwissCrossArea(modules);
 
-        graphics.setTransformation(offsetX, offsetY, SIZE / modules.length / 25.4 * 72);
+        graphics.setTransformation(offsetX, offsetY, SIZE / modules.length / 25.4 * 72, SIZE / modules.length / 25.4 * 72);
         graphics.startPath();
         drawModulesPath(graphics, modules);
         graphics.fillPath(0);
-        graphics.setTransformation(offsetX, offsetY, 1);
+        graphics.setTransformation(offsetX, offsetY, 1, 1);
 
         // Swiss cross
         graphics.startPath();

@@ -52,7 +52,7 @@ class QRBillErrorsTest {
 		}
 
 		@Override
-		public void setTransformation(double translateX, double translateY, double scale) throws IOException {
+		public void setTransformation(double translateX, double translateY, double scaleX, double scaleY) throws IOException {
 			throw new IOException("not implemented");
 		}
 
@@ -76,6 +76,11 @@ class QRBillErrorsTest {
 			throw new IOException("not implemented");
 		}
 
+		@Override
+		public void cubicCurveTo(double x1, double y1, double x2, double y2, double x, double y) throws IOException {
+			throw new IOException("not implemented");
+		}
+		
 		@Override
 		public void addRectangle(double x, double y, double width, double height) throws IOException {
 			throw new IOException("not implemented");
