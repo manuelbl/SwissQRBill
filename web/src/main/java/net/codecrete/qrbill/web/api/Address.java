@@ -83,32 +83,4 @@ public class Address {
     public int hashCode() {
         return Objects.hash(name, street, houseNo, postalCode, town, countryCode);
     }
-
-    public static Address from(net.codecrete.qrbill.generator.Address address) {
-        if (address == null)
-            return null;
-
-        Address addr = new Address();
-        addr.name = address.getName();
-        addr.street = address.getStreet();
-        addr.houseNo = address.getHouseNo();
-        addr.postalCode = address.getPostalCode();
-        addr.town = address.getTown();
-        addr.countryCode = address.getCountryCode();
-        return addr;
-    }
-
-    public static net.codecrete.qrbill.generator.Address toGeneratorAddress(Address addr) {
-        if (addr == null)
-            return null;
-
-        net.codecrete.qrbill.generator.Address address = new net.codecrete.qrbill.generator.Address();
-        address.setName(addr.name);
-        address.setStreet(addr.street);
-        address.setHouseNo(addr.houseNo);
-        address.setPostalCode(addr.postalCode);
-        address.setTown(addr.town);
-        address.setCountryCode(addr.countryCode);
-        return address;
-    }
 }

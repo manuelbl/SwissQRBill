@@ -6,9 +6,6 @@
 //
 package net.codecrete.qrbill.web.api;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ValidationMessage {
 
     public enum Type {
@@ -75,34 +72,5 @@ public class ValidationMessage {
 
     public void setMessageParameters(String[] messageParameters) {
         this.messageParameters = messageParameters;
-    }
-
-    public static ValidationMessage from(net.codecrete.qrbill.generator.ValidationMessage msg) {
-        if (msg == null)
-            return null;
-
-        ValidationMessage message = new ValidationMessage();
-        message.type = typeFromUppercase(msg.getType().name());
-        message.field = msg.getField();
-        message.messageKey = msg.getMessageKey();
-        message.messageParameters = msg.getMessageParameters();
-        return message;
-    }
-
-    public static List<ValidationMessage> fromList(List<net.codecrete.qrbill.generator.ValidationMessage> list) {
-        List<ValidationMessage> msgList = new ArrayList<>(list.size());
-        for (net.codecrete.qrbill.generator.ValidationMessage msg : list) {
-            msgList.add(from(msg));
-        }
-
-        return msgList;
-    }
-
-    private static Type typeFromUppercase(String name) {
-        if ("ERROR".equals(name))
-            return Type.Error;
-        if ("WARNING".equals(name))
-            return Type.Warning;
-        return null;
     }
 }

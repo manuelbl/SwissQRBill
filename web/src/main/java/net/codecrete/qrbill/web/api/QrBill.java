@@ -17,7 +17,7 @@ import java.util.Objects;
  */
 public class QrBill {
 
-    // Itentionally use lowercase
+    // Intentionally use lowercase
     public enum Language {
         de, fr, it, en
     }
@@ -145,52 +145,5 @@ public class QrBill {
     public int hashCode() {
         return Objects.hash(language, version, amount, currency, account, creditor, finalCreditor, referenceNo,
                 additionalInfo, debtor, dueDate);
-    }
-
-    public static QrBill from(Bill bill) {
-        QrBill qrBill = new QrBill();
-        qrBill.language = apiLangFromGeneratorLang(bill.getLanguage());
-        qrBill.version = Version.valueOf(bill.getVersion().name());
-        qrBill.amount = bill.getAmount();
-        qrBill.currency = bill.getCurrency();
-        qrBill.account = bill.getAccount();
-        qrBill.creditor = Address.from(bill.getCreditor());
-        qrBill.finalCreditor = Address.from(bill.getFinalCreditor());
-        qrBill.referenceNo = bill.getReferenceNo();
-        qrBill.additionalInfo = bill.getAdditionalInfo();
-        qrBill.debtor = Address.from(bill.getDebtor());
-        qrBill.dueDate = bill.getDueDate();
-        return qrBill;
-    }
-
-    public static Bill toGeneratorBill(QrBill qrBill) {
-        if (qrBill == null)
-            return null;
-
-        Bill bill = new Bill();
-        bill.setLanguage(generatorLangFromApiLang(qrBill.getLanguage()));
-        bill.setVersion(net.codecrete.qrbill.generator.Bill.Version.valueOf(qrBill.getVersion().name()));
-        bill.setAmount(qrBill.amount);
-        bill.setCurrency(qrBill.currency);
-        bill.setAccount(qrBill.account);
-        bill.setCreditor(Address.toGeneratorAddress(qrBill.creditor));
-        bill.setFinalCreditor(Address.toGeneratorAddress(qrBill.finalCreditor));
-        bill.setReferenceNo(qrBill.referenceNo);
-        bill.setAdditionalInfo(qrBill.additionalInfo);
-        bill.setDebtor(Address.toGeneratorAddress(qrBill.debtor));
-        bill.setDueDate(qrBill.dueDate);
-        return bill;
-    }
-
-    private static Language apiLangFromGeneratorLang(net.codecrete.qrbill.generator.Bill.Language language) {
-        String name = language.name();
-        name = name.toLowerCase(Locale.US);
-        return Language.valueOf(name);
-    }
-
-    private static net.codecrete.qrbill.generator.Bill.Language generatorLangFromApiLang(Language language) {
-        String name = language.name();
-        name = name.toUpperCase(Locale.US);
-        return net.codecrete.qrbill.generator.Bill.Language.valueOf(name);
     }
 }

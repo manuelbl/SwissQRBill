@@ -71,7 +71,7 @@ public class QRBillController {
     @RequestMapping(value = "/bill/validate", method = RequestMethod.POST)
     @ResponseBody
     public ValidationResponse validate(@RequestBody QrBill bill) {
-        ValidationResult result = QRBill.validate(QrBill.toGeneratorBill(bill));
+        ValidationResult result = QRBill.validate(QrBillDTOConverter.fromDtoQrBill(bill));
         return createValidationResponse(result);
     }
 
@@ -100,11 +100,11 @@ public class QRBillController {
 
         // Generate localized messages
         if (result.hasMessages()) {
-            List<ValidationMessage> messages = ValidationMessage.fromList(result.getValidationMessages());
+            List<ValidationMessage> messages = QrBillDTOConverter.toDtoValidationMessageList(result.getValidationMessages());
             addLocalMessages(messages);
             response.setValidationMessages(messages);
         }
-        response.setValidatedBill(QrBill.from(validatedBill));
+        response.setValidatedBill(QrBillDTOConverter.toDTOQrBill(validatedBill));
 
         // generate QR code text and bill ID
         if (!result.hasErrors()) {
@@ -179,11 +179,11 @@ public class QRBillController {
                     "Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
 
         try {
-            byte[] result = generate(QrBill.toGeneratorBill(bill), billFormat, graphicsFormat);
+            byte[] result = generate(QrBillDTOConverter.fromDtoQrBill(bill), billFormat, graphicsFormat);
             return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(result);
         } catch (QRBillValidationError e) {
-            List<ValidationMessage> messages = ValidationMessage
-                    .fromList(e.getValidationResult().getValidationMessages());
+            List<ValidationMessage> messages
+                    = QrBillDTOConverter.toDtoValidationMessageList(e.getValidationResult().getValidationMessages());
             addLocalMessages(messages);
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(messages);
         }
