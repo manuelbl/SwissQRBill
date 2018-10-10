@@ -9,7 +9,6 @@ package net.codecrete.qrbill.web.api;
 import net.codecrete.qrbill.generator.Bill;
 
 import java.time.LocalDate;
-import java.util.Locale;
 import java.util.Objects;
 
 /**
