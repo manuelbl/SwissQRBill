@@ -6,12 +6,10 @@
 //
 package net.codecrete.qrbill.web.controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -179,35 +177,56 @@ public class PostalCodeData {
     }
 
     private void load() {
-        List<PostalCode> postalCodeList = new ArrayList<>();
         try {
             URL u = new URL("https://data.geo.admin.ch/ch.swisstopo-vd.ortschaftenverzeichnis_plz/PLZO_CSV_LV03.zip");
             HttpURLConnection connection = (HttpURLConnection) u.openConnection();
             connection.setInstanceFollowRedirects(true);
             connection.connect();
-            try (InputStream in = connection.getInputStream(); ZipInputStream zis = new ZipInputStream(in)) {
-                zis.getNextEntry();
 
-                try (InputStreamReader reader = new InputStreamReader(zis, StandardCharsets.UTF_8);
-                        BufferedReader lineReader = new BufferedReader(reader)) {
+            byte[] zipData = readFully(connection.getInputStream(), connection.getContentLength());
 
-                    lineReader.readLine();
+            // They keep changing the encoding from UTF-8 to ISO-8850-1 and back. So test for both.
+            List<PostalCode> postalCodeList = readCSV(zipData, StandardCharsets.UTF_8);
+            if (postalCodeList == null)
+                postalCodeList = readCSV(zipData, StandardCharsets.ISO_8859_1);
+            if (postalCodeList == null)
+                throw new RuntimeException("Invalid encoding of postal code data");
 
-                    while (true) {
-                        String line = lineReader.readLine();
-                        if (line == null)
-                            break;
-
-                        processLine(line, postalCodeList);
-                    }
-                }
-            }
+            setupSortedArrays(postalCodeList);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        setupSortedArrays(postalCodeList);
+    }
+
+    private List<PostalCode> readCSV(byte[] zipData, Charset charset) throws IOException {
+        List<PostalCode> postalCodeList = new ArrayList<>();
+        boolean containsZurich = false;
+        try (InputStream in = new ByteArrayInputStream(zipData); ZipInputStream zis = new ZipInputStream(in)) {
+            zis.getNextEntry();
+
+            try (InputStreamReader reader = new InputStreamReader(zis, charset);
+                 BufferedReader lineReader = new BufferedReader(reader)) {
+
+                lineReader.readLine();
+
+                while (true) {
+                    String line = lineReader.readLine();
+                    if (line == null)
+                        break;
+
+                    // "Zürich" contains an umlaut and is a good indicator for the encoding.
+                    containsZurich = containsZurich || line.contains("Zürich");
+                    processLine(line, postalCodeList);
+                }
+            }
+        }
+
+        if (!containsZurich)
+            return null;
+
+        return postalCodeList;
     }
 
     private void processLine(String line, List<PostalCode> postalCodeList) {
@@ -226,6 +245,18 @@ public class PostalCodeData {
         sortedByTown = new PostalCode[postalCodeList.size()];
         sortedByTown = postalCodeList.toArray(sortedByTown);
         Arrays.sort(sortedByTown, Comparator.comparing(pc -> pc.townLowercase));
+    }
+
+    private static byte[] readFully(InputStream inputStream, int expectedLength) throws IOException {
+        ByteArrayOutputStream ba = new ByteArrayOutputStream(expectedLength);
+        byte[] buffer = new byte[4096];
+        while (true) {
+            int n = inputStream.read(buffer);
+            if (n <= 0)
+                break;
+            ba.write(buffer, 0, n);
+        }
+        return ba.toByteArray();
     }
 
     public static class PostalCode {
