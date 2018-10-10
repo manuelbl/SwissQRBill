@@ -1,4 +1,4 @@
-swagger: "2.0"
+openapi: 3.0.0
 
 info:
   title: "Swiss QR Bill API"
@@ -26,7 +26,7 @@ info:
     - The final creditor and the debtor addresses are optional. If they are not used, they must be omitted entirely
       or all address fields must be *null* or empty.
     - The account number must be a valid IBAN of Switzerland or Liechtenstein.
-    - If a reference number is provided, it must be either a valid QR/ISR reference nubmer
+    - If a reference number is provided, it must be either a valid QR/ISR reference number
       or a valid ISO 11649 creditor reference (i.e. the applicable check digits must be valid)
     - The currency must be either *CHF* or *EUR*.
 
@@ -34,303 +34,345 @@ info:
     characters are used, they are automatically replaced. The validation result contains warnings about
     truncations and replacements.
 
-  version: "v1"
+  version: 1.0.1
   license:
     name: "MIT License"
     url: "https://opensource.org/licenses/MIT"
 
-host: "www.codecrete.net"
-basePath: "/qrbill-api"
+servers:
+- url: "https://www.codecrete.net/qrbill-api"
 
 tags:
-- name: "bills"
+- name: bills
   description: "Generate and validate QR bills"
-
-schemes:
-- "https"
 
 paths:
   /bill/validate:
     post:
       tags:
-      - "bills"
+      - bills
       summary: "Validate the data for a QR bill"
       description: "Validates the data for a QR bill. The result contains a list of errors (if any), a bill ID (if the data is valid) and the possibly modified bill data."
-      operationId: "validateBill"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Bill data to be validated"
+      operationId: validateBill
+      requestBody:
         required: true
-        schema:
-          $ref: "#/definitions/QrBill"
+        description: "Bill data to be validated"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QrBill"
       responses:
-        "200":
+        '200':
           description: "Validation result"
-          schema:
-            $ref: "#/definitions/ValidationResponse"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationResponse"
 
   /bill/svg/{outputSize}:
     post:
       tags:
-      - "bills"
+      - bills
       summary: "Generates QR bill as SVG"
       operationId: "generateBillAsSVG"
-      consumes:
-      - "application/json"
-      produces:
-      - "image/svg+xml"
       parameters:
-      - name: "body"
-        in: "body"
-        description: "Bill data"
-        required: true
-        schema:
-          $ref: "#/definitions/QrBill"
-      - name: "outputSize"
-        in: "path"
+      - in: path
+        name: outputSize
         description: "The output size of the generated QR bill (or QR code)"
         required: true
-        type: "string"
-        enum:
-        - "a6-landscape"
-        - "a5-landscape"
-        - "a4-portrait"
-        - "qr-code-only"
+        schema:
+          type: string
+          enum:
+          - "a6-landscape"
+          - "a5-landscape"
+          - "a4-portrait"
+          - "qr-code-only"
+      requestBody:
+        required: true
+        description: "Bill data"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QrBill"
       responses:
-        "200":
+        '200':
           description: "QR bill as SVG"
-        "400":
+          content:
+            image/svg+xml:
+              schema:
+                type: string
+                format: binary
+        '400':
           description: "Invalid output size specified"
-        "422":
+          content:
+            text/plain:
+              schema:
+                type: string
+        '422':
           description: "Validation error"
-          schema:
-            $ref: "#/definitions/ValidationMessageArray"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ValidationMessage"
 
   /bill/pdf/{outputSize}:
     post:
       tags:
-      - "bills"
+      - bills
       summary: "Generates QR bill as PDF"
-      operationId: "generateBillAsPDF"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/pdf"
+      operationId: generateBillAsPDF
       parameters:
-      - name: "body"
-        in: "body"
-        description: "Bill data"
-        required: true
-        schema:
-          $ref: "#/definitions/QrBill"
-      - name: "outputSize"
-        in: "path"
+      - in: path
+        name: outputSize
         description: "The output size of the generated QR bill (or QR code)"
         required: true
-        type: "string"
-        enum:
-        - "a6-landscape"
-        - "a5-landscape"
-        - "a4-portrait"
-        - "qr-code-only"
+        schema:
+          type: string
+          enum:
+          - "a6-landscape"
+          - "a5-landscape"
+          - "a4-portrait"
+          - "qr-code-only"
+      requestBody:
+        description: "Bill data"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QrBill"
       responses:
-        "200":
+        '200':
           description: "QR bill as PDF"
-        "400":
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '400':
           description: "Invalid output size specified"
-        "422":
+          content:
+            text/plain:
+              schema:
+                type: 'string'
+        '422':
           description: "Validation error"
-          schema:
-            $ref: "#/definitions/ValidationMessageArray"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ValidationMessage"
 
   /bill/svg/{outputSize}/{billID}:
     get:
       tags:
-      - "bills"
+      - bills
       summary: "Generates QR bill as SVG"
-      operationId: "getBillAsSVG"
-      produces:
-      - "image/svg+xml"
+      operationId: getBillAsSVG
       parameters:
-      - name: "outputSize"
-        in: "path"
+      - in: path
+        name: outputSize
         description: "The output size of the generated QR bill (or QR code)"
         required: true
-        type: "string"
-        enum:
-        - "a6-landscape"
-        - "a5-landscape"
-        - "a4-portrait"
-        - "qr-code-only"
-      - name: "billID"
-        in: "path"
+        schema:
+          type: string
+          enum:
+          - "a6-landscape"
+          - "a5-landscape"
+          - "a4-portrait"
+          - "qr-code-only"
+      - in: path
+        name: billID
         description: "Bill ID as returned by the validation response. Specifies the QR bill data uniquely."
         required: true
-        type: "string"
+        schema:
+          type: string
       responses:
-        "200":
+        '200':
           description: "QR bill as SVG"
-        "400":
+          content:
+            image/svg+xml:
+              schema:
+                type: string
+                format: binary
+        '400':
           description: "Invalid output size or bill ID specified"
-        "422":
+          content:
+            text/plain:
+              schema:
+                type: string
+        '422':
           description: "Validation error"
-          schema:
-            $ref: "#/definitions/ValidationMessageArray"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ValidationMessage"
 
   /bill/pdf/{outputSize}/{billID}:
     get:
       tags:
-      - "bills"
+      - bills
       summary: "Generates QR bill as PDF"
-      operationId: "getBillAsPDF"
-      produces:
-      - "application/pdf"
+      operationId: getBillAsPDF
       parameters:
-      - name: "outputSize"
-        in: "path"
+      - in: path
+        name: outputSize
         description: "The output size of the generated QR bill (or QR code)"
         required: true
-        type: "string"
-        enum:
-        - "a6-landscape"
-        - "a5-landscape"
-        - "a4-portrait"
-        - "qr-code-only"
-      - name: "billID"
-        in: "path"
+        schema:
+          type: string
+          enum:
+          - "a6-landscape"
+          - "a5-landscape"
+          - "a4-portrait"
+          - "qr-code-only"
+      - in: path
+        name: billID
         description: "Bill ID as returned by the validation response. Specifies the QR bill data uniquely."
         required: true
-        type: "string"
+        schema:
+          type: string
       responses:
-        "200":
+        '200':
           description: "QR bill as SVG"
-        "400":
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '400':
           description: "Invalid output size or bill ID specified"
-        "422":
+          content:
+            text/plain:
+              schema:
+                type: string
+        '422':
           description: "Validation error"
-          schema:
-            $ref: "#/definitions/ValidationMessageArray"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ValidationMessage"
 
-definitions:
+components:
+  schemas:
 
-  Address:
-    type: "object"
-    properties:
-      name:
-        type: "string"
-        description: "First, middle and last name of a natural person or company or organization name of a legal person"
-      street:
-        type: "string"
-        description: "Street name (without the house number)"
-      houseNo:
-        type: "string"
-        description: "House or building number"
-      town:
-        type: "string"
-        description: "Town or city name"
-      postalCode:
-        type: "string"
-        description: "Postal code"
-      countryCode:
-        type: "string"
-        description: "Two letter ISO country code"
+    Address:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "First, middle and last name of a natural person or company or organization name of a legal person"
+        street:
+          type: string
+          description: "Street name (without the house number)"
+        houseNo:
+          type: string
+          description: "House or building number"
+        town:
+          type: string
+          description: "Town or city name"
+        postalCode:
+          type: string
+          description: "Postal code"
+        countryCode:
+          type: string
+          description: "Two letter ISO country code"
 
-  QrBill:
-    type: "object"
-    properties:
-      language:
-        type: "string"
-        description: "Language of the generated QR bill"
-        enum:
-        - "de"
-        - "fr"
-        - "it"
-        - "en"
-      version:
-        type: "string"
-        description: "QR bill specification version"
-        default: "V1_0"
-      amount:
-        type: "number"
-        description: "Bill amount"
-        minimum: 0.01
-        maximum: 999999999.99
-      currency:
-        type: "string"
-        default: "CHF"
-        description: "Bill currency"
-        enum:
-        - "CHF"
-        - "EUR"
-      account:
-        type: "string"
-        description: "Creditor's account"
-      creditor:
-        $ref: "#/definitions/Address"
-      finalCreditor:
-        $ref: "#/definitions/Address"
-      referenceNo:
-        type: "string"
-        description: "Payment reference number (QR/ISR reference nubmer or ISO 11649 creditor reference)"
-      additionalInfo:
-        type: "string"
-        description: "Additional information for the bill recipient"
-      debtor:
-        $ref: "#/definitions/Address"
-      dueDate:
-        type: "string"
-        description: "Payment due date"
-        format: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    QrBill:
+      type: object
+      properties:
+        language:
+          type: string
+          description: "Language of the generated QR bill"
+          enum:
+          - "de"
+          - "fr"
+          - "it"
+          - "en"
+        version:
+          type: string
+          description: "QR bill specification version"
+          default: "V1_0"
+        amount:
+          type: number
+          description: "Bill amount"
+          minimum: 0.01
+          maximum: 999999999.99
+        currency:
+          type: string
+          default: "CHF"
+          description: "Bill currency"
+          enum:
+          - "CHF"
+          - "EUR"
+        account:
+          type: string
+          description: "Creditor's account"
+        creditor:
+          $ref: "#/components/schemas/Address"
+        finalCreditor:
+          $ref: "#/components/schemas/Address"
+        referenceNo:
+          type: string
+          description: "Payment reference number (QR/ISR reference number or ISO 11649 creditor reference)"
+        additionalInfo:
+          type: string
+          description: "Additional information for the bill recipient"
+        debtor:
+          $ref: "#/components/schemas/Address"
+        dueDate:
+          type: string
+          description: "Payment due date"
+          format: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
 
-  ValidationMessage:
-    type: "object"
-    properties:
-      type:
-        type: "string"
-        description: "Message type (error or warning)"
-        enum:
-        - "Error"
-        - "Warning"
-      messageKey:
-        type: "string"
-        description: "Language independent message key"
-      messageParameters:
-        type: "array"
-        description: "Variable parts of the message (if any)"
-        items:
-          type: "string"
-      message:
-        type: "string"
-        description: "Localized message (incl. variable parts). The Accept-Language header field is used to select a suitable language."
+    ValidationMessage:
+      type: object
+      properties:
+        type:
+          type: string
+          description: "Message type (error or warning)"
+          enum:
+          - "Error"
+          - "Warning"
+        messageKey:
+          type: string
+          description: "Language independent message key"
+        messageParameters:
+          type: array
+          description: "Variable parts of the message (if any)"
+          items:
+            type: string
+        message:
+          type: string
+          description: "Localized message (incl. variable parts). The Accept-Language header field is used to select a suitable language."
+        field:
+          type: string
+          description: "Affected field name. Examples are Examples are: \"account\", \"creditor.street\""
 
-  ValidationMessageArray:
-    type: "array"
-    items:
-    - $ref: "#/definitions/ValidationMessage"
-
-  ValidationResponse:
-    type: "object"
-    properties:
-      valid:
-        type: "boolean"
-        description: "Indicates if the bill data was valid or not"
-      validationMessages:
-        type: "array"
-        items:
-          $ref: "#/definitions/ValidationMessage"
-      validatedBill:
-        $ref: "#/definitions/QrBill"
-      billID:
-        type: "string"
-        description: "Bill ID if the bill data was valid. Used to retrieve the QR bill as SVG or PDF."
-      qrCodeText:
-        type: "string"
-        description: "Text embedded in QR code if the bill data was valid."
+    ValidationResponse:
+      type: object
+      properties:
+        valid:
+          type: boolean
+          description: "Indicates if the bill data was valid or not"
+        validationMessages:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationMessage"
+        validatedBill:
+          $ref: "#/components/schemas/QrBill"
+        billID:
+          type: string
+          description: "Bill ID if the bill data was valid. Used to retrieve the QR bill as SVG or PDF."
+        qrCodeText:
+          type: string
+          description: "Text embedded in QR code if the bill data was valid."
 
 externalDocs:
   description: "Find out more about Swiss QR Bill"
