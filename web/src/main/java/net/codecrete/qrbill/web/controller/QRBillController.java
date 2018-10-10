@@ -22,9 +22,6 @@ import java.util.zip.InflaterInputStream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +35,6 @@ import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.QRBill.BillFormat;
 import net.codecrete.qrbill.generator.QRBill.GraphicsFormat;
-import net.codecrete.qrbill.generator.QRBillValidationError;
 import net.codecrete.qrbill.generator.ValidationResult;
 import net.codecrete.qrbill.web.api.QrBill;
 import net.codecrete.qrbill.web.api.QrCodeInformation;
@@ -48,7 +44,7 @@ import net.codecrete.qrbill.web.api.ValidationResponse;
 @RestController
 public class QRBillController {
 
-    private final MessageSource messageSource;
+    private final MessageLocalizer messageLocalizer;
 
     /**
      * Creates an instance.
@@ -56,8 +52,8 @@ public class QRBillController {
      * Single constructor for Spring dependency injection.
      * </p>
      */
-    public QRBillController(MessageSource messageSource) {
-        this.messageSource = messageSource;
+    public QRBillController(MessageLocalizer messageLocalizer) {
+        this.messageLocalizer = messageLocalizer;
     }
 
     /**
@@ -101,7 +97,7 @@ public class QRBillController {
         // Generate localized messages
         if (result.hasMessages()) {
             List<ValidationMessage> messages = QrBillDTOConverter.toDtoValidationMessageList(result.getValidationMessages());
-            addLocalMessages(messages);
+            messageLocalizer.addLocalMessages(messages);
             response.setValidationMessages(messages);
         }
         response.setValidatedBill(QrBillDTOConverter.toDTOQrBill(validatedBill));
@@ -126,7 +122,8 @@ public class QRBillController {
      *         messages otherwise
      */
     @RequestMapping(value = "/bill/svg/{format}", method = RequestMethod.POST)
-    public ResponseEntity<Object> generateSvgBillPost(@RequestBody QrBill bill, @PathVariable("format") String format) {
+    public ResponseEntity<byte[]> generateSvgBillPost(@RequestBody QrBill bill, @PathVariable("format") String format)
+            throws BadRequestException {
         return generateBill(bill, format, GraphicsFormat.SVG);
     }
 
@@ -139,8 +136,8 @@ public class QRBillController {
      * @return the generated bill
      */
     @RequestMapping(value = "/bill/svg/{format}/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> generateSvgBillGet(@PathVariable("id") String billId,
-            @PathVariable("format") String format) {
+    public ResponseEntity<byte[]> generateSvgBillGet(@PathVariable("id") String billId,
+            @PathVariable("format") String format) throws BadRequestException {
         return generateBillFromID(billId, format, GraphicsFormat.SVG);
     }
 
@@ -154,7 +151,8 @@ public class QRBillController {
      *         messages otherwise
      */
     @RequestMapping(value = "/bill/pdf/{format}", method = RequestMethod.POST)
-    public ResponseEntity<Object> generatePdfBill(@RequestBody QrBill bill, @PathVariable("format") String format) {
+    public ResponseEntity<byte[]> generatePdfBill(@RequestBody QrBill bill, @PathVariable("format") String format)
+            throws BadRequestException {
         return generateBill(bill, format, GraphicsFormat.PDF);
     }
 
@@ -167,49 +165,34 @@ public class QRBillController {
      * @return the generated bill
      */
     @RequestMapping(value = "/bill/pdf/{format}/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> generatePdfBillGet(@PathVariable("id") String billId,
-            @PathVariable("format") String format) {
+    public ResponseEntity<byte[]> generatePdfBillGet(@PathVariable("id") String billId,
+            @PathVariable("format") String format) throws BadRequestException {
         return generateBillFromID(billId, format, GraphicsFormat.PDF);
     }
 
-    private ResponseEntity<Object> generateBill(QrBill bill, String format, GraphicsFormat graphicsFormat) {
+    private ResponseEntity<byte[]> generateBill(QrBill bill, String format, GraphicsFormat graphicsFormat) throws BadRequestException {
         BillFormat billFormat = getBillFormat(format);
         if (billFormat == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    "Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
+            throw new BadRequestException("Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
 
-        try {
-            byte[] result = generate(QrBillDTOConverter.fromDtoQrBill(bill), billFormat, graphicsFormat);
-            return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(result);
-        } catch (QRBillValidationError e) {
-            List<ValidationMessage> messages
-                    = QrBillDTOConverter.toDtoValidationMessageList(e.getValidationResult().getValidationMessages());
-            addLocalMessages(messages);
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(messages);
-        }
+        byte[] result = generate(QrBillDTOConverter.fromDtoQrBill(bill), billFormat, graphicsFormat);
+        return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(result);
     }
 
-    private ResponseEntity<Object> generateBillFromID(String billId, String format, GraphicsFormat graphicsFormat) {
+    private ResponseEntity<byte[]> generateBillFromID(String billId, String format, GraphicsFormat graphicsFormat) throws BadRequestException {
         BillFormat billFormat = getBillFormat(format);
         if (billFormat == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    "Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
+            throw new BadRequestException("Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
 
         Bill bill;
         try {
             bill = decodeID(billId);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Invalid bill ID. Validate bill data to get a valid ID");
+            throw new BadRequestException("Invalid bill ID. Validate bill data to get a valid ID");
         }
 
-        try {
-            byte[] result = generate(bill, billFormat, graphicsFormat);
-            return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(result);
-        } catch (QRBillValidationError e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Invalid bill ID. Validate bill data to get a valid ID");
-        }
+        byte[] result = generate(bill, billFormat, graphicsFormat);
+        return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(result);
     }
 
     private static BillFormat getBillFormat(String value) {
@@ -241,16 +224,6 @@ public class QRBillController {
 
     private static MediaType getContentType(GraphicsFormat graphicsFormat) {
         return graphicsFormat == GraphicsFormat.SVG ? MEDIA_TYPE_SVG : MediaType.APPLICATION_PDF;
-    }
-
-    private void addLocalMessages(List<ValidationMessage> messages) {
-        if (messages == null)
-            return;
-
-        Locale currentLocale = LocaleContextHolder.getLocale();
-        for (ValidationMessage message : messages) {
-            message.setMessage(messageSource.getMessage(message.getMessageKey(), null, currentLocale));
-        }
     }
 
     // --- ID Generation and decoding
