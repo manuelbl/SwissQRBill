@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.codecrete.qrbill.web.api.PostalCode;
+import net.codecrete.qrbill.web.model.PostalCode;
 
 @RestController
 public class PostalCodeController {

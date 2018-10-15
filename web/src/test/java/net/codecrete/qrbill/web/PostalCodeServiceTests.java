@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import net.codecrete.qrbill.web.api.PostalCode;
+import net.codecrete.qrbill.web.model.PostalCode;
 
 /**
  * Unit test for postal code lookup API

@@ -1,3 +1,9 @@
+buildscript {
+    dependencies {
+        classpath "org.openapitools:openapi-generator-gradle-plugin:3.3.0"
+    }
+}
+
 plugins {
     id 'org.sonarqube' version '2.6.2'
     id 'java'
@@ -5,6 +11,8 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
     id 'jacoco'
 }
+
+apply plugin: 'org.openapi.generator'
 
 group = 'net.codecrete.qrbill'
 version = '1.0.1'
@@ -21,9 +29,29 @@ test {
     useJUnitPlatform()
 }
 
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$projectDir/src/main/resources/static/qrbill.yaml".toString()
+    outputDir = "$projectDir".toString()
+    apiPackage = "net.codecrete.qrbill.web.api"
+    invokerPackage = "net.codecrete.qrbill.web.config"
+    modelPackage = "net.codecrete.qrbill.web.model"
+    configOptions = [
+            java8: true,
+            dateLibrary: "java8",
+            configPackage: "net.codecrete.qrbill.web.config"
+    ]
+}
+
 dependencies {
     implementation project(':generator')
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'javax.validation:validation-api'
+    implementation 'javax.xml.bind:jaxb-api:2.3.0'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.2.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.2.0'

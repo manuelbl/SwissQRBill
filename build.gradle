@@ -3,16 +3,10 @@ allprojects {
     buildscript {
         repositories {
             mavenCentral()
-            maven {
-                url 'https://repo.spring.io/libs-milestone'
-            }
         }
     }
     
     repositories {
         mavenCentral()
-        maven {
-            url 'https://repo.spring.io/libs-milestone'
-        }
     }
 }

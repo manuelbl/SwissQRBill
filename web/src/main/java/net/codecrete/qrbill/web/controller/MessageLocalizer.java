@@ -6,7 +6,7 @@
 //
 package net.codecrete.qrbill.web.controller;
 
-import net.codecrete.qrbill.web.api.ValidationMessage;
+import net.codecrete.qrbill.web.model.ValidationMessage;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;

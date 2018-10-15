@@ -22,27 +22,28 @@ import java.util.zip.InflaterInputStream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.codecrete.qrbill.web.api.BillApi;
+import net.codecrete.qrbill.web.model.QrBill;
+import net.codecrete.qrbill.web.model.QrCodeInformation;
+import net.codecrete.qrbill.web.model.ValidationMessage;
+import net.codecrete.qrbill.web.model.ValidationResponse;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.QRBill.BillFormat;
 import net.codecrete.qrbill.generator.QRBill.GraphicsFormat;
 import net.codecrete.qrbill.generator.ValidationResult;
-import net.codecrete.qrbill.web.api.QrBill;
-import net.codecrete.qrbill.web.api.QrCodeInformation;
-import net.codecrete.qrbill.web.api.ValidationMessage;
-import net.codecrete.qrbill.web.api.ValidationResponse;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class QRBillController {
+public class QRBillController implements BillApi {
 
     private final MessageLocalizer messageLocalizer;
 
@@ -59,32 +60,32 @@ public class QRBillController {
     /**
      * Validates the QR bill data
      * 
-     * @param bill the QR bill data
+     * @param qrBill the QR bill data
      * @return returns the validation result: validated, possibly modified bill, the
      *         validation messages (if any), a bill ID (if the bill is valid) and
      *         the QR code text (if the bill is valid)
      */
-    @RequestMapping(value = "/bill/validate", method = RequestMethod.POST)
-    @ResponseBody
-    public ValidationResponse validate(@RequestBody QrBill bill) {
-        ValidationResult result = QRBill.validate(QrBillDTOConverter.fromDtoQrBill(bill));
-        return createValidationResponse(result);
+    @Override
+    public ResponseEntity<ValidationResponse> validateBill(@RequestBody QrBill qrBill) {
+        ValidationResult result = QRBill.validate(QrBillDTOConverter.fromDtoQrBill(qrBill));
+        return new ResponseEntity<>(createValidationResponse(result), HttpStatus.OK);
     }
+
+    // TODO: With Spring 5.1 we no longer need to repeat @RequestBody and @PathVariable annotations
 
     /**
      * Decodes the text from the QR code and validates the information.
      * 
-     * @param info the text from the QR code
+     * @param qrCodeInformation the text from the QR code
      * @return returns the validation result: decoded bill data, the validation
      *         messages (if any), a bill ID (if the bill is valid) and the QR code
      *         text
      */
-    @RequestMapping(value = "/bill/decode", method = RequestMethod.POST)
-    @ResponseBody
-    public ValidationResponse decodeQRCodeText(@RequestBody QrCodeInformation info) {
-        Bill bill = QRBill.decodeQrCodeText(info.getQrCodeText());
+    @Override
+    public ResponseEntity<ValidationResponse> decodeQRCode(@RequestBody QrCodeInformation qrCodeInformation) {
+        Bill bill = QRBill.decodeQrCodeText(qrCodeInformation.getText());
         ValidationResult result = QRBill.validate(bill);
-        return createValidationResponse(result);
+        return new ResponseEntity<>(createValidationResponse(result), HttpStatus.OK);
     }
 
     private ValidationResponse createValidationResponse(ValidationResult result) {
@@ -115,71 +116,63 @@ public class QRBillController {
     /**
      * Generates the QR bill as an SVG.
      * 
-     * @param bill   the QR bill data
-     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape,
-     *               a4Portrait)
+     * @param qrBill     the QR bill data
+     * @param outputSize the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
      * @return the generated bill if the data is valid; a list of validation
      *         messages otherwise
      */
-    @RequestMapping(value = "/bill/svg/{format}", method = RequestMethod.POST)
-    public ResponseEntity<byte[]> generateSvgBillPost(@RequestBody QrBill bill, @PathVariable("format") String format)
-            throws BadRequestException {
-        return generateBill(bill, format, GraphicsFormat.SVG);
+    @Override
+    public ResponseEntity<Resource> generateBillAsSVG(@PathVariable("outputSize") String outputSize, @RequestBody QrBill qrBill) throws BadRequestException {
+        return generateBill(qrBill, outputSize, GraphicsFormat.SVG);
     }
 
     /**
      * Generates the QR bill as an SVG.
      * 
-     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape,
-     *               a4Portrait)
-     * @param billId the ID of the QR bill (as returned by /validate)
+     * @param billID     the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
+     * @param outputSize the ID of the QR bill (as returned by /validate)
      * @return the generated bill
      */
-    @RequestMapping(value = "/bill/svg/{format}/{id}", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> generateSvgBillGet(@PathVariable("id") String billId,
-            @PathVariable("format") String format) throws BadRequestException {
-        return generateBillFromID(billId, format, GraphicsFormat.SVG);
+    @Override
+    public ResponseEntity<Resource> getBillAsSVG(@PathVariable("outputSize") String outputSize, @PathVariable("billID") String billID) throws BadRequestException {
+        return generateBillFromID(billID, outputSize, GraphicsFormat.SVG);
     }
 
     /**
      * Generates the QR bill as a PDF.
      * 
-     * @param bill   the QR bill data
-     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape,
-     *               a4Portrait)
+     * @param qrBill     the QR bill data
+     * @param outputSize the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
      * @return the generated bill if the data is valid; a list of validation
      *         messages otherwise
      */
-    @RequestMapping(value = "/bill/pdf/{format}", method = RequestMethod.POST)
-    public ResponseEntity<byte[]> generatePdfBill(@RequestBody QrBill bill, @PathVariable("format") String format)
-            throws BadRequestException {
-        return generateBill(bill, format, GraphicsFormat.PDF);
+    @Override
+    public ResponseEntity<Resource> generateBillAsPDF(@PathVariable("outputSize") String outputSize, @RequestBody QrBill qrBill) throws BadRequestException {
+        return generateBill(qrBill, outputSize, GraphicsFormat.PDF);
     }
 
     /**
      * Generates the QR bill as a PDF.
      * 
-     * @param format the bill format (qrCodeOnly, a6Landscape, a5Landscape,
-     *               a4Portrait)
-     * @param billId the ID of the QR bill (as returned by /validate)
+     * @param outputSize the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
+     * @param billID     the ID of the QR bill (as returned by /validate)
      * @return the generated bill
      */
-    @RequestMapping(value = "/bill/pdf/{format}/{id}", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> generatePdfBillGet(@PathVariable("id") String billId,
-            @PathVariable("format") String format) throws BadRequestException {
-        return generateBillFromID(billId, format, GraphicsFormat.PDF);
+    @Override
+    public ResponseEntity<Resource> getBillAsPDF(@PathVariable("outputSize") String outputSize, @PathVariable("billID") String billID) throws BadRequestException {
+        return generateBillFromID(billID, outputSize, GraphicsFormat.PDF);
     }
 
-    private ResponseEntity<byte[]> generateBill(QrBill bill, String format, GraphicsFormat graphicsFormat) throws BadRequestException {
+    private ResponseEntity<Resource> generateBill(QrBill bill, String format, GraphicsFormat graphicsFormat) throws BadRequestException {
         BillFormat billFormat = getBillFormat(format);
         if (billFormat == null)
             throw new BadRequestException("Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
 
         byte[] result = generate(QrBillDTOConverter.fromDtoQrBill(bill), billFormat, graphicsFormat);
-        return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(result);
+        return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(new ByteArrayResource(result));
     }
 
-    private ResponseEntity<byte[]> generateBillFromID(String billId, String format, GraphicsFormat graphicsFormat) throws BadRequestException {
+    private ResponseEntity<Resource> generateBillFromID(String billId, String format, GraphicsFormat graphicsFormat) throws BadRequestException {
         BillFormat billFormat = getBillFormat(format);
         if (billFormat == null)
             throw new BadRequestException("Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
@@ -192,7 +185,7 @@ public class QRBillController {
         }
 
         byte[] result = generate(bill, billFormat, graphicsFormat);
-        return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(result);
+        return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(new ByteArrayResource(result));
     }
 
     private static BillFormat getBillFormat(String value) {

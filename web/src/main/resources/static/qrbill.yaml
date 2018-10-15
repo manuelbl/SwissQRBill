@@ -102,12 +102,6 @@ paths:
               schema:
                 type: string
                 format: binary
-        '400':
-          description: "Invalid output size specified"
-          content:
-            text/plain:
-              schema:
-                type: string
         '422':
           description: "Validation error"
           content:
@@ -150,12 +144,6 @@ paths:
               schema:
                 type: string
                 format: binary
-        '400':
-          description: "Invalid output size specified"
-          content:
-            text/plain:
-              schema:
-                type: 'string'
         '422':
           description: "Validation error"
           content:
@@ -197,12 +185,6 @@ paths:
               schema:
                 type: string
                 format: binary
-        '400':
-          description: "Invalid output size or bill ID specified"
-          content:
-            text/plain:
-              schema:
-                type: string
         '422':
           description: "Validation error"
           content:
@@ -244,12 +226,6 @@ paths:
               schema:
                 type: string
                 format: binary
-        '400':
-          description: "Invalid output size or bill ID specified"
-          content:
-            text/plain:
-              schema:
-                type: string
         '422':
           description: "Validation error"
           content:
@@ -258,6 +234,28 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ValidationMessage"
+
+  /bill/decode:
+    post:
+      tags:
+      - bills
+      summary: "Decode the text embedded in the QR code"
+      operationId: decodeQRCode
+      requestBody:
+      requestBody:
+        description: "QR code information"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QrCodeInformation"
+      responses:
+        '200':
+          description: "Validation result (incl. bill data)"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationResponse"
 
 components:
   schemas:
@@ -308,9 +306,6 @@ components:
           type: string
           default: "CHF"
           description: "Bill currency"
-          enum:
-          - "CHF"
-          - "EUR"
         account:
           type: string
           description: "Creditor's account"
@@ -329,7 +324,7 @@ components:
         dueDate:
           type: string
           description: "Payment due date"
-          format: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          format: date
 
     ValidationMessage:
       type: object
@@ -373,6 +368,13 @@ components:
         qrCodeText:
           type: string
           description: "Text embedded in QR code if the bill data was valid."
+
+    QrCodeInformation:
+      type: object
+      properties:
+        text:
+          type: string
+          description: "QR code text"
 
 externalDocs:
   description: "Find out more about Swiss QR Bill"

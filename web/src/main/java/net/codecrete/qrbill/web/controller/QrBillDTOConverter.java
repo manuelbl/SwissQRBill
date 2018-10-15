@@ -7,21 +7,22 @@
 package net.codecrete.qrbill.web.controller;
 
 import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.web.api.Address;
-import net.codecrete.qrbill.web.api.QrBill;
-import net.codecrete.qrbill.web.api.ValidationMessage;
+import net.codecrete.qrbill.web.model.Address;
+import net.codecrete.qrbill.web.model.QrBill;
+import net.codecrete.qrbill.web.model.ValidationMessage;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 class QrBillDTOConverter {
 
     static QrBill toDTOQrBill(Bill bill) {
         QrBill dto = new QrBill();
-        dto.setLanguage(toDtoLanguage(bill.getLanguage()));
-        dto.setVersion(QrBill.Version.valueOf(bill.getVersion().name()));
-        dto.setAmount(bill.getAmount());
+        dto.setLanguage(QrBill.LanguageEnum.valueOf(bill.getLanguage().name()));
+        dto.setVersion(bill.getVersion().name());
+        dto.setAmount(new BigDecimal(bill.getAmount()));
         dto.setCurrency(bill.getCurrency());
         dto.setAccount(bill.getAccount());
         dto.setCreditor(toDtoAddress(bill.getCreditor()));
@@ -38,9 +39,9 @@ class QrBillDTOConverter {
             return null;
 
         Bill bill = new Bill();
-        bill.setLanguage(fromDtoLanguage(dto.getLanguage()));
-        bill.setVersion(net.codecrete.qrbill.generator.Bill.Version.valueOf(dto.getVersion().name()));
-        bill.setAmount(dto.getAmount());
+        bill.setLanguage(Bill.Language.valueOf(dto.getLanguage().name()));
+        bill.setVersion(net.codecrete.qrbill.generator.Bill.Version.valueOf(dto.getVersion()));
+        bill.setAmount(dto.getAmount().doubleValue());
         bill.setCurrency(dto.getCurrency());
         bill.setAccount(dto.getAccount());
         bill.setCreditor(fromDtoAddress(dto.getCreditor()));
@@ -52,17 +53,6 @@ class QrBillDTOConverter {
         return bill;
     }
 
-    private static QrBill.Language toDtoLanguage(net.codecrete.qrbill.generator.Bill.Language language) {
-        String name = language.name();
-        name = name.toLowerCase(Locale.US);
-        return QrBill.Language.valueOf(name);
-    }
-
-    private static net.codecrete.qrbill.generator.Bill.Language fromDtoLanguage(QrBill.Language language) {
-        String name = language.name();
-        name = name.toUpperCase(Locale.US);
-        return net.codecrete.qrbill.generator.Bill.Language.valueOf(name);
-    }
     private static Address toDtoAddress(net.codecrete.qrbill.generator.Address address) {
         if (address == null)
             return null;
@@ -95,10 +85,11 @@ class QrBillDTOConverter {
             return null;
 
         ValidationMessage dto = new ValidationMessage();
-        dto.setType(typeFromUppercase(msg.getType().name()));
+        dto.setType(toDtoMessageType(msg.getType()));
         dto.setField(msg.getField());
         dto.setMessageKey(msg.getMessageKey());
-        dto.setMessageParameters(msg.getMessageParameters());
+        if (msg.getMessageParameters() != null)
+            dto.setMessageParameters(Arrays.asList(msg.getMessageParameters()));
         return dto;
     }
 
@@ -111,11 +102,11 @@ class QrBillDTOConverter {
         return dtoList;
     }
 
-    private static ValidationMessage.Type typeFromUppercase(String name) {
-        if ("ERROR".equals(name))
-            return ValidationMessage.Type.Error;
-        if ("WARNING".equals(name))
-            return ValidationMessage.Type.Warning;
+    private static ValidationMessage.TypeEnum toDtoMessageType(net.codecrete.qrbill.generator.ValidationMessage.Type type) {
+        if (type == net.codecrete.qrbill.generator.ValidationMessage.Type.ERROR)
+            return ValidationMessage.TypeEnum.ERROR;
+        if (type == net.codecrete.qrbill.generator.ValidationMessage.Type.WARNING)
+            return ValidationMessage.TypeEnum.WARNING;
         return null;
     }
 }

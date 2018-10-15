@@ -19,8 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import net.codecrete.qrbill.web.api.QrCodeInformation;
-import net.codecrete.qrbill.web.api.ValidationResponse;
+import net.codecrete.qrbill.web.model.QrCodeInformation;
+import net.codecrete.qrbill.web.model.ValidationResponse;
 
 /**
  * Unit test for QR code decoding API
@@ -71,12 +71,12 @@ class DecodeTests {
     void decodeText() {
 
         QrCodeInformation info = new QrCodeInformation();
-        info.setQrCodeText(VALID_QR_CODE_TEXT);
+        info.setText(VALID_QR_CODE_TEXT);
 
         ValidationResponse response = restTemplate.postForObject("/bill/decode", info, ValidationResponse.class);
 
         assertNotNull(response);
-        assertTrue(response.isValid());
+        assertTrue(response.getValid());
         assertNull(response.getValidationMessages());
         assertNotNull(response.getValidatedBill());
         assertNotNull(response.getBillID());

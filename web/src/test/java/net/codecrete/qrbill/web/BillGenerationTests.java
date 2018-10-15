@@ -20,8 +20,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import net.codecrete.qrbill.web.api.QrBill;
-import net.codecrete.qrbill.web.api.ValidationMessage;
+import net.codecrete.qrbill.web.model.QrBill;
+import net.codecrete.qrbill.web.model.ValidationMessage;
 
 /**
  * Unit test for QR bill generation API (PDF and SVG)
@@ -91,7 +91,7 @@ class BillGenerationTests {
 
         assertNotNull(response);
         assertEquals(1, response.length);
-        assertEquals(ValidationMessage.Type.Error, response[0].getType());
+        assertEquals(ValidationMessage.TypeEnum.ERROR, response[0].getType());
         assertEquals("creditor.town", response[0].getField());
         assertEquals("field_is_mandatory", response[0].getMessageKey());
     }
