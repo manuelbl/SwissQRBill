@@ -6,7 +6,10 @@
 //
 package net.codecrete.qrbill.web;
 
-import net.codecrete.qrbill.web.api.QrBill;
+import net.codecrete.qrbill.web.model.Address;
+import net.codecrete.qrbill.web.model.QrBill;
+
+import java.math.BigDecimal;
 
 /**
  * Creates sample bill data
@@ -15,10 +18,11 @@ class SampleData {
 
     static QrBill createBill1() {
         QrBill bill = new QrBill();
-        bill.setLanguage(QrBill.Language.de);
-        bill.setAmount(100.35);
+        bill.setLanguage(QrBill.LanguageEnum.DE);
+        bill.setAmount(new BigDecimal(100.35));
         bill.setCurrency("CHF");
         bill.setAccount("CH4431999123000889012");
+        bill.setCreditor(new Address());
         bill.getCreditor().setName("Meierhans AG");
         bill.getCreditor().setStreet("Bahnhofstrasse");
         bill.getCreditor().setHouseNo("16");

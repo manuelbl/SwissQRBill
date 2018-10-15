@@ -6,7 +6,7 @@
 //
 package net.codecrete.qrbill.web.controller;
 
-class BadRequestException extends Exception {
+class BadRequestException extends RuntimeException {
 
     BadRequestException(String message) {
         super(message);

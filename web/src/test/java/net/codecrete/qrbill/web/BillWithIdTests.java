@@ -19,8 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import net.codecrete.qrbill.web.api.QrBill;
-import net.codecrete.qrbill.web.api.ValidationResponse;
+import net.codecrete.qrbill.web.model.QrBill;
+import net.codecrete.qrbill.web.model.ValidationResponse;
 
 /**
  * Unit test for retrieving a bill by ID (API test)

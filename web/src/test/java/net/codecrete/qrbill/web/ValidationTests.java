@@ -20,9 +20,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import net.codecrete.qrbill.web.api.QrBill;
-import net.codecrete.qrbill.web.api.ValidationMessage;
-import net.codecrete.qrbill.web.api.ValidationResponse;
+import net.codecrete.qrbill.web.model.QrBill;
+import net.codecrete.qrbill.web.model.ValidationMessage;
+import net.codecrete.qrbill.web.model.ValidationResponse;
 
 /**
  * Unit tests for bill data validation API
@@ -45,7 +45,7 @@ class ValidationTests {
         ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
 
         assertNotNull(response);
-        assertTrue(response.isValid());
+        assertTrue(response.getValid());
         assertNull(response.getValidationMessages());
         assertNotNull(response.getValidatedBill());
         assertEquals(bill, response.getValidatedBill());
@@ -63,10 +63,10 @@ class ValidationTests {
         ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
 
         assertNotNull(response);
-        assertTrue(response.isValid());
+        assertTrue(response.getValid());
         assertNotNull(response.getValidationMessages());
         assertEquals(1, response.getValidationMessages().size());
-        assertEquals(ValidationMessage.Type.Warning, response.getValidationMessages().get(0).getType());
+        assertEquals(ValidationMessage.TypeEnum.WARNING, response.getValidationMessages().get(0).getType());
         assertEquals("creditor.town", response.getValidationMessages().get(0).getField());
         assertEquals("field_clipped", response.getValidationMessages().get(0).getMessageKey());
 
@@ -89,11 +89,11 @@ class ValidationTests {
         ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
 
         assertNotNull(response);
-        assertFalse(response.isValid());
+        assertFalse(response.getValid());
         assertNotNull(response.getValidationMessages());
         assertEquals(4, response.getValidationMessages().size());
         for (ValidationMessage message : response.getValidationMessages()) {
-            assertEquals(ValidationMessage.Type.Error, message.getType());
+            assertEquals(ValidationMessage.TypeEnum.ERROR, message.getType());
             assertTrue(message.getField().startsWith("creditor."));
             assertEquals("field_is_mandatory", message.getMessageKey());
         }

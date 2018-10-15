@@ -4,7 +4,7 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
-package net.codecrete.qrbill.web.api;
+package net.codecrete.qrbill.web.model;
 
 public class PostalCode {
 
