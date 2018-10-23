@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
 /**
  * QrBill
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-10-13T19:12:09.319311+02:00[Europe/Zurich]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-10-23T18:47:07.538749+02:00[Europe/Zurich]")
 
 public class QrBill   {
   /**
@@ -54,19 +54,19 @@ public class QrBill   {
   }
 
   @JsonProperty("language")
-  private LanguageEnum language = null;
+  private LanguageEnum language;
 
   @JsonProperty("version")
   private String version = "V1_0";
 
   @JsonProperty("amount")
-  private BigDecimal amount = null;
+  private BigDecimal amount;
 
   @JsonProperty("currency")
   private String currency = "CHF";
 
   @JsonProperty("account")
-  private String account = null;
+  private String account;
 
   @JsonProperty("creditor")
   private Address creditor = null;
@@ -75,16 +75,16 @@ public class QrBill   {
   private Address finalCreditor = null;
 
   @JsonProperty("referenceNo")
-  private String referenceNo = null;
+  private String referenceNo;
 
   @JsonProperty("additionalInfo")
-  private String additionalInfo = null;
+  private String additionalInfo;
 
   @JsonProperty("debtor")
   private Address debtor = null;
 
   @JsonProperty("dueDate")
-  private LocalDate dueDate = null;
+  private LocalDate dueDate;
 
   public QrBill language(LanguageEnum language) {
     this.language = language;

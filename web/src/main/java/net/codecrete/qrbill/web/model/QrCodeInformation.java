@@ -11,11 +11,11 @@ import javax.validation.constraints.*;
 /**
  * QrCodeInformation
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-10-13T19:12:09.319311+02:00[Europe/Zurich]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-10-23T18:47:07.538749+02:00[Europe/Zurich]")
 
 public class QrCodeInformation   {
   @JsonProperty("text")
-  private String text = null;
+  private String text;
 
   public QrCodeInformation text(String text) {
     this.text = text;
