@@ -47,10 +47,10 @@ describe('SettingsComponent', () => {
     );
   }));
 
-  it('should call swtichLanguage()', async(() => {
+  it('should call switchLanguage()', async(() => {
     const compiled = fixture.debugElement.nativeElement;
     spyOn(component, 'switchLanguage');
-    compiled.querySelector('input').click(); // yes, it's an radio button in Karma
+    compiled.querySelector('button').click();
     expect(component.switchLanguage).toHaveBeenCalled();
   }));
 });

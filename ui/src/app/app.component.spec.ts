@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { APP_BASE_HREF } from '@angular/common';
 import {
+  MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
@@ -47,6 +48,7 @@ describe('AppComponent', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
+        MatAutocompleteModule,
         MatButtonModule,
         MatButtonToggleModule,
         MatCardModule,

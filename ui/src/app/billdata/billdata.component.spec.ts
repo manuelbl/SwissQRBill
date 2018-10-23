@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BillDataComponent } from './billdata.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
+  MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
@@ -35,6 +36,7 @@ describe('BillDataComponent', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
+        MatAutocompleteModule,
         MatButtonModule,
         MatButtonToggleModule,
         MatCardModule,
