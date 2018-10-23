@@ -10,6 +10,8 @@
  * Copyright Google LLC All Rights Reserved.
  */
 
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { AutofillMonitor } from '@angular/cdk/text-field';
 import {
   OnChanges,
   OnDestroy,
@@ -31,17 +33,15 @@ import {
   ControlValueAccessor
 } from '@angular/forms';
 import {
-  MatFormFieldControl,
-  _MatInputMixinBase,
   CanUpdateErrorState,
-  ErrorStateMatcher,
-  MatAutocomplete
-} from '@angular/material';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+  ErrorStateMatcher
+} from '@angular/material/core';
+import { MatFormFieldControl } from '@angular/material/form-field';
+import { _MatInputMixinBase } from '@angular/material/input';
+import { MatAutocomplete } from '@angular/material/autocomplete';
 import { Platform } from '@angular/cdk/platform';
 import { InputFormatter } from './input-formatter';
 import { Subject } from 'rxjs';
-import { AutofillMonitor } from '@angular/cdk/text-field';
 
 let nextUniqueId = 0;
 
@@ -205,7 +205,7 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase
   @Input()
   @HostBinding('readonly')
   get readonly(): boolean {
-    return this._readonly;
+    return this._readonly || null;
   }
   set readonly(value: boolean) {
     this._readonly = coerceBooleanProperty(value);
@@ -223,11 +223,10 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase
   private _matAutoComplete: MatAutocomplete = null;
 
   constructor(
-    protected _elementRef: ElementRef,
+    protected _elementRef: ElementRef<HTMLInputElement>,
     protected _platform: Platform,
-    @Optional()
-    @Self()
-    public ngControl: NgControl,
+    /** @docs-private */
+    @Optional() @Self() public ngControl: NgControl,
     @Optional() _parentForm: NgForm,
     @Optional() _parentFormGroup: FormGroupDirective,
     _defaultErrorStateMatcher: ErrorStateMatcher,
@@ -268,12 +267,12 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase
   }
 
   ngOnInit() {
-    this._autofillMonitor
-      .monitor(this._elementRef.nativeElement)
-      .subscribe(event => {
+    if (this._platform.isBrowser) {
+      this._autofillMonitor.monitor(this._elementRef.nativeElement).subscribe(event => {
         this.autofilled = event.isAutofilled;
         this.stateChanges.next();
       });
+    }
   }
 
   ngOnChanges() {
@@ -282,7 +281,9 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase
 
   ngOnDestroy() {
     this.stateChanges.complete();
-    this._autofillMonitor.stopMonitoring(this._elementRef.nativeElement);
+    if (this._platform.isBrowser) {
+      this._autofillMonitor.stopMonitoring(this._elementRef.nativeElement);
+    }
   }
 
   ngDoCheck() {
@@ -368,8 +369,7 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase
   /** Checks whether the input is invalid based on the native validation. */
   protected _isBadInput() {
     // The `validity` property won't be present on platform-server.
-    const validity = (this._elementRef.nativeElement as HTMLInputElement)
-      .validity;
+    const validity = this._elementRef.nativeElement.validity;
     return validity && validity.badInput;
   }
 
@@ -402,7 +402,9 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase
    * Implemented as part of MatFormFieldControl.
    */
   onContainerClick() {
-    this.focus();
+    if (!this.focused) {
+      this.focus();
+    }
   }
 
   writeValue(obj: any): void {
