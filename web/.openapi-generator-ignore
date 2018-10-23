@@ -27,3 +27,4 @@ README.md
 **/net/codecrete/qrbill/web/config/HomeController.java
 **/net/codecrete/qrbill/web/config/OpenAPI2SpringBoot.java
 **/net/codecrete/qrbill/web/api/BillApiController.java
+**/resources/application.properties

@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
 /**
  * ValidationMessage
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-10-13T19:12:09.319311+02:00[Europe/Zurich]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-10-23T18:47:07.538749+02:00[Europe/Zurich]")
 
 public class ValidationMessage   {
   /**
@@ -49,20 +49,20 @@ public class ValidationMessage   {
   }
 
   @JsonProperty("type")
-  private TypeEnum type = null;
+  private TypeEnum type;
 
   @JsonProperty("messageKey")
-  private String messageKey = null;
+  private String messageKey;
 
   @JsonProperty("messageParameters")
   @Valid
   private List<String> messageParameters = null;
 
   @JsonProperty("message")
-  private String message = null;
+  private String message;
 
   @JsonProperty("field")
-  private String field = null;
+  private String field;
 
   public ValidationMessage type(TypeEnum type) {
     this.type = type;

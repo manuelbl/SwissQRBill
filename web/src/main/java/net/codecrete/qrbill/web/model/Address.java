@@ -11,26 +11,26 @@ import javax.validation.constraints.*;
 /**
  * Address
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-10-13T19:12:09.319311+02:00[Europe/Zurich]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-10-23T18:47:07.538749+02:00[Europe/Zurich]")
 
 public class Address   {
   @JsonProperty("name")
-  private String name = null;
+  private String name;
 
   @JsonProperty("street")
-  private String street = null;
+  private String street;
 
   @JsonProperty("houseNo")
-  private String houseNo = null;
+  private String houseNo;
 
   @JsonProperty("town")
-  private String town = null;
+  private String town;
 
   @JsonProperty("postalCode")
-  private String postalCode = null;
+  private String postalCode;
 
   @JsonProperty("countryCode")
-  private String countryCode = null;
+  private String countryCode;
 
   public Address name(String name) {
     this.name = name;

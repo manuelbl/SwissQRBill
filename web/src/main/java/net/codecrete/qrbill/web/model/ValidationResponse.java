@@ -15,11 +15,11 @@ import javax.validation.constraints.*;
 /**
  * ValidationResponse
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-10-13T19:12:09.319311+02:00[Europe/Zurich]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2018-10-23T18:47:07.538749+02:00[Europe/Zurich]")
 
 public class ValidationResponse   {
   @JsonProperty("valid")
-  private Boolean valid = null;
+  private Boolean valid;
 
   @JsonProperty("validationMessages")
   @Valid
@@ -29,10 +29,10 @@ public class ValidationResponse   {
   private QrBill validatedBill = null;
 
   @JsonProperty("billID")
-  private String billID = null;
+  private String billID;
 
   @JsonProperty("qrCodeText")
-  private String qrCodeText = null;
+  private String qrCodeText;
 
   public ValidationResponse valid(Boolean valid) {
     this.valid = valid;
