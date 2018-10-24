@@ -12,26 +12,21 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputWithFormatDirective } from './input-fields/input-with-format';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AboutComponent } from './about/about.component';
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatIconModule,
-  MatInputModule,
-  MatSelectModule,
-  MatDialogConfig
-} from '@angular/material';
-import {
-  MatMomentDateModule,
-  MomentDateAdapter
-} from '@angular/material-moment-adapter';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialogConfig } from '@angular/material/dialog';
+import { DateAdapter } from '@angular/material/core';
+import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NavbarComponent } from './navbar/navbar.component';
-import { DateAdapter } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AmountFormatter } from './input-fields/amount-formatter';
 import { SettingsComponent } from './settings/settings.component';

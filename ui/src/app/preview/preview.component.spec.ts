@@ -11,11 +11,9 @@ import {
   inject
 } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import {
-  MatButtonToggleModule,
-  MatDialogModule,
-  MAT_DIALOG_DATA
-} from '@angular/material';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { PreviewComponent } from './preview.component';
 

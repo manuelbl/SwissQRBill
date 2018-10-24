@@ -10,7 +10,8 @@ import {
   TestBed,
   inject
 } from '@angular/core/testing';
-import { MatMenuModule, MatIconModule } from '@angular/material';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 import { NavbarComponent } from './navbar.component';
 import {

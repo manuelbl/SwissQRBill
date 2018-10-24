@@ -7,7 +7,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExamplesComponent } from './examples.component';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
 import { ExampleService } from '../example-service/example.service';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateMockLoader } from '../mock/translate-mock.loader';

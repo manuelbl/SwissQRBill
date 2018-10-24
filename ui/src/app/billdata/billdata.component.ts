@@ -11,8 +11,10 @@ import {
   FormBuilder,
   Validators
 } from '@angular/forms';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { Moment, isMoment } from 'moment';
+import { Observable, Subscription, Subject } from 'rxjs';
 import { QrBillService } from '../qrbill-api/qrbill.service';
 import { QrBill } from '../qrbill-api/qrbill';
 import { ValidationResponse } from '../qrbill-api/validation-response';
@@ -21,8 +23,6 @@ import { BillSingletonService } from '../bill-singleton-service/bill-singleton.s
 import { IBANFormatter } from '../input-fields/iban-formatter';
 import { ReferenceNumberFormatter } from '../input-fields/ref-number-formatter';
 import { AmountFormatter } from '../input-fields/amount-formatter';
-import { Moment, isMoment } from 'moment';
-import { Observable, Subscription, Subject } from 'rxjs';
 import { Payments } from '../payments/payments';
 import { startWith, map } from 'rxjs/operators';
 
