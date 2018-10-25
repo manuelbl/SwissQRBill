@@ -29,18 +29,31 @@ test {
     useJUnitPlatform()
 }
 
+def openapiInput = file("${project.projectDir.path}/src/main/resources/static/qrbill.yaml")
+def openapiOutputDir = file("${project.buildDir.path}/openapi")
+def openapiIgnoreFiles = file("${project.projectDir.path}/.openapi-generator-ignore")
+
 openApiGenerate {
     generatorName = "spring"
-    inputSpec = "$projectDir/src/main/resources/static/qrbill.yaml".toString()
-    outputDir = "$projectDir".toString()
+    inputSpec = openapiInput.path
+    outputDir = openapiOutputDir.path
     apiPackage = "net.codecrete.qrbill.web.api"
     invokerPackage = "net.codecrete.qrbill.web.config"
     modelPackage = "net.codecrete.qrbill.web.model"
+    ignoreFileOverride = openapiIgnoreFiles.path
     configOptions = [
             java8: true,
             dateLibrary: "java8",
             configPackage: "net.codecrete.qrbill.web.config"
     ]
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs "${openapiOutputDir}/src/main/java"
+        }
+    }
 }
 
 dependencies {
@@ -56,6 +69,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.2.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
 }
+
+compileJava.dependsOn tasks.openApiGenerate
 
 sonarqube {
 }
