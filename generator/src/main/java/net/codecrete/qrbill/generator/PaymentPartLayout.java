@@ -180,15 +180,16 @@ class PaymentPartLayout {
 		graphics.setTransformation(offsetX, offsetY, 1, 1);
 		graphics.startPath();
 		graphics.moveTo(0, 0);
-		graphics.lineTo(0, SLIP_HEIGHT - 16);
-		graphics.moveTo(0, SLIP_HEIGHT - 9);
+//		graphics.lineTo(0, SLIP_HEIGHT - 16);
+//		graphics.moveTo(0, SLIP_HEIGHT - 9);
 		graphics.lineTo(0, SLIP_HEIGHT);
 		graphics.lineTo(SLIP_WIDTH, SLIP_HEIGHT);
         graphics.strokePath(0.5, 0);
         
-        drawScissors(offsetX, offsetY + SLIP_HEIGHT - 16, 6);
+//        drawScissors(offsetX, offsetY + SLIP_HEIGHT - 16, 6);
     }
-    
+
+    /*
     private void drawScissors(double x, double y, double size) throws IOException {
         drawScissorsBlade(x, y, size, false);
         drawScissorsBlade(x, y, size, true);
@@ -216,6 +217,7 @@ class PaymentPartLayout {
         graphics.closeSubpath();
         graphics.fillPath(0);
     }
+    */
 
     // Draws a label at (0, yPos) and advances vertically
     private void drawLabel(String labelKey) throws IOException {
