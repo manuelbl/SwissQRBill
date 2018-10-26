@@ -22,7 +22,7 @@ class QrBillDTOConverter {
         QrBill dto = new QrBill();
         dto.setLanguage(QrBill.LanguageEnum.valueOf(bill.getLanguage().name()));
         dto.setVersion(bill.getVersion().name());
-        dto.setAmount(new BigDecimal(bill.getAmount()));
+        dto.setAmount(bill.getAmount() != null ? new BigDecimal(bill.getAmount()) : null);
         dto.setCurrency(bill.getCurrency());
         dto.setAccount(bill.getAccount());
         dto.setCreditor(toDtoAddress(bill.getCreditor()));
@@ -41,7 +41,7 @@ class QrBillDTOConverter {
         Bill bill = new Bill();
         bill.setLanguage(Bill.Language.valueOf(dto.getLanguage().name()));
         bill.setVersion(net.codecrete.qrbill.generator.Bill.Version.valueOf(dto.getVersion()));
-        bill.setAmount(dto.getAmount().doubleValue());
+        bill.setAmount(dto.getAmount() != null ? dto.getAmount().doubleValue() : null);
         bill.setCurrency(dto.getCurrency());
         bill.setAccount(dto.getAccount());
         bill.setCreditor(fromDtoAddress(dto.getCreditor()));
