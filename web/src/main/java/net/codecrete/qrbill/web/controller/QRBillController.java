@@ -38,8 +38,6 @@ import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.QRBill.BillFormat;
 import net.codecrete.qrbill.generator.QRBill.GraphicsFormat;
 import net.codecrete.qrbill.generator.ValidationResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -66,12 +64,10 @@ public class QRBillController implements BillApi {
      *         the QR code text (if the bill is valid)
      */
     @Override
-    public ResponseEntity<ValidationResponse> validateBill(@RequestBody QrBill qrBill) {
+    public ResponseEntity<ValidationResponse> validateBill(QrBill qrBill) {
         ValidationResult result = QRBill.validate(QrBillDTOConverter.fromDtoQrBill(qrBill));
         return new ResponseEntity<>(createValidationResponse(result), HttpStatus.OK);
     }
-
-    // TODO: With Spring 5.1 we no longer need to repeat @RequestBody and @PathVariable annotations
 
     /**
      * Decodes the text from the QR code and validates the information.
@@ -82,7 +78,7 @@ public class QRBillController implements BillApi {
      *         text
      */
     @Override
-    public ResponseEntity<ValidationResponse> decodeQRCode(@RequestBody QrCodeInformation qrCodeInformation) {
+    public ResponseEntity<ValidationResponse> decodeQRCode(QrCodeInformation qrCodeInformation) {
         Bill bill = QRBill.decodeQrCodeText(qrCodeInformation.getText());
         ValidationResult result = QRBill.validate(bill);
         return new ResponseEntity<>(createValidationResponse(result), HttpStatus.OK);
@@ -122,7 +118,7 @@ public class QRBillController implements BillApi {
      *         messages otherwise
      */
     @Override
-    public ResponseEntity<Resource> generateBillAsSVG(@PathVariable("outputSize") String outputSize, @RequestBody QrBill qrBill) throws BadRequestException {
+    public ResponseEntity<Resource> generateBillAsSVG(String outputSize, QrBill qrBill) throws BadRequestException {
         return generateBill(qrBill, outputSize, GraphicsFormat.SVG);
     }
 
@@ -134,7 +130,7 @@ public class QRBillController implements BillApi {
      * @return the generated bill
      */
     @Override
-    public ResponseEntity<Resource> getBillAsSVG(@PathVariable("outputSize") String outputSize, @PathVariable("billID") String billID) throws BadRequestException {
+    public ResponseEntity<Resource> getBillAsSVG(String outputSize, String billID) throws BadRequestException {
         return generateBillFromID(billID, outputSize, GraphicsFormat.SVG);
     }
 
@@ -147,7 +143,7 @@ public class QRBillController implements BillApi {
      *         messages otherwise
      */
     @Override
-    public ResponseEntity<Resource> generateBillAsPDF(@PathVariable("outputSize") String outputSize, @RequestBody QrBill qrBill) throws BadRequestException {
+    public ResponseEntity<Resource> generateBillAsPDF(String outputSize, QrBill qrBill) throws BadRequestException {
         return generateBill(qrBill, outputSize, GraphicsFormat.PDF);
     }
 
@@ -159,7 +155,7 @@ public class QRBillController implements BillApi {
      * @return the generated bill
      */
     @Override
-    public ResponseEntity<Resource> getBillAsPDF(@PathVariable("outputSize") String outputSize, @PathVariable("billID") String billID) throws BadRequestException {
+    public ResponseEntity<Resource> getBillAsPDF(String outputSize, String billID) throws BadRequestException {
         return generateBillFromID(billID, outputSize, GraphicsFormat.PDF);
     }
 
