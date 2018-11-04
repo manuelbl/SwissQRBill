@@ -1,6 +1,6 @@
 buildscript {
     dependencies {
-        classpath "org.openapitools:openapi-generator-gradle-plugin:3.3.1"
+        classpath "org.openapitools:openapi-generator-gradle-plugin:3.3.2"
     }
 }
 
@@ -29,17 +29,18 @@ test {
     useJUnitPlatform()
 }
 
-def openapiInput = file("${project.projectDir.path}/src/main/resources/static/qrbill.yaml")
-def openapiOutputDir = file("${project.buildDir.path}/openapi")
-def openapiIgnoreFiles = file("${project.projectDir.path}/.openapi-generator-ignore")
+def openapiInput = new File(projectDir, '/src/main/resources/static/qrbill.yaml')
+def openapiOutputDir = new File(buildDir, 'openapi')
+def openapiSourceDir = new File(openapiOutputDir, 'src/main/java')
+def openapiIgnoreFiles = new File(projectDir, '.openapi-generator-ignore')
 
 openApiGenerate {
     generatorName = "spring"
     inputSpec = openapiInput.path
     outputDir = openapiOutputDir.path
-    apiPackage = "net.codecrete.qrbill.web.api"
+    apiPackage     = "net.codecrete.qrbill.web.api"
     invokerPackage = "net.codecrete.qrbill.web.config"
-    modelPackage = "net.codecrete.qrbill.web.model"
+    modelPackage   = "net.codecrete.qrbill.web.model"
     ignoreFileOverride = openapiIgnoreFiles.path
     configOptions = [
             java8: true,
@@ -51,7 +52,7 @@ openApiGenerate {
 sourceSets {
     main {
         java {
-            srcDirs "${openapiOutputDir}/src/main/java"
+            srcDirs openapiSourceDir
         }
     }
 }
