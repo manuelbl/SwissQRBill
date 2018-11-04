@@ -11,6 +11,7 @@ import net.codecrete.qrbill.web.model.ValidationMessage;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -44,5 +45,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(BadRequestException.class)
     protected ResponseEntity<Object> handleBadRequestException(BadRequestException ex, WebRequest request) {
         return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(HttpMessageConversionException.class)
+    protected ResponseEntity<Object> defaultExceptionHandler(HttpMessageConversionException ex, WebRequest request) {
+        Throwable cause = ex;
+        while (cause.getCause() != null && cause.getCause() != cause)
+            cause = cause.getCause();
+        return handleExceptionInternal(ex, cause.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 }

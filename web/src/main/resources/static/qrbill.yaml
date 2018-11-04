@@ -300,8 +300,6 @@ components:
         amount:
           type: number
           description: "Bill amount"
-          minimum: 0.01
-          maximum: 999999999.99
         currency:
           type: string
           default: "CHF"
