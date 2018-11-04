@@ -12,6 +12,7 @@ import net.codecrete.qrbill.web.model.QrBill;
 import net.codecrete.qrbill.web.model.ValidationMessage;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +23,7 @@ class QrBillDTOConverter {
         QrBill dto = new QrBill();
         dto.setLanguage(QrBill.LanguageEnum.valueOf(bill.getLanguage().name()));
         dto.setVersion(bill.getVersion().name());
-        dto.setAmount(bill.getAmount() != null ? new BigDecimal(bill.getAmount()) : null);
+        dto.setAmount(bill.getAmount() != null ? new BigDecimal(bill.getAmount(), MathContext.DECIMAL32) : null);
         dto.setCurrency(bill.getCurrency());
         dto.setAccount(bill.getAccount());
         dto.setCreditor(toDtoAddress(bill.getCreditor()));
