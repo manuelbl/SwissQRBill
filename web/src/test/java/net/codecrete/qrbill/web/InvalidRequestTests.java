@@ -1,11 +1,12 @@
 package net.codecrete.qrbill.web;
 
-import okhttp3.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("Invalid requests")
-public class InvalidRequestTests {
+class InvalidRequestTests {
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -67,6 +68,32 @@ public class InvalidRequestTests {
         );
 
         assertEquals(400, response.code());
+    }
+
+    @Test
+    void testInvalidJson() throws IOException {
+        Response response = postRequest("/qrbill-api/bill/validate",
+                "{ \"language\": \"de\", \"amount\": \"100.34\", \"currency\": \"CHF\", [" +
+                        "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
+                        "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
+                        "\"postalCode\": \"2100\", \"town\": \"Irgendwo\", \"countryCode\": \"CH\" }, " +
+                        "\"referenceNo\": \"RF18539007547034\" }"
+        );
+
+        assertEquals(400, response.code());
+    }
+
+    @Test
+    void testInvalidUrl() throws IOException {
+        Response response = postRequest("/qrbill-api/bill2/validate",
+                "{ \"language\": \"de\", \"amount\": \"100.34\", \"currency\": \"CHF\", " +
+                        "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
+                        "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
+                        "\"postalCode\": \"2100\", \"town\": \"Irgendwo\", \"countryCode\": \"CH\" }, " +
+                        "\"referenceNo\": \"RF18539007547034\" }"
+        );
+
+        assertEquals(404, response.code());
     }
 
     private Response postRequest(String relativeUrl, String body) throws IOException {

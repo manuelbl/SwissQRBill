@@ -48,7 +48,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(HttpMessageConversionException.class)
-    protected ResponseEntity<Object> defaultExceptionHandler(HttpMessageConversionException ex, WebRequest request) {
+    protected ResponseEntity<Object> messageConversionExceptionHandler(HttpMessageConversionException ex, WebRequest request) {
         Throwable cause = ex;
         while (cause.getCause() != null && cause.getCause() != cause)
             cause = cause.getCause();
