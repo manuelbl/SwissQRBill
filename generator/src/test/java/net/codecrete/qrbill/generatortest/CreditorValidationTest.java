@@ -151,7 +151,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         assertTrue(result.hasErrors());
         assertFalse(result.hasWarnings());
         assertTrue(result.hasMessages());
-        assertEquals(4, result.getValidationMessages().size());
+        assertEquals(5, result.getValidationMessages().size());
         for (ValidationMessage msg : result.getValidationMessages()) {
             assertEquals(ValidationMessage.Type.ERROR, msg.getType());
             assertEquals("field_is_mandatory", msg.getMessageKey());

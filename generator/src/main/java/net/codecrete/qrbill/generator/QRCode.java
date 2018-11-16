@@ -9,9 +9,6 @@ package net.codecrete.qrbill.generator;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -29,7 +26,6 @@ import net.codecrete.qrbill.generator.ValidationMessage.Type;
 class QRCode {
 
     static final double SIZE = 46; // mm
-    private static final String CRLF = "\r\n";
 
     private Bill bill;
     private final StringBuilder textBuilder = new StringBuilder();
@@ -143,21 +139,18 @@ class QRCode {
 
     private void createQRCodeText() {
         // Header
-        textBuilder.append("SPC"); // QRType
-        appendDataField("0100"); // Version
-        appendDataField("1"); // Coding
+        textBuilder.append("SPC\n"); // QRType
+        textBuilder.append("0200\n"); // Version
+        textBuilder.append("1"); // Coding
 
         // CdtrInf
         appendDataField(bill.getAccount()); // IBAN
         appendPerson(bill.getCreditor()); // Cdtr
+        textBuilder.append("\n\n\n\n\n\n\n"); // UltmtCdtr
 
-        // UltmtCdtr
-        appendPerson(bill.getFinalCreditor());
-
-        // CCyAmtDate
+        // CcyAmt
         appendDataField(bill.getAmount() == null ? "" : formatAmountForCode(bill.getAmount())); // Amt
         appendDataField(bill.getCurrency()); // Ccy
-        appendDataField(bill.getDueDate() != null ? formatDateForCode(bill.getDueDate()) : ""); // ReqdExctnDt
 
         // UltmtDbtr
         appendPerson(bill.getDebtor());
@@ -172,20 +165,34 @@ class QRCode {
         }
         appendDataField(referenceType); // Tp
         appendDataField(bill.getReferenceNo()); // Ref
-        appendDataField(bill.getAdditionalInfo()); // Unstrd
+
+        // AddInf
+        appendDataField(bill.getUnstructuredMessage()); // Unstrd
+        appendDataField("EPD"); // Trailer
+        appendDataField(bill.getBillInformation()); // StrdBkgInf
+
+        // AltPmtInf
+        if (bill.getAlternativeSchemes() != null && bill.getAlternativeSchemes().length > 0) {
+            appendDataField(bill.getAlternativeSchemes()[0]); // AltPmt
+            if (bill.getAlternativeSchemes().length > 1)
+                appendDataField(bill.getAlternativeSchemes()[1]); // AltPmt
+        }
+
     }
 
     private void appendPerson(Address address) {
         if (address != null) {
+            appendDataField(address.getType() == Address.Type.STRUCTURED ? "S" : "K"); // AdrTp
             appendDataField(address.getName()); // Name
-            appendDataField(address.getStreet()); // StrtNm
-            appendDataField(address.getHouseNo()); // BldgNb
+            appendDataField(address.getType() == Address.Type.STRUCTURED
+                    ? address.getStreet() : address.getAddressLine1()); // StrtNmOrAdrLine1
+            appendDataField(address.getType() == Address.Type.STRUCTURED
+                    ? address.getHouseNo() : address.getAddressLine2()); // StrtNmOrAdrLine2
             appendDataField(address.getPostalCode()); // PstCd
             appendDataField(address.getTown()); // TwnNm
-            appendDataField(address.getCountryCode()); // Ctrty
+            appendDataField(address.getCountryCode()); // Ctry
         } else {
-            for (int i = 0; i < 6; i++)
-                appendDataField("");
+            textBuilder.append("\n\n\n\n\n\n\n");
         }
     }
 
@@ -193,7 +200,7 @@ class QRCode {
         if (value == null)
             value = "";
 
-        textBuilder.append(CRLF).append(value);
+        textBuilder.append('\n').append(value);
     }
 
     private static boolean[][] copyModules(QrCode qrCode) {
@@ -224,10 +231,6 @@ class QRCode {
         return amountFieldFormat.format(amount);
     }
 
-    private static String formatDateForCode(LocalDate date) {
-        return date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-    }
-
     /**
      * Decodes the specified text and returns the bill data.
      * <p>
@@ -245,27 +248,27 @@ class QRCode {
      */
     public static Bill decodeQRCodeText(String text) {
         String[] lines = splitLines(text);
-        if (lines.length < 28 || lines.length > 30)
+        if (lines.length < 32 || lines.length > 34)
             throwSingleValidationError(Bill.FIELD_QR_TYPE, QRBill.KEY_VALID_DATA_STRUCTURE);
         if (!"SPC".equals(lines[0]))
             throwSingleValidationError(Bill.FIELD_QR_TYPE, QRBill.KEY_VALID_DATA_STRUCTURE);
-        if (!"0100".equals(lines[1]))
+        if (!"0200".equals(lines[1]))
             throwSingleValidationError(Bill.FIELD_VERSION, QRBill.KEY_SUPPORTED_VERSION);
         if (!"1".equals(lines[2]))
             throwSingleValidationError(Bill.FIELD_CODING_TYPE, QRBill.KEY_SUPPORTED_CODING_TYPE);
 
         Bill bill = new Bill();
-        bill.setVersion(Bill.Version.V1_0);
+        bill.setVersion(Bill.Version.V2_0);
 
         bill.setAccount(lines[3]);
 
         bill.setCreditor(decodeAddress(lines, 4, false));
 
-        bill.setFinalCreditor(decodeAddress(lines, 10, true));
+        bill.setFinalCreditor(decodeAddress(lines, 11, true));
 
-        if (lines[16].length() > 0) {
+        if (lines[18].length() > 0) {
             try {
-                bill.setAmount(Double.valueOf(lines[16]));
+                bill.setAmount(Double.valueOf(lines[18]));
             } catch (NumberFormatException nfe) {
                 throwSingleValidationError(Bill.FIELD_AMOUNT, QRBill.KEY_VALID_NUMBER);
             }
@@ -273,30 +276,30 @@ class QRCode {
             bill.setAmount(null);
         }
 
-        bill.setCurrency(lines[17]);
+        bill.setCurrency(lines[19]);
 
-        if (lines[18].length() > 0) {
-            try {
-                bill.setDueDate(LocalDate.parse(lines[18], DateTimeFormatter.ISO_LOCAL_DATE));
-            } catch (DateTimeParseException dtpe) {
-                throwSingleValidationError(Bill.FIELD_DUE_DATE, QRBill.KEY_VALID_DATE);
-            }
-        } else {
-            bill.setDueDate(null);
+        bill.setDebtor(decodeAddress(lines, 20, true));
+
+        // reference type is ignored (line 27)
+        bill.setReferenceNo(lines[28]);
+        bill.setUnstructuredMessage(lines[29]);
+        if (!"EPD".equals(lines[30]))
+            throwSingleValidationError(Bill.FIELD_QR_TYPE, QRBill.KEY_VALID_DATA_STRUCTURE);
+
+        bill.setBillInformation(lines[31]);
+
+        String[] alternativeSchemes = null;
+        if (lines.length > 32) {
+            alternativeSchemes = new String[lines.length - 32];
+            System.arraycopy(lines, 32, alternativeSchemes, 0, lines.length - 32);
         }
+        bill.setAlternativeSchemes(alternativeSchemes);
 
-        bill.setDebtor(decodeAddress(lines, 19, true));
-
-        // reference type is ignored (line 25)
-        bill.setReferenceNo(lines[26]);
-        bill.setAdditionalInfo(lines[27]);
-
-        // remaining lines (alternative schemes) are ignored
         return bill;
     }
 
     /**
-     * Process six lines and extract and address
+     * Process seven lines and extract and address
      * 
      * @param lines      line array
      * @param startLine  index of first line to process
@@ -307,18 +310,27 @@ class QRCode {
 
         boolean isEmpty = lines[startLine].length() == 0 && lines[startLine + 1].length() == 0
                 && lines[startLine + 2].length() == 0 && lines[startLine + 3].length() == 0
-                && lines[startLine + 4].length() == 0 && lines[startLine + 5].length() == 0;
+                && lines[startLine + 4].length() == 0 && lines[startLine + 5].length() == 0
+                && lines[startLine + 6].length() == 0;
 
         if (isEmpty && isOptional)
             return null;
 
         Address address = new Address();
-        address.setName(lines[startLine]);
-        address.setStreet(lines[startLine + 1]);
-        address.setHouseNo(lines[startLine + 2]);
-        address.setPostalCode(lines[startLine + 3]);
-        address.setTown(lines[startLine + 4]);
-        address.setCountryCode(lines[startLine + 5]);
+        boolean isStructuredAddress = "S".equals(lines[startLine]);
+        address.setName(lines[startLine + 1]);
+        if (isStructuredAddress) {
+            address.setStreet(lines[startLine + 2]);
+            address.setHouseNo(lines[startLine + 3]);
+        } else {
+            address.setAddressLine1(lines[startLine + 2]);
+            address.setAddressLine2(lines[startLine + 3]);
+        }
+        if (lines[startLine + 4].length() > 0)
+            address.setPostalCode(lines[startLine + 4]);
+        if (lines[startLine + 5].length() > 0)
+            address.setTown(lines[startLine + 5]);
+        address.setCountryCode(lines[startLine + 6]);
         return address;
     }
 
@@ -326,15 +338,21 @@ class QRCode {
         ArrayList<String> lines = new ArrayList<>(32);
         int lastPos = 0;
         while (true) {
-            int pos = text.indexOf(CRLF, lastPos);
+            int pos = text.indexOf('\n', lastPos);
             if (pos < 0)
                 break;
-            lines.add(text.substring(lastPos, pos));
-            lastPos = pos + CRLF.length();
+            int pos2 = pos;
+            if (pos2 > lastPos + 1 && text.charAt(pos2 - 1) == '\r')
+                pos2--;
+            lines.add(text.substring(lastPos, pos2));
+            lastPos = pos + 1;
         }
 
         // add last line
-        lines.add(text.substring(lastPos));
+        int pos2 = text.length();
+        if (pos2 > lastPos + 1 && text.charAt(pos2 - 1) == '\r')
+            pos2--;
+        lines.add(text.substring(lastPos, pos2));
         return lines.toArray(new String[0]);
     }
 

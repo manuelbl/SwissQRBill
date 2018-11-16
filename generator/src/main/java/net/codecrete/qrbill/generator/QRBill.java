@@ -46,6 +46,8 @@ public class QRBill {
     public static final String KEY_MANDATORY_FOR_QR_IBAN = "mandatory_for_qr_iban";
     /** Validation message key: Field is mandatory */
     public static final String KEY_FIELD_IS_MANDATORY = "field_is_mandatory";
+    /** Validation message key: Fields for both structured and combined elements address type have been filled in */
+    public static final String KEY_ADDRESS_TYPE_CONFLICT = "adress_type_conflict";
     /** Validation message key: Country code must consist of two letters */
     public static final String KEY_VALID_COUNTRY_CODE = "valid_country_code";
     /**

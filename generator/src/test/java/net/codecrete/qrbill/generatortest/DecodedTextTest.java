@@ -28,73 +28,103 @@ import net.codecrete.qrbill.generator.ValidationResult;
 @DisplayName("Decoding of embedded QR code text")
 class DecodedTextTest {
 
-    //@formatter:off
-    private static final String VALID_TEXT =
-            "SPC\r\n" +
-            "0100\r\n" +
-            "1\r\n" +
-            "CH4431999123000889012\r\n" +
-            "Robert Schneider AG\r\n" +
-            "Rue du Lac\r\n" +
-            "1268/2/22\r\n" +
-            "2501\r\n" +
-            "Biel\r\n" +
-            "CH\r\n" +
-            "Robert Schneider Services Switzerland AG\r\n" +
-            "Rue du Lac\r\n" +
-            "1268/3/1\r\n" +
-            "2501\r\n" +
-            "Biel\r\n" +
-            "CH\r\n" +
-            "123949.75\r\n" +
-            "CHF\r\n" +
-            "2019-10-31\r\n" +
-            "Pia-Maria Rutschmann-Schnyder\r\n" +
-            "Grosse Marktgasse\r\n" +
-            "28\r\n" +
-            "9400\r\n" +
-            "Rorschach\r\n" +
-            "CH\r\n" +
-            "QRR\r\n" +
-            "210000000003139471430009017\r\n" +
-            "Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010";
-    //@formatter:on
-
     @Test
     void decodeText1() {
         Bill bill = SampleData.getExample1();
+        normalizeSourceBill(bill);
         Bill bill2 = QRBill.decodeQrCodeText(QRBill.encodeQrCodeText(bill));
-        bill = QRBill.validate(bill).getCleanedBill();
+        normalizeDecodedBill(bill2);
         assertEquals(bill, bill2);
     }
 
     @Test
     void decodeText2() {
         Bill bill = SampleData.getExample2();
+        normalizeSourceBill(bill);
         Bill bill2 = QRBill.decodeQrCodeText(QRBill.encodeQrCodeText(bill));
-        bill2.getCreditor().setStreet(null); // replace empty string with null
-        bill2.getCreditor().setHouseNo(null); // replace empty string with null
-        bill2.setLanguage(bill.getLanguage()); // fix language (not contained in text)
+        normalizeDecodedBill(bill2);
         assertEquals(bill, bill2);
     }
 
     @Test
     void decodeText3() {
         Bill bill = SampleData.getExample3();
+        normalizeSourceBill(bill);
         Bill bill2 = QRBill.decodeQrCodeText(QRBill.encodeQrCodeText(bill));
-        bill2.setLanguage(bill.getLanguage()); // fix language (not contained in text)
-        bill2.setAdditionalInfo(null); // replace empty string with null
+        normalizeDecodedBill(bill2);
         assertEquals(bill, bill2);
     }
 
     @Test
     void decodeText4() {
         Bill bill = SampleData.getExample4();
+        normalizeSourceBill(bill);
         Bill bill2 = QRBill.decodeQrCodeText(QRBill.encodeQrCodeText(bill));
-        bill2.getCreditor().setStreet(null); // replace empty string with null
-        bill2.getCreditor().setHouseNo(null); // replace empty string with null
-        bill2.setLanguage(bill.getLanguage()); // fix language (not contained in text)
+        normalizeDecodedBill(bill2);
         assertEquals(bill, bill2);
+    }
+
+    @Test
+    void decodeTextB1() {
+        Bill bill = SampleQrCodeText.getBillData1();
+        normalizeSourceBill(bill);
+        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText1(false));
+        normalizeDecodedBill(bill2);
+        assertEquals(bill, bill2);
+    }
+
+    @Test
+    void decodeTextB2() {
+        Bill bill = SampleQrCodeText.getBillData2();
+        normalizeSourceBill(bill);
+        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText2(false));
+        normalizeDecodedBill(bill2);
+        assertEquals(bill, bill2);
+    }
+
+    @Test
+    void decodeTextB3() {
+        Bill bill = SampleQrCodeText.getBillData3();
+        normalizeSourceBill(bill);
+        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText3(false));
+        normalizeDecodedBill(bill2);
+        assertEquals(bill, bill2);
+    }
+
+    @Test
+    void decodeTextB4() {
+        Bill bill = SampleQrCodeText.getBillData4();
+        normalizeSourceBill(bill);
+        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText4(false));
+        normalizeDecodedBill(bill2);
+        assertEquals(bill, bill2);
+    }
+
+    private void normalizeSourceBill(Bill bill) {
+        bill.setLanguage(Bill.Language.DE);
+        bill.setAccount(bill.getAccount().replace(" ", ""));
+        if (bill.getReferenceNo() != null)
+            bill.setReferenceNo(bill.getReferenceNo().replace(" ", ""));
+        if (bill.getCreditor() != null) {
+            if (bill.getCreditor().getStreet() == null)
+                bill.getCreditor().setStreet(""); // replace null with empty string
+            if (bill.getCreditor().getHouseNo() == null)
+                bill.getCreditor().setHouseNo(""); // replace null with empty string
+        }
+        if (bill.getDebtor() != null) {
+            if (bill.getDebtor().getTown() != null)
+                bill.getDebtor().setTown(bill.getDebtor().getTown().trim());
+        }
+        if (bill.getReferenceNo() == null)
+            bill.setReferenceNo(""); // replace null with empty string
+        if (bill.getUnstructuredMessage() == null)
+            bill.setUnstructuredMessage(""); // replace null with empty string
+        if (bill.getBillInformation() == null)
+            bill.setBillInformation(""); // replace null with empty string
+    }
+
+    private void normalizeDecodedBill(Bill bill) {
+        bill.setLanguage(Bill.Language.DE); // fix language (not contained in text)
     }
 
     @Test
@@ -113,46 +143,30 @@ class DecodedTextTest {
     @Test
     void decodeInvalidFormat3() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
-                "SPC1\r\n0100\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
+                "SPC1\r\n0200\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
         assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_QR_TYPE);
     }
 
     @Test
     void decodeInvalidVersion() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
-                "SPC\r\n0101\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
+                "SPC\r\n0101\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
         assertSingleError(err.getValidationResult(), QRBill.KEY_SUPPORTED_VERSION, Bill.FIELD_VERSION);
     }
 
     @Test
     void decodeInvalidCodingType() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
-                "SPC\r\n0100\r\n0\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
+                "SPC\r\n0200\r\n0\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
         assertSingleError(err.getValidationResult(), QRBill.KEY_SUPPORTED_CODING_TYPE, Bill.FIELD_CODING_TYPE);
     }
 
     @Test
     void decodeInvalidNumber() {
-        String invalidText = VALID_TEXT.replace("123949.75", "1239d49.75");
+        String invalidText = SampleQrCodeText.getQrCodeText1(false).replace("3949.75", "1239d49.75");
         QRBillValidationError err = assertThrows(QRBillValidationError.class,
                 () -> QRBill.decodeQrCodeText(invalidText));
         assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_NUMBER, Bill.FIELD_AMOUNT);
-    }
-
-    @Test
-    void decodeInvalidDate1() {
-        String invalidText = VALID_TEXT.replace("2019-10-31", "2019-10-32");
-        QRBillValidationError err = assertThrows(QRBillValidationError.class,
-                () -> QRBill.decodeQrCodeText(invalidText));
-        assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATE, Bill.FIELD_DUE_DATE);
-    }
-
-    @Test
-    void decodeInvalidDate2() {
-        String invalidText = VALID_TEXT.replace("2019-10-31", "31.10.2019");
-        QRBillValidationError err = assertThrows(QRBillValidationError.class,
-                () -> QRBill.decodeQrCodeText(invalidText));
-        assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATE, Bill.FIELD_DUE_DATE);
     }
 
     private void assertSingleError(ValidationResult result, String messageKey, String field) {

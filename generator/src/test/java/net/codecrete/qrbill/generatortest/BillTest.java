@@ -7,12 +7,6 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +14,8 @@ import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.Bill.Language;
 import net.codecrete.qrbill.generator.Bill.Version;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for class {@link Bill}
@@ -39,8 +35,8 @@ class BillTest {
         Bill bill = new Bill();
         bill.setVersion(null);
         assertNull(bill.getVersion());
-        bill.setVersion(Version.V1_0);
-        assertEquals(Version.V1_0, bill.getVersion());
+        bill.setVersion(Version.V2_0);
+        assertEquals(Version.V2_0, bill.getVersion());
     }
 
     @Test
@@ -74,15 +70,6 @@ class BillTest {
     }
 
     @Test
-    void setFinalCreditor() {
-        Bill bill = new Bill();
-        Address address = createAddress();
-        bill.setFinalCreditor(address);
-        assertSame(address, bill.getFinalCreditor());
-        assertEquals(createAddress(), bill.getFinalCreditor());
-    }
-
-    @Test
     void setReferenceNo() {
         Bill bill = new Bill();
         bill.setReferenceNo("RF839DF38202934");
@@ -97,10 +84,10 @@ class BillTest {
     }
 
     @Test
-    void setAdditionalInfo() {
+    void setUnstructuredMessage() {
         Bill bill = new Bill();
-        bill.setAdditionalInfo("Rechnung 3849-2001");
-        assertEquals("Rechnung 3849-2001", bill.getAdditionalInfo());
+        bill.setUnstructuredMessage("Rechnung 3849-2001");
+        assertEquals("Rechnung 3849-2001", bill.getUnstructuredMessage());
     }
 
     @Test
@@ -113,11 +100,18 @@ class BillTest {
     }
 
     @Test
-    void setDueDate() {
+    void setBillInfomration() {
         Bill bill = new Bill();
-        LocalDate dueDate = LocalDate.of(2019, 8, 31);
-        bill.setDueDate(dueDate);
-        assertEquals(dueDate, bill.getDueDate());
+        bill.setBillInformation("S1/01/20170309/11/10201409/20/14000000/22/369 58/30/CH106017086/40/1020/41/3010");
+        assertEquals("S1/01/20170309/11/10201409/20/14000000/22/369 58/30/CH106017086/40/1020/41/3010",
+                bill.getBillInformation());
+    }
+
+    @Test
+    void setAlternativeScheme() {
+        Bill bill = new Bill();
+        bill.setAlternativeSchemes(createAlternativeSchemes());
+        assertArrayEquals(createAlternativeSchemes(), bill.getAlternativeSchemes());
     }
 
     private Address createAddress() {
@@ -129,5 +123,12 @@ class BillTest {
         address.setTown("Winterthur");
         address.setCountryCode("CH");
         return address;
+    }
+
+    private String[] createAlternativeSchemes() {
+        return new String[] {
+                "UV;UltraPay005;12345",
+                "XY;XYService;54321"
+        };
     }
 }

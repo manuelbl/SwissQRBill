@@ -117,48 +117,30 @@ class BasicBillValidationTest extends BillDataValidationBase {
     }
 
     @Test
-    void validAdditionalData() {
+    void validUnstructuredMessage() {
         bill = SampleData.getExample1();
 
-        bill.setAdditionalInfo("Bill no 39133");
+        bill.setUnstructuredMessage("Bill no 39133");
         validate();
         assertNoMessages();
-        assertEquals("Bill no 39133", validatedBill.getAdditionalInfo());
+        assertEquals("Bill no 39133", validatedBill.getUnstructuredMessage());
     }
 
     @Test
-    void emptyAdditionalData() {
+    void emptyUnstructureMessage() {
         bill = SampleData.getExample1();
-        bill.setAdditionalInfo("   ");
+        bill.setUnstructuredMessage("   ");
         validate();
         assertNoMessages();
-        assertNull(validatedBill.getAdditionalInfo());
+        assertNull(validatedBill.getUnstructuredMessage());
     }
 
     @Test
-    void additionalDataWithLeadingAndTrailingWhitespace() {
+    void unstructuredMessageWithLeadingAndTrailingWhitespace() {
         bill = SampleData.getExample1();
-        bill.setAdditionalInfo("  Bill no 39133 ");
+        bill.setUnstructuredMessage("  Bill no 39133 ");
         validate();
         assertNoMessages();
-        assertEquals("Bill no 39133", validatedBill.getAdditionalInfo());
-    }
-
-    @Test
-    void validDueDate() {
-        bill = SampleData.getExample1();
-        bill.setDueDate(LocalDate.of(2018, 12, 10));
-        validate();
-        assertNoMessages();
-        assertEquals(bill.getDueDate(), validatedBill.getDueDate());
-    }
-
-    @Test
-    void noDueDate() {
-        bill = SampleData.getExample1();
-        bill.setDueDate(null);
-        validate();
-        assertNoMessages();
-        assertNull(validatedBill.getDueDate());
+        assertEquals("Bill no 39133", validatedBill.getUnstructuredMessage());
     }
 }

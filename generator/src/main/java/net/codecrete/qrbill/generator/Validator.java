@@ -47,11 +47,11 @@ class Validator {
         validateAmount();
         boolean isQRBillIBAN = validateAccountNumber();
         validateCreditor();
-        validateFinalCreditor();
         validateReferenceNo(isQRBillIBAN);
-        validateAdditionalInformation();
+        validateUnstructuredMessage();
         validateDebtor();
-        validateDueDate();
+        validateBillInformation();
+        validateAlternativeSchemes();
 
         validationResult.setCleanedBill(billOut);
         return validationResult;
@@ -107,11 +107,6 @@ class Validator {
         billOut.setCreditor(creditor);
     }
 
-    private void validateFinalCreditor() {
-        Address finalCreditor = validatePerson(billIn.getFinalCreditor(), Bill.FIELDROOT_FINAL_CREDITOR, false);
-        billOut.setFinalCreditor(finalCreditor);
-    }
-
     private void validateReferenceNo(boolean isQRBillIBAN) {
         String referenceNo = Strings.trimmed(billIn.getReferenceNo());
 
@@ -139,19 +134,37 @@ class Validator {
         }
     }
 
-    private void validateAdditionalInformation() {
-        String additionalInfo = Strings.trimmed(billIn.getAdditionalInfo());
-        additionalInfo = clippedValue(additionalInfo, 140, Bill.FIELD_ADDITIONAL_INFO);
-        billOut.setAdditionalInfo(additionalInfo);
+    private void validateUnstructuredMessage() {
+        String unstructuredMessage = Strings.trimmed(billIn.getUnstructuredMessage());
+        unstructuredMessage = clippedValue(unstructuredMessage, 140, Bill.FIELD_UNSTRUCTURED_MESSAGE);
+        billOut.setUnstructuredMessage(unstructuredMessage);
+    }
+
+    private void validateBillInformation() {
+        String billInformation = Strings.trimmed(billIn.getBillInformation());
+        billInformation = clippedValue(billInformation, 140, Bill.FIELD_BILL_INFORMATION);
+        billOut.setBillInformation(billInformation);
+    }
+
+    private void validateAlternativeSchemes() {
+        String[] schemesOut = null;
+        if (billIn.getAlternativeSchemes() != null) {
+            int len = billIn.getAlternativeSchemes().length;
+            String[] schemes = new String[len];
+            for (int i = 0; i < len; i++) {
+                String scheme = Strings.trimmed(billIn.getAlternativeSchemes()[i]);
+                if (scheme != null) {
+                    schemes[i] = scheme;
+                    schemesOut = schemes;
+                }
+            }
+        }
+        billOut.setAlternativeSchemes(schemesOut);
     }
 
     private void validateDebtor() {
         Address debtor = validatePerson(billIn.getDebtor(), Bill.FIELDROOT_DEBTOR, false);
         billOut.setDebtor(debtor);
-    }
-
-    private void validateDueDate() {
-        billOut.setDueDate(billIn.getDueDate());
     }
 
     private Address validatePerson(Address addressIn, String fieldRoot, boolean mandatory) {
@@ -161,6 +174,8 @@ class Validator {
                 validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_NAME, QRBill.KEY_FIELD_IS_MANDATORY);
                 validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_POSTAL_CODE,
                         QRBill.KEY_FIELD_IS_MANDATORY);
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_ADDRESS_LINE_2,
+                        QRBill.KEY_FIELD_IS_MANDATORY);
                 validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_TOWN, QRBill.KEY_FIELD_IS_MANDATORY);
                 validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE,
                         QRBill.KEY_FIELD_IS_MANDATORY);
@@ -168,19 +183,45 @@ class Validator {
             return null;
         }
 
+        if (addressOut.getType() == Address.Type.CONFLICTING) {
+            if (addressOut.getAddressLine1() != null)
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_ADDRESS_LINE_1, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+            if (addressOut.getAddressLine2() != null)
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_ADDRESS_LINE_2, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+            if (addressOut.getStreet() != null)
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_STREET, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+            if (addressOut.getHouseNo() != null)
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_HOUSE_NO, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+            if (addressOut.getPostalCode() != null)
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_POSTAL_CODE, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+            if (addressOut.getTown() != null)
+                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_TOWN, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+        }
+
         if (addressOut.getCountryCode() != null)
             addressOut.setCountryCode(addressOut.getCountryCode().toUpperCase(Locale.US));
 
         validateMandatory(addressOut.getName(), fieldRoot, Bill.SUBFIELD_NAME);
-        validateMandatory(addressOut.getPostalCode(), fieldRoot, Bill.SUBFIELD_POSTAL_CODE);
-        validateMandatory(addressOut.getTown(), fieldRoot, Bill.SUBFIELD_TOWN);
+        if (addressOut.getType() == Address.Type.STRUCTURED || addressOut.getType() == Address.Type.UNDETERMINED) {
+            validateMandatory(addressOut.getPostalCode(), fieldRoot, Bill.SUBFIELD_POSTAL_CODE);
+            validateMandatory(addressOut.getTown(), fieldRoot, Bill.SUBFIELD_TOWN);
+        }
+        if (addressOut.getType() == Address.Type.COMBINED_ELEMENTS || addressOut.getType() == Address.Type.UNDETERMINED) {
+            validateMandatory(addressOut.getAddressLine2(), fieldRoot, Bill.SUBFIELD_ADDRESS_LINE_2);
+        }
         validateMandatory(addressOut.getCountryCode(), fieldRoot, Bill.SUBFIELD_COUNTRY_CODE);
 
         addressOut.setName(clippedValue(addressOut.getName(), 70, fieldRoot, Bill.SUBFIELD_NAME));
-        addressOut.setStreet(clippedValue(addressOut.getStreet(), 70, fieldRoot, Bill.SUBFIELD_STREET));
-        addressOut.setHouseNo(clippedValue(addressOut.getHouseNo(), 16, fieldRoot, Bill.SUBFIELD_HOUSE_NO));
-        addressOut.setPostalCode(clippedValue(addressOut.getPostalCode(), 16, fieldRoot, Bill.SUBFIELD_POSTAL_CODE));
-        addressOut.setTown(clippedValue(addressOut.getTown(), 35, fieldRoot, Bill.SUBFIELD_TOWN));
+        if (addressOut.getType() == Address.Type.STRUCTURED) {
+            addressOut.setStreet(clippedValue(addressOut.getStreet(), 70, fieldRoot, Bill.SUBFIELD_STREET));
+            addressOut.setHouseNo(clippedValue(addressOut.getHouseNo(), 16, fieldRoot, Bill.SUBFIELD_HOUSE_NO));
+            addressOut.setPostalCode(clippedValue(addressOut.getPostalCode(), 16, fieldRoot, Bill.SUBFIELD_POSTAL_CODE));
+            addressOut.setTown(clippedValue(addressOut.getTown(), 35, fieldRoot, Bill.SUBFIELD_TOWN));
+        }
+        if (addressOut.getType() == Address.Type.COMBINED_ELEMENTS) {
+            addressOut.setAddressLine1(clippedValue(addressOut.getAddressLine1(), 70, fieldRoot, Bill.SUBFIELD_ADDRESS_LINE_1));
+            addressOut.setAddressLine2(clippedValue(addressOut.getAddressLine2(), 70, fieldRoot, Bill.SUBFIELD_ADDRESS_LINE_2));
+        }
 
         if (addressOut.getCountryCode() != null
                 && (addressOut.getCountryCode().length() != 2 || !Payments.isAlphaNumeric(addressOut.getCountryCode())))
@@ -203,15 +244,28 @@ class Validator {
             return null;
         Address addressOut = new Address();
         addressOut.setName(cleanedValue(addressIn.getName(), fieldRoot, Bill.SUBFIELD_NAME));
-        addressOut.setStreet(cleanedValue(addressIn.getStreet(), fieldRoot, Bill.SUBFIELD_STREET));
-        addressOut.setHouseNo(cleanedValue(addressIn.getHouseNo(), fieldRoot, Bill.SUBFIELD_HOUSE_NO));
-        addressOut.setPostalCode(cleanedValue(addressIn.getPostalCode(), fieldRoot, Bill.SUBFIELD_POSTAL_CODE));
-        addressOut.setTown(cleanedValue(addressIn.getTown(), fieldRoot, Bill.SUBFIELD_TOWN));
+        String value = cleanedValue(addressIn.getAddressLine1(), fieldRoot, Bill.SUBFIELD_ADDRESS_LINE_1);
+        if (value != null)
+            addressOut.setAddressLine1(value);
+        value = cleanedValue(addressIn.getAddressLine2(), fieldRoot, Bill.SUBFIELD_ADDRESS_LINE_2);
+        if (value != null)
+            addressOut.setAddressLine2(value);
+        value = cleanedValue(addressIn.getStreet(), fieldRoot, Bill.SUBFIELD_STREET);
+        if (value != null)
+            addressOut.setStreet(value);
+        value = cleanedValue(addressIn.getHouseNo(), fieldRoot, Bill.SUBFIELD_HOUSE_NO);
+        if (value != null)
+            addressOut.setHouseNo(value);
+        value = cleanedValue(addressIn.getPostalCode(), fieldRoot, Bill.SUBFIELD_POSTAL_CODE);
+        if (value != null)
+            addressOut.setPostalCode(value);
+        value = cleanedValue(addressIn.getTown(), fieldRoot, Bill.SUBFIELD_TOWN);
+        if (value != null)
+            addressOut.setTown(value);
         addressOut.setCountryCode(Strings.trimmed(addressIn.getCountryCode()));
 
-        if (addressOut.getName() == null && addressOut.getStreet() == null && addressOut.getHouseNo() == null
-                && addressOut.getPostalCode() == null && addressOut.getTown() == null
-                && addressOut.getCountryCode() == null)
+        if (addressOut.getName() == null && addressOut.getCountryCode() == null
+                && addressOut.getType() == Address.Type.UNDETERMINED)
             return null;
 
         return addressOut;

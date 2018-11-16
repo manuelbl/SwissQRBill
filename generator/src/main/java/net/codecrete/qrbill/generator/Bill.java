@@ -7,7 +7,7 @@
 package net.codecrete.qrbill.generator;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -36,11 +36,15 @@ public class Bill implements Serializable {
      */
     public enum Version {
         /** Version 1.0 */
-        V1_0
+        V2_0
     }
 
     /** Relative field name of an address' name */
     public static final String SUBFIELD_NAME = ".name";
+    /** Relative field of an address' line 1 */
+    public static final String SUBFIELD_ADDRESS_LINE_1 = ".addressLine1";
+    /** Relative field of an address' line 2 */
+    public static final String SUBFIELD_ADDRESS_LINE_2 = ".addressLine2";
     /** Relative field of an address' street */
     public static final String SUBFIELD_STREET = ".street";
     /** Relative field of an address' house number */
@@ -79,24 +83,12 @@ public class Bill implements Serializable {
     public static final String FIELD_CREDITOR_TOWN = "creditor.town";
     /** Field name of the creditor's country code */
     public static final String FIELD_CREDITOR_COUNTRY_CODE = "creditor.countryCode";
-    /** Start of field name of the final creditor address */
-    public static final String FIELDROOT_FINAL_CREDITOR = "finalCreditor";
-    /** Field name of the final creditor's name */
-    public static final String FIELD_FINAL_CREDITOR_NAME = "finalCreditor.name";
-    /** Field name of the final creditor's street */
-    public static final String FIELD_FINAL_CREDITOR_STREET = "finalCreditor.street";
-    /** Field name of the final creditor's house number */
-    public static final String FIELD_FINAL_CREDITOR_HOUSE_NO = "finalCreditor.houseNo";
-    /** Field name of the final creditor's postal code */
-    public static final String FIELD_FINAL_CREDITOR_POSTAL_CODE = "finalCreditor.postalCode";
-    /** Field name of the final creditor's town */
-    public static final String FIELD_FINAL_CREDITOR_TOWN = "finalCreditor.town";
-    /** Field name of the final creditor's country code */
-    public static final String FIELD_FINAL_CREDITOR_COUNTRY_CODE = "finalCreditor.countryCode";
     /** Field name of the reference number */
     public static final String FIELD_REFERENCE_NO = "referenceNo";
-    /** Field name of the additional bill information */
-    public static final String FIELD_ADDITIONAL_INFO = "additionalInfo";
+    /** Field name of the unstructured message */
+    public static final String FIELD_UNSTRUCTURED_MESSAGE = "unstructuredMessage";
+    /** Field name of the bill information */
+    public static final String FIELD_BILL_INFORMATION = "billInformation";
     /** Start of field name of the debtor's address */
     public static final String FIELDROOT_DEBTOR = "debtor";
     /** Field name of the debtor's name */
@@ -111,11 +103,9 @@ public class Bill implements Serializable {
     public static final String FIELD_DEBTOR_TOWN = "debtor.town";
     /** Field name of the debtor's country code */
     public static final String FIELD_DEBTOR_COUNTRY_CODE = "debtor.countryCode";
-    /** Field name of the due date */
-    public static final String FIELD_DUE_DATE = "dueDate";
 
     private Language language = Language.EN;
-    private Version version = Version.V1_0;
+    private Version version = Version.V2_0;
 
     private Double amount = null;
     private String currency = "CHF";
@@ -123,9 +113,10 @@ public class Bill implements Serializable {
     private Address creditor = new Address();
     private Address finalCreditor = null;
     private String referenceNo = null;
-    private String additionalInfo = null;
     private Address debtor = null;
-    private LocalDate dueDate = null;
+    private String unstructuredMessage = null;
+    private String billInformation = null;
+    private String[] alternativeSchemes = null;
 
     /**
      * Gets the bill language.
@@ -206,27 +197,6 @@ public class Bill implements Serializable {
     }
 
     /**
-     * Gets the payment's due date.
-     * 
-     * @return the due date
-     */
-    public LocalDate getDueDate() {
-        return dueDate;
-    }
-
-    /**
-     * Sets the payment's due date.
-     * <p>
-     * The due date is optional.
-     * </p>
-     * 
-     * @param dueDate the due date
-     */
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    /**
      * Gets the creditor's account number.
      * 
      * @return the account number
@@ -278,9 +248,7 @@ public class Bill implements Serializable {
     /**
      * Sets the final creditor address.
      * <p>
-     * The final creditor is optional. If it is not used, both setting this field to
-     * {@code null} or setting an address with all {@code null} or empty values is
-     * ok.
+     * The final creditor must not be used for the time being.
      * </p>
      * 
      * @param finalCreditor the final creditor address
@@ -332,24 +300,6 @@ public class Bill implements Serializable {
     }
 
     /**
-     * Gets the additional unstructured message.
-     * 
-     * @return the additional message
-     */
-    public String getAdditionalInfo() {
-        return additionalInfo;
-    }
-
-    /**
-     * Sets the additional unstructured message.
-     * 
-     * @param additionalInfo the additional message
-     */
-    public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
-    }
-
-    /**
      * Gets the debtor's address.
      * 
      * @return the debtor address
@@ -373,20 +323,88 @@ public class Bill implements Serializable {
     }
 
     /**
+     * Gets the additional unstructured message.
+     *
+     * @return the unstructured message
+     */
+    public String getUnstructuredMessage() {
+        return unstructuredMessage;
+    }
+
+    /**
+     * Sets the additional unstructured message.
+     *
+     * @param unstructuredMessage the unstructured message
+     */
+    public void setUnstructuredMessage(String unstructuredMessage) {
+        this.unstructuredMessage = unstructuredMessage;
+    }
+
+    /**
+     * Gets the additional bill information.
+     *
+     * @return bill information
+     */
+    public String getBillInformation() {
+        return billInformation;
+    }
+
+    /**
+     * Sets the additional bill information
+     * @param billInformation bill information
+     */
+    public void setBillInformation(String billInformation) {
+        this.billInformation = billInformation;
+    }
+
+    /**
+     * Get the alternative schemes.
+     * <p>
+     *     A maximum of two schemes with parameters are allowed.
+     *     Each string start with two letters to indicate the scheme. The third letter is the separator
+     *     letter used to separate the individual scheme parameters.
+     * </p>
+     *
+     * @return alternative schemes
+     */
+    public String[] getAlternativeSchemes() {
+        return alternativeSchemes;
+    }
+
+    /**
+     * Sets the alternative scheme parameters.
+     * <p>
+     *     A maximum of two schemes with parameters are allowed.
+     *     Each string start with two letters to indicate the scheme. The third letter is the separator
+     *     letter used to separate the individual scheme parameters.
+     * </p>
+     *
+     * @param alternativeSchemes
+     */
+    public void setAlternativeSchemes(String[] alternativeSchemes) {
+        this.alternativeSchemes = alternativeSchemes;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Bill bill = (Bill) o;
-        return language == bill.language && version == bill.version && Objects.equals(amount, bill.amount)
-                && Objects.equals(currency, bill.currency) && Objects.equals(account, bill.account)
-                && Objects.equals(creditor, bill.creditor) && Objects.equals(finalCreditor, bill.finalCreditor)
-                && Objects.equals(referenceNo, bill.referenceNo) && Objects.equals(additionalInfo, bill.additionalInfo)
-                && Objects.equals(debtor, bill.debtor) && Objects.equals(dueDate, bill.dueDate);
+        return language == bill.language &&
+                version == bill.version &&
+                Objects.equals(amount, bill.amount) &&
+                Objects.equals(currency, bill.currency) &&
+                Objects.equals(account, bill.account) &&
+                Objects.equals(creditor, bill.creditor) &&
+                Objects.equals(finalCreditor, bill.finalCreditor) &&
+                Objects.equals(referenceNo, bill.referenceNo) &&
+                Objects.equals(debtor, bill.debtor) &&
+                Objects.equals(unstructuredMessage, bill.unstructuredMessage) &&
+                Objects.equals(billInformation, bill.billInformation) &&
+                Arrays.equals(alternativeSchemes, bill.alternativeSchemes);
     }
 
     /**
@@ -394,7 +412,27 @@ public class Bill implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(language, version, amount, currency, account, creditor, finalCreditor, referenceNo,
-                additionalInfo, debtor, dueDate);
+
+        int result = Objects.hash(language, version, amount, currency, account, creditor, finalCreditor, referenceNo, debtor, unstructuredMessage, billInformation);
+        result = 31 * result + Arrays.hashCode(alternativeSchemes);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "language=" + language +
+                ", version=" + version +
+                ", amount=" + amount +
+                ", currency='" + currency + '\'' +
+                ", account='" + account + '\'' +
+                ", creditor=" + creditor +
+                ", finalCreditor=" + finalCreditor +
+                ", referenceNo='" + referenceNo + '\'' +
+                ", debtor=" + debtor +
+                ", unstructuredMessage='" + unstructuredMessage + '\'' +
+                ", billInformation='" + billInformation + '\'' +
+                ", alternativeSchemes=" + Arrays.toString(alternativeSchemes) +
+                '}';
     }
 }

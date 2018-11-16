@@ -47,7 +47,6 @@ class PaymentPartLayout {
 
     private String account;
     private String[] creditor;
-    private String[] finalCreditor;
     private String refNo;
     private String[] additionalInfo;
     private String[] debtor;
@@ -150,10 +149,6 @@ class PaymentPartLayout {
         // creditor
         drawLabelAndTextLines(MultilingualText.KEY_CREDITOR, creditor);
 
-        // final creditor
-        if (finalCreditor != null)
-            drawLabelAndTextLines(MultilingualText.KEY_FINAL_CREDITOR, finalCreditor);
-
         // reference number
         if (refNo != null)
             drawLabelAndText(MultilingualText.KEY_REFERENCE_NUMBER, refNo);
@@ -249,27 +244,15 @@ class PaymentPartLayout {
         account = Payments.formatIBAN(bill.getAccount());
         creditor = FontMetrics.splitLines(formatPersonForDisplay(bill.getCreditor()), RIGHT_COLUMN_WIDTH * MM_TO_PT,
                 fontSizeText);
-        finalCreditor = null;
-        if (bill.getFinalCreditor() != null)
-            finalCreditor = FontMetrics.splitLines(formatPersonForDisplay(bill.getFinalCreditor()),
-                    RIGHT_COLUMN_WIDTH * MM_TO_PT, fontSizeText);
         refNo = formatReferenceNumber(bill.getReferenceNo());
         additionalInfo = null;
-        String info = bill.getAdditionalInfo();
-        if (info != null) {
-            int p = info.indexOf("##");
-            if (p > 0)
-                info = info.substring(0, p) + '\n' + info.substring(p);
+        String info = bill.getUnstructuredMessage();
+        if (info != null)
             additionalInfo = FontMetrics.splitLines(info, RIGHT_COLUMN_WIDTH * MM_TO_PT, fontSizeText);
-        }
         debtor = null;
         if (bill.getDebtor() != null)
             debtor = FontMetrics.splitLines(formatPersonForDisplay(bill.getDebtor()), RIGHT_COLUMN_WIDTH * MM_TO_PT,
                     fontSizeText);
-
-        dueDate = null;
-        if (bill.getDueDate() != null)
-            dueDate = formatDateForDisplay(bill.getDueDate());
     }
 
     // Compute the padding and leading for the given font size
@@ -278,10 +261,6 @@ class PaymentPartLayout {
         int numTextLines = 1;
 
         numTextLines += creditor.length;
-        if (finalCreditor != null) {
-            numLabels++;
-            numTextLines += finalCreditor.length;
-        }
         if (refNo != null) {
             numLabels++;
             numTextLines += 1;
