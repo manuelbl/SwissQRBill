@@ -358,6 +358,9 @@ public class Address implements Serializable {
         return Objects.hash(name, type, street, houseNo, addressLine1, addressLine2, postalCode, town, countryCode);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "Address{" +

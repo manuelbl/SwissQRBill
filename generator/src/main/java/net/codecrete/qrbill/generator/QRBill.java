@@ -202,8 +202,7 @@ public class QRBill {
         if (result.hasErrors())
             throw new QRBillValidationError(result);
 
-        QRCode qrCode = new QRCode(cleanedBill);
-        return qrCode.getText();
+        return QRCodeText.create(cleanedBill);
     }
 
     /**
@@ -223,7 +222,7 @@ public class QRBill {
      * @throws QRBillValidationError thrown if the bill data does not validate
      */
     public static Bill decodeQrCodeText(String text) {
-        return QRCode.decodeQRCodeText(text);
+        return QRCodeText.decode(text);
     }
 
     /**

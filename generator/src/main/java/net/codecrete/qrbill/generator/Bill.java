@@ -35,7 +35,7 @@ public class Bill implements Serializable {
      * QR bill version
      */
     public enum Version {
-        /** Version 1.0 */
+        /** Version 2.0 */
         V2_0
     }
 
@@ -418,6 +418,9 @@ public class Bill implements Serializable {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "Bill{" +
