@@ -23,7 +23,7 @@ class SVGTest {
     void svgWithChallengingCharacters() {
         Bill bill = SampleData.getExample1();
         bill.setUnstructuredMessage("<h1>&&\"ff\"'t'");
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.SVG);
-        FileComparison.assertFileContentsEqual(svg, "a6bill_sc1.svg");
+        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QR_BILL_ONLY, QRBill.GraphicsFormat.SVG);
+        FileComparison.assertFileContentsEqual(svg, "qrbill_sc1.svg");
     }
 }

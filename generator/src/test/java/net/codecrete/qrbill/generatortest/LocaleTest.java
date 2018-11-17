@@ -50,7 +50,7 @@ class LocaleTest {
         try {
             Locale.setDefault(locale);
             Bill bill = SampleData.getExample3();
-            byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.SVG);
+            byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QR_BILL_ONLY, QRBill.GraphicsFormat.SVG);
             FileComparison.assertFileContentsEqual(svg, "a6bill_issue1.svg");
         } finally {
             Locale.setDefault(defaultLocale);

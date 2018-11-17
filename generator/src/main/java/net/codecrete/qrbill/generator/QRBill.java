@@ -85,12 +85,10 @@ public class QRBill {
      * The output size of the QR bill
      */
     public enum BillFormat {
-        /** A4 sheet in portrait orientation. The QR bill is in the bottom right. */
+        /** A4 sheet in portrait orientation. The QR bill is at the bottom. */
         A4_PORTRAIT_SHEET,
-        /** A5 sheet in landscape orientation. The QR bill is in the bottom right. */
-        A5_LANDSCAPE_SHEET,
-        /** A6 sheet in landscape orientation. The QR bill fills the entire sheet. */
-        A6_LANDSCAPE_SHEET,
+        /** QR bill only (about 105 by 210 mm). */
+        QR_BILL_ONLY,
         /** QR code only (46 by 46 mm). */
         QR_CODE_ONLY
     }
@@ -240,13 +238,9 @@ public class QRBill {
 
         // define page size
         switch (billFormat) {
-        case A6_LANDSCAPE_SHEET:
-            drawingWidth = 148.5;
-            drawingHeight = 105;
-            break;
-        case A5_LANDSCAPE_SHEET:
+            case QR_BILL_ONLY:
             drawingWidth = 210;
-            drawingHeight = 148.5;
+            drawingHeight = 105;
             break;
         case A4_PORTRAIT_SHEET:
         default:
@@ -257,7 +251,7 @@ public class QRBill {
 
         canvas.setupPage(drawingWidth, drawingHeight);
         PaymentPartLayout layout = new PaymentPartLayout(bill, canvas);
-        layout.draw(drawingWidth - 148.5, 0, drawingWidth > 148.5 || drawingHeight > 105);
+        layout.draw();
         return canvas.getResult();
     }
 

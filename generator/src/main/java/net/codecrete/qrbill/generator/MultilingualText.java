@@ -11,18 +11,18 @@ import java.util.ResourceBundle;
 
 public class MultilingualText {
 
-    public static final String KEY_QR_BILL_PAYMENT_PART = "qrbill_payment_part";
-    public static final String KEY_SUPPORTS = "supports";
-    public static final String KEY_CREDIT_TRANSFER = "credit_transfer";
-    public static final String KEY_ACCOUNT = "account";
-    public static final String KEY_CREDITOR = "creditor";
-    public static final String KEY_FINAL_CREDITOR = "ultimate_creditor";
-    public static final String KEY_REFERENCE_NUMBER = "reference_no";
+    public static final String KEY_PAYMENT_PART = "payment_part";
+    public static final String KEY_ACCOUNT_PAYABLE_TO = "account_payable_to";
+    public static final String KEY_REFERENCE = "reference";
     public static final String KEY_ADDITIONAL_INFORMATION = "additional_info";
-    public static final String KEY_DEBTOR = "debtor";
-    public static final String KEY_DUE_DATE = "due_date";
     public static final String KEY_CURRENCY = "currency";
     public static final String KEY_AMOUNT = "amount";
+    public static final String KEY_RECEIPT = "receipt";
+    public static final String KEY_ACCEPTANCE_POINT = "acceptance_point";
+    public static final String KEY_SEPARATE_BEFORE_PAYING_IN = "separate_before_paying_in";
+    public static final String KEY_PAYABLE_BY = "payable_by";
+    public static final String KEY_PAYABLE_BY_NAME_ADDRESS = "payable_by_name_addr";
+    public static final String KEY_IN_FAVOUR_OF = "in_favour_of";
 
     private static final String[] languageCodes = { "de", "fr", "it", "en" };
 

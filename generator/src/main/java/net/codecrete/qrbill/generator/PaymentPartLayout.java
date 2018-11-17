@@ -9,8 +9,6 @@ package net.codecrete.qrbill.generator;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import net.codecrete.qrbill.canvas.Canvas;
@@ -26,15 +24,18 @@ class PaymentPartLayout {
     private static final int FONT_SIZE_TITLE = 11; // pt
     private static final int FONT_SIZE_LABEL = 8; // pt
     private static final int FONT_SIZE_TEXT = 10; // pt
-    private static final double SLIP_WIDTH = 148.5; // mm
-    private static final double SLIP_HEIGHT = 105; // mm
-    private static final double HORIZ_BORDER = 8; // mm
-    private static final double VERT_BORDER = 8; // mm
-    private static final double MIDDLE_SPACING = 5; // mm
+    private static final double SLIP_WIDTH = 210.22; // mm
+    private static final double SLIP_HEIGHT = 105.11; // mm
+    private static final double PAYMEMT_PART_WIDTH = 148.65; // mm
+    private static final double RECEIPT_WIDTH = SLIP_WIDTH - PAYMEMT_PART_WIDTH; // mm
+    private static final double MARGIN = 5; // mm
+    private static final double QR_CODE_SIZE = 46; // mm
+    private static final double INFO_SECTION_WIDTH = 81; // mm
+    private static final double CURRENCY_WIDTH = 15; // mm
     private static final double LEFT_COLUMN_WIDTH = 56; // mm
     private static final double AMOUNT_WIDTH = 40; // mm (must not be smaller than 40)
     private static final double AMOUNT_HEIGHT = 15; // mm (must not be smaller than 15)
-    private static final double RIGHT_COLUMN_WIDTH = SLIP_WIDTH - 2 * HORIZ_BORDER - MIDDLE_SPACING - LEFT_COLUMN_WIDTH; // mm
+    //private static final double RIGHT_COLUMN_WIDTH = SLIP_WIDTH - 2 * HORIZ_BORDER - MIDDLE_SPACING - LEFT_COLUMN_WIDTH; // mm
     // (must not be smaller than 65)
     private static final double DEBTOR_HEIGHT = 25; // mm (must not be smaller than 25)
     private static final double PREFERRED_LABEL_PADDING_TOP = 8 * PT_TO_MM;
@@ -45,12 +46,10 @@ class PaymentPartLayout {
     private QRCode qrCode;
     private Canvas graphics;
 
-    private String account;
-    private String[] creditor;
-    private String refNo;
+    private String[] account_payable_to;
+    private String reference;
     private String[] additionalInfo;
-    private String[] debtor;
-    private String dueDate;
+    private String[] payable_by;
 
     private double yPos;
     private double labelPaddingTop;
@@ -66,30 +65,14 @@ class PaymentPartLayout {
         this.graphics = graphics;
     }
 
-    void draw(double offsetX, double offsetY, boolean hasBorder) throws IOException {
-
-        //
-        // Intro to layout:
-        // - Main title, labels and remaining text use separate font weight and size.
-        // - Depending on the text that needs to fit:
-        // -- spacing is reduced
-        // -- if spacing reduction is not sufficient, font size is reduced
-        // -- even with smaller font size, spacing might still need to be reduced
-        // - There is spacing is above labels (labelPaddingTop), spacing above text
-        // (textPaddingTop) and leading between lines of multi-line text blocks
-        // (creditors and debitors mainly).
-        // - If sufficient space is available (few text lines), then the right column
-        // starts at the same vertical position as the "Supports" label in the left
-        // column. Otherwise it starts at the top (same as main title).
-        // - In the left column, the title and the first label/text part is aligned at
-        // the top and the currency and amount are aligned at the bottom. The QR code is
-        // then vertically centered in-between.
-        //
+    void draw() throws IOException {
 
         // test regular font size
         fontSizeLabel = FONT_SIZE_LABEL;
         fontSizeText = FONT_SIZE_TEXT;
         prepareRightColumnText();
+
+        /*
         double factor = computeSpacing();
 
         if (factor < 0.6) {
@@ -99,45 +82,88 @@ class PaymentPartLayout {
             prepareRightColumnText();
             computeSpacing();
         }
+        */
+        labelPaddingTop = PREFERRED_LABEL_PADDING_TOP;
+        textPaddingTop = PREFERRED_TEXT_PADDING_TOP;
+        textLeading = PREFERRED_LEADING * fontSizeText * PT_TO_MM;
 
         // border
-        if (hasBorder)
-            drawBorder(offsetX, offsetY);
+        if (true)
+            drawBorder(0, 0);
+
+        drawPaymenPart(0, 0);
+
+        drawReceipt(0, 0);
+    }
+
+    private void drawPaymenPart(double offsetX, double offsetY) throws IOException
+    {
+        // left column
+        graphics.setTransformation(offsetX + RECEIPT_WIDTH + MARGIN, offsetY, 1, 1);
+        yPos = SLIP_HEIGHT - MARGIN - FontMetrics.getAscender(FONT_SIZE_TITLE);
 
         // title section
-        graphics.setTransformation(offsetX + HORIZ_BORDER, offsetY, 1, 1);
-        yPos = SLIP_HEIGHT - VERT_BORDER - FontMetrics.getAscender(FONT_SIZE_TITLE);
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_QR_BILL_PAYMENT_PART, bill.getLanguage()), 0,
+        graphics.putText(MultilingualText.getText(MultilingualText.KEY_PAYMENT_PART, bill.getLanguage()), 0,
                 yPos, FONT_SIZE_TITLE, true);
-        yPos -= FontMetrics.getDescender(FONT_SIZE_TITLE);
-        double upperTextHeight = VERT_BORDER + FontMetrics.getLineHeight(FONT_SIZE_TITLE) + labelPaddingTop
-                + FontMetrics.getLineHeight(fontSizeLabel) + textPaddingTop + FontMetrics.getLineHeight(fontSizeText);
 
-        // scheme section
-        drawLabelAndText(MultilingualText.KEY_SUPPORTS,
-                MultilingualText.getText(MultilingualText.KEY_CREDIT_TRANSFER, bill.getLanguage()));
+        // QR code section
+        yPos = SLIP_HEIGHT - 17 - QR_CODE_SIZE;
+        qrCode.draw(graphics, offsetX + RECEIPT_WIDTH + MARGIN, offsetY + yPos);
 
         // currency
-        double lowerTextHeight = VERT_BORDER + AMOUNT_HEIGHT + textPaddingTop
-                + FontMetrics.getLineHeight(fontSizeLabel);
-        yPos = lowerTextHeight + labelPaddingTop;
+        graphics.setTransformation(offsetX + RECEIPT_WIDTH + MARGIN, offsetY, 1, 1);
+        yPos = SLIP_HEIGHT - 70;
         drawLabelAndText(MultilingualText.KEY_CURRENCY, bill.getCurrency());
 
         // amount
-        graphics.setTransformation(offsetX + HORIZ_BORDER + LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, offsetY, 1, 1);
-        yPos = lowerTextHeight + labelPaddingTop;
+        graphics.setTransformation(offsetX + RECEIPT_WIDTH + MARGIN + CURRENCY_WIDTH, offsetY, 1, 1);
+        yPos = SLIP_HEIGHT - 70;
         if (bill.getAmount() != null) {
             drawLabelAndText(MultilingualText.KEY_AMOUNT, formatAmountForDisplay(bill.getAmount()));
         } else {
             drawLabel(MultilingualText.KEY_AMOUNT);
-            drawCorners(0, VERT_BORDER, AMOUNT_WIDTH, AMOUNT_HEIGHT);
+            yPos -= textPaddingTop;
+            drawCorners(0, yPos - AMOUNT_HEIGHT, AMOUNT_WIDTH, AMOUNT_HEIGHT);
         }
 
-        // QR code section
-        // Vertically center QR code between upper and lower text area
-        double qrCodeSpacing = (SLIP_HEIGHT - upperTextHeight - QRCode.SIZE - lowerTextHeight) / 2;
-        yPos = lowerTextHeight + qrCodeSpacing;
-        qrCode.draw(graphics, offsetX + HORIZ_BORDER, offsetY + yPos);
+        // right column
+        graphics.setTransformation(offsetX + SLIP_WIDTH - INFO_SECTION_WIDTH - MARGIN, offsetY, 1, 1);
+        yPos = SLIP_HEIGHT - MARGIN + labelPaddingTop;
+
+        // account and creditor
+        drawLabelAndTextLines(MultilingualText.KEY_ACCOUNT_PAYABLE_TO, account_payable_to);
+
+        // reference
+        if (reference != null)
+            drawLabelAndText(MultilingualText.KEY_REFERENCE, reference);
+
+        // additional information
+        if (additionalInfo != null)
+            drawLabelAndTextLines(MultilingualText.KEY_ADDITIONAL_INFORMATION, additionalInfo);
+
+        // payable by
+        if (payable_by != null) {
+            drawLabelAndTextLines(MultilingualText.KEY_PAYABLE_BY, payable_by);
+        } else {
+            drawLabel(MultilingualText.KEY_PAYABLE_BY_NAME_ADDRESS);
+            yPos -= textPaddingTop + DEBTOR_HEIGHT;
+            drawCorners(0, yPos, INFO_SECTION_WIDTH, DEBTOR_HEIGHT);
+        }
+        /*
+        double lowerTextHeight = VERT_BORDER + AMOUNT_HEIGHT + textPaddingTop
+                + FontMetrics.getLineHeight(fontSizeLabel);
+        yPos = lowerTextHeight + labelPaddingTop;
+
+        // amount
+        graphics.setTransformation(offsetX + HORIZ_BORDER + LEFT_COLUMN_WIDTH - AMOUNT_WIDTH, offsetY, 1, 1);
+        yPos = lowerTextHeight + labelPaddingTop;
+
+
+
+        yPos -= FontMetrics.getDescender(FONT_SIZE_TITLE);
+        double upperTextHeight = VERT_BORDER + FontMetrics.getLineHeight(FONT_SIZE_TITLE) + labelPaddingTop
+                + FontMetrics.getLineHeight(fontSizeLabel) + textPaddingTop + FontMetrics.getLineHeight(fontSizeText);
+
 
         // information section
         graphics.setTransformation(offsetX + HORIZ_BORDER + LEFT_COLUMN_WIDTH + MIDDLE_SPACING, offsetY, 1, 1);
@@ -169,15 +195,21 @@ class PaymentPartLayout {
         // due date
         if (dueDate != null)
             drawLabelAndText(MultilingualText.KEY_DUE_DATE, dueDate);
+        */
     }
 
-	private void drawBorder(double offsetX, double offsetY) throws IOException {
+    private void drawReceipt(double offsetX, double offsetY) throws  IOException {
+
+    }
+
+    private void drawBorder(double offsetX, double offsetY) throws IOException {
 		graphics.setTransformation(offsetX, offsetY, 1, 1);
 		graphics.startPath();
-		graphics.moveTo(0, 0);
+		graphics.moveTo(RECEIPT_WIDTH, 0);
 //		graphics.lineTo(0, SLIP_HEIGHT - 16);
 //		graphics.moveTo(0, SLIP_HEIGHT - 9);
-		graphics.lineTo(0, SLIP_HEIGHT);
+		graphics.lineTo(RECEIPT_WIDTH, SLIP_HEIGHT);
+		graphics.moveTo(0, SLIP_HEIGHT);
 		graphics.lineTo(SLIP_WIDTH, SLIP_HEIGHT);
         graphics.strokePath(0.5, 0);
         
@@ -241,20 +273,27 @@ class PaymentPartLayout {
 
     // Prepare the text in the right column (mainly formatting and line breaking)
     private void prepareRightColumnText() {
-        account = Payments.formatIBAN(bill.getAccount());
-        creditor = FontMetrics.splitLines(formatPersonForDisplay(bill.getCreditor()), RIGHT_COLUMN_WIDTH * MM_TO_PT,
-                fontSizeText);
-        refNo = formatReferenceNumber(bill.getReferenceNo());
+        String account = Payments.formatIBAN(bill.getAccount());
+        String text = account + "\n" + formatPersonForDisplay(bill.getCreditor());
+        account_payable_to = FontMetrics.splitLines(text, INFO_SECTION_WIDTH * MM_TO_PT, fontSizeText);
+        reference = formatReferenceNumber(bill.getReferenceNo());
         additionalInfo = null;
         String info = bill.getUnstructuredMessage();
+        if (bill.getBillInformation() != null) {
+            if (info == null)
+                info = bill.getBillInformation();
+            else
+                info = info + "\n" + bill.getBillInformation();
+        }
         if (info != null)
-            additionalInfo = FontMetrics.splitLines(info, RIGHT_COLUMN_WIDTH * MM_TO_PT, fontSizeText);
-        debtor = null;
+            additionalInfo = FontMetrics.splitLines(info, INFO_SECTION_WIDTH * MM_TO_PT, fontSizeText);
+        payable_by = null;
         if (bill.getDebtor() != null)
-            debtor = FontMetrics.splitLines(formatPersonForDisplay(bill.getDebtor()), RIGHT_COLUMN_WIDTH * MM_TO_PT,
+            payable_by = FontMetrics.splitLines(formatPersonForDisplay(bill.getDebtor()), INFO_SECTION_WIDTH * MM_TO_PT,
                     fontSizeText);
     }
 
+    /*
     // Compute the padding and leading for the given font size
     private double computeSpacing() {
         int numLabels = 3;
@@ -271,10 +310,6 @@ class PaymentPartLayout {
         }
         if (debtor != null) {
             numTextLines += debtor.length;
-        }
-        if (dueDate != null) {
-            numLabels++;
-            numTextLines += 1;
         }
 
         final int numExtraLines = debtor != null ? numTextLines - numLabels : (numTextLines + 1) - numLabels;
@@ -311,6 +346,7 @@ class PaymentPartLayout {
         textLeading = factor * preferredTextLeading;
         return factor;
     }
+    */
 
     private void drawCorners(double x, double y, double width, double height) throws IOException {
         final double lwh = 0.5 / 72 * 25.4;
@@ -338,22 +374,17 @@ class PaymentPartLayout {
     }
 
     private static final DecimalFormat amountDisplayFormat;
-    private static final DateTimeFormatter dateDisplayFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     static {
         amountDisplayFormat = new DecimalFormat("###,##0.00");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
         symbols.setDecimalSeparator('.');
-        symbols.setGroupingSeparator('\'');
+        symbols.setGroupingSeparator(' ');
         amountDisplayFormat.setDecimalFormatSymbols(symbols);
     }
 
     private static String formatAmountForDisplay(double amount) {
         return amountDisplayFormat.format(amount);
-    }
-
-    private static String formatDateForDisplay(LocalDate date) {
-        return date.format(dateDisplayFormat);
     }
 
     private static String formatPersonForDisplay(Address address) {

@@ -20,18 +20,18 @@ import net.codecrete.qrbill.generator.QRBill;
 class PNGCanvasTest {
 
     @Test
-    void pngBillA6() {
+    void pngBillQRBill() {
         Bill bill = SampleData.getExample1();
         PNGCanvas canvas = new PNGCanvas(300);
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, canvas);
-        FileComparison.assertGrayscaleImageContentsEqual(svg, "a6bill_ex1.png");
+        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QR_BILL_ONLY, canvas);
+        FileComparison.assertGrayscaleImageContentsEqual(svg, "qrbill_ex1.png");
     }
 
     @Test
-    void pngBillA5() {
+    void pngBillA4() {
         Bill bill = SampleData.getExample3();
         PNGCanvas canvas = new PNGCanvas(144);
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A5_LANDSCAPE_SHEET, canvas);
-        FileComparison.assertGrayscaleImageContentsEqual(svg, "a5bill_ex3.png");
+        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, canvas);
+        FileComparison.assertGrayscaleImageContentsEqual(svg, "a4bill_ex3.png");
     }
 }

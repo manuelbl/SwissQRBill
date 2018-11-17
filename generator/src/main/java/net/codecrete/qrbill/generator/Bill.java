@@ -379,7 +379,7 @@ public class Bill implements Serializable {
      *     letter used to separate the individual scheme parameters.
      * </p>
      *
-     * @param alternativeSchemes
+     * @param alternativeSchemes alternative payment scheme information
      */
     public void setAlternativeSchemes(String[] alternativeSchemes) {
         this.alternativeSchemes = alternativeSchemes;

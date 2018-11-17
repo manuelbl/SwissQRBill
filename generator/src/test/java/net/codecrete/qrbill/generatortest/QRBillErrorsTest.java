@@ -31,7 +31,7 @@ class QRBillErrorsTest {
 		assertThrows(QRBillUnexpectedException.class, () -> {
 			Bill bill = SampleData.getExample1();
 			FailingCanvas canvas = new FailingCanvas();
-			QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, canvas);
+			QRBill.generate(bill, QRBill.BillFormat.QR_BILL_ONLY, canvas);
 		});
 	}
 
@@ -40,7 +40,7 @@ class QRBillErrorsTest {
 		assertThrows(QRBillValidationError.class, () -> {
 			Bill bill = SampleData.getExample1();
 			bill.getCreditor().setName(" ");
-			QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.PDF);
+			QRBill.generate(bill, QRBill.BillFormat.QR_BILL_ONLY, QRBill.GraphicsFormat.PDF);
 		});
 	}
 

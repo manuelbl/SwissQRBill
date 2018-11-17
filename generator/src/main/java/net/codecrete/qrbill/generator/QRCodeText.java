@@ -24,6 +24,8 @@ public class QRCodeText {
      * Gets the text embedded in the QR code (according to the data structure
      * defined by SIX)
      *
+     * @param bill bill data
+     *
      * @return QR code text
      */
     public static String create(Bill bill) {
