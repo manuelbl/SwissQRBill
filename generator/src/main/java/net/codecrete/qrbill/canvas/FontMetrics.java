@@ -170,6 +170,20 @@ public class FontMetrics {
     }
 
     /**
+     * Returns the width of the specified text for the specified font size
+     * @param text text
+     * @param fontSize font size (in pt)
+     * @return width (in mm)
+     */
+    public static double getTextWidth(CharSequence text, int fontSize) {
+        double width = 0;
+        int len = text.length();
+        for (int i = 0; i < len; i++)
+            width += getCharWidth(text.charAt(i));
+        return width * fontSize / 1000 * PT_TO_MM;
+    }
+
+    /**
      * Returns the width of the specified character.
      * <p>
      * The width is given in 0.0001 pt for a font size of 1 pt. So to get the

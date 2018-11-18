@@ -3,7 +3,6 @@
 <svg width="210mm" height="105mm" version="1.1" viewBox="0 0 595.276 297.638" xmlns="http://www.w3.org/2000/svg">
 <g font-family="Helvetica,Arial" transform="translate(0 297.638)">
 <title>Swiss QR Bill</title>
-<path d="M174.529,-0l0,-297.95m-174.529,0l595.899,0" stroke="#000000" stroke-width="0.5" fill="none"/>
 <g transform="translate(188.702 -119.367) scale(2.288)">
 <path d="M0,-57h7v1h-7zm8,0h1v3h-1zm2,0h8v1h-8zm9,0h1v1h-1zm2,0h1v1h-1zm3,0h3v1h-3z
 m4,0h3v1h-3zm4,0h1v2h-1zm2,0h1v3h-1zm2,0h5v1h-5zm6,0h1v1h-1zm2,0h1v5h-1z
@@ -128,12 +127,12 @@ m2,0h1v1h-1z" fill="#000000"/>
 </g>
 <g transform="translate(188.702 -0)">
 <text x="0" y="-274.976" font-size="11" font-weight="bold">Section paiement</text>
-<text x="0" y="-93.124" font-size="8" font-weight="bold">Monnaie</text>
-<text x="0" y="-81.124" font-size="10">CHF</text>
+<text x="0" y="-90.709" font-size="8" font-weight="bold">Monnaie</text>
+<text x="0" y="-78.709" font-size="10">CHF</text>
 </g>
 <g transform="translate(231.222 -0)">
-<text x="0" y="-93.124" font-size="8" font-weight="bold">Montant</text>
-<text x="0" y="-81.124" font-size="10">199.95</text>
+<text x="0" y="-90.709" font-size="8" font-weight="bold">Montant</text>
+<text x="0" y="-78.709" font-size="10">199.95</text>
 </g>
 <g transform="translate(352.12 -0)">
 <text x="0" y="-277.376" font-size="8" font-weight="bold">Compte / Payable à</text>
@@ -148,5 +147,27 @@ m2,0h1v1h-1z" fill="#000000"/>
 <text x="0" y="-162.576" font-size="10">Grosse Marktgasse 28</text>
 <text x="0" y="-150.576" font-size="10">CH-9400 Rorschach</text>
 </g>
+<g transform="translate(14.173 -0)">
+<text x="0" y="-274.976" font-size="11" font-weight="bold">Récépissé</text>
+<text x="0" y="-259.134" font-size="6" font-weight="bold">Compte / Payable à</text>
+<text x="0" y="-249.534" font-size="8">CH44 3199 9123 0008 8901 2</text>
+<text x="0" y="-239.934" font-size="8">Robert Schneider AG</text>
+<text x="0" y="-230.334" font-size="8">Rue du Lac 1268/2/22</text>
+<text x="0" y="-220.734" font-size="8">CH-2501 Biel</text>
+<text x="0" y="-208.734" font-size="6" font-weight="bold">Référence</text>
+<text x="0" y="-199.134" font-size="8">RF18 5390 0754 7034</text>
+<text x="0" y="-187.134" font-size="6" font-weight="bold">Payable par</text>
+<text x="0" y="-177.534" font-size="8">Pia-Maria Rutschmann-Schnyder</text>
+<text x="0" y="-167.934" font-size="8">Grosse Marktgasse 28</text>
+<text x="0" y="-158.334" font-size="8">CH-9400 Rorschach</text>
+<text x="0" y="-90.709" font-size="6" font-weight="bold">Monnaie</text>
+<text x="0" y="-81.109" font-size="8">CHF</text>
+</g>
+<g transform="translate(51.024 -0)">
+<text x="0" y="-90.709" font-size="6" font-weight="bold">Montant</text>
+<text x="0" y="-81.109" font-size="8">199.95</text>
+</g>
+<text x="119.727" y="-59.528" font-size="6" font-weight="bold">Point de dépôt</text>
+<path d="M174.529,-0l0,-297.95m-174.529,0l595.899,0" stroke="#000000" stroke-width="0.5" fill="none"/>
 </g>
 </svg>
