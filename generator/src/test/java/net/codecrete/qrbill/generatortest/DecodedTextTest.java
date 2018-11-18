@@ -13,14 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
+import net.codecrete.qrbill.generator.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.QRBill;
-import net.codecrete.qrbill.generator.QRBillValidationError;
-import net.codecrete.qrbill.generator.ValidationMessage;
-import net.codecrete.qrbill.generator.ValidationResult;
 
 /**
  * Unit tests for decoding the embedded QR code text
@@ -121,6 +116,10 @@ class DecodedTextTest {
             bill.setUnstructuredMessage(""); // replace null with empty string
         if (bill.getBillInformation() == null)
             bill.setBillInformation(""); // replace null with empty string
+        if (bill.getAlternativeSchemes() != null) {
+            for (AlternativeScheme scheme : bill.getAlternativeSchemes())
+                scheme.setName(null);
+        }
     }
 
     private void normalizeDecodedBill(Bill bill) {

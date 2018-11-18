@@ -68,8 +68,8 @@ public class QRBill {
     public static final String KEY_SUPPORTED_CODING_TYPE = "supported_coding_type";
     /** Validation message key: Valid number required (nnnnn.nn) */
     public static final String KEY_VALID_NUMBER = "valid_number";
-    /** Validation message key: Valid date required (YYYY-MM_DD) */
-    public static final String KEY_VALID_DATE = "valid_date";
+    /** Validation message key: The maximum of 2 alternative schemes has been exceeded */
+    public static final String KEY_ALT_SCHEME_MAX_EXCEEDED = "alt_scheme_max_exceed";
 
     /**
      * Graphics format of generated QR bill.

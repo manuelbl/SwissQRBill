@@ -71,9 +71,9 @@ public class QRCodeText {
 
         // AltPmtInf
         if (bill.getAlternativeSchemes() != null && bill.getAlternativeSchemes().length > 0) {
-            appendDataField(bill.getAlternativeSchemes()[0]); // AltPmt
+            appendDataField(bill.getAlternativeSchemes()[0].getInstruction()); // AltPmt
             if (bill.getAlternativeSchemes().length > 1)
-                appendDataField(bill.getAlternativeSchemes()[1]); // AltPmt
+                appendDataField(bill.getAlternativeSchemes()[1].getInstruction()); // AltPmt
         }
 
         return textBuilder.toString();
@@ -172,10 +172,15 @@ public class QRCodeText {
 
         bill.setBillInformation(lines[31]);
 
-        String[] alternativeSchemes = null;
-        if (lines.length > 32) {
-            alternativeSchemes = new String[lines.length - 32];
-            System.arraycopy(lines, 32, alternativeSchemes, 0, lines.length - 32);
+        AlternativeScheme[] alternativeSchemes = null;
+        int numSchemes = lines.length - 32;
+        if (numSchemes > 0) {
+            alternativeSchemes = new AlternativeScheme[numSchemes];
+            for (int i = 0; i < numSchemes; i++) {
+                AlternativeScheme scheme = new AlternativeScheme();
+                scheme.setInstruction(lines[32 + i]);
+                alternativeSchemes[i] = scheme;
+            }
         }
         bill.setAlternativeSchemes(alternativeSchemes);
 

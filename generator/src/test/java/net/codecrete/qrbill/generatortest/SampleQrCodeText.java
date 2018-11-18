@@ -8,6 +8,7 @@
 package net.codecrete.qrbill.generatortest;
 
 import net.codecrete.qrbill.generator.Address;
+import net.codecrete.qrbill.generator.AlternativeScheme;
 import net.codecrete.qrbill.generator.Bill;
 
 class SampleQrCodeText {
@@ -142,9 +143,9 @@ class SampleQrCodeText {
         bill.setReferenceNo("210000000003139471430009017");
         bill.setUnstructuredMessage("Order dated 18.06.2020");
         bill.setBillInformation("//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
-        bill.setAlternativeSchemes(new String[] {
-            "UV;UltraPay005;12345",
-            "XY;XYService;54321"
+        bill.setAlternativeSchemes(new AlternativeScheme[] {
+                new AlternativeScheme("Ultraviolet", "UV;UltraPay005;12345"),
+                new AlternativeScheme("Xing Yong", "XY;XYService;54321")
         });
         return bill;
     }

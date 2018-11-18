@@ -6,6 +6,8 @@
 //
 package net.codecrete.qrbill.generator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import net.codecrete.qrbill.generator.Payments.CleaningResult;
@@ -112,14 +114,14 @@ class Validator {
 
         if (referenceNo == null) {
             if (isQRBillIBAN)
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, QRBill.KEY_MANDATORY_FOR_QR_IBAN);
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_MANDATORY_FOR_QR_IBAN);
             return;
         }
 
         referenceNo = Strings.whiteSpaceRemoved(referenceNo);
         if (referenceNo.startsWith("RF")) {
             if (!Payments.isValidISO11649Reference(referenceNo)) {
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO,
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE,
                         QRBill.KEY_VALID_ISO11649_CREDITOR_REF);
             } else {
                 billOut.setReferenceNo(referenceNo);
@@ -128,7 +130,7 @@ class Validator {
             if (referenceNo.length() < 27)
                 referenceNo = "00000000000000000000000000".substring(0, 27 - referenceNo.length()) + referenceNo;
             if (!Payments.isValidQRReferenceNo(referenceNo))
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE_NO, QRBill.KEY_VALID_QR_REF_NO);
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_VALID_QR_REF_NO);
             else
                 billOut.setReferenceNo(referenceNo);
         }
@@ -147,17 +149,24 @@ class Validator {
     }
 
     private void validateAlternativeSchemes() {
-        String[] schemesOut = null;
+        AlternativeScheme[] schemesOut = null;
         if (billIn.getAlternativeSchemes() != null) {
             int len = billIn.getAlternativeSchemes().length;
-            String[] schemes = new String[len];
-            for (int i = 0; i < len; i++) {
-                String scheme = Strings.trimmed(billIn.getAlternativeSchemes()[i]);
-                if (scheme != null) {
-                    schemes[i] = scheme;
-                    schemesOut = schemes;
+            List<AlternativeScheme> schemeList = new ArrayList<>(len);
+            for (AlternativeScheme schemeIn : billIn.getAlternativeSchemes()) {
+                AlternativeScheme schemeOut = new AlternativeScheme();
+                schemeOut.setName(Strings.trimmed(schemeIn.getName()));
+                schemeOut.setInstruction(Strings.trimmed(schemeIn.getInstruction()));
+                if (schemeOut.getName() != null || schemeOut.getInstruction() != null) {
+                    if (schemeList.size() == 2) {
+                        validationResult.addMessage(Type.ERROR, Bill.FIELD_ALTERNATIVE_SCHEMES, QRBill.KEY_ALT_SCHEME_MAX_EXCEEDED);
+                    } else {
+                        schemeList.add(schemeOut);
+                    }
                 }
             }
+            if (schemeList.size() > 0)
+                schemesOut = schemeList.toArray(new AlternativeScheme[schemeList.size()]);
         }
         billOut.setAlternativeSchemes(schemesOut);
     }

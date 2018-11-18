@@ -69,6 +69,8 @@ public class Bill implements Serializable {
     public static final String FIELD_AMOUNT = "amount";
     /** Field name of the account number */
     public static final String FIELD_ACCOUNT = "account";
+    /** Field name of the reference */
+    public static final String FIELD_REFERENCE = "reference";
     /** Start of field name of the creditor address */
     public static final String FIELDROOT_CREDITOR = "creditor";
     /** Field name of the creditor's name */
@@ -83,12 +85,12 @@ public class Bill implements Serializable {
     public static final String FIELD_CREDITOR_TOWN = "creditor.town";
     /** Field name of the creditor's country code */
     public static final String FIELD_CREDITOR_COUNTRY_CODE = "creditor.countryCode";
-    /** Field name of the reference number */
-    public static final String FIELD_REFERENCE_NO = "referenceNo";
     /** Field name of the unstructured message */
     public static final String FIELD_UNSTRUCTURED_MESSAGE = "unstructuredMessage";
     /** Field name of the bill information */
     public static final String FIELD_BILL_INFORMATION = "billInformation";
+    /** Field name of the alternative schemes */
+    public static final String FIELD_ALTERNATIVE_SCHEMES = "altSchemes";
     /** Start of field name of the debtor's address */
     public static final String FIELDROOT_DEBTOR = "debtor";
     /** Field name of the debtor's name */
@@ -116,7 +118,7 @@ public class Bill implements Serializable {
     private Address debtor = null;
     private String unstructuredMessage = null;
     private String billInformation = null;
-    private String[] alternativeSchemes = null;
+    private AlternativeScheme[] alternativeSchemes = null;
 
     /**
      * Gets the bill language.
@@ -360,14 +362,12 @@ public class Bill implements Serializable {
     /**
      * Get the alternative schemes.
      * <p>
-     *     A maximum of two schemes with parameters are allowed.
-     *     Each string start with two letters to indicate the scheme. The third letter is the separator
-     *     letter used to separate the individual scheme parameters.
+     *     A maximum of two schemes are allowed.
      * </p>
      *
      * @return alternative schemes
      */
-    public String[] getAlternativeSchemes() {
+    public AlternativeScheme[] getAlternativeSchemes() {
         return alternativeSchemes;
     }
 
@@ -375,13 +375,11 @@ public class Bill implements Serializable {
      * Sets the alternative scheme parameters.
      * <p>
      *     A maximum of two schemes with parameters are allowed.
-     *     Each string start with two letters to indicate the scheme. The third letter is the separator
-     *     letter used to separate the individual scheme parameters.
      * </p>
      *
      * @param alternativeSchemes alternative payment scheme information
      */
-    public void setAlternativeSchemes(String[] alternativeSchemes) {
+    public void setAlternativeSchemes(AlternativeScheme[] alternativeSchemes) {
         this.alternativeSchemes = alternativeSchemes;
     }
 

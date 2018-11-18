@@ -7,6 +7,7 @@
 
 package net.codecrete.qrbill.generatortest;
 
+import net.codecrete.qrbill.generator.AlternativeScheme;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -125,10 +126,10 @@ class BillTest {
         return address;
     }
 
-    private String[] createAlternativeSchemes() {
-        return new String[] {
-                "UV;UltraPay005;12345",
-                "XY;XYService;54321"
+    private AlternativeScheme[] createAlternativeSchemes() {
+        return new AlternativeScheme[] {
+                new AlternativeScheme("Ultraviolet", "UV;UltraPay005;12345"),
+                new AlternativeScheme("Xing Yong", "XY;XYService;54321")
         };
     }
 }
