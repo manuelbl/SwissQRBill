@@ -250,7 +250,7 @@ public class QRBill {
         }
 
         canvas.setupPage(drawingWidth, drawingHeight);
-        PaymentPartLayout layout = new PaymentPartLayout(bill, canvas);
+        BillLayout layout = new BillLayout(bill, canvas);
         layout.draw();
         return canvas.getResult();
     }

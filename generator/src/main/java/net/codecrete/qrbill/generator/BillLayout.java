@@ -17,7 +17,7 @@ import net.codecrete.qrbill.canvas.FontMetrics;
 /**
  * Layouting and drawing of QR bill payment slip
  */
-class PaymentPartLayout {
+class BillLayout {
 
     private static final double PT_TO_MM = 25.4 / 72;
     private static final double MM_TO_PT = 72 / 25.4;
@@ -32,11 +32,8 @@ class PaymentPartLayout {
     private static final double QR_CODE_SIZE = 46; // mm
     private static final double INFO_SECTION_WIDTH = 81; // mm
     private static final double CURRENCY_WIDTH = 15; // mm
-    private static final double LEFT_COLUMN_WIDTH = 56; // mm
-    private static final double AMOUNT_WIDTH = 40; // mm (must not be smaller than 40)
-    private static final double AMOUNT_HEIGHT = 15; // mm (must not be smaller than 15)
-    //private static final double RIGHT_COLUMN_WIDTH = SLIP_WIDTH - 2 * HORIZ_BORDER - MIDDLE_SPACING - LEFT_COLUMN_WIDTH; // mm
-    // (must not be smaller than 65)
+    private static final double AMOUNT_WIDTH = 40; // mm
+    private static final double AMOUNT_HEIGHT = 15; // mm
     private static final double DEBTOR_HEIGHT = 25; // mm (must not be smaller than 25)
     private static final double PREFERRED_LABEL_PADDING_TOP = 8 * PT_TO_MM;
     private static final double PREFERRED_TEXT_PADDING_TOP = 5 * PT_TO_MM;
@@ -57,9 +54,8 @@ class PaymentPartLayout {
     private double textLeading;
     private int fontSizeLabel;
     private int fontSizeText;
-    private double rightColumnPaddingTop;
 
-    PaymentPartLayout(Bill bill, Canvas graphics) {
+    BillLayout(Bill bill, Canvas graphics) {
         this.bill = bill;
         this.qrCode = new QRCode(bill);
         this.graphics = graphics;
