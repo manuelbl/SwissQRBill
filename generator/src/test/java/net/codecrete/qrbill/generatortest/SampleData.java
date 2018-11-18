@@ -108,4 +108,45 @@ class SampleData {
         bill.setUnstructuredMessage("");
         return bill;
     }
+
+    static Bill getExample5() {
+        Bill bill = new Bill();
+        bill.setLanguage(Bill.Language.EN);
+        bill.setAccount("CH44 3199 9123 0008  89012");
+        Address creditor = new Address();
+        creditor.setName("Ambikaipagan & Deepshikha Thirugnanasampanthamoorthy");
+        creditor.setAddressLine1("c/o Pereira De Carvalho, Conrad-Ferdinand-Meyer-Strasse 317 Wohnung 7B");
+        creditor.setAddressLine2("9527 Niederhelfenschwil bei Schönholzerswilen SG");
+        creditor.setCountryCode("CH");
+        bill.setCreditor(creditor);
+        bill.setAmount(987654321.50);
+        bill.setCurrency("CHF");
+        Address debtor = new Address();
+        debtor.setName("Annegret Karin & Hansruedi Frischknecht-Bernhardsgrütter");
+        debtor.setAddressLine1("1503 South New Hampshire Avenue, Lower East-side Bellvue");
+        debtor.setAddressLine2("Poughkeepsie NY 12601-1233");
+        debtor.setCountryCode("US");
+        bill.setDebtor(debtor);
+        bill.setReferenceNo("210000 000 00313 9471430009017");
+        bill.setUnstructuredMessage("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed");
+        bill.setBillInformation("//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
+        return bill;
+    }
+
+    static Bill getExample6() {
+        Bill bill = new Bill();
+        bill.setLanguage(Bill.Language.EN);
+        bill.setAccount("CH44 3199 9123 0008  89012");
+        Address creditor = new Address();
+        creditor.setName("Ambikaipagan & Deepshikha Thirugnanasampanthamoorthy");
+        creditor.setAddressLine1("c/o Pereira De Carvalho, Conrad-Ferdinand-Meyer-Strasse 317 Wohnung 7B");
+        creditor.setAddressLine2("9527 Niederhelfenschwil bei Schönholzerswilen SG");
+        creditor.setCountryCode("CH");
+        bill.setCreditor(creditor);
+        bill.setCurrency("EUR");
+        bill.setReferenceNo("210000 000 00313 9471430009017");
+        bill.setUnstructuredMessage("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed");
+        bill.setBillInformation("//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
+        return bill;
+    }
 }

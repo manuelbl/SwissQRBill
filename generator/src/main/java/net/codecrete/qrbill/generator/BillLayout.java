@@ -6,6 +6,7 @@
 //
 package net.codecrete.qrbill.generator;
 
+import java.awt.*;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -24,6 +25,7 @@ class BillLayout {
     private static final int FONT_SIZE_TITLE = 11; // pt
     private static final int PP_LABEL_PREF_FONT_SIZE = 8; // pt
     private static final int PP_TEXT_PREF_FONT_SIZE = 10; // pt
+    private static final int PP_TEXT_MIN_FONT_SIZE = 8; // pt
     private static final int RC_LABEL_PREF_FONT_SIZE = 6; // pt
     private static final int RC_TEXT_PREF_FONT_SIZE = 8; // pt
     private static final double SLIP_WIDTH = 210.22; // mm
@@ -42,7 +44,12 @@ class BillLayout {
     private static final double AMOUNT_BOX_HEIGHT_RC = 10; // mm
     private static final double DEBTOR_BOX_HEIGHT_PP = 25; // mm (must not be smaller than 25)
     private static final double DEBTOR_BOX_HEIGHT_RC = 25; // mm (must not be smaller than 25)
-    private static final double PREFERRED_LEADING = 0.2; // relative to font size
+    private static final double INFO_SECTION_MAX_HEIGHT = SLIP_HEIGHT - CURRENCY_AMOUNT_BASE_LINE
+            + AMOUNT_BOX_HEIGHT_PP - MARGIN;
+    private static final double RECEIPT_MAX_HEIGHT = SLIP_HEIGHT - CURRENCY_AMOUNT_BASE_LINE - 7 - 0.5 - MARGIN;
+    private static final double LEADING_PREF = 0.2; // relative to font size
+    private static final double PADDING_PREF = 0.5; // relative to font size
+    private static final double PADDING_MIN = 0.2; // relative to font size
 
     private Bill bill;
     private QRCode qrCode;
@@ -81,25 +88,22 @@ class BillLayout {
         labelFontSize = PP_LABEL_PREF_FONT_SIZE;
         textFontSize = PP_TEXT_PREF_FONT_SIZE;
 
-        breakLines(INFO_SECTION_WIDTH);
-
-        textLeading = PREFERRED_LEADING * textFontSize * PT_TO_MM;
-        labelLeading = textLeading + FontMetrics.getDescender(textFontSize) - FontMetrics.getDescender(labelFontSize);
-        textBottomPadding = textFontSize * 0.5 * PT_TO_MM;
-
+        while (true) {
+            breakLines(INFO_SECTION_WIDTH);
+            boolean isTooTight = computePaymentPartLeading();
+            if (!isTooTight || textFontSize == PP_TEXT_MIN_FONT_SIZE)
+                break;
+            labelFontSize--;
+            textFontSize--;
+        }
         drawPaymentPart(0, 0);
 
         // receipt
 
         labelFontSize = RC_LABEL_PREF_FONT_SIZE;
         textFontSize = RC_TEXT_PREF_FONT_SIZE;
-
         breakLines(RECEIPT_WIDTH - 2 * MARGIN);
-
-        textLeading = PREFERRED_LEADING * textFontSize * PT_TO_MM;
-        labelLeading = textLeading + FontMetrics.getDescender(textFontSize) - FontMetrics.getDescender(labelFontSize);
-        textBottomPadding = textFontSize * 0.5 * PT_TO_MM;
-
+        computeReceiptLeading();
         drawReceipt(0, 0);
 
         // border
@@ -132,7 +136,7 @@ class BillLayout {
             drawCorners(0, yPos - AMOUNT_BOX_HEIGHT_PP, AMOUNT_BOX_WIDTH_PP, AMOUNT_BOX_HEIGHT_PP);
         }
 
-        // right column
+        // information section
         graphics.setTransformation(offsetX + SLIP_WIDTH - INFO_SECTION_WIDTH - MARGIN, offsetY, 1, 1);
         yPos = SLIP_HEIGHT - MARGIN;
 
@@ -173,10 +177,6 @@ class BillLayout {
         if (reference != null)
             drawLabelAndText(MultilingualText.KEY_REFERENCE, reference);
 
-        // additional information
-        if (additionalInfo != null)
-            drawLabelAndTextLines(MultilingualText.KEY_ADDITIONAL_INFORMATION, additionalInfoLines);
-
         // payable by
         if (payableBy != null) {
             drawLabelAndTextLines(MultilingualText.KEY_PAYABLE_BY, payableByLines);
@@ -208,6 +208,92 @@ class BillLayout {
         String label = MultilingualText.getText(MultilingualText.KEY_ACCEPTANCE_POINT, bill.getLanguage());
         double w = FontMetrics.getTextWidth(label, labelFontSize) * 1.05; // TODO: proper text width for bold font
         graphics.putText(label, RECEIPT_WIDTH - MARGIN - w, 21, labelFontSize, true);
+    }
+
+    private boolean computePaymentPartLeading() {
+        // The same line spacing (incl. leading) is used for the smaller label and text lines
+        int numTextLines = 0;
+        int numPaddings = 0;
+        double height = 0;
+
+        numTextLines += 1 + accountPayableToLines.length;
+        height -= FontMetrics.getAscender(textFontSize) - FontMetrics.getAscender(labelFontSize);
+        if (reference != null) {
+            numPaddings++;
+            numTextLines += 2;
+        }
+        if (additionalInfo != null) {
+            numPaddings++;
+            numTextLines += 1 + additionalInfoLines.length;
+        }
+        numPaddings++;
+        if (payableBy != null) {
+            numTextLines += 1 + payableByLines.length;
+        } else {
+            numTextLines += 1;
+            height += DEBTOR_BOX_HEIGHT_PP;
+        }
+
+        height += numTextLines * FontMetrics.getLineHeight(textFontSize);
+
+        return computeLeading(height, INFO_SECTION_MAX_HEIGHT, numTextLines, numPaddings);
+    }
+
+    private boolean computeReceiptLeading() {
+        // The same line spacing (incl. leading) is used for the smaller label and text lines
+        int numTextLines = 0;
+        int numPaddings = 1;
+        double height = 0;
+
+        numTextLines += 1 + accountPayableToLines.length;
+        height -= FontMetrics.getAscender(textFontSize) - FontMetrics.getAscender(labelFontSize);
+        if (reference != null) {
+            numPaddings++;
+            numTextLines += 2;
+        }
+        numPaddings++;
+        if (payableBy != null) {
+            numTextLines += 1 + payableByLines.length;
+        } else {
+            numTextLines += 1;
+            height += DEBTOR_BOX_HEIGHT_RC;
+        }
+
+        height += numTextLines * FontMetrics.getLineHeight(textFontSize);
+
+        return computeLeading(height, RECEIPT_MAX_HEIGHT, numTextLines, numPaddings);
+    }
+
+    private boolean computeLeading(double height, double maxHeight, int numTextLines, int numPaddings) {
+
+        boolean isTooTight = false;
+        textLeading = LEADING_PREF * textFontSize * PT_TO_MM;
+        if (height + numTextLines * textLeading > maxHeight) {
+            isTooTight = true;
+            if (height > maxHeight) {
+                textLeading = 0;
+                labelLeading = 0;
+            } else {
+                textLeading = (maxHeight - height) / numTextLines;
+                labelLeading = textLeading + FontMetrics.getDescender(textFontSize) - FontMetrics.getDescender(labelFontSize);
+            }
+        } else {
+            labelLeading = textLeading + FontMetrics.getDescender(textFontSize) - FontMetrics.getDescender(labelFontSize);
+        }
+
+
+        double prefPadding = textFontSize * PADDING_PREF * PT_TO_MM;
+        double minPadding = textFontSize * PADDING_MIN * PT_TO_MM;
+        textBottomPadding = (maxHeight - height - numTextLines * textLeading) / numPaddings;
+        if (textBottomPadding > prefPadding) {
+            textBottomPadding = prefPadding;
+        } else if (textBottomPadding < minPadding) {
+            isTooTight = true;
+            if (textBottomPadding < 0)
+                textBottomPadding = 0;
+        }
+
+        return isTooTight;
     }
 
     private void drawBorder(double offsetX, double offsetY) throws IOException {
@@ -312,61 +398,6 @@ class BillLayout {
             payableByLines = FontMetrics.splitLines(payableBy, maxWidth * MM_TO_PT,textFontSize);
     }
 
-    /*
-    // Compute the padding and leading for the given font size
-    private double computeSpacing() {
-        int numLabels = 3;
-        int numTextLines = 1;
-
-        numTextLines += creditor.length;
-        if (refNo != null) {
-            numLabels++;
-            numTextLines += 1;
-        }
-        if (ppAdditionalInfo != null) {
-            numLabels++;
-            numTextLines += ppAdditionalInfo.length;
-        }
-        if (debtor != null) {
-            numTextLines += debtor.length;
-        }
-
-        final int numExtraLines = debtor != null ? numTextLines - numLabels : (numTextLines + 1) - numLabels;
-        final double preferredTextLeading = PREFERRED_LEADING * fontSizeText * PT_TO_MM;
-
-        double heightWithoutSpacing = numLabels * FontMetrics.getLineHeight(fontSizeLabel)
-                + numTextLines * FontMetrics.getLineHeight(fontSizeText) + (debtor == null ? DEBTOR_HEIGHT : 0);
-        double uncompressedSpacing = (numLabels - 1) * PREFERRED_LABEL_PADDING_TOP
-                + numLabels * PREFERRED_TEXT_PADDING_TOP + numExtraLines * preferredTextLeading;
-
-        double regularHeight = heightWithoutSpacing + uncompressedSpacing;
-        if (regularHeight <= SLIP_HEIGHT - 2 * VERT_BORDER) {
-            // text fits without compressed spacing
-            labelPaddingTop = PREFERRED_LABEL_PADDING_TOP;
-            textPaddingTop = PREFERRED_TEXT_PADDING_TOP;
-            textLeading = preferredTextLeading;
-
-            double titleHeight = FontMetrics.getLineHeight(FONT_SIZE_TITLE) + labelPaddingTop;
-            if (regularHeight <= SLIP_HEIGHT - 2 * VERT_BORDER - titleHeight) {
-                // align right column with "Supports" line
-                rightColumnPaddingTop = titleHeight;
-            } else {
-                // align right column at the top
-                rightColumnPaddingTop = 0;
-            }
-            return 1;
-        }
-
-        // compressed spacing
-        double remainingSpacing = SLIP_HEIGHT - 2 * VERT_BORDER - heightWithoutSpacing;
-        double factor = remainingSpacing / uncompressedSpacing;
-        labelPaddingTop = factor * PREFERRED_LABEL_PADDING_TOP;
-        textPaddingTop = factor * PREFERRED_TEXT_PADDING_TOP;
-        textLeading = factor * preferredTextLeading;
-        return factor;
-    }
-    */
-
     private void drawCorners(double x, double y, double width, double height) throws IOException {
         final double lwh = 0.5 / 72 * 25.4;
         final double s = 3;
@@ -409,22 +440,31 @@ class BillLayout {
     private static String formatPersonForDisplay(Address address) {
         StringBuilder sb = new StringBuilder();
         sb.append(address.getName());
-        String street = address.getStreet();
-        if (street != null) {
+
+        if (address.getType() == Address.Type.STRUCTURED) {
+            String street = address.getStreet();
+            if (street != null) {
+                sb.append("\n");
+                sb.append(street);
+            }
+            String houseNo = address.getHouseNo();
+            if (houseNo != null) {
+                sb.append(street != null ? " " : "\n");
+                sb.append(houseNo);
+            }
             sb.append("\n");
-            sb.append(street);
+            sb.append(address.getPostalCode());
+            sb.append(" ");
+            sb.append(address.getTown());
+
+        } else if (address.getType() == Address.Type.COMBINED_ELEMENTS) {
+            if (address.getAddressLine1() != null) {
+                sb.append("\n");
+                sb.append(address.getAddressLine1());
+            }
+            sb.append("\n");
+            sb.append(address.getAddressLine2());
         }
-        String houseNo = address.getHouseNo();
-        if (houseNo != null) {
-            sb.append(street != null ? " " : "\n");
-            sb.append(houseNo);
-        }
-        sb.append("\n");
-        sb.append(address.getCountryCode());
-        sb.append("-");
-        sb.append(address.getPostalCode());
-        sb.append(" ");
-        sb.append(address.getTown());
         return sb.toString();
     }
 

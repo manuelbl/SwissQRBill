@@ -80,7 +80,7 @@ m5,0h1v1h-1zm3,0h1v1h-1zm7,0h1v1h-1zm2,0h1v1h-1zm8,0h2v1h-2zm3,0h1v1h-1z" fill="
 <text x="0" y="-277.376" font-size="8" font-weight="bold">Conto / Pagabile a</text>
 <text x="0" y="-265.376" font-size="10">CH37 0900 0000 3044 4222 5</text>
 <text x="0" y="-253.376" font-size="10">ABC AG</text>
-<text x="0" y="-241.376" font-size="10">CH-3000 Bern</text>
+<text x="0" y="-241.376" font-size="10">3000 Bern</text>
 <text x="0" y="-225.976" font-size="8" font-weight="bold">Pagabile da (nome/indirizzo)</text>
 <path d="M0.5,-159.614l0,8.004l8.004,0m212.598,0l8.004,0l0,-8.004m0,-53.858l0,-8.004l-8.004,0m-212.598,0l-8.004,0l0,8.004" stroke="#000000" fill="none"/>
 </g>
@@ -89,7 +89,7 @@ m5,0h1v1h-1zm3,0h1v1h-1zm7,0h1v1h-1zm2,0h1v1h-1zm8,0h2v1h-2zm3,0h1v1h-1z" fill="
 <text x="0" y="-259.134" font-size="6" font-weight="bold">Conto / Pagabile a</text>
 <text x="0" y="-249.534" font-size="8">CH37 0900 0000 3044 4222 5</text>
 <text x="0" y="-239.934" font-size="8">ABC AG</text>
-<text x="0" y="-230.334" font-size="8">CH-3000 Bern</text>
+<text x="0" y="-230.334" font-size="8">3000 Bern</text>
 <text x="0" y="-218.334" font-size="6" font-weight="bold">Pagabile da (nome/indirizzo)</text>
 <path d="M0.5,-152.772l0,8.004l8.004,0m129.175,0l8.004,0l0,-8.004m0,-53.858l0,-8.004l-8.004,0m-129.175,0l-8.004,0l0,8.004" stroke="#000000" fill="none"/>
 <text x="0" y="-90.709" font-size="6" font-weight="bold">Valuta</text>
