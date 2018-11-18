@@ -6,6 +6,7 @@
 //
 package net.codecrete.qrbill.generator;
 
+import java.awt.*;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -22,8 +23,10 @@ class BillLayout {
     private static final double PT_TO_MM = 25.4 / 72;
     private static final double MM_TO_PT = 72 / 25.4;
     private static final int FONT_SIZE_TITLE = 11; // pt
-    private static final int FONT_SIZE_LABEL = 8; // pt
-    private static final int FONT_SIZE_TEXT = 10; // pt
+    private static final int PP_LABEL_PREF_FONT_SIZE = 8; // pt
+    private static final int PP_TEXT_PREF_FONT_SIZE = 10; // pt
+    private static final int RC_LABEL_PREF_FONT_SIZE = 6; // pt
+    private static final int RC_TEXT_PREF_FONT_SIZE = 8; // pt
     private static final double SLIP_WIDTH = 210.22; // mm
     private static final double SLIP_HEIGHT = 105.11; // mm
     private static final double PAYMEMT_PART_WIDTH = 148.65; // mm
@@ -49,11 +52,11 @@ class BillLayout {
     private String[] payable_by;
 
     private double yPos;
-    private double labelPaddingTop;
-    private double textPaddingTop;
-    private double textLeading;
-    private int fontSizeLabel;
-    private int fontSizeText;
+    private int ppLabelFontSize;
+    private int ppTextFontSize;
+    private double ppLabelLeading;
+    private double ppTextLeading;
+    private double ppTextBottomPadding;
 
     BillLayout(Bill bill, Canvas graphics) {
         this.bill = bill;
@@ -64,9 +67,9 @@ class BillLayout {
     void draw() throws IOException {
 
         // test regular font size
-        fontSizeLabel = FONT_SIZE_LABEL;
-        fontSizeText = FONT_SIZE_TEXT;
-        prepareRightColumnText();
+        ppLabelFontSize = PP_LABEL_PREF_FONT_SIZE;
+        ppTextFontSize = PP_TEXT_PREF_FONT_SIZE;
+        preparePaymentPartText();
 
         /*
         double factor = computeSpacing();
@@ -79,9 +82,10 @@ class BillLayout {
             computeSpacing();
         }
         */
-        labelPaddingTop = PREFERRED_LABEL_PADDING_TOP;
-        textPaddingTop = PREFERRED_TEXT_PADDING_TOP;
-        textLeading = PREFERRED_LEADING * fontSizeText * PT_TO_MM;
+
+        ppTextLeading = PREFERRED_LEADING * ppTextFontSize * PT_TO_MM;
+        ppLabelLeading = ppTextLeading + FontMetrics.getDescender(ppTextFontSize) - FontMetrics.getDescender(ppLabelFontSize);
+        ppTextBottomPadding = ppTextFontSize * 0.5 * PT_TO_MM;
 
         // border
         if (true)
@@ -94,20 +98,16 @@ class BillLayout {
 
     private void drawPaymenPart(double offsetX, double offsetY) throws IOException
     {
-        // left column
+        // QR code section
+        qrCode.draw(graphics, offsetX + RECEIPT_WIDTH + MARGIN, offsetY + SLIP_HEIGHT - 17 - QR_CODE_SIZE);
+
+        // "Payment part title"
         graphics.setTransformation(offsetX + RECEIPT_WIDTH + MARGIN, offsetY, 1, 1);
         yPos = SLIP_HEIGHT - MARGIN - FontMetrics.getAscender(FONT_SIZE_TITLE);
-
-        // title section
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_PAYMENT_PART, bill.getLanguage()), 0,
                 yPos, FONT_SIZE_TITLE, true);
 
-        // QR code section
-        yPos = SLIP_HEIGHT - 17 - QR_CODE_SIZE;
-        qrCode.draw(graphics, offsetX + RECEIPT_WIDTH + MARGIN, offsetY + yPos);
-
         // currency
-        graphics.setTransformation(offsetX + RECEIPT_WIDTH + MARGIN, offsetY, 1, 1);
         yPos = SLIP_HEIGHT - 70;
         drawLabelAndText(MultilingualText.KEY_CURRENCY, bill.getCurrency());
 
@@ -118,13 +118,12 @@ class BillLayout {
             drawLabelAndText(MultilingualText.KEY_AMOUNT, formatAmountForDisplay(bill.getAmount()));
         } else {
             drawLabel(MultilingualText.KEY_AMOUNT);
-            yPos -= textPaddingTop;
             drawCorners(0, yPos - AMOUNT_HEIGHT, AMOUNT_WIDTH, AMOUNT_HEIGHT);
         }
 
         // right column
         graphics.setTransformation(offsetX + SLIP_WIDTH - INFO_SECTION_WIDTH - MARGIN, offsetY, 1, 1);
-        yPos = SLIP_HEIGHT - MARGIN + labelPaddingTop;
+        yPos = SLIP_HEIGHT - MARGIN;
 
         // account and creditor
         drawLabelAndTextLines(MultilingualText.KEY_ACCOUNT_PAYABLE_TO, account_payable_to);
@@ -142,7 +141,7 @@ class BillLayout {
             drawLabelAndTextLines(MultilingualText.KEY_PAYABLE_BY, payable_by);
         } else {
             drawLabel(MultilingualText.KEY_PAYABLE_BY_NAME_ADDRESS);
-            yPos -= textPaddingTop + DEBTOR_HEIGHT;
+            yPos -= DEBTOR_HEIGHT;
             drawCorners(0, yPos, INFO_SECTION_WIDTH, DEBTOR_HEIGHT);
         }
         /*
@@ -244,34 +243,34 @@ class BillLayout {
 
     // Draws a label at (0, yPos) and advances vertically
     private void drawLabel(String labelKey) throws IOException {
-        yPos -= labelPaddingTop + FontMetrics.getAscender(fontSizeLabel);
-        graphics.putText(MultilingualText.getText(labelKey, bill.getLanguage()), 0, yPos, fontSizeLabel, true);
-        yPos -= FontMetrics.getDescender(fontSizeLabel);
+        yPos -= FontMetrics.getAscender(ppLabelFontSize);
+        graphics.putText(MultilingualText.getText(labelKey, bill.getLanguage()), 0, yPos, ppLabelFontSize, true);
+        yPos -= FontMetrics.getDescender(ppLabelFontSize) + ppLabelLeading;
     }
 
     // Draws a label and a single line of text at (0, yPos) and advances vertically
     private void drawLabelAndText(String labelKey, String text) throws IOException {
         drawLabel(labelKey);
-        yPos -= textPaddingTop + FontMetrics.getAscender(fontSizeText);
-        graphics.putText(text, 0, yPos, fontSizeText, false);
-        yPos -= FontMetrics.getDescender(fontSizeText);
+        yPos -= FontMetrics.getAscender(ppTextFontSize);
+        graphics.putText(text, 0, yPos, ppTextFontSize, false);
+        yPos -= FontMetrics.getDescender(ppTextFontSize) + ppTextLeading + ppTextBottomPadding;
     }
 
     // Draws a label and a multiple lines of text at (0, yPos) and advances
     // vertically
     private void drawLabelAndTextLines(String labelKey, String[] textLines) throws IOException {
         drawLabel(labelKey);
-        yPos -= textPaddingTop + FontMetrics.getAscender(fontSizeText);
-        graphics.putTextLines(textLines, 0, yPos, fontSizeText, textLeading);
-        yPos -= FontMetrics.getDescender(fontSizeText)
-                + (textLines.length - 1) * (FontMetrics.getLineHeight(fontSizeText) + textLeading);
+        yPos -= FontMetrics.getAscender(ppTextFontSize);
+        graphics.putTextLines(textLines, 0, yPos, ppTextFontSize, ppTextLeading);
+        yPos -= textLines.length * (FontMetrics.getLineHeight(ppTextFontSize) + ppTextLeading)
+                - FontMetrics.getAscender(ppTextFontSize) + ppTextBottomPadding;
     }
 
     // Prepare the text in the right column (mainly formatting and line breaking)
-    private void prepareRightColumnText() {
+    private void preparePaymentPartText() {
         String account = Payments.formatIBAN(bill.getAccount());
         String text = account + "\n" + formatPersonForDisplay(bill.getCreditor());
-        account_payable_to = FontMetrics.splitLines(text, INFO_SECTION_WIDTH * MM_TO_PT, fontSizeText);
+        account_payable_to = FontMetrics.splitLines(text, INFO_SECTION_WIDTH * MM_TO_PT, ppTextFontSize);
         reference = formatReferenceNumber(bill.getReferenceNo());
         additionalInfo = null;
         String info = bill.getUnstructuredMessage();
@@ -282,11 +281,11 @@ class BillLayout {
                 info = info + "\n" + bill.getBillInformation();
         }
         if (info != null)
-            additionalInfo = FontMetrics.splitLines(info, INFO_SECTION_WIDTH * MM_TO_PT, fontSizeText);
+            additionalInfo = FontMetrics.splitLines(info, INFO_SECTION_WIDTH * MM_TO_PT, ppTextFontSize);
         payable_by = null;
         if (bill.getDebtor() != null)
             payable_by = FontMetrics.splitLines(formatPersonForDisplay(bill.getDebtor()), INFO_SECTION_WIDTH * MM_TO_PT,
-                    fontSizeText);
+                    ppTextFontSize);
     }
 
     /*

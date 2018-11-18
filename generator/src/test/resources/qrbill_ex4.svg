@@ -4,9 +4,6 @@
 <g font-family="Helvetica,Arial" transform="translate(0 297.638)">
 <title>Swiss QR Bill</title>
 <path d="M174.529,-0l0,-297.95m-174.529,0l595.899,0" stroke="#000000" stroke-width="0.5" fill="none"/>
-<g transform="translate(188.702 -0)">
-<text x="0" y="-274.976" font-size="11" font-weight="bold">Sezione pagamento</text>
-</g>
 <g transform="translate(188.702 -119.367) scale(3.18)">
 <path d="M0,-41h7v1h-7zm9,0h2v3h-2zm3,0h3v1h-3zm5,0h3v1h-3zm5,0h6v1h-6zm8,0h3v1h-3z
 m4,0h7v1h-7zm-34,1h1v6h-1zm6,0h1v6h-1zm2,0h1v3h-1zm7,0h1v1h-1zm3,0h1v1h-1z
@@ -72,20 +69,21 @@ m5,0h1v1h-1zm3,0h1v1h-1zm7,0h1v1h-1zm2,0h1v1h-1zm8,0h2v1h-2zm3,0h1v1h-1z" fill="
 <path d="M63.543,-70.709h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z" fill="#ffffff"/>
 </g>
 <g transform="translate(188.702 -0)">
-<text x="0" y="-85.124" font-size="8" font-weight="bold">Valuta</text>
-<text x="0" y="-70.524" font-size="10">CHF</text>
+<text x="0" y="-274.976" font-size="11" font-weight="bold">Sezione pagamento</text>
+<text x="0" y="-93.124" font-size="8" font-weight="bold">Valuta</text>
+<text x="0" y="-81.124" font-size="10">CHF</text>
 </g>
 <g transform="translate(231.222 -0)">
-<text x="0" y="-85.124" font-size="8" font-weight="bold">Importo</text>
-<path d="M0.5,-44.509l0,8.004l8.004,0m96.378,0l8.004,0l0,-8.004m0,-25.512l0,-8.004l-8.004,0m-96.378,0l-8.004,0l0,8.004" stroke="#000000" fill="none"/>
+<text x="0" y="-93.124" font-size="8" font-weight="bold">Importo</text>
+<path d="M0.5,-55.109l0,8.004l8.004,0m96.378,0l8.004,0l0,-8.004m0,-25.512l0,-8.004l-8.004,0m-96.378,0l-8.004,0l0,8.004" stroke="#000000" fill="none"/>
 </g>
 <g transform="translate(352.12 -0)">
 <text x="0" y="-277.376" font-size="8" font-weight="bold">Conto / Pagabile a</text>
-<text x="0" y="-262.776" font-size="10">CH37 0900 0000 3044 4222 5</text>
-<text x="0" y="-250.776" font-size="10">ABC AG</text>
-<text x="0" y="-238.776" font-size="10">CH-3000 Bern</text>
-<text x="0" y="-222.376" font-size="8" font-weight="bold">Pagabile da (nome/indirizzo)</text>
-<path d="M0.5,-153.414l0,8.004l8.004,0m212.598,0l8.004,0l0,-8.004m0,-53.858l0,-8.004l-8.004,0m-212.598,0l-8.004,0l0,8.004" stroke="#000000" fill="none"/>
+<text x="0" y="-265.376" font-size="10">CH37 0900 0000 3044 4222 5</text>
+<text x="0" y="-253.376" font-size="10">ABC AG</text>
+<text x="0" y="-241.376" font-size="10">CH-3000 Bern</text>
+<text x="0" y="-225.976" font-size="8" font-weight="bold">Pagabile da (nome/indirizzo)</text>
+<path d="M0.5,-159.614l0,8.004l8.004,0m212.598,0l8.004,0l0,-8.004m0,-53.858l0,-8.004l-8.004,0m-212.598,0l-8.004,0l0,8.004" stroke="#000000" fill="none"/>
 </g>
 </g>
 </svg>

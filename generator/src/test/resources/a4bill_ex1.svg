@@ -4,9 +4,6 @@
 <g font-family="Helvetica,Arial" transform="translate(0 841.89)">
 <title>Swiss QR Bill</title>
 <path d="M174.529,-0l0,-297.95m-174.529,0l595.899,0" stroke="#000000" stroke-width="0.5" fill="none"/>
-<g transform="translate(188.702 -0)">
-<text x="0" y="-274.976" font-size="11" font-weight="bold">Payment part</text>
-</g>
 <g transform="translate(188.702 -119.367) scale(1.89)">
 <path d="M0,-69h7v1h-7zm10,0h2v1h-2zm4,0h2v1h-2zm4,0h1v2h-1zm2,0h1v3h-1zm2,0h2v1h-2z
 m3,0h2v2h-2zm2,0h1v1h-1zm2,0h1v1h-1zm4,0h1v5h-1zm4,0h1v1h-1zm3,0h1v1h-1z
@@ -186,29 +183,30 @@ m3,0h1v1h-1zm6,0h2v1h-2zm4,0h2v1h-2zm3,0h2v1h-2zm6,0h1v1h-1z" fill="#000000"/>
 <path d="M63.543,-70.709h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z" fill="#ffffff"/>
 </g>
 <g transform="translate(188.702 -0)">
-<text x="0" y="-85.124" font-size="8" font-weight="bold">Currency</text>
-<text x="0" y="-70.524" font-size="10">CHF</text>
+<text x="0" y="-274.976" font-size="11" font-weight="bold">Payment part</text>
+<text x="0" y="-93.124" font-size="8" font-weight="bold">Currency</text>
+<text x="0" y="-81.124" font-size="10">CHF</text>
 </g>
 <g transform="translate(231.222 -0)">
-<text x="0" y="-85.124" font-size="8" font-weight="bold">Amount</text>
-<text x="0" y="-70.524" font-size="10">123 949.75</text>
+<text x="0" y="-93.124" font-size="8" font-weight="bold">Amount</text>
+<text x="0" y="-81.124" font-size="10">123 949.75</text>
 </g>
 <g transform="translate(352.12 -0)">
 <text x="0" y="-277.376" font-size="8" font-weight="bold">Account / Payable to</text>
-<text x="0" y="-262.776" font-size="10">CH44 3199 9123 0008 8901 2</text>
-<text x="0" y="-250.776" font-size="10">Robert Schneider AG</text>
-<text x="0" y="-238.776" font-size="10">Rue du Lac 1268/2/22</text>
-<text x="0" y="-226.776" font-size="10">CH-2501 Biel</text>
-<text x="0" y="-210.376" font-size="8" font-weight="bold">Reference</text>
-<text x="0" y="-195.776" font-size="10">21 00000 00003 13947 14300 09017</text>
-<text x="0" y="-179.376" font-size="8" font-weight="bold">Additional information</text>
-<text x="0" y="-164.776" font-size="10">Instruction of 15.09.2019</text>
-<text x="0" y="-152.776" font-size="10">//S1/01/20170309/11/10201409/20/14000000/22/36</text>
-<text x="0" y="-140.776" font-size="10">958/30/CH106017086/40/1020/41/3010</text>
-<text x="0" y="-124.376" font-size="8" font-weight="bold">Payable by</text>
-<text x="0" y="-109.776" font-size="10">Pia-Maria Rutschmann-Schnyder</text>
-<text x="0" y="-97.776" font-size="10">Grosse Marktgasse 28</text>
-<text x="0" y="-85.776" font-size="10">CH-9400 Rorschach</text>
+<text x="0" y="-265.376" font-size="10">CH44 3199 9123 0008 8901 2</text>
+<text x="0" y="-253.376" font-size="10">Robert Schneider AG</text>
+<text x="0" y="-241.376" font-size="10">Rue du Lac 1268/2/22</text>
+<text x="0" y="-229.376" font-size="10">CH-2501 Biel</text>
+<text x="0" y="-213.976" font-size="8" font-weight="bold">Reference</text>
+<text x="0" y="-201.976" font-size="10">21 00000 00003 13947 14300 09017</text>
+<text x="0" y="-186.576" font-size="8" font-weight="bold">Additional information</text>
+<text x="0" y="-174.576" font-size="10">Instruction of 15.09.2019</text>
+<text x="0" y="-162.576" font-size="10">//S1/01/20170309/11/10201409/20/14000000/22/36</text>
+<text x="0" y="-150.576" font-size="10">958/30/CH106017086/40/1020/41/3010</text>
+<text x="0" y="-135.176" font-size="8" font-weight="bold">Payable by</text>
+<text x="0" y="-123.176" font-size="10">Pia-Maria Rutschmann-Schnyder</text>
+<text x="0" y="-111.176" font-size="10">Grosse Marktgasse 28</text>
+<text x="0" y="-99.176" font-size="10">CH-9400 Rorschach</text>
 </g>
 </g>
 </svg>
