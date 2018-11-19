@@ -8,6 +8,7 @@ package net.codecrete.qrbill.web.controller;
 
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.web.model.Address;
+import net.codecrete.qrbill.web.model.AlternativeScheme;
 import net.codecrete.qrbill.web.model.QrBill;
 import net.codecrete.qrbill.web.model.ValidationMessage;
 
@@ -20,6 +21,9 @@ import java.util.List;
 class QrBillDTOConverter {
 
     static QrBill toDTOQrBill(Bill bill) {
+        if (bill == null)
+            return null;
+
         QrBill dto = new QrBill();
         dto.setLanguage(QrBill.LanguageEnum.valueOf(bill.getLanguage().name()));
         dto.setVersion(bill.getVersion().name());
@@ -27,11 +31,11 @@ class QrBillDTOConverter {
         dto.setCurrency(bill.getCurrency());
         dto.setAccount(bill.getAccount());
         dto.setCreditor(toDtoAddress(bill.getCreditor()));
-        dto.setFinalCreditor(toDtoAddress(bill.getFinalCreditor()));
         dto.setReferenceNo(bill.getReferenceNo());
-        dto.setAdditionalInfo(bill.getAdditionalInfo());
+        dto.setUnstructuredMessage(bill.getUnstructuredMessage());
+        dto.setBillInformation(bill.getBillInformation());
+        dto.setAlternativeSchemes(toDtoSchemes(bill.getAlternativeSchemes()));
         dto.setDebtor(toDtoAddress(bill.getDebtor()));
-        dto.setDueDate(bill.getDueDate());
         return dto;
     }
 
@@ -46,11 +50,11 @@ class QrBillDTOConverter {
         bill.setCurrency(dto.getCurrency());
         bill.setAccount(dto.getAccount());
         bill.setCreditor(fromDtoAddress(dto.getCreditor()));
-        bill.setFinalCreditor(fromDtoAddress(dto.getFinalCreditor()));
         bill.setReferenceNo(dto.getReferenceNo());
-        bill.setAdditionalInfo(dto.getAdditionalInfo());
+        bill.setUnstructuredMessage(dto.getUnstructuredMessage());
+        bill.setBillInformation(dto.getBillInformation());
+        bill.setAlternativeSchemes(fromDtoSchemes(dto.getAlternativeSchemes()));
         bill.setDebtor(fromDtoAddress(dto.getDebtor()));
-        bill.setDueDate(dto.getDueDate());
         return bill;
     }
 
@@ -59,7 +63,11 @@ class QrBillDTOConverter {
             return null;
 
         Address dto = new Address();
+        dto.setAddressType(toDtoAddressType(address.getType()));
         dto.setName(address.getName());
+        dto.setAddressType(Address.AddressTypeEnum.STRUCTURED);
+        dto.setAddressLine1(address.getAddressLine1());
+        dto.setAddressLine2(address.getAddressLine2());
         dto.setStreet(address.getStreet());
         dto.setHouseNo(address.getHouseNo());
         dto.setPostalCode(address.getPostalCode());
@@ -74,13 +82,59 @@ class QrBillDTOConverter {
 
         net.codecrete.qrbill.generator.Address address = new net.codecrete.qrbill.generator.Address();
         address.setName(dto.getName());
-        address.setStreet(dto.getStreet());
-        address.setHouseNo(dto.getHouseNo());
-        address.setPostalCode(dto.getPostalCode());
-        address.setTown(dto.getTown());
+        if (dto.getAddressLine1() != null)
+            address.setAddressLine1(dto.getAddressLine1());
+        if (dto.getAddressLine2() != null)
+            address.setAddressLine2(dto.getAddressLine2());
+        if (dto.getStreet() != null)
+            address.setStreet(dto.getStreet());
+        if (dto.getHouseNo() != null)
+            address.setHouseNo(dto.getHouseNo());
+        if (dto.getPostalCode() != null)
+            address.setPostalCode(dto.getPostalCode());
+        if (dto.getTown() != null)
+            address.setTown(dto.getTown());
         address.setCountryCode(dto.getCountryCode());
         return address;
     }
+
+    private static List<AlternativeScheme> toDtoSchemes(net.codecrete.qrbill.generator.AlternativeScheme[] alternativeSchemes) {
+        if (alternativeSchemes == null)
+            return null;
+
+        List<AlternativeScheme> dto = new ArrayList<>();
+        for (net.codecrete.qrbill.generator.AlternativeScheme scheme : alternativeSchemes) {
+            AlternativeScheme dtoScheme = null;
+            if (scheme != null) {
+                dtoScheme = new AlternativeScheme();
+                dtoScheme.setName(scheme.getName());
+                dtoScheme.setInstruction(scheme.getInstruction());
+            }
+            dto.add(dtoScheme);
+        }
+        return dto;
+    }
+
+    private static net.codecrete.qrbill.generator.AlternativeScheme[] fromDtoSchemes(List<AlternativeScheme> dto) {
+        if (dto == null)
+            return null;
+
+        net.codecrete.qrbill.generator.AlternativeScheme[] schemes
+                = new net.codecrete.qrbill.generator.AlternativeScheme[dto.size()];
+        for (int i = 0; i < dto.size(); i++) {
+            AlternativeScheme dtoScheme = dto.get(i);
+            if (dtoScheme != null) {
+                net.codecrete.qrbill.generator.AlternativeScheme scheme
+                        = new net.codecrete.qrbill.generator.AlternativeScheme();
+                scheme.setName(dtoScheme.getName());
+                scheme.setInstruction(dtoScheme.getInstruction());
+                schemes[i] = scheme;
+            }
+        }
+
+        return schemes;
+    }
+
     private static ValidationMessage toDtoValidationMessage(net.codecrete.qrbill.generator.ValidationMessage msg) {
         if (msg == null)
             return null;
@@ -109,5 +163,16 @@ class QrBillDTOConverter {
         if (type == net.codecrete.qrbill.generator.ValidationMessage.Type.WARNING)
             return ValidationMessage.TypeEnum.WARNING;
         return null;
+    }
+
+    private static Address.AddressTypeEnum toDtoAddressType(net.codecrete.qrbill.generator.Address.Type type) {
+        if (type == net.codecrete.qrbill.generator.Address.Type.STRUCTURED) {
+            return Address.AddressTypeEnum.STRUCTURED;
+        } else if (type == net.codecrete.qrbill.generator.Address.Type.COMBINED_ELEMENTS) {
+            return Address.AddressTypeEnum.COMBINED_ELEMENTS;
+        } else if (type == net.codecrete.qrbill.generator.Address.Type.CONFLICTING) {
+            return Address.AddressTypeEnum.CONFLICTING;
+        }
+        return Address.AddressTypeEnum.UNDETERMINED;
     }
 }

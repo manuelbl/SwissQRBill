@@ -8,22 +8,21 @@ info:
 
     - Payment amount and currency
     - Creditor address and account
-    - Final creditor address (if needed)
     - Reference number issued by the creditor
     - Additional informationn for the recipient of the invoice
     - Debtor address
-    - Due date (optional)
+    - Alternative payment scheme instructions (future use)
 
     Debtor and amount can be omitted and filled in by the payer.
 
-    The QR bill payment part can be generated as an A6, A5 or A4 sheet. Alternatively, the QR code only can be generated.
-    Supported formats are SVG and PDF.
+    The QR bill can be generated at the bottom of an A4 sheet or on it's own sheet (210 x 105mm). Alternatively,
+    only the QR code can be generated. Supported formats are SVG or PDF.
 
     To successfully validate the bill data and generate a QR bill, the following main requirements must be met:
 
     - A valid address must at least contain *name*, *postal code*, *town* and *country ISO code*.
     - The creditor address and accout number are mandatory.
-    - The final creditor and the debtor addresses are optional. If they are not used, they must be omitted entirely
+    - The debtor addresses is optional. If is not used, it must be omitted entirely
       or all address fields must be *null* or empty.
     - The account number must be a valid IBAN of Switzerland or Liechtenstein.
     - If a reference number is provided, it must be either a valid QR/ISR reference number
@@ -34,7 +33,7 @@ info:
     characters are used, they are automatically replaced. The validation result contains warnings about
     truncations and replacements.
 
-  version: 1.0.1
+  version: 2.0.0.RC1
   license:
     name: "MIT License"
     url: "https://opensource.org/licenses/MIT"
@@ -83,9 +82,8 @@ paths:
         schema:
           type: string
           enum:
-          - "a6-landscape"
-          - "a5-landscape"
           - "a4-portrait"
+          - "qr-bill-only"
           - "qr-code-only"
       requestBody:
         required: true
@@ -125,9 +123,8 @@ paths:
         schema:
           type: string
           enum:
-          - "a6-landscape"
-          - "a5-landscape"
           - "a4-portrait"
+          - "qr-bill-only"
           - "qr-code-only"
       requestBody:
         description: "Bill data"
@@ -167,9 +164,8 @@ paths:
         schema:
           type: string
           enum:
-          - "a6-landscape"
-          - "a5-landscape"
           - "a4-portrait"
+          - "qr-bill-only"
           - "qr-code-only"
       - in: path
         name: billID
@@ -208,9 +204,8 @@ paths:
         schema:
           type: string
           enum:
-          - "a6-landscape"
-          - "a5-landscape"
           - "a4-portrait"
+          - "qr-bill-only"
           - "qr-code-only"
       - in: path
         name: billID
@@ -262,10 +257,29 @@ components:
 
     Address:
       type: object
+      description: |
+        Address of creditor or debtor. Unless the entire object is empty, *name*, *postal code*, *town* and
+        *country code* are mandatory. Some fields are mutually exclusive: either *street*, *houseNo*, *town* and
+        *postalCode* are used (so called structured addresses) or *addressLine1* and *addressLine2* are used
+        (so called combined elements addresses).
       properties:
+        addressType:
+          type: string
+          description: "Address type"
+          enum:
+          - "undetermined"
+          - "structured"
+          - "combined-elements"
+          - "conflicting"
         name:
           type: string
           description: "First, middle and last name of a natural person or company or organization name of a legal person"
+        addressLine1:
+          type: string
+          description: "First address line containing street name, house number and P.O. box"
+        addressLine2:
+          type: string
+          description: "Second address line containing postal code and town"
         street:
           type: string
           description: "Street name (without the house number)"
@@ -296,7 +310,7 @@ components:
         version:
           type: string
           description: "QR bill specification version"
-          default: "V1_0"
+          default: "V2_0"
         amount:
           type: number
           description: "Bill amount"
@@ -309,20 +323,21 @@ components:
           description: "Creditor's account"
         creditor:
           $ref: "#/components/schemas/Address"
-        finalCreditor:
-          $ref: "#/components/schemas/Address"
         referenceNo:
           type: string
           description: "Payment reference number (QR/ISR reference number or ISO 11649 creditor reference)"
-        additionalInfo:
+        unstructuredMessage:
           type: string
-          description: "Additional information for the bill recipient"
+          description: "Message for the bill recipient"
+        billInformation:
+          type: string
+          description: "Structured bill information for recipient"
         debtor:
           $ref: "#/components/schemas/Address"
-        dueDate:
-          type: string
-          description: "Payment due date"
-          format: date
+        alternativeSchemes:
+          type: array
+          items:
+            $ref: "#/components/schemas/AlternativeScheme"
 
     ValidationMessage:
       type: object
@@ -373,6 +388,16 @@ components:
         text:
           type: string
           description: "QR code text"
+
+    AlternativeScheme:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "Scheme name"
+        instruction:
+          type: string
+          description: "Payment instruction"
 
 externalDocs:
   description: "Find out more about Swiss QR Bill"

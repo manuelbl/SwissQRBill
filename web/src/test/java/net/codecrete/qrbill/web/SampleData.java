@@ -24,6 +24,7 @@ class SampleData {
         bill.setCurrency("CHF");
         bill.setAccount("CH4431999123000889012");
         bill.setCreditor(new Address());
+        bill.getCreditor().setAddressType(Address.AddressTypeEnum.STRUCTURED);
         bill.getCreditor().setName("Meierhans AG");
         bill.getCreditor().setStreet("Bahnhofstrasse");
         bill.getCreditor().setHouseNo("16");

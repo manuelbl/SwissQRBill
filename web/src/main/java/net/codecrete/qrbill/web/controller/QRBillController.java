@@ -22,6 +22,7 @@ import java.util.zip.InflaterInputStream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.codecrete.qrbill.generator.QRBillValidationError;
 import net.codecrete.qrbill.web.api.BillApi;
 import net.codecrete.qrbill.web.model.QrBill;
 import net.codecrete.qrbill.web.model.QrCodeInformation;
@@ -79,8 +80,13 @@ public class QRBillController implements BillApi {
      */
     @Override
     public ResponseEntity<ValidationResponse> decodeQRCode(QrCodeInformation qrCodeInformation) {
-        Bill bill = QRBill.decodeQrCodeText(qrCodeInformation.getText());
-        ValidationResult result = QRBill.validate(bill);
+        ValidationResult result;
+        try {
+            Bill bill = QRBill.decodeQrCodeText(qrCodeInformation.getText());
+            result = QRBill.validate(bill);
+        } catch (QRBillValidationError e) {
+            result = e.getValidationResult();
+        }
         return new ResponseEntity<>(createValidationResponse(result), HttpStatus.OK);
     }
 
@@ -191,13 +197,9 @@ public class QRBillController implements BillApi {
         case "qr-code-only":
             format = BillFormat.QR_CODE_ONLY;
             break;
-        case "a6Landscape":
-        case "a6-landscape":
-            format = BillFormat.A6_LANDSCAPE_SHEET;
-            break;
-        case "a5Landscape":
-        case "a5-landscape":
-            format = BillFormat.A5_LANDSCAPE_SHEET;
+        case "qrBillOnly":
+        case "qr-bill-only":
+            format = BillFormat.QR_BILL_ONLY;
             break;
         case "a4Portrait":
         case "a4-portrait":

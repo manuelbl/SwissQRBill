@@ -91,7 +91,7 @@ class ValidationTests {
         assertNotNull(response);
         assertFalse(response.getValid());
         assertNotNull(response.getValidationMessages());
-        assertEquals(4, response.getValidationMessages().size());
+        assertEquals(5, response.getValidationMessages().size());
         for (ValidationMessage message : response.getValidationMessages()) {
             assertEquals(ValidationMessage.TypeEnum.ERROR, message.getType());
             assertTrue(message.getField().startsWith("creditor."));

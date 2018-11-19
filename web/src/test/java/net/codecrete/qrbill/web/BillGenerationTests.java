@@ -38,10 +38,10 @@ class BillGenerationTests {
     }
 
     @Test
-    void svgA6() {
+    void svgQrBill() {
 
         QrBill bill = SampleData.createBill1();
-        byte[] response = restTemplate.postForObject("/bill/svg/a6-landscape", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/svg/qr-bill-only", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -53,10 +53,10 @@ class BillGenerationTests {
     }
 
     @Test
-    void pdfA6() {
+    void pdfQrBill() {
 
         QrBill bill = SampleData.createBill1();
-        byte[] response = restTemplate.postForObject("/bill/pdf/a6-landscape", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/pdf/qr-bill-only", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -70,7 +70,7 @@ class BillGenerationTests {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown("city56789012345678901234567890123456");
 
-        byte[] response = restTemplate.postForObject("/bill/svg/a5Landscape", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/svg/qr-bill-only", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -78,7 +78,7 @@ class BillGenerationTests {
         String text = new String(response, StandardCharsets.UTF_8);
         assertTrue(text.startsWith("<?xml"));
         assertTrue(text.indexOf("<svg") > 0);
-        assertTrue(text.indexOf("font-size=\"10\">city5678901234567890123456789012345</text>") > 0);
+        assertTrue(text.indexOf("font-size=\"10\">2100 city5678901234567890123456789012345</text>") > 0);
     }
 
     @Test
