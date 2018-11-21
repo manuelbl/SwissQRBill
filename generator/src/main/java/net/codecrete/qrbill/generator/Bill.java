@@ -18,129 +18,163 @@ public class Bill implements Serializable {
     private static final long serialVersionUID = -8104086304378262190L;
 
     /**
-     * QR bill language
-     */
-    public enum Language {
-        /** German */
-        DE,
-        /** French */
-        FR,
-        /** Italian */
-        IT,
-        /** English */
-        EN
-    }
-
-    /**
      * QR bill version
      */
     public enum Version {
-        /** Version 2.0 */
+        /**
+         * Version 2.0
+         */
         V2_0
     }
 
-    /** Relative field name of an address' name */
+    /**
+     * Relative field name of an address' name
+     */
     public static final String SUBFIELD_NAME = ".name";
-    /** Relative field of an address' line 1 */
+    /**
+     * Relative field of an address' line 1
+     */
     public static final String SUBFIELD_ADDRESS_LINE_1 = ".addressLine1";
-    /** Relative field of an address' line 2 */
+    /**
+     * Relative field of an address' line 2
+     */
     public static final String SUBFIELD_ADDRESS_LINE_2 = ".addressLine2";
-    /** Relative field of an address' street */
+    /**
+     * Relative field of an address' street
+     */
     public static final String SUBFIELD_STREET = ".street";
-    /** Relative field of an address' house number */
+    /**
+     * Relative field of an address' house number
+     */
     public static final String SUBFIELD_HOUSE_NO = ".houseNo";
-    /** Relative field of an address' postal code */
+    /**
+     * Relative field of an address' postal code
+     */
     public static final String SUBFIELD_POSTAL_CODE = ".postalCode";
-    /** Relative field of an address' town */
+    /**
+     * Relative field of an address' town
+     */
     public static final String SUBFIELD_TOWN = ".town";
-    /** Relative field of an address' country code */
+    /**
+     * Relative field of an address' country code
+     */
     public static final String SUBFIELD_COUNTRY_CODE = ".countryCode";
-    /** Field name of the QR code type */
+    /**
+     * Field name of the QR code type
+     */
     public static final String FIELD_QR_TYPE = "qrText";
-    /** Field name of the QR bill version */
+    /**
+     * Field name of the QR bill version
+     */
     public static final String FIELD_VERSION = "version";
-    /** Field name of the QR bill's coding type */
+    /**
+     * Field name of the QR bill's coding type
+     */
     public static final String FIELD_CODING_TYPE = "codingType";
-    /** Field name of the QR bill's coding type */
+    /**
+     * Field name of the QR bill's coding type
+     */
     public static final String FIELD_LANGUAGE = "language";
-    /** Field name of the currency */
+    /**
+     * Field name of the currency
+     */
     public static final String FIELD_CURRENCY = "currency";
-    /** Field name of the amount */
+    /**
+     * Field name of the amount
+     */
     public static final String FIELD_AMOUNT = "amount";
-    /** Field name of the account number */
+    /**
+     * Field name of the account number
+     */
     public static final String FIELD_ACCOUNT = "account";
-    /** Field name of the reference */
+    /**
+     * Field name of the reference
+     */
     public static final String FIELD_REFERENCE = "reference";
-    /** Start of field name of the creditor address */
+    /**
+     * Start of field name of the creditor address
+     */
     public static final String FIELDROOT_CREDITOR = "creditor";
-    /** Field name of the creditor's name */
+    /**
+     * Field name of the creditor's name
+     */
     public static final String FIELD_CREDITOR_NAME = "creditor.name";
-    /** Field name of the creditor's street */
+    /**
+     * Field name of the creditor's street
+     */
     public static final String FIELD_CREDITOR_STREET = "creditor.street";
-    /** Field name of the creditor's house number */
+    /**
+     * Field name of the creditor's house number
+     */
     public static final String FIELD_CREDITOR_HOUSE_NO = "creditor.houseNo";
-    /** Field name of the creditor's postal codde */
+    /**
+     * Field name of the creditor's postal codde
+     */
     public static final String FIELD_CREDITOR_POSTAL_CODE = "creditor.postalCode";
-    /** Field name of the creditor's town */
+    /**
+     * Field name of the creditor's town
+     */
     public static final String FIELD_CREDITOR_TOWN = "creditor.town";
-    /** Field name of the creditor's country code */
+    /**
+     * Field name of the creditor's country code
+     */
     public static final String FIELD_CREDITOR_COUNTRY_CODE = "creditor.countryCode";
-    /** Field name of the unstructured message */
+    /**
+     * Field name of the unstructured message
+     */
     public static final String FIELD_UNSTRUCTURED_MESSAGE = "unstructuredMessage";
-    /** Field name of the bill information */
+    /**
+     * Field name of the bill information
+     */
     public static final String FIELD_BILL_INFORMATION = "billInformation";
-    /** Field name of the alternative schemes */
+    /**
+     * Field name of the alternative schemes
+     */
     public static final String FIELD_ALTERNATIVE_SCHEMES = "altSchemes";
-    /** Start of field name of the debtor's address */
+    /**
+     * Start of field name of the debtor's address
+     */
     public static final String FIELDROOT_DEBTOR = "debtor";
-    /** Field name of the debtor's name */
+    /**
+     * Field name of the debtor's name
+     */
     public static final String FIELD_DEBTOR_NAME = "debtor.name";
-    /** Field name of the debtor's street */
+    /**
+     * Field name of the debtor's street
+     */
     public static final String FIELD_DEBTOR_STREET = "debtor.street";
-    /** Field name of the debtor's house number */
+    /**
+     * Field name of the debtor's house number
+     */
     public static final String FIELD_DEBTOR_HOUSE_NO = "debtor.houseNo";
-    /** Field name of the debtor's postal code */
+    /**
+     * Field name of the debtor's postal code
+     */
     public static final String FIELD_DEBTOR_POSTAL_CODE = "debtor.postalCode";
-    /** Field name of the debtor's town */
+    /**
+     * Field name of the debtor's town
+     */
     public static final String FIELD_DEBTOR_TOWN = "debtor.town";
-    /** Field name of the debtor's country code */
+    /**
+     * Field name of the debtor's country code
+     */
     public static final String FIELD_DEBTOR_COUNTRY_CODE = "debtor.countryCode";
 
-    private Language language = Language.EN;
     private Version version = Version.V2_0;
-
     private Double amount = null;
     private String currency = "CHF";
     private String account = null;
     private Address creditor = new Address();
-    private Address finalCreditor = null;
     private String referenceNo = null;
     private Address debtor = null;
     private String unstructuredMessage = null;
     private String billInformation = null;
     private AlternativeScheme[] alternativeSchemes = null;
-
-    /**
-     * Gets the bill language.
-     * 
-     * @return the language
-     */
-    public Language getLanguage() {
-        return language;
-    }
-
-    /**
-     * Sets the bill language
-     * 
-     * @param language the language
-     */
-    public void setLanguage(Language language) {
-        this.language = language;
-    }
+    private BillFormat format = new BillFormat();
 
     /**
      * Gets the version of the QR bill standard.
-     * 
+     *
      * @return the version
      */
     public Version getVersion() {
@@ -149,7 +183,7 @@ public class Bill implements Serializable {
 
     /**
      * Sets the version of the QR bill standard.
-     * 
+     *
      * @param version the version
      */
     public void setVersion(Version version) {
@@ -158,7 +192,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the payment amount
-     * 
+     *
      * @return the amount
      */
     public Double getAmount() {
@@ -170,7 +204,7 @@ public class Bill implements Serializable {
      * <p>
      * Valid values are between 0.01 and 999,999,999.99
      * </p>
-     * 
+     *
      * @param amount the amount
      */
     public void setAmount(Double amount) {
@@ -179,7 +213,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the payment currency.
-     * 
+     *
      * @return the currency
      */
     public String getCurrency() {
@@ -191,7 +225,7 @@ public class Bill implements Serializable {
      * <p>
      * Valid values are "CHF" and "EUR".
      * </p>
-     * 
+     *
      * @param currency the currency
      */
     public void setCurrency(String currency) {
@@ -200,7 +234,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the creditor's account number.
-     * 
+     *
      * @return the account number
      */
     public String getAccount() {
@@ -213,7 +247,7 @@ public class Bill implements Serializable {
      * Account numbers must be valid IBANs of a bank of Switzerland or
      * Liechtenstein. Spaces are allowed in the account number.
      * </p>
-     * 
+     *
      * @param account the account number
      */
     public void setAccount(String account) {
@@ -222,7 +256,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the creditor address.
-     * 
+     *
      * @return the creditor address
      */
     public Address getCreditor() {
@@ -231,7 +265,7 @@ public class Bill implements Serializable {
 
     /**
      * Sets the creditor address.
-     * 
+     *
      * @param creditor the creditor address.
      */
     public void setCreditor(Address creditor) {
@@ -239,29 +273,8 @@ public class Bill implements Serializable {
     }
 
     /**
-     * Gets the final creditor address.
-     * 
-     * @return the final creditor address
-     */
-    public Address getFinalCreditor() {
-        return finalCreditor;
-    }
-
-    /**
-     * Sets the final creditor address.
-     * <p>
-     * The final creditor must not be used for the time being.
-     * </p>
-     * 
-     * @param finalCreditor the final creditor address
-     */
-    public void setFinalCreditor(Address finalCreditor) {
-        this.finalCreditor = finalCreditor;
-    }
-
-    /**
      * Gets the payment reference number
-     * 
+     *
      * @return the reference number
      */
     public String getReferenceNo() {
@@ -279,7 +292,7 @@ public class Bill implements Serializable {
      * corresponds to the form ISR reference number) or a valid creditor reference
      * according to ISO 11649 ("RFxxxx"). Both may contain spaces for formatting.
      * </p>
-     * 
+     *
      * @param referenceNo the payment reference number
      */
     public void setReferenceNo(String referenceNo) {
@@ -292,7 +305,7 @@ public class Bill implements Serializable {
      * <p>
      * Whitespace is removed from the reference
      * </p>
-     * 
+     *
      * @param rawReference The raw string
      * @throws IllegalArgumentException if {@code rawReference} contains invalid
      *                                  characters
@@ -303,7 +316,7 @@ public class Bill implements Serializable {
 
     /**
      * Gets the debtor's address.
-     * 
+     *
      * @return the debtor address
      */
     public Address getDebtor() {
@@ -317,7 +330,7 @@ public class Bill implements Serializable {
      * {@code null} or setting an address with all {@code null} or empty values is
      * ok.
      * </p>
-     * 
+     *
      * @param debtor the debtor address
      */
     public void setDebtor(Address debtor) {
@@ -353,6 +366,7 @@ public class Bill implements Serializable {
 
     /**
      * Sets the additional bill information
+     *
      * @param billInformation bill information
      */
     public void setBillInformation(String billInformation) {
@@ -362,7 +376,7 @@ public class Bill implements Serializable {
     /**
      * Get the alternative schemes.
      * <p>
-     *     A maximum of two schemes are allowed.
+     * A maximum of two schemes are allowed.
      * </p>
      *
      * @return alternative schemes
@@ -374,13 +388,31 @@ public class Bill implements Serializable {
     /**
      * Sets the alternative scheme parameters.
      * <p>
-     *     A maximum of two schemes with parameters are allowed.
+     * A maximum of two schemes with parameters are allowed.
      * </p>
      *
      * @param alternativeSchemes alternative payment scheme information
      */
     public void setAlternativeSchemes(AlternativeScheme[] alternativeSchemes) {
         this.alternativeSchemes = alternativeSchemes;
+    }
+
+    /**
+     * Gets the bill format.
+     *
+     * @return bill format
+     */
+    public BillFormat getFormat() {
+        return format;
+    }
+
+    /**
+     * Sets the bill format.
+     *
+     * @param format bill format
+     */
+    public void setFormat(BillFormat format) {
+        this.format = format;
     }
 
     /**
@@ -391,18 +423,17 @@ public class Bill implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Bill bill = (Bill) o;
-        return language == bill.language &&
-                version == bill.version &&
+        return version == bill.version &&
                 Objects.equals(amount, bill.amount) &&
                 Objects.equals(currency, bill.currency) &&
                 Objects.equals(account, bill.account) &&
                 Objects.equals(creditor, bill.creditor) &&
-                Objects.equals(finalCreditor, bill.finalCreditor) &&
                 Objects.equals(referenceNo, bill.referenceNo) &&
                 Objects.equals(debtor, bill.debtor) &&
                 Objects.equals(unstructuredMessage, bill.unstructuredMessage) &&
                 Objects.equals(billInformation, bill.billInformation) &&
-                Arrays.equals(alternativeSchemes, bill.alternativeSchemes);
+                Arrays.equals(alternativeSchemes, bill.alternativeSchemes) &&
+                Objects.equals(format, bill.format);
     }
 
     /**
@@ -411,7 +442,7 @@ public class Bill implements Serializable {
     @Override
     public int hashCode() {
 
-        int result = Objects.hash(language, version, amount, currency, account, creditor, finalCreditor, referenceNo, debtor, unstructuredMessage, billInformation);
+        int result = Objects.hash(version, amount, currency, account, creditor, referenceNo, debtor, unstructuredMessage, billInformation, format);
         result = 31 * result + Arrays.hashCode(alternativeSchemes);
         return result;
     }
@@ -422,18 +453,17 @@ public class Bill implements Serializable {
     @Override
     public String toString() {
         return "Bill{" +
-                "language=" + language +
-                ", version=" + version +
+                "version=" + version +
                 ", amount=" + amount +
                 ", currency='" + currency + '\'' +
                 ", account='" + account + '\'' +
                 ", creditor=" + creditor +
-                ", finalCreditor=" + finalCreditor +
                 ", referenceNo='" + referenceNo + '\'' +
                 ", debtor=" + debtor +
                 ", unstructuredMessage='" + unstructuredMessage + '\'' +
                 ", billInformation='" + billInformation + '\'' +
                 ", alternativeSchemes=" + Arrays.toString(alternativeSchemes) +
+                ", format=" + format +
                 '}';
     }
 }

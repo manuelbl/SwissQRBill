@@ -10,6 +10,7 @@ package net.codecrete.qrbill.generatortest;
 import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.AlternativeScheme;
 import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.Language;
 
 class SampleQrCodeText {
 
@@ -53,7 +54,7 @@ class SampleQrCodeText {
 
     static Bill getBillData1() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.EN);
+        bill.getFormat().setLanguage(Language.EN);
         bill.setAccount("CH58 0079 1123 0008 8901 2");
         Address creditor = new Address();
         creditor.setName("Robert Schneider AG");
@@ -120,7 +121,7 @@ class SampleQrCodeText {
 
     static Bill getBillData2() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.EN);
+        bill.getFormat().setLanguage(Language.EN);
         bill.setAccount("CH4431999123000889012");
         Address creditor = new Address();
         creditor.setName("Robert Schneider AG");
@@ -190,7 +191,7 @@ class SampleQrCodeText {
 
     static Bill getBillData3() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.EN);
+        bill.getFormat().setLanguage(Language.EN);
         bill.setAccount("CH37 0900 0000 3044 4222 5");
         Address creditor = new Address();
         creditor.setName("Salvation Army Foundation Switzerland");
@@ -243,7 +244,7 @@ class SampleQrCodeText {
 
     static Bill getBillData4() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.EN);
+        bill.getFormat().setLanguage(Language.EN);
         bill.setAccount("CH5800791123000889012");
         Address creditor = new Address();
         creditor.setName("Robert Schneider AG");

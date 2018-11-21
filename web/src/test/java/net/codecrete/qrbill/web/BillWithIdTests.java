@@ -43,7 +43,7 @@ class BillWithIdTests {
         ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
         String billId = response.getBillID();
 
-        byte[] result = restTemplate.getForObject("/bill/svg/qr-bill-only/" + billId, byte[].class);
+        byte[] result = restTemplate.getForObject("/bill/generate/" + billId, byte[].class);
 
         assertNotNull(response);
         assertTrue(result.length > 1000);

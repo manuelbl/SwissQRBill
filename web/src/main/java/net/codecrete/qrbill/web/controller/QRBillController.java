@@ -6,7 +6,6 @@
 //
 package net.codecrete.qrbill.web.controller;
 
-import static net.codecrete.qrbill.generator.QRBill.generate;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,29 +15,22 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
-import java.util.Locale;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.codecrete.qrbill.generator.QRBillValidationError;
+import net.codecrete.qrbill.generator.*;
 import net.codecrete.qrbill.web.api.BillApi;
-import net.codecrete.qrbill.web.model.QrBill;
-import net.codecrete.qrbill.web.model.QrCodeInformation;
+import net.codecrete.qrbill.web.model.*;
+import net.codecrete.qrbill.web.model.BillFormat;
 import net.codecrete.qrbill.web.model.ValidationMessage;
-import net.codecrete.qrbill.web.model.ValidationResponse;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.QRBill;
-import net.codecrete.qrbill.generator.QRBill.BillFormat;
-import net.codecrete.qrbill.generator.QRBill.GraphicsFormat;
-import net.codecrete.qrbill.generator.ValidationResult;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -99,7 +91,8 @@ public class QRBillController implements BillApi {
 
         // Generate localized messages
         if (result.hasMessages()) {
-            List<ValidationMessage> messages = QrBillDTOConverter.toDtoValidationMessageList(result.getValidationMessages());
+            List<ValidationMessage> messages
+                    = QrBillDTOConverter.toDtoValidationMessageList(result.getValidationMessages());
             messageLocalizer.addLocalMessages(messages);
             response.setValidationMessages(messages);
         }
@@ -109,106 +102,68 @@ public class QRBillController implements BillApi {
         if (!result.hasErrors()) {
             String qrCodeText = QRBill.encodeQrCodeText(validatedBill);
             response.setQrCodeText(qrCodeText);
-            response.setBillID(generateID(qrCodeText, validatedBill.getLanguage().name()));
+            response.setBillID(generateID(qrCodeText, QrBillDTOConverter.toDtoBillFormat(validatedBill.getFormat())));
         }
 
         return response;
     }
 
     /**
-     * Generates the QR bill as an SVG.
+     * Generates the QR bill as an SVG or PDF.
      * 
-     * @param qrBill     the QR bill data
-     * @param outputSize the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
+     * @param qrBill the QR bill data
      * @return the generated bill if the data is valid; a list of validation
      *         messages otherwise
      */
     @Override
-    public ResponseEntity<Resource> generateBillAsSVG(String outputSize, QrBill qrBill) throws BadRequestException {
-        return generateBill(qrBill, outputSize, GraphicsFormat.SVG);
+    public ResponseEntity<Resource> generateBill(QrBill qrBill) throws BadRequestException {
+        Bill bill = QrBillDTOConverter.fromDtoQrBill(qrBill);
+        byte[] result = QRBill.generate(bill);
+        MediaType contentType = getContentType(bill.getFormat().getGraphicsFormat());
+        return ResponseEntity.ok().contentType(contentType).body(new ByteArrayResource(result));
     }
 
     /**
-     * Generates the QR bill as an SVG.
+     * Generates the QR bill as an SVG or PDF.
      * 
-     * @param billID     the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
-     * @param outputSize the ID of the QR bill (as returned by /validate)
+     * @param billID the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
+     * @param outputSize output size for QR bill (overrides the one specified in the *billID*, optional)
+     * @param graphicsFormat graphics format for QR bill (overrides the one specified in the *billID*, optional)
      * @return the generated bill
      */
     @Override
-    public ResponseEntity<Resource> getBillAsSVG(String outputSize, String billID) throws BadRequestException {
-        return generateBillFromID(billID, outputSize, GraphicsFormat.SVG);
-    }
-
-    /**
-     * Generates the QR bill as a PDF.
-     * 
-     * @param qrBill     the QR bill data
-     * @param outputSize the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
-     * @return the generated bill if the data is valid; a list of validation
-     *         messages otherwise
-     */
-    @Override
-    public ResponseEntity<Resource> generateBillAsPDF(String outputSize, QrBill qrBill) throws BadRequestException {
-        return generateBill(qrBill, outputSize, GraphicsFormat.PDF);
-    }
-
-    /**
-     * Generates the QR bill as a PDF.
-     * 
-     * @param outputSize the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
-     * @param billID     the ID of the QR bill (as returned by /validate)
-     * @return the generated bill
-     */
-    @Override
-    public ResponseEntity<Resource> getBillAsPDF(String outputSize, String billID) throws BadRequestException {
-        return generateBillFromID(billID, outputSize, GraphicsFormat.PDF);
-    }
-
-    private ResponseEntity<Resource> generateBill(QrBill bill, String format, GraphicsFormat graphicsFormat) throws BadRequestException {
-        BillFormat billFormat = getBillFormat(format);
-        if (billFormat == null)
-            throw new BadRequestException("Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
-
-        byte[] result = generate(QrBillDTOConverter.fromDtoQrBill(bill), billFormat, graphicsFormat);
-        return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(new ByteArrayResource(result));
-    }
-
-    private ResponseEntity<Resource> generateBillFromID(String billId, String format, GraphicsFormat graphicsFormat) throws BadRequestException {
-        BillFormat billFormat = getBillFormat(format);
-        if (billFormat == null)
-            throw new BadRequestException("Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait");
-
+    public ResponseEntity<Resource> getBillImage(String billID, String outputSize, String graphicsFormat) throws BadRequestException {
         Bill bill;
         try {
-            bill = decodeID(billId);
+            bill = decodeID(billID);
         } catch (Exception e) {
             throw new BadRequestException("Invalid bill ID. Validate bill data to get a valid ID");
         }
 
-        byte[] result = generate(bill, billFormat, graphicsFormat);
-        return ResponseEntity.ok().contentType(getContentType(graphicsFormat)).body(new ByteArrayResource(result));
+        if (outputSize != null)
+            bill.getFormat().setOutputSize(getOutputSize(outputSize));
+        if (graphicsFormat != null)
+            bill.getFormat().setGraphicsFormat(getGraphicsFormat(graphicsFormat));
+
+        byte[] result = QRBill.generate(bill);
+        MediaType contentType = getContentType(bill.getFormat().getGraphicsFormat());
+        return ResponseEntity.ok().contentType(contentType).body(new ByteArrayResource(result));
     }
 
-    private static BillFormat getBillFormat(String value) {
-        BillFormat format;
-        switch (value) {
-        case "qrCodeOnly":
-        case "qr-code-only":
-            format = BillFormat.QR_CODE_ONLY;
-            break;
-        case "qrBillOnly":
-        case "qr-bill-only":
-            format = BillFormat.QR_BILL_ONLY;
-            break;
-        case "a4Portrait":
-        case "a4-portrait":
-            format = BillFormat.A4_PORTRAIT_SHEET;
-            break;
-        default:
-            format = null;
-        }
-        return format;
+    private static OutputSize getOutputSize(String value) {
+        if (value == null)
+            return null;
+
+        BillFormat.OutputSizeEnum outputSizeEnum = BillFormat.OutputSizeEnum.fromValue(value);
+        return OutputSize.valueOf(outputSizeEnum.name());
+    }
+
+    private static GraphicsFormat getGraphicsFormat(String value) {
+        if (value == null)
+            return null;
+
+        BillFormat.GraphicsFormatEnum graphicsFormatEnum = BillFormat.GraphicsFormatEnum.fromValue(value);
+        return GraphicsFormat.valueOf(graphicsFormatEnum.name());
     }
 
     private static final MediaType MEDIA_TYPE_SVG = MediaType.valueOf("image/svg+xml;charset=UTF-8");
@@ -232,14 +187,14 @@ public class QRBillController implements BillApi {
      * </p>
      * 
      * @param qrCodeText the QR code text
-     * @param language   the ISO language code
+     * @param billFormat the billFormat
      * @return the generated ID
      */
-    private String generateID(String qrCodeText, String language) {
+    private String generateID(String qrCodeText, BillFormat billFormat) {
 
         BillPayload payload = new BillPayload();
         payload.setVersion(1);
-        payload.setLanguage(language);
+        payload.setFormat(billFormat);
         payload.setQrText(qrCodeText);
 
         Base64.Encoder base64 = Base64.getUrlEncoder();
@@ -265,7 +220,7 @@ public class QRBillController implements BillApi {
      * Decodes an bill ID and returns the bill data
      * <p>
      * The bill ID is assumed to have been generated by
-     * {@link #generateID(String, String)}.
+     * {@link #generateID(String, BillFormat)}.
      * </p>
      * 
      * @param id the ID
@@ -290,8 +245,7 @@ public class QRBillController implements BillApi {
         }
 
         Bill bill = QRBill.decodeQrCodeText(payload.getQrText());
-        String lang = payload.getLanguage().toUpperCase(Locale.US);
-        bill.setLanguage(Bill.Language.valueOf(lang));
+        bill.setFormat(QrBillDTOConverter.fromDtoBillFormat(payload.getFormat()));
         return bill;
     }
 }

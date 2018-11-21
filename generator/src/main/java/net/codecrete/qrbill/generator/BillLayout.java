@@ -6,7 +6,6 @@
 //
 package net.codecrete.qrbill.generator;
 
-import java.awt.*;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -119,7 +118,7 @@ class BillLayout {
         // "Payment part" title
         graphics.setTransformation(offsetX + RECEIPT_WIDTH + MARGIN, offsetY, 1, 1);
         yPos = SLIP_HEIGHT - MARGIN - FontMetrics.getAscender(FONT_SIZE_TITLE);
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_PAYMENT_PART, bill.getLanguage()), 0,
+        graphics.putText(MultilingualText.getText(MultilingualText.KEY_PAYMENT_PART, bill.getFormat().getLanguage()), 0,
                 yPos, FONT_SIZE_TITLE, true);
 
         // currency
@@ -166,7 +165,7 @@ class BillLayout {
         // "Receipt" title
         graphics.setTransformation(offsetX + MARGIN, offsetY, 1, 1);
         yPos = SLIP_HEIGHT - MARGIN - FontMetrics.getAscender(FONT_SIZE_TITLE);
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_RECEIPT, bill.getLanguage()), 0,
+        graphics.putText(MultilingualText.getText(MultilingualText.KEY_RECEIPT, bill.getFormat().getLanguage()), 0,
                 yPos, FONT_SIZE_TITLE, true);
 
         // account and creditor
@@ -205,7 +204,7 @@ class BillLayout {
 
         // acceptance point
         graphics.setTransformation(offsetX, offsetY, 1, 1);
-        String label = MultilingualText.getText(MultilingualText.KEY_ACCEPTANCE_POINT, bill.getLanguage());
+        String label = MultilingualText.getText(MultilingualText.KEY_ACCEPTANCE_POINT, bill.getFormat().getLanguage());
         double w = FontMetrics.getTextWidth(label, labelFontSize) * 1.05; // TODO: proper text width for bold font
         graphics.putText(label, RECEIPT_WIDTH - MARGIN - w, 21, labelFontSize, true);
     }
@@ -343,7 +342,7 @@ class BillLayout {
     // Draws a label at (0, yPos) and advances vertically
     private void drawLabel(String labelKey) throws IOException {
         yPos -= FontMetrics.getAscender(labelFontSize);
-        graphics.putText(MultilingualText.getText(labelKey, bill.getLanguage()), 0, yPos, labelFontSize, true);
+        graphics.putText(MultilingualText.getText(labelKey, bill.getFormat().getLanguage()), 0, yPos, labelFontSize, true);
         yPos -= FontMetrics.getDescender(labelFontSize) + labelLeading;
     }
 

@@ -96,7 +96,7 @@ class DecodedTextTest {
     }
 
     private void normalizeSourceBill(Bill bill) {
-        bill.setLanguage(Bill.Language.DE);
+        bill.getFormat().setLanguage(Language.DE);
         bill.setAccount(bill.getAccount().replace(" ", ""));
         if (bill.getReferenceNo() != null)
             bill.setReferenceNo(bill.getReferenceNo().replace(" ", ""));
@@ -123,7 +123,7 @@ class DecodedTextTest {
     }
 
     private void normalizeDecodedBill(Bill bill) {
-        bill.setLanguage(Bill.Language.DE); // fix language (not contained in text)
+        bill.getFormat().setLanguage(Language.DE); // fix language (not contained in text)
     }
 
     @Test

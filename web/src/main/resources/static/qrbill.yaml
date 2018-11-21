@@ -68,23 +68,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/ValidationResponse"
 
-  /bill/svg/{outputSize}:
+  /bill/generate:
     post:
       tags:
       - bills
-      summary: "Generates QR bill as SVG"
-      operationId: "generateBillAsSVG"
-      parameters:
-      - in: path
-        name: outputSize
-        description: "The output size of the generated QR bill (or QR code)"
-        required: true
-        schema:
-          type: string
-          enum:
-          - "a4-portrait"
-          - "qr-bill-only"
-          - "qr-code-only"
+      summary: "Generates QR bill as SVG or PDF"
+      operationId: "generateBill"
       requestBody:
         required: true
         description: "Bill data"
@@ -94,49 +83,12 @@ paths:
               $ref: "#/components/schemas/QrBill"
       responses:
         '200':
-          description: "QR bill as SVG"
+          description: "QR bill as SVG or PDF"
           content:
             image/svg+xml:
               schema:
                 type: string
                 format: binary
-        '422':
-          description: "Validation error"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ValidationMessage"
-
-  /bill/pdf/{outputSize}:
-    post:
-      tags:
-      - bills
-      summary: "Generates QR bill as PDF"
-      operationId: generateBillAsPDF
-      parameters:
-      - in: path
-        name: outputSize
-        description: "The output size of the generated QR bill (or QR code)"
-        required: true
-        schema:
-          type: string
-          enum:
-          - "a4-portrait"
-          - "qr-bill-only"
-          - "qr-code-only"
-      requestBody:
-        description: "Bill data"
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/QrBill"
-      responses:
-        '200':
-          description: "QR bill as PDF"
-          content:
             application/pdf:
               schema:
                 type: string
@@ -150,73 +102,46 @@ paths:
                 items:
                   $ref: "#/components/schemas/ValidationMessage"
 
-  /bill/svg/{outputSize}/{billID}:
+  /bill/generate/{billID}:
     get:
       tags:
       - bills
-      summary: "Generates QR bill as SVG"
-      operationId: getBillAsSVG
+      summary: "Generates QR bill as SVG or PDF"
+      operationId: getBillImage
       parameters:
       - in: path
-        name: outputSize
-        description: "The output size of the generated QR bill (or QR code)"
+        name: billID
+        description: "Bill ID as returned by the validation response. Specifies the QR bill data and formatting."
         required: true
+        schema:
+          type: string
+      - in: query
+        name: outputSize
+        description: "Overrides the output size of the generated QR bill (or QR code)"
+        required: false
         schema:
           type: string
           enum:
-          - "a4-portrait"
+          - "a4-portrait-sheet"
           - "qr-bill-only"
           - "qr-code-only"
-      - in: path
-        name: billID
-        description: "Bill ID as returned by the validation response. Specifies the QR bill data uniquely."
-        required: true
+      - in: query
+        name: graphicsFormat
+        description: "Overrides the graphics format of the generated QR bill (or QR code)"
+        required: false
         schema:
           type: string
+          enum:
+          - "svg"
+          - "pdf"
       responses:
         '200':
-          description: "QR bill as SVG"
+          description: "QR bill as SVG or PDF"
           content:
             image/svg+xml:
               schema:
                 type: string
                 format: binary
-        '422':
-          description: "Validation error"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ValidationMessage"
-
-  /bill/pdf/{outputSize}/{billID}:
-    get:
-      tags:
-      - bills
-      summary: "Generates QR bill as PDF"
-      operationId: getBillAsPDF
-      parameters:
-      - in: path
-        name: outputSize
-        description: "The output size of the generated QR bill (or QR code)"
-        required: true
-        schema:
-          type: string
-          enum:
-          - "a4-portrait"
-          - "qr-bill-only"
-          - "qr-code-only"
-      - in: path
-        name: billID
-        description: "Bill ID as returned by the validation response. Specifies the QR bill data uniquely."
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: "QR bill as SVG"
-          content:
             application/pdf:
               schema:
                 type: string
@@ -296,7 +221,7 @@ components:
           type: string
           description: "Two letter ISO country code"
 
-    QrBill:
+    BillFormat:
       type: object
       properties:
         language:
@@ -307,6 +232,33 @@ components:
           - "fr"
           - "it"
           - "en"
+        graphicsFormat:
+          type: string
+          description: "Graphics format of generated QR bill"
+          enum:
+          - "svg"
+          - "pdf"
+        outputSize:
+          type: string
+          description: "Output size of generated QR bill"
+          enum:
+          - "a4-portrait-sheet"
+          - "qr-bill-only"
+          - "qr-code-only"
+        separatorType:
+          type: string
+          description: "Type of separator lines above and between payment part and receipt"
+          enum:
+          - "none"
+          - "solid-line"
+          - "solid-line-with-scissors"
+        fontFamily:
+          type: string
+          description: "Font family used for text"
+
+    QrBill:
+      type: object
+      properties:
         version:
           type: string
           description: "QR bill specification version"
@@ -338,6 +290,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AlternativeScheme"
+        format:
+          $ref: "#/components/schemas/BillFormat"
 
     ValidationMessage:
       type: object

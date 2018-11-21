@@ -6,10 +6,12 @@
 //
 package net.codecrete.qrbill.web.controller;
 
+import net.codecrete.qrbill.web.model.BillFormat;
+
 public class BillPayload {
 
     private int version;
-    private String language;
+    private BillFormat format;
     private String qrText;
 
     public int getVersion() {
@@ -20,12 +22,12 @@ public class BillPayload {
         this.version = version;
     }
 
-    public String getLanguage() {
-        return language;
+    public BillFormat getFormat() {
+        return format;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setFormat(BillFormat format) {
+        this.format = format;
     }
 
     public String getQrText() {

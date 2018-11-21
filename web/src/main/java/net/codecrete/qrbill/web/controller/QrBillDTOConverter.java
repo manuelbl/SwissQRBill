@@ -6,10 +6,11 @@
 //
 package net.codecrete.qrbill.web.controller;
 
-import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.*;
+import net.codecrete.qrbill.web.model.*;
 import net.codecrete.qrbill.web.model.Address;
 import net.codecrete.qrbill.web.model.AlternativeScheme;
-import net.codecrete.qrbill.web.model.QrBill;
+import net.codecrete.qrbill.web.model.BillFormat;
 import net.codecrete.qrbill.web.model.ValidationMessage;
 
 import java.math.BigDecimal;
@@ -25,7 +26,6 @@ class QrBillDTOConverter {
             return null;
 
         QrBill dto = new QrBill();
-        dto.setLanguage(QrBill.LanguageEnum.valueOf(bill.getLanguage().name()));
         dto.setVersion(bill.getVersion().name());
         dto.setAmount(bill.getAmount() != null ? new BigDecimal(bill.getAmount(), MathContext.DECIMAL32) : null);
         dto.setCurrency(bill.getCurrency());
@@ -36,6 +36,7 @@ class QrBillDTOConverter {
         dto.setBillInformation(bill.getBillInformation());
         dto.setAlternativeSchemes(toDtoSchemes(bill.getAlternativeSchemes()));
         dto.setDebtor(toDtoAddress(bill.getDebtor()));
+        dto.setFormat(toDtoBillFormat(bill.getFormat()));
         return dto;
     }
 
@@ -44,7 +45,6 @@ class QrBillDTOConverter {
             return null;
 
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.valueOf(dto.getLanguage().name()));
         bill.setVersion(net.codecrete.qrbill.generator.Bill.Version.valueOf(dto.getVersion()));
         bill.setAmount(dto.getAmount() != null ? dto.getAmount().doubleValue() : null);
         bill.setCurrency(dto.getCurrency());
@@ -55,6 +55,7 @@ class QrBillDTOConverter {
         bill.setBillInformation(dto.getBillInformation());
         bill.setAlternativeSchemes(fromDtoSchemes(dto.getAlternativeSchemes()));
         bill.setDebtor(fromDtoAddress(dto.getDebtor()));
+        bill.setFormat(fromDtoBillFormat(dto.getFormat()));
         return bill;
     }
 
@@ -63,9 +64,8 @@ class QrBillDTOConverter {
             return null;
 
         Address dto = new Address();
-        dto.setAddressType(toDtoAddressType(address.getType()));
+        dto.setAddressType(Address.AddressTypeEnum.valueOf(address.getType().name()));
         dto.setName(address.getName());
-        dto.setAddressType(Address.AddressTypeEnum.STRUCTURED);
         dto.setAddressLine1(address.getAddressLine1());
         dto.setAddressLine2(address.getAddressLine2());
         dto.setStreet(address.getStreet());
@@ -96,6 +96,32 @@ class QrBillDTOConverter {
             address.setTown(dto.getTown());
         address.setCountryCode(dto.getCountryCode());
         return address;
+    }
+
+    static BillFormat toDtoBillFormat(net.codecrete.qrbill.generator.BillFormat format) {
+        if (format == null)
+            return null;
+
+        BillFormat dto = new BillFormat();
+        dto.setOutputSize(toDtoOutputSize(format.getOutputSize()));
+        dto.setLanguage(toDtoLanguage(format.getLanguage()));
+        dto.setSeparatorType(toDtoSeparatorType(format.getSeparatorType()));
+        dto.setFontFamily(format.getFontFamily());
+        dto.setGraphicsFormat(toDtoGraphicsFormat(format.getGraphicsFormat()));
+        return dto;
+    }
+
+    static net.codecrete.qrbill.generator.BillFormat fromDtoBillFormat(BillFormat dto) {
+        if (dto == null)
+            return null;
+
+        net.codecrete.qrbill.generator.BillFormat format = new net.codecrete.qrbill.generator.BillFormat();
+        format.setOutputSize(fromDtoOutputSize(dto.getOutputSize()));
+        format.setLanguage(fromDtoLanguage(dto.getLanguage()));
+        format.setSeparatorType(fromDtoSeparatorType(dto.getSeparatorType()));
+        format.setFontFamily(dto.getFontFamily());
+        format.setGraphicsFormat(fromDtoGraphicsFormat(dto.getGraphicsFormat()));
+        return format;
     }
 
     private static List<AlternativeScheme> toDtoSchemes(net.codecrete.qrbill.generator.AlternativeScheme[] alternativeSchemes) {
@@ -140,7 +166,7 @@ class QrBillDTOConverter {
             return null;
 
         ValidationMessage dto = new ValidationMessage();
-        dto.setType(toDtoMessageType(msg.getType()));
+        dto.setType(ValidationMessage.TypeEnum.valueOf(msg.getType().name()));
         dto.setField(msg.getField());
         dto.setMessageKey(msg.getMessageKey());
         if (msg.getMessageParameters() != null)
@@ -157,22 +183,51 @@ class QrBillDTOConverter {
         return dtoList;
     }
 
-    private static ValidationMessage.TypeEnum toDtoMessageType(net.codecrete.qrbill.generator.ValidationMessage.Type type) {
-        if (type == net.codecrete.qrbill.generator.ValidationMessage.Type.ERROR)
-            return ValidationMessage.TypeEnum.ERROR;
-        if (type == net.codecrete.qrbill.generator.ValidationMessage.Type.WARNING)
-            return ValidationMessage.TypeEnum.WARNING;
-        return null;
+    private static BillFormat.OutputSizeEnum toDtoOutputSize(OutputSize outputSize) {
+        if (outputSize == null)
+            return null;
+        return BillFormat.OutputSizeEnum.valueOf(outputSize.name());
     }
 
-    private static Address.AddressTypeEnum toDtoAddressType(net.codecrete.qrbill.generator.Address.Type type) {
-        if (type == net.codecrete.qrbill.generator.Address.Type.STRUCTURED) {
-            return Address.AddressTypeEnum.STRUCTURED;
-        } else if (type == net.codecrete.qrbill.generator.Address.Type.COMBINED_ELEMENTS) {
-            return Address.AddressTypeEnum.COMBINED_ELEMENTS;
-        } else if (type == net.codecrete.qrbill.generator.Address.Type.CONFLICTING) {
-            return Address.AddressTypeEnum.CONFLICTING;
-        }
-        return Address.AddressTypeEnum.UNDETERMINED;
+    private static OutputSize fromDtoOutputSize(BillFormat.OutputSizeEnum outputSize) {
+        if (outputSize == null)
+            return null;
+        return OutputSize.valueOf(outputSize.name());
+    }
+
+    private static BillFormat.LanguageEnum toDtoLanguage(Language language) {
+        if (language == null)
+            return null;
+        return BillFormat.LanguageEnum.valueOf(language.name());
+    }
+
+    private static Language fromDtoLanguage(BillFormat.LanguageEnum language) {
+        if (language == null)
+            return null;
+        return Language.valueOf(language.name());
+    }
+
+    private static BillFormat.GraphicsFormatEnum toDtoGraphicsFormat(GraphicsFormat graphicsFormat) {
+        if (graphicsFormat == null)
+            return null;
+        return BillFormat.GraphicsFormatEnum.valueOf(graphicsFormat.name());
+    }
+
+    private static GraphicsFormat fromDtoGraphicsFormat(BillFormat.GraphicsFormatEnum graphicsFormat) {
+        if (graphicsFormat == null)
+            return null;
+        return GraphicsFormat.valueOf(graphicsFormat.name());
+    }
+
+    private static BillFormat.SeparatorTypeEnum toDtoSeparatorType(SeparatorType separatorType) {
+        if (separatorType == null)
+            return null;
+        return BillFormat.SeparatorTypeEnum.valueOf(separatorType.name());
+    }
+
+    private static SeparatorType fromDtoSeparatorType(BillFormat.SeparatorTypeEnum separatorType) {
+        if (separatorType == null)
+            return null;
+        return SeparatorType.valueOf(separatorType.name());
     }
 }

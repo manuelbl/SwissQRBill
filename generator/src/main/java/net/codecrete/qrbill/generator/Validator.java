@@ -42,7 +42,7 @@ class Validator {
 
     private ValidationResult validateBill() {
 
-        billOut.setLanguage(billIn.getLanguage());
+        billOut.setFormat(billIn.getFormat() != null ? billIn.getFormat().cloneInstance() : null);
         billOut.setVersion(billIn.getVersion());
 
         validateCurrency();

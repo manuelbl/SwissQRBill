@@ -148,8 +148,6 @@ public class QRCodeText {
 
         bill.setCreditor(decodeAddress(lines, 4, false));
 
-        bill.setFinalCreditor(decodeAddress(lines, 11, true));
-
         if (lines[18].length() > 0) {
             try {
                 bill.setAmount(Double.valueOf(lines[18]));

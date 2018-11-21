@@ -19,16 +19,14 @@ public class MultilingualText {
     public static final String KEY_AMOUNT = "amount";
     public static final String KEY_RECEIPT = "receipt";
     public static final String KEY_ACCEPTANCE_POINT = "acceptance_point";
-    public static final String KEY_SEPARATE_BEFORE_PAYING_IN = "separate_before_paying_in";
     public static final String KEY_PAYABLE_BY = "payable_by";
     public static final String KEY_PAYABLE_BY_NAME_ADDRESS = "payable_by_name_addr";
-    public static final String KEY_IN_FAVOUR_OF = "in_favour_of";
 
     private static final String[] languageCodes = { "de", "fr", "it", "en" };
 
     private static final ResourceBundle[] messageBundles = new ResourceBundle[4];
 
-    public static String getText(String key, Bill.Language language) {
+    public static String getText(String key, Language language) {
 
         int index = getLanguageIndex(language);
         ResourceBundle bundle = messageBundles[index];
@@ -42,7 +40,7 @@ public class MultilingualText {
         return bundle.getString(key);
     }
 
-    private static int getLanguageIndex(Bill.Language language) {
+    private static int getLanguageIndex(Language language) {
         int index;
         switch (language) {
         case DE:

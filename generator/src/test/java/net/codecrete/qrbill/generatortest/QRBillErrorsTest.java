@@ -11,14 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 
+import net.codecrete.qrbill.generator.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.canvas.AbstractCanvas;
-import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.QRBill;
-import net.codecrete.qrbill.generator.QRBillUnexpectedException;
-import net.codecrete.qrbill.generator.QRBillValidationError;
 
 /**
  * Unit tests for verifying the thrown exceptions when a QR bill is generated
@@ -31,7 +28,8 @@ class QRBillErrorsTest {
 		assertThrows(QRBillUnexpectedException.class, () -> {
 			Bill bill = SampleData.getExample1();
 			FailingCanvas canvas = new FailingCanvas();
-			QRBill.generate(bill, QRBill.BillFormat.QR_BILL_ONLY, canvas);
+			bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
+			QRBill.generate(bill, canvas);
 		});
 	}
 
@@ -40,7 +38,9 @@ class QRBillErrorsTest {
 		assertThrows(QRBillValidationError.class, () -> {
 			Bill bill = SampleData.getExample1();
 			bill.getCreditor().setName(" ");
-			QRBill.generate(bill, QRBill.BillFormat.QR_BILL_ONLY, QRBill.GraphicsFormat.PDF);
+			bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
+			bill.getFormat().setGraphicsFormat(GraphicsFormat.PDF);
+			QRBill.generate(bill);
 		});
 	}
 

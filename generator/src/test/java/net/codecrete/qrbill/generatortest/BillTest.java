@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.Bill.Language;
+import net.codecrete.qrbill.generator.Language;
 import net.codecrete.qrbill.generator.Bill.Version;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,8 +27,8 @@ class BillTest {
     @Test
     void setLanguage() {
         Bill bill = new Bill();
-        bill.setLanguage(Language.FR);
-        assertEquals(Language.FR, bill.getLanguage());
+        bill.getFormat().setLanguage(Language.FR);
+        assertEquals(Language.FR, bill.getFormat().getLanguage());
     }
 
     @Test

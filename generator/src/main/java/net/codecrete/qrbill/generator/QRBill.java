@@ -72,28 +72,6 @@ public class QRBill {
     public static final String KEY_ALT_SCHEME_MAX_EXCEEDED = "alt_scheme_max_exceed";
 
     /**
-     * Graphics format of generated QR bill.
-     */
-    public enum GraphicsFormat {
-        /** PDF */
-        PDF,
-        /** SVG */
-        SVG
-    }
-
-    /**
-     * The output size of the QR bill
-     */
-    public enum BillFormat {
-        /** A4 sheet in portrait orientation. The QR bill is at the bottom. */
-        A4_PORTRAIT_SHEET,
-        /** QR bill only (about 105 by 210 mm). */
-        QR_BILL_ONLY,
-        /** QR code only (46 by 46 mm). */
-        QR_CODE_ONLY
-    }
-
-    /**
      * Validates and cleans the bill data.
      * <p>
      * The validation result contains the error and warning messages (if any) and
@@ -123,14 +101,12 @@ public class QRBill {
      * </p>
      * 
      * @param bill           the bill data
-     * @param billFormat     the bill's output size
-     * @param graphicsFormat the bill's output format
      * @return the generated QR bill (as a byte array)
      * @throws QRBillValidationError thrown if the bill data does not validate
      */
-    public static byte[] generate(Bill bill, BillFormat billFormat, GraphicsFormat graphicsFormat) {
-        try (Canvas canvas = createCanvas(graphicsFormat)) {
-            return validateAndGenerate(bill, billFormat, canvas);
+    public static byte[] generate(Bill bill) {
+        try (Canvas canvas = createCanvas(bill.getFormat().getGraphicsFormat())) {
+            return validateAndGenerate(bill, canvas);
         } catch (IOException e) {
             throw new QRBillUnexpectedException(e);
         }
@@ -151,29 +127,28 @@ public class QRBill {
      * </p>
      * 
      * @param bill       the bill data
-     * @param billFormat the bill's output size
      * @param canvas     the canvas to draw to
      * @return the generated QR bill (as a byte array)
      * @throws QRBillValidationError thrown if the bill data does not validate
      */
-    public static byte[] generate(Bill bill, BillFormat billFormat, Canvas canvas) {
+    public static byte[] generate(Bill bill, Canvas canvas) {
         try (Canvas c = canvas) {
-            return validateAndGenerate(bill, billFormat, c);
+            return validateAndGenerate(bill, c);
         } catch (IOException e) {
             throw new QRBillUnexpectedException(e);
         }
     }
 
-    private static byte[] validateAndGenerate(Bill bill, BillFormat billFormat, Canvas canvas) throws IOException {
+    private static byte[] validateAndGenerate(Bill bill, Canvas canvas) throws IOException {
         ValidationResult result = Validator.validate(bill);
         Bill cleanedBill = result.getCleanedBill();
         if (result.hasErrors())
             throw new QRBillValidationError(result);
 
-        if (billFormat == BillFormat.QR_CODE_ONLY) {
+        if (bill.getFormat().getOutputSize() == OutputSize.QR_CODE_ONLY) {
             return generateQRCode(cleanedBill, canvas);
         } else {
-            return generatePaymentPart(cleanedBill, billFormat, canvas);
+            return generatePaymentPart(cleanedBill, canvas);
         }
     }
 
@@ -227,17 +202,16 @@ public class QRBill {
      * Generates the payment part as a byte array
      *
      * @param bill       the cleaned bill data
-     * @param billFormat the output size
      * @param canvas     the canvas to draw to
      * @return byte array containing the binary data in the selected format
      */
-    private static byte[] generatePaymentPart(Bill bill, BillFormat billFormat, Canvas canvas) throws IOException {
+    private static byte[] generatePaymentPart(Bill bill, Canvas canvas) throws IOException {
 
         double drawingWidth;
         double drawingHeight;
 
         // define page size
-        switch (billFormat) {
+        switch (bill.getFormat().getOutputSize()) {
             case QR_BILL_ONLY:
             drawingWidth = 210;
             drawingHeight = 105;

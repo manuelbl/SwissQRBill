@@ -6,6 +6,8 @@
 //
 package net.codecrete.qrbill.generatortest;
 
+import net.codecrete.qrbill.generator.GraphicsFormat;
+import net.codecrete.qrbill.generator.OutputSize;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +25,8 @@ class PNGCanvasTest {
     void pngBillQRBill() {
         Bill bill = SampleData.getExample1();
         PNGCanvas canvas = new PNGCanvas(300);
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QR_BILL_ONLY, canvas);
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
+        byte[] svg = QRBill.generate(bill, canvas);
         FileComparison.assertGrayscaleImageContentsEqual(svg, "qrbill_ex1.png");
     }
 
@@ -31,7 +34,8 @@ class PNGCanvasTest {
     void pngBillA4() {
         Bill bill = SampleData.getExample3();
         PNGCanvas canvas = new PNGCanvas(144);
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, canvas);
+        bill.getFormat().setOutputSize(OutputSize.A4_PORTRAIT_SHEET);
+        byte[] svg = QRBill.generate(bill, canvas);
         FileComparison.assertGrayscaleImageContentsEqual(svg, "a4bill_ex3.png");
     }
 }

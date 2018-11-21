@@ -9,6 +9,8 @@ package net.codecrete.qrbill.generatortest;
 
 import java.util.Locale;
 
+import net.codecrete.qrbill.generator.GraphicsFormat;
+import net.codecrete.qrbill.generator.OutputSize;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +52,9 @@ class LocaleTest {
         try {
             Locale.setDefault(locale);
             Bill bill = SampleData.getExample3();
-            byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QR_BILL_ONLY, QRBill.GraphicsFormat.SVG);
+            bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
+            bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
+            byte[] svg = QRBill.generate(bill);
             FileComparison.assertFileContentsEqual(svg, "a6bill_issue1.svg");
         } finally {
             Locale.setDefault(defaultLocale);

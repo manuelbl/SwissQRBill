@@ -30,7 +30,8 @@ class InvalidRequestTests {
     @Test
     void testInvalidEnum() throws IOException {
         Response response = postRequest("/qrbill-api/bill/validate",
-                "{ \"language\": \"pl\", \"amount\": 100.34, \"currency\": \"CHF\", " +
+                "{ \"format\": { \"language\": \"pl\" }, " +
+                        "\"amount\": 100.34, \"currency\": \"CHF\", " +
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
                         "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
                         "\"postalCode\": \"2100\", \"town\": \"Irgendwo\", \"countryCode\": \"CH\" }, " +
@@ -43,24 +44,24 @@ class InvalidRequestTests {
     }
 
     @Test
-    void testInvalidEnumInURL() throws IOException {
-        Response response = postRequest("/qrbill-api/bill/svg/a7-landscape",
-            "{ \"language\": \"de\", \"amount\": 100.34, \"currency\": \"CHF\", " +
-                    "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
-                    "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
-                    "\"postalCode\": \"2100\", \"town\": \"Irgendwo\", \"countryCode\": \"CH\" }, " +
-                    "\"referenceNo\": \"RF18539007547034\" }"
+    void testInvalidNumber1() throws IOException {
+        Response response = postRequest("/qrbill-api/bill/validate",
+                "{ \"format\": { \"language\": \"pl\" }, " +
+                        "\"amount\": abc, \"currency\": \"CHF\", " +
+                        "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
+                        "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
+                        "\"postalCode\": \"2100\", \"town\": \"Irgendwo\", \"countryCode\": \"CH\" }, " +
+                        "\"referenceNo\": \"RF18539007547034\" }"
         );
 
         assertEquals(400, response.code());
-        assertEquals("text/plain;charset=UTF-8", response.header("Content-Type"));
-        assertEquals("Invalid bill format in URL. Valid values: qr-code-only, a6-landscape, a5-landscape, a4-portrait", response.body().string());
     }
 
     @Test
-    void testInvalidNumber() throws IOException {
+    void testInvalidNumber2() throws IOException {
         Response response = postRequest("/qrbill-api/bill/validate",
-                "{ \"language\": \"de\", \"amount\": \"abc\", \"currency\": \"CHF\", " +
+                "{ \"format\": { \"language\": \"pl\" }, " +
+                        "\"amount\": \"abc\", \"currency\": \"CHF\", " +
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
                         "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
                         "\"postalCode\": \"2100\", \"town\": \"Irgendwo\", \"countryCode\": \"CH\" }, " +

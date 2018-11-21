@@ -7,6 +7,8 @@
 
 package net.codecrete.qrbill.generatortest;
 
+import net.codecrete.qrbill.generator.GraphicsFormat;
+import net.codecrete.qrbill.generator.OutputSize;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +25,9 @@ class SVGTest {
     void svgWithChallengingCharacters() {
         Bill bill = SampleData.getExample1();
         bill.setUnstructuredMessage("<h1>&&\"ff\"'t'");
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.QR_BILL_ONLY, QRBill.GraphicsFormat.SVG);
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
+        bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
+        byte[] svg = QRBill.generate(bill);
         FileComparison.assertFileContentsEqual(svg, "qrbill_sc1.svg");
     }
 }

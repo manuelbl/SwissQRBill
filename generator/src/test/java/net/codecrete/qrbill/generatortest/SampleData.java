@@ -8,6 +8,7 @@ package net.codecrete.qrbill.generatortest;
 
 import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.Language;
 
 /**
  * Generates valid sample bill data.
@@ -16,7 +17,7 @@ class SampleData {
 
     static Bill getExample1() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.EN);
+        bill.getFormat().setLanguage(Language.EN);
         bill.setAccount("CH44 3199 9123 0008  89012");
         Address creditor = new Address();
         creditor.setName("Robert Schneider AG");
@@ -44,7 +45,7 @@ class SampleData {
 
     static Bill getExample2() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.DE);
+        bill.getFormat().setLanguage(Language.DE);
         bill.setAccount("CH3709000000304442225");
         Address creditor = new Address();
         creditor.setName("Salvation Army Foundation Switzerland");
@@ -64,7 +65,7 @@ class SampleData {
 
     static Bill getExample3() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.FR);
+        bill.getFormat().setLanguage(Language.FR);
         bill.setAccount("CH4431999123000889012");
         Address creditor = new Address();
         creditor.setName("Robert Schneider AG");
@@ -91,7 +92,7 @@ class SampleData {
 
     static Bill getExample4() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.IT);
+        bill.getFormat().setLanguage(Language.IT);
         bill.setAccount("CH3709000000304442225");
         Address creditor = new Address();
         creditor.setName("ABC AG");
@@ -111,7 +112,7 @@ class SampleData {
 
     static Bill getExample5() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.EN);
+        bill.getFormat().setLanguage(Language.EN);
         bill.setAccount("CH44 3199 9123 0008  89012");
         Address creditor = new Address();
         creditor.setName("Ambikaipagan & Deepshikha Thirugnanasampanthamoorthy");
@@ -135,7 +136,7 @@ class SampleData {
 
     static Bill getExample6() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.EN);
+        bill.getFormat().setLanguage(Language.EN);
         bill.setAccount("CH44 3199 9123 0008  89012");
         Address creditor = new Address();
         creditor.setName("Ambikaipagan & Deepshikha Thirugnanasampanthamoorthy");

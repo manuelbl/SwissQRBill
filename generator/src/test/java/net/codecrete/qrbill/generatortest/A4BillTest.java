@@ -6,11 +6,12 @@
 //
 package net.codecrete.qrbill.generatortest;
 
+import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.GraphicsFormat;
+import net.codecrete.qrbill.generator.OutputSize;
+import net.codecrete.qrbill.generator.QRBill;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.QRBill;
 
 /**
  * Unit tests for generation of A4 bills (PDF and SVG)
@@ -23,85 +24,69 @@ class A4BillTest {
 
     @Test
     void createA4SVGBill1() {
-        Bill bill = SampleData.getExample1();
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, QRBill.GraphicsFormat.SVG);
-        FileComparison.assertFileContentsEqual(svg, "a4bill_ex1.svg");
+        generateAndCompareBill(SampleData.getExample1(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex1.svg");
     }
 
     @Test
     void createA4PDFBill1() {
-        Bill bill = SampleData.getExample1();
-        byte[] pdf = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, QRBill.GraphicsFormat.PDF);
-        FileComparison.assertFileContentsEqual(pdf, "a4bill_ex1.pdf");
+        generateAndCompareBill(SampleData.getExample1(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex1.pdf");
     }
 
     @Test
     void createA4SVGBill2() {
-        Bill bill = SampleData.getExample2();
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, QRBill.GraphicsFormat.SVG);
-        FileComparison.assertFileContentsEqual(svg, "a4bill_ex2.svg");
+        generateAndCompareBill(SampleData.getExample2(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex2.svg");
     }
 
     @Test
     void createA4PDFBill2() {
-        Bill bill = SampleData.getExample2();
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, QRBill.GraphicsFormat.PDF);
-        FileComparison.assertFileContentsEqual(svg, "a4bill_ex2.pdf");
+        generateAndCompareBill(SampleData.getExample2(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex2.pdf");
     }
 
     @Test
     void createA4SVGBill3() {
-        Bill bill = SampleData.getExample3();
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, QRBill.GraphicsFormat.SVG);
-        FileComparison.assertFileContentsEqual(svg, "a4bill_ex3.svg");
+        generateAndCompareBill(SampleData.getExample3(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex3.svg");
     }
 
     @Test
     void createA4PDFBill3() {
-        Bill bill = SampleData.getExample3();
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, QRBill.GraphicsFormat.PDF);
-        FileComparison.assertFileContentsEqual(svg, "a4bill_ex3.pdf");
+        generateAndCompareBill(SampleData.getExample3(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex3.pdf");
     }
 
     @Test
     void createA4SVGBill4() {
-        Bill bill = SampleData.getExample4();
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, QRBill.GraphicsFormat.SVG);
-        FileComparison.assertFileContentsEqual(svg, "a4bill_ex4.svg");
+        generateAndCompareBill(SampleData.getExample4(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex4.svg");
     }
 
     @Test
     void createA4PDFBill4() {
-        Bill bill = SampleData.getExample4();
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, QRBill.GraphicsFormat.PDF);
-        FileComparison.assertFileContentsEqual(svg, "a4bill_ex4.pdf");
+        generateAndCompareBill(SampleData.getExample4(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex4.pdf");
     }
 
     @Test
     void createA4SVGBill5() {
-        Bill bill = SampleData.getExample5();
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, QRBill.GraphicsFormat.SVG);
-        FileComparison.assertFileContentsEqual(svg, "a4bill_ex5.svg");
+        generateAndCompareBill(SampleData.getExample5(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex5.svg");
     }
 
     @Test
     void createA4PDFBill5() {
-        Bill bill = SampleData.getExample5();
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, QRBill.GraphicsFormat.PDF);
-        FileComparison.assertFileContentsEqual(svg, "a4bill_ex5.pdf");
+        generateAndCompareBill(SampleData.getExample5(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex5.pdf");
     }
 
     @Test
     void createA4SVGBill6() {
-        Bill bill = SampleData.getExample6();
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, QRBill.GraphicsFormat.SVG);
-        FileComparison.assertFileContentsEqual(svg, "a4bill_ex6.svg");
+        generateAndCompareBill(SampleData.getExample6(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex6.svg");
     }
 
     @Test
     void createA4PDFBill6() {
-        Bill bill = SampleData.getExample6();
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A4_PORTRAIT_SHEET, QRBill.GraphicsFormat.PDF);
-        FileComparison.assertFileContentsEqual(svg, "a4bill_ex6.pdf");
+        generateAndCompareBill(SampleData.getExample6(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex6.pdf");
+    }
+
+    private void generateAndCompareBill(Bill bill, OutputSize outputSize, GraphicsFormat graphicsFormat,
+                                          String expectedFileName) {
+        bill.getFormat().setOutputSize(outputSize);
+        bill.getFormat().setGraphicsFormat(graphicsFormat);
+        byte[] imageData = QRBill.generate(bill);
+        FileComparison.assertFileContentsEqual(imageData, expectedFileName);
     }
 }

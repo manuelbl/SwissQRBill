@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.charset.StandardCharsets;
 
+import net.codecrete.qrbill.web.model.BillFormat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +42,7 @@ class BillGenerationTests {
     void svgQrBill() {
 
         QrBill bill = SampleData.createBill1();
-        byte[] response = restTemplate.postForObject("/bill/svg/qr-bill-only", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/generate", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -56,7 +57,8 @@ class BillGenerationTests {
     void pdfQrBill() {
 
         QrBill bill = SampleData.createBill1();
-        byte[] response = restTemplate.postForObject("/bill/pdf/qr-bill-only", bill, byte[].class);
+        bill.getFormat().setGraphicsFormat(BillFormat.GraphicsFormatEnum.PDF);
+        byte[] response = restTemplate.postForObject("/bill/generate", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -70,7 +72,7 @@ class BillGenerationTests {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown("city56789012345678901234567890123456");
 
-        byte[] response = restTemplate.postForObject("/bill/svg/qr-bill-only", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/generate", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -86,7 +88,7 @@ class BillGenerationTests {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown(null);
 
-        ValidationMessage[] response = restTemplate.postForObject("/bill/svg/a4Portrait", bill,
+        ValidationMessage[] response = restTemplate.postForObject("/bill/generate", bill,
                 ValidationMessage[].class);
 
         assertNotNull(response);
