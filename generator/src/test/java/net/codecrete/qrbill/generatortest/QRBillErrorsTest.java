@@ -20,7 +20,7 @@ import net.codecrete.qrbill.canvas.AbstractCanvas;
 /**
  * Unit tests for verifying the thrown exceptions when a QR bill is generated
  */
-@DisplayName("QR bill generatio exception")
+@DisplayName("QR bill generation exception")
 class QRBillErrorsTest {
 
 	@Test

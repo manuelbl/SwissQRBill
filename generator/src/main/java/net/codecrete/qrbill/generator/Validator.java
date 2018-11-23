@@ -6,6 +6,8 @@
 //
 package net.codecrete.qrbill.generator;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -71,13 +73,16 @@ class Validator {
         }
     }
 
+    private static final BigDecimal AMOUNT_MIN = new BigDecimal(1).movePointLeft(2);
+    private static final BigDecimal AMOUNT_MAX = new BigDecimal(99999999999L).movePointLeft(2);
+
     private void validateAmount() {
-        Double amount = billIn.getAmount();
+        BigDecimal amount = billIn.getAmount();
         if (amount == null) {
             billOut.setAmount(null);
         } else {
-            amount = Math.round(amount * 100) / 100.0; // round to multiple of 0.01
-            if (amount < 0.01 || amount > 999999999.99) {
+            amount = amount.setScale(2, RoundingMode.HALF_UP); // round to multiple of 0.01
+            if (AMOUNT_MIN.compareTo(amount) > 0 || AMOUNT_MAX.compareTo(amount) < 0) {
                 validationResult.addMessage(Type.ERROR, Bill.FIELD_AMOUNT, QRBill.KEY_AMOUNT_IS_IN_VALID_RANGE);
             } else {
                 billOut.setAmount(amount);
@@ -166,7 +171,7 @@ class Validator {
                 }
             }
             if (schemeList.size() > 0)
-                schemesOut = schemeList.toArray(new AlternativeScheme[schemeList.size()]);
+                schemesOut = schemeList.toArray(new AlternativeScheme[0]);
         }
         billOut.setAlternativeSchemes(schemesOut);
     }

@@ -6,8 +6,11 @@
 //
 package net.codecrete.qrbill.generator;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -109,9 +112,10 @@ public class QRCodeText {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
         symbols.setDecimalSeparator('.');
         amountFieldFormat.setDecimalFormatSymbols(symbols);
+        amountFieldFormat.setParseBigDecimal(true);
     }
 
-    private static String formatAmountForCode(double amount) {
+    private static String formatAmountForCode(BigDecimal amount) {
         return amountFieldFormat.format(amount);
     }
 
@@ -149,11 +153,12 @@ public class QRCodeText {
         bill.setCreditor(decodeAddress(lines, 4, false));
 
         if (lines[18].length() > 0) {
-            try {
-                bill.setAmount(Double.valueOf(lines[18]));
-            } catch (NumberFormatException nfe) {
+            ParsePosition position = new ParsePosition(0);
+            BigDecimal amount = (BigDecimal)amountFieldFormat.parse(lines[18], position);
+            if (position.getIndex() == lines[18].length())
+                bill.setAmount(amount);
+            else
                 throwSingleValidationError(Bill.FIELD_AMOUNT, QRBill.KEY_VALID_NUMBER);
-            }
         } else {
             bill.setAmount(null);
         }

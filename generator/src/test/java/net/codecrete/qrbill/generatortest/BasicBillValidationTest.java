@@ -15,7 +15,8 @@ import org.junit.jupiter.api.Test;
 
 import net.codecrete.qrbill.generator.Bill;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Various unit tests for the bill data validation
@@ -60,16 +61,16 @@ class BasicBillValidationTest extends BillDataValidationBase {
     @Test
     void validAmount() {
         bill = SampleData.getExample1();
-        bill.setAmount(100.15);
+        bill.setAmount(new BigDecimal(100.15).setScale(2, RoundingMode.HALF_UP));
         validate();
         assertNoMessages();
-        assertEquals(Double.valueOf(100.15), validatedBill.getAmount());
+        assertEquals(new BigDecimal(10015).movePointLeft(2), validatedBill.getAmount());
     }
 
     @Test
     void amountOutOfRange() {
         bill = SampleData.getExample1();
-        bill.setAmount(0.0);
+        bill.setAmount(new BigDecimal(0));
         validate();
         assertSingleErrorMessage(Bill.FIELD_AMOUNT, "amount_in_valid_range");
     }

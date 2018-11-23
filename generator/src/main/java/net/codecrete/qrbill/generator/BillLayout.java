@@ -8,6 +8,7 @@ package net.codecrete.qrbill.generator;
 
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -461,7 +462,7 @@ class BillLayout {
         amountDisplayFormat.setDecimalFormatSymbols(symbols);
     }
 
-    private static String formatAmountForDisplay(double amount) {
+    private static String formatAmountForDisplay(BigDecimal amount) {
         return amountDisplayFormat.format(amount);
     }
 

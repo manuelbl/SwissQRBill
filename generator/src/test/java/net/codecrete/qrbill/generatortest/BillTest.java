@@ -16,6 +16,9 @@ import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.Language;
 import net.codecrete.qrbill.generator.Bill.Version;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -43,8 +46,8 @@ class BillTest {
     @Test
     void setAmount() {
         Bill bill = new Bill();
-        bill.setAmount(37.45);
-        assertEquals(Double.valueOf(37.45), bill.getAmount());
+        bill.setAmount(new BigDecimal("37.45").setScale(2, RoundingMode.HALF_UP));
+        assertEquals(new BigDecimal(3745).movePointLeft(2), bill.getAmount());
     }
 
     @Test

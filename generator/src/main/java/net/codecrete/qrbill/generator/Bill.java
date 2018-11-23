@@ -7,6 +7,7 @@
 package net.codecrete.qrbill.generator;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -161,7 +162,7 @@ public class Bill implements Serializable {
     public static final String FIELD_DEBTOR_COUNTRY_CODE = "debtor.countryCode";
 
     private Version version = Version.V2_0;
-    private Double amount = null;
+    private BigDecimal amount = null;
     private String currency = "CHF";
     private String account = null;
     private Address creditor = new Address();
@@ -195,7 +196,7 @@ public class Bill implements Serializable {
      *
      * @return the amount
      */
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
@@ -207,7 +208,7 @@ public class Bill implements Serializable {
      *
      * @param amount the amount
      */
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

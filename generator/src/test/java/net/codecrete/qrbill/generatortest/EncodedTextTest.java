@@ -16,6 +16,8 @@ import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.QRBillValidationError;
 
+import java.math.BigDecimal;
+
 /**
  * Unit tests for encoding the embedded QR code text
  */
@@ -50,7 +52,7 @@ class EncodedTextTest {
     void createText5() {
         assertThrows(QRBillValidationError.class, () -> {
             Bill bill = SampleData.getExample4();
-            bill.setAmount(0.0);
+            bill.setAmount(new BigDecimal(0));
             QRBill.encodeQrCodeText(bill);
         });
     }

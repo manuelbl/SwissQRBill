@@ -10,6 +10,9 @@ import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.Language;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * Generates valid sample bill data.
  */
@@ -27,7 +30,7 @@ class SampleData {
         creditor.setTown("Biel");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        bill.setAmount(123949.75);
+        bill.setAmount(new BigDecimal(123949.75).setScale(2, RoundingMode.HALF_UP));
         bill.setCurrency("CHF");
         Address debtor = new Address();
         debtor.setName("Pia-Maria Rutschmann-Schnyder");
@@ -75,7 +78,7 @@ class SampleData {
         creditor.setTown("Biel");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        bill.setAmount(199.95);
+        bill.setAmount(new BigDecimal(19995).movePointLeft(2));
         bill.setCurrency("CHF");
         Address debtor = new Address();
         debtor.setName("Pia-Maria Rutschmann-Schnyder");
@@ -120,7 +123,7 @@ class SampleData {
         creditor.setAddressLine2("9527 Niederhelfenschwil bei Schönholzerswilen SG");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        bill.setAmount(987654321.50);
+        bill.setAmount(new BigDecimal(987654321.50).setScale(2, RoundingMode.HALF_UP));
         bill.setCurrency("CHF");
         Address debtor = new Address();
         debtor.setName("Annegret Karin & Hansruedi Frischknecht-Bernhardsgrütter");
