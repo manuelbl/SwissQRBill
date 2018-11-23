@@ -196,7 +196,7 @@ public class SVGCanvas extends AbstractCanvas {
     }
 
     @Override
-    public void setTransformation(double translateX, double translateY, double scaleX, double scaleY) throws IOException {
+    public void setTransformation(double translateX, double translateY, double scaleX, double scaleY, double rotate) throws IOException {
         if (isInGroup) {
             stream.write("</g>\n");
             isInGroup = false;
@@ -206,6 +206,10 @@ public class SVGCanvas extends AbstractCanvas {
             stream.write(formatCoordinate(translateX));
             stream.write(" ");
             stream.write(formatCoordinate(-translateY));
+            if (rotate != 0) {
+                stream.write(") rotate(");
+                stream.write(ANGLE_FORMAT.format(-rotate / Math.PI * 180));
+            }
             if (scaleX != 1 || scaleY != 1) {
                 stream.write(") scale(");
                 stream.write(formatNumber(scaleX));
@@ -226,6 +230,7 @@ public class SVGCanvas extends AbstractCanvas {
     }
 
     private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.UK));
+    private static final DecimalFormat ANGLE_FORMAT = new DecimalFormat("#.#####", new DecimalFormatSymbols(Locale.UK));
 
     private static String formatNumber(double value) {
         return NUMBER_FORMAT.format(value);

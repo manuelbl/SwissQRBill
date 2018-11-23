@@ -6,6 +6,7 @@
 //
 package net.codecrete.qrbill.generator;
 
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -50,6 +51,7 @@ class BillLayout {
     private static final double PADDING_PREF = 0.5; // relative to font size
     private static final double PADDING_MIN = 0.2; // relative to font size
 
+
     private Bill bill;
     private QRCode qrCode;
     private Canvas graphics;
@@ -71,6 +73,7 @@ class BillLayout {
     private double labelLeading;
     private double textLeading;
     private double textBottomPadding;
+
 
     BillLayout(Bill bill, Canvas graphics) {
         this.bill = bill;
@@ -95,7 +98,7 @@ class BillLayout {
             labelFontSize--;
             textFontSize--;
         }
-        drawPaymentPart(0, 0);
+        drawPaymentPart();
 
         // receipt
 
@@ -103,20 +106,19 @@ class BillLayout {
         textFontSize = RC_TEXT_PREF_FONT_SIZE;
         breakLines(RECEIPT_WIDTH - 2 * MARGIN);
         computeReceiptLeading();
-        drawReceipt(0, 0);
+        drawReceipt();
 
         // border
-        if (true)
-            drawBorder(0, 0);
+        drawBorder();
     }
 
-    private void drawPaymentPart(double offsetX, double offsetY) throws IOException {
+    private void drawPaymentPart() throws IOException {
 
         // QR code section
-        qrCode.draw(graphics, offsetX + RECEIPT_WIDTH + MARGIN, offsetY + SLIP_HEIGHT - 17 - QR_CODE_SIZE);
+        qrCode.draw(graphics, RECEIPT_WIDTH + MARGIN, SLIP_HEIGHT - 17 - QR_CODE_SIZE);
 
         // "Payment part" title
-        graphics.setTransformation(offsetX + RECEIPT_WIDTH + MARGIN, offsetY, 1, 1);
+        graphics.setTransformation(RECEIPT_WIDTH + MARGIN, 0,1, 1, 0);
         yPos = SLIP_HEIGHT - MARGIN - FontMetrics.getAscender(FONT_SIZE_TITLE);
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_PAYMENT_PART, bill.getFormat().getLanguage()), 0,
                 yPos, FONT_SIZE_TITLE, true);
@@ -126,7 +128,7 @@ class BillLayout {
         drawLabelAndText(MultilingualText.KEY_CURRENCY, bill.getCurrency());
 
         // amount
-        graphics.setTransformation(offsetX + RECEIPT_WIDTH + MARGIN + CURRENCY_WIDTH_PP, offsetY, 1, 1);
+        graphics.setTransformation(RECEIPT_WIDTH + MARGIN + CURRENCY_WIDTH_PP, 0, 1, 1, 0);
         yPos = CURRENCY_AMOUNT_BASE_LINE + FontMetrics.getAscender(labelFontSize);
         if (amount != null) {
             drawLabelAndText(MultilingualText.KEY_AMOUNT, amount);
@@ -136,7 +138,7 @@ class BillLayout {
         }
 
         // information section
-        graphics.setTransformation(offsetX + SLIP_WIDTH - INFO_SECTION_WIDTH - MARGIN, offsetY, 1, 1);
+        graphics.setTransformation(SLIP_WIDTH - INFO_SECTION_WIDTH - MARGIN, 0, 1, 1, 0);
         yPos = SLIP_HEIGHT - MARGIN;
 
         // account and creditor
@@ -160,10 +162,10 @@ class BillLayout {
         }
     }
 
-    private void drawReceipt(double offsetX, double offsetY) throws  IOException {
+    private void drawReceipt() throws  IOException {
 
         // "Receipt" title
-        graphics.setTransformation(offsetX + MARGIN, offsetY, 1, 1);
+        graphics.setTransformation(MARGIN, 0, 1, 1, 0);
         yPos = SLIP_HEIGHT - MARGIN - FontMetrics.getAscender(FONT_SIZE_TITLE);
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_RECEIPT, bill.getFormat().getLanguage()), 0,
                 yPos, FONT_SIZE_TITLE, true);
@@ -190,20 +192,20 @@ class BillLayout {
         drawLabelAndText(MultilingualText.KEY_CURRENCY, bill.getCurrency());
 
         // amount
-        graphics.setTransformation(offsetX + MARGIN + CURRENCY_WIDTH_RC, offsetY, 1, 1);
+        graphics.setTransformation(MARGIN + CURRENCY_WIDTH_RC, 0, 1, 1, 0);
         yPos = CURRENCY_AMOUNT_BASE_LINE + FontMetrics.getAscender(labelFontSize);
         if (amount != null) {
             drawLabelAndText(MultilingualText.KEY_AMOUNT, amount);
         } else {
             drawLabel(MultilingualText.KEY_AMOUNT);
-            graphics.setTransformation(offsetX, offsetY, 1, 1);
+            graphics.setTransformation(0, 0, 1, 1, 0);
             drawCorners(RECEIPT_WIDTH - MARGIN - AMOUNT_BOX_WIDTH_RC,
                     CURRENCY_AMOUNT_BASE_LINE + 2 - AMOUNT_BOX_HEIGHT_RC,
                     AMOUNT_BOX_WIDTH_RC, AMOUNT_BOX_HEIGHT_RC);
         }
 
         // acceptance point
-        graphics.setTransformation(offsetX, offsetY, 1, 1);
+        graphics.setTransformation(0, 0, 1, 1, 0);
         String label = MultilingualText.getText(MultilingualText.KEY_ACCEPTANCE_POINT, bill.getFormat().getLanguage());
         double w = FontMetrics.getTextWidth(label, labelFontSize) * 1.05; // TODO: proper text width for bold font
         graphics.putText(label, RECEIPT_WIDTH - MARGIN - w, 21, labelFontSize, true);
@@ -238,7 +240,7 @@ class BillLayout {
         return computeLeading(height, INFO_SECTION_MAX_HEIGHT, numTextLines, numPaddings);
     }
 
-    private boolean computeReceiptLeading() {
+    private void computeReceiptLeading() {
         // The same line spacing (incl. leading) is used for the smaller label and text lines
         int numTextLines = 0;
         int numPaddings = 1;
@@ -260,7 +262,7 @@ class BillLayout {
 
         height += numTextLines * FontMetrics.getLineHeight(textFontSize);
 
-        return computeLeading(height, RECEIPT_MAX_HEIGHT, numTextLines, numPaddings);
+        computeLeading(height, RECEIPT_MAX_HEIGHT, numTextLines, numPaddings);
     }
 
     private boolean computeLeading(double height, double maxHeight, int numTextLines, int numPaddings) {
@@ -295,28 +297,53 @@ class BillLayout {
         return isTooTight;
     }
 
-    private void drawBorder(double offsetX, double offsetY) throws IOException {
-		graphics.setTransformation(offsetX, offsetY, 1, 1);
+    private void drawBorder() throws IOException {
+        SeparatorType separatorType = bill.getFormat().getSeparatorType();
+        OutputSize outputSize = bill.getFormat().getOutputSize();
+
+        if (separatorType == SeparatorType.NONE)
+            return;
+
+		graphics.setTransformation(0, 0, 1, 1, 0);
 		graphics.startPath();
 		graphics.moveTo(RECEIPT_WIDTH, 0);
-//		graphics.lineTo(0, SLIP_HEIGHT - 16);
-//		graphics.moveTo(0, SLIP_HEIGHT - 9);
-		graphics.lineTo(RECEIPT_WIDTH, SLIP_HEIGHT);
+		if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS) {
+		    graphics.lineTo(RECEIPT_WIDTH, SLIP_HEIGHT - 8);
+		    graphics.moveTo(RECEIPT_WIDTH, SLIP_HEIGHT - 5);
+        }
+        graphics.lineTo(RECEIPT_WIDTH, SLIP_HEIGHT);
+
 		graphics.moveTo(0, SLIP_HEIGHT);
+		if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS && outputSize != OutputSize.QR_BILL_ONLY) {
+		    graphics.lineTo(5, SLIP_HEIGHT);
+		    graphics.moveTo(8, SLIP_HEIGHT);
+        }
 		graphics.lineTo(SLIP_WIDTH, SLIP_HEIGHT);
         graphics.strokePath(0.5, 0);
-        
-//        drawScissors(offsetX, offsetY + SLIP_HEIGHT - 16, 6);
+
+        if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS) {
+            drawScissors(RECEIPT_WIDTH, SLIP_HEIGHT - 5, 3, 0);
+            if (outputSize != OutputSize.QR_BILL_ONLY)
+                drawScissors(5, SLIP_HEIGHT, 3, Math.PI / 2.0);
+        }
     }
 
-    /*
-    private void drawScissors(double x, double y, double size) throws IOException {
-        drawScissorsBlade(x, y, size, false);
-        drawScissorsBlade(x, y, size, true);
+    private void drawScissors(double x, double y, double size, double angle) throws IOException {
+        drawScissorsBlade(x, y, size, angle, false);
+        drawScissorsBlade(x, y, size, angle, true);
     }
 
-    private void drawScissorsBlade(double x, double y, double size, boolean mirrored) throws IOException {
-        graphics.setTransformation(x + size * (mirrored ? 0.37 : -0.37), y, (mirrored ? -size : size) / 476.0, size / 476.0);
+    private void drawScissorsBlade(double x, double y, double size, double angle, boolean mirrored) throws IOException {
+        double scale = size / 476.0;
+        double xOffset = 0.36 * size;
+        double yOffset = -1.05 * size;
+        AffineTransform transform = new AffineTransform();
+        transform.translate(x, y);
+        transform.rotate(angle);
+        transform.translate(mirrored ? xOffset : -xOffset, yOffset);
+        transform.scale(mirrored ? -scale : scale, scale);
+        graphics.setTransformation(transform.getTranslateX(), transform.getTranslateY(), mirrored ? -scale : scale, scale, angle);
+
 		graphics.startPath();
         graphics.moveTo(46.48, 126.784);
         graphics.cubicCurveTo(34.824, 107.544, 28.0, 87.924, 28.0, 59.0);
@@ -337,7 +364,6 @@ class BillLayout {
         graphics.closeSubpath();
         graphics.fillPath(0);
     }
-    */
 
     // Draws a label at (0, yPos) and advances vertically
     private void drawLabel(String labelKey) throws IOException {

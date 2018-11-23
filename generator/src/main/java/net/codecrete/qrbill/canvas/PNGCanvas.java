@@ -80,16 +80,21 @@ public class PNGCanvas extends AbstractCanvas {
         graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
         // initialize transformation
-        setTransformation(0, 0, 1, 1);
+        setTransformation(0, 0, 1, 1, 0);
     }
 
     @Override
-    public void setTransformation(double translateX, double translateY, double scaleX, double scaleY) {
+    public void setTransformation(double translateX, double translateY, double scaleX, double scaleY, double rotate) {
         // Our coorinate system extends from the bottom up. Java Graphics2D's system
         // extends from the top down. So Y coordinates need to be treated specially.
         translateX *= coordinateScale;
         translateY *= coordinateScale;
-        AffineTransform at = new AffineTransform(scaleX, 0, 0, scaleY, translateX, image.getHeight() - translateY);
+        AffineTransform at = new AffineTransform();
+        at.translate(translateX, image.getHeight() - translateY);
+        if (rotate != 0)
+            at.rotate(-rotate);
+        if (scaleX != 0 || scaleY != 0)
+            at.scale(scaleX, scaleY);
         graphics.setTransform(at);
     }
 

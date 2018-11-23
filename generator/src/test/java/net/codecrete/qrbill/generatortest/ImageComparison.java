@@ -59,12 +59,14 @@ class ImageComparison {
         for (int i = 0; i < length; i++) {
             if (expectedPixels[i] != actualPixels[i]) {
                 int d = Math.abs(expectedPixels[i] - actualPixels[i]);
-                assertTrue(d < 50, "singe pixel difference");
+                if (d >= 70)
+                    assertTrue(d < 70, String.format("singe pixel difference at %d,%d",
+                            i % actualImage.getWidth(), i / actualImage.getWidth()));
                 diff += d;
             }
         }
 
-        if (diff > 12000)
+        if (diff > 20000)
             fail(String.format("Pixel value difference too big: %d", diff));
     }
 }

@@ -45,7 +45,7 @@ public class PDFCanvas extends AbstractCanvas {
     }
 
     @Override
-    public void setTransformation(double translateX, double translateY, double scaleX, double scaleY) throws IOException {
+    public void setTransformation(double translateX, double translateY, double scaleX, double scaleY, double rotate) throws IOException {
         translateX *= MM_TO_PT;
         translateY *= MM_TO_PT;
 
@@ -60,7 +60,10 @@ public class PDFCanvas extends AbstractCanvas {
         hasSavedGraphicsState = true;
         Matrix matrix = new Matrix();
         matrix.translate((float) translateX, (float) translateY);
-        matrix.scale((float) scaleX, (float) scaleY);
+        if (rotate != 0)
+            matrix.rotate(rotate);
+        if (scaleX != 1 || scaleY != 1)
+            matrix.scale((float) scaleX, (float) scaleY);
         contentStream.transform(matrix);
     }
 

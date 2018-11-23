@@ -52,9 +52,10 @@ public interface Canvas extends Closeable {
      * @param translateY translation in y direction (in mm)
      * @param scaleX     scale fator in x directipm (1.0 = no scaling)
      * @param scaleY     scale fator in y direction (1.0 = no scaling)
+     * @param rotate     rotation angle, in radians
      * @throws IOException thrown if the graphics cannot be generated
      */
-    void setTransformation(double translateX, double translateY, double scaleX, double scaleY) throws IOException;
+    void setTransformation(double translateX, double translateY, double scaleX, double scaleY, double rotate) throws IOException;
 
     /**
      * Adds text to the graphics.
