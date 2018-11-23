@@ -16,14 +16,11 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogConfig } from '@angular/material/dialog';
-import { DateAdapter } from '@angular/material/core';
-import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -59,11 +56,9 @@ export function createTranslateLoader(http: HttpClient) {
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
-    MatDatepickerModule,
     MatDialogModule,
     MatIconModule,
     MatInputModule,
-    MatMomentDateModule,
     MatSelectModule,
     HttpClientModule,
     AppRoutingModule,
@@ -76,7 +71,6 @@ export function createTranslateLoader(http: HttpClient) {
     })
   ],
   providers: [
-    { provide: DateAdapter, useClass: MomentDateAdapter },
     AmountFormatter,
     MatDialogConfig
   ],

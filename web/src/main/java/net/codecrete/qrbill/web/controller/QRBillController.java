@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
@@ -32,6 +33,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.NativeWebRequest;
 
 @RestController
 public class QRBillController implements BillApi {
@@ -118,6 +120,7 @@ public class QRBillController implements BillApi {
     @Override
     public ResponseEntity<Resource> generateBill(QrBill qrBill) throws BadRequestException {
         Bill bill = QrBillDTOConverter.fromDtoQrBill(qrBill);
+        setFormatDefaults(bill);
         byte[] result = QRBill.generate(bill);
         MediaType contentType = getContentType(bill.getFormat().getGraphicsFormat());
         return ResponseEntity.ok().contentType(contentType).body(new ByteArrayResource(result));
@@ -136,6 +139,7 @@ public class QRBillController implements BillApi {
         Bill bill;
         try {
             bill = decodeID(billID);
+            setFormatDefaults(bill);
         } catch (Exception e) {
             throw new BadRequestException("Invalid bill ID. Validate bill data to get a valid ID");
         }
@@ -248,4 +252,60 @@ public class QRBillController implements BillApi {
         bill.setFormat(QrBillDTOConverter.fromDtoBillFormat(payload.getFormat()));
         return bill;
     }
+
+    private void setFormatDefaults(Bill bill) {
+        net.codecrete.qrbill.generator.BillFormat format = bill.getFormat();
+        OutputSize outputSize = null;
+        Language language = null;
+        SeparatorType separatorType = null;
+        GraphicsFormat graphicsFormat = null;
+        String fontFamily = null;
+
+        if (format != null) {
+            outputSize = format.getOutputSize();
+            language = format.getLanguage();
+            separatorType = format.getSeparatorType();
+            graphicsFormat = format.getGraphicsFormat();
+            fontFamily = format.getFontFamily();
+        }
+
+        if (outputSize == null)
+            outputSize = OutputSize.A4_PORTRAIT_SHEET;
+        if (language == null)
+            language = Language.EN;
+        if (separatorType == null)
+            separatorType = SeparatorType.SOLID_LINE_WITH_SCISSORS;
+        if (fontFamily == null)
+            fontFamily = "Helvetica";
+
+        if (graphicsFormat == null) {
+            Optional<NativeWebRequest> requestOptional = getRequest();
+            if (requestOptional.isPresent()) {
+                NativeWebRequest request = requestOptional.get();
+                for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                    if (mediaType.isCompatibleWith(MediaType.valueOf("image/svg+xml"))) {
+                        graphicsFormat = GraphicsFormat.SVG;
+                        break;
+                    }
+                    if (mediaType.isCompatibleWith(MediaType.valueOf("application/pdf"))) {
+                        graphicsFormat = GraphicsFormat.PDF;
+                        break;
+                    }
+                }
+            }
+        }
+        if (graphicsFormat == null)
+            graphicsFormat = GraphicsFormat.SVG;
+
+        if (format == null) {
+            format = new net.codecrete.qrbill.generator.BillFormat();
+            bill.setFormat(format);
+        }
+        format.setOutputSize(outputSize);
+        format.setLanguage(language);
+        format.setSeparatorType(separatorType);
+        format.setFontFamily(fontFamily);
+        format.setGraphicsFormat(graphicsFormat);
+    }
+
 }

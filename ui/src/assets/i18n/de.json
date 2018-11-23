@@ -2,8 +2,7 @@
     "preview_n_download": "Vorschau & Herunterladen",
     "output_size": "Papierformat der QR-Rechnung",
     "output_sizes": {
-        "a6_landscape": "A6 Querformat",
-        "a5_landscape": "A5 Querformat",
+        "qr_bill_only": "Nur QR-Rechnung",
         "a4_portrait": "A4 Hochformat",
         "qr_code_only": "Nur QR-Code"
     },
@@ -18,13 +17,11 @@
     "country": "Land",
     "postal_code": "Postleitzahl",
     "town": "Ort",
-    "final_creditor": "Endgültiger Zahlungsempfänger",
     "payment_details": "Zahlungsinformationen",
     "currency": "Währung",
     "amount": "Betrag",
-    "due_date": "Zahlbar bis",
     "reference_no": "Referenznummer",
-    "additional_info": "Zusätzliche Informationen",
+    "unstructured_msg": "Zusätzliche Informationen",
     "slip_lang": "Sprache der QR-Rechnung",
     "debtor": "Zahlungspflichtiger",
     "app_name": "Schweizer QR-Rechnung",
@@ -36,7 +33,7 @@
     "source_code_on": "Sourcen auf",
     "github": "GitHub",
     "api_desc": "API-Beschreibung",
-    "swagger_file": "Swagger-Datei",
+    "openapi_file": "OpenAPI-YAML-Datei",
     "lang": {
         "en": "Englisch",
         "de": "Deutsch",

@@ -2,8 +2,7 @@
     "preview_n_download": "Preview & Download",
     "output_size": "Paper format of QR bill",
     "output_sizes": {
-        "a6_landscape": "A6 landscape",
-        "a5_landscape": "A5 landscape",
+        "qr_bill_only": "QR bill only",
         "a4_portrait": "A4 portrait",
         "qr_code_only": "QR code only"
     },
@@ -18,13 +17,11 @@
     "country": "Country",
     "postal_code": "Postal code",
     "town": "Town",
-    "final_creditor": "Final creditor",
     "payment_details": "Payment details",
     "currency": "Currency",
     "amount": "Amount",
-    "due_date": "Due date",
     "reference_no": "Reference number",
-    "additional_info": "Additional information",
+    "unstructured_msg": "Additional information",
     "slip_lang": "QR bill language",
     "debtor": "Debtor",
     "app_name": "Swiss QR Bill",
@@ -36,7 +33,7 @@
     "source_code_on": "Source on",
     "github": "GitHub",
     "api_desc": "API description",
-    "swagger_file": "Swagger file",
+    "openapi_file": "OpenAPI YAML file",
     "lang": {
         "en": "English",
         "de": "German",

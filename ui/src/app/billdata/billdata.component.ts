@@ -13,7 +13,6 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
-import { Moment, isMoment } from 'moment';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { QrBillService } from '../qrbill-api/qrbill.service';
 import { QrBill } from '../qrbill-api/qrbill';
@@ -34,7 +33,6 @@ import { startWith, map } from 'rxjs/operators';
 })
 export class BillDataComponent implements OnInit {
   public bill: QrBill;
-  public outputSize: string;
   public billForm: FormGroup;
   public readonly refNoChanges: Subject<string> = new Subject<string>();
   public refNoSuggestions: Observable<string[]>;
@@ -55,7 +53,6 @@ export class BillDataComponent implements OnInit {
     private ngZone: NgZone
   ) {
     this.bill = billSingleton.getBill();
-    this.outputSize = 'a6-landscape';
   }
 
   ngOnInit() {
@@ -85,16 +82,6 @@ export class BillDataComponent implements OnInit {
             validators: Validators.required
           })
         }),
-        finalCreditor: this.formBuilder.group({
-          name: new FormControl(this.bill.finalCreditor.name),
-          street: new FormControl(this.bill.finalCreditor.street),
-          houseNo: new FormControl(this.bill.finalCreditor.houseNo),
-          countryCode: new FormControl(this.bill.finalCreditor.countryCode, {
-            validators: Validators.pattern('[A-Za-z]{2}')
-          }),
-          postalCode: new FormControl(this.bill.finalCreditor.postalCode),
-          town: new FormControl(this.bill.finalCreditor.town)
-        }),
         currency: new FormControl(this.bill.currency, {
           validators: [Validators.required, Validators.pattern('[A-Za-z]{3}')]
         }),
@@ -104,9 +91,11 @@ export class BillDataComponent implements OnInit {
         referenceNo: new FormControl(this.bill.referenceNo, {
           validators: [Validators.pattern('[A-Za-z0-9 ]{5,40}')]
         }),
-        additionalInfo: new FormControl(this.bill.additionalInfo),
-        language: new FormControl(this.bill.language),
-        outputSize: new FormControl(this.outputSize),
+        unstructuredMessage: new FormControl(this.bill.unstructuredMessage),
+        format: this.formBuilder.group({
+          language: new FormControl(this.bill.format.language),
+          outputSize: new FormControl(this.bill.format.outputSize)
+        }),
         debtor: this.formBuilder.group({
           name: new FormControl(this.bill.debtor.name),
           street: new FormControl(this.bill.debtor.street),
@@ -116,8 +105,7 @@ export class BillDataComponent implements OnInit {
           }),
           postalCode: new FormControl(this.bill.debtor.postalCode),
           town: new FormControl(this.bill.debtor.town)
-        }),
-        dueDate: new FormControl(this.bill.dueDate)
+        })
       },
       {
         updateOn: 'blur'
@@ -229,17 +217,12 @@ export class BillDataComponent implements OnInit {
       maxHeight: '100vh',
       data: {
         validatedBill: this.validatedBill,
-        billID: this.billID,
-        outputSize: this.billForm.value.outputSize
+        billID: this.billID
       }
     });
   }
 
   private getBill(value: any): QrBill {
-    if (isMoment(value.dueDate)) {
-      const dueDate = value.dueDate as Moment;
-      value.dueDate = dueDate.toISOString(true).substring(0, 10);
-    }
     return value as QrBill;
   }
 

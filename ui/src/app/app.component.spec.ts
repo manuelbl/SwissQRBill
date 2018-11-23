@@ -12,15 +12,12 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DateAdapter } from '@angular/material/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateMockLoader } from './mock/translate-mock.loader';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { AboutComponent } from './about/about.component';
 import { AppComponent } from './app.component';
 import { BillDataComponent } from './billdata/billdata.component';
@@ -50,7 +47,6 @@ describe('AppComponent', () => {
         MatButtonModule,
         MatButtonToggleModule,
         MatCardModule,
-        MatDatepickerModule,
         MatDialogModule,
         MatIconModule,
         MatInputModule,
@@ -63,7 +59,6 @@ describe('AppComponent', () => {
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/qrbill' },
-        { provide: DateAdapter, useClass: MomentDateAdapter },
         AmountFormatter
       ]
     }).compileComponents();

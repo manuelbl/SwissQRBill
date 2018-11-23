@@ -5,33 +5,30 @@
 // https://opensource.org/licenses/MIT
 //
 import { Address } from './address';
+import { BillFormat } from './bill-format';
 
 export class QrBill {
-  language = 'en';
-  version = 'V1_0';
+  version = 'V2_0';
   amount?: number;
   currency?: string;
   account?: string;
   creditor: Address;
-  finalCreditor?: Address;
   referenceNo?: string;
-  additionalInfo?: string;
+  unstructuredMessage?: string;
   debtor?: Address;
-  dueDate?: string;
+  format?: BillFormat;
 
   static clone(bill: QrBill): QrBill {
     return {
-      language: bill.language,
       version: bill.version,
       amount: bill.amount,
       currency: bill.currency,
       account: bill.account,
       creditor: Address.clone(bill.creditor),
-      finalCreditor: Address.clone(bill.finalCreditor),
       referenceNo: bill.referenceNo,
-      additionalInfo: bill.additionalInfo,
+      unstructuredMessage: bill.unstructuredMessage,
       debtor: Address.clone(bill.debtor),
-      dueDate: bill.dueDate
+      format: BillFormat.clone(bill.format)
     };
   }
 }

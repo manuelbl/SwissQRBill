@@ -1,17 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DateAdapter } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -34,12 +31,10 @@ describe('BillDataComponent', () => {
         MatButtonModule,
         MatButtonToggleModule,
         MatCardModule,
-        MatDatepickerModule,
         MatDialogModule,
         MatIconModule,
         MatInputModule,
         MatSelectModule,
-        MatMomentDateModule,
         BrowserAnimationsModule,
         RouterModule,
         HttpClientModule,
@@ -48,7 +43,6 @@ describe('BillDataComponent', () => {
         })
       ],
       providers: [
-        { provide: DateAdapter, useClass: MomentDateAdapter },
         AmountFormatter
       ]
     }).compileComponents();

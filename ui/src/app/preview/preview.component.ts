@@ -14,11 +14,9 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class PreviewComponent implements OnInit {
   public billID: string;
-  public outputSize = 'a6-landscape';
 
   constructor(@Inject(MAT_DIALOG_DATA) private data: any) {
     this.billID = data.billID;
-    this.outputSize = data.outputSize;
   }
 
   ngOnInit() {}

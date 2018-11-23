@@ -16,7 +16,6 @@ export class ExampleService {
   constructor() {
     const e1 = new Example(
       {
-        language: 'de',
         version: 'V1_0',
         currency: 'CHF',
         amount: 100,
@@ -29,14 +28,16 @@ export class ExampleService {
           town: 'Hunzenschwil',
           countryCode: 'CH'
         },
-        finalCreditor: {},
-        additionalInfo: '',
+        unstructuredMessage: '',
         referenceNo: '',
         debtor: {},
-        dueDate: '2018-03-31'
+        format: {
+          language: 'de',
+          outputSize: 'qr-bill-only'
+        }
       },
       // tslint:disable-next-line:max-line-length
-      'eJx1TssKwkAM_BXJuZXsLtuH14L0IFWo4KWXqqEutCvutiqK_25j8djDzGQSkswb7uS8uVpYiQDa2jZD3RCs4EwQwM3t6dmPrtxllassCkRWwZTlqUKMI4lCRFIlWqY65sGG6kVpuo4suwMZeyTX-N7V3hO31G9fa5Ss-WBfZP3p8jDtdJd5DmOC5RQiy9cs4_skRBVOR-dQbIt_CZ8vBN1TvQ~~'
+      'eJxdjctuwjAQRX-lmnWoHEeBkm3aKAsESEHqZjaGDsGSM079aAuIf6_Tx6LVbEZzz7lzhTdyXluGKs_gaN2gAlRXMIr7qHqCCl4IMuidGk_64JsfgqMxGdgYxhg6fZm4Vzfba2Nmls05GZ5G5VSwbnce6Vc4Wg6NGnQivi63LGk7-kiN0G1rZCGFQM6R63ZZCLGYS5Hnc1k8lHJZLpA75BWpu04PAzHyM2nek-t9cMp7Qi6SWpZCIreRL8T-cHrXZqpD_ju5EPfTr7pt_kfrzfp7edo-IsPtE5kcZLw~'
     );
 
     const e2 = new Example(
@@ -51,19 +52,10 @@ export class ExampleService {
           postalCode: '2034',
           town: 'Peseux'
         },
-        finalCreditor: {
-          name: null,
-          street: null,
-          houseNo: null,
-          countryCode: null,
-          postalCode: null,
-          town: null
-        },
         currency: 'CHF',
         amount: 371.2,
         referenceNo: '0000383800001776',
-        additionalInfo: '',
-        language: 'fr',
+        unstructuredMessage: '',
         debtor: {
           name: 'Céline Pythoud',
           street: 'Chemin du Grand Record',
@@ -72,10 +64,13 @@ export class ExampleService {
           postalCode: '1040',
           town: 'Échallens'
         },
-        dueDate: '2018-04-17'
+        format: {
+          language: 'fr',
+          outputSize: 'qr-bill-only'
+        }
       },
       // tslint:disable-next-line:max-line-length
-      'eJx1T0FqwzAQ_IrQOSm7shM5uYVAUnpynR5zEfY2NjgrKkchpfQBfUrfkY_VKx9KD120M-zMMmg_9JXC0HnWa5zp3vEpuhPptX4NeqbfwgvdLuN0KLfHcGRAAGEU2D6uFgAGluNDWFizAnwSYx_8eUxUh41MmytxJLXzgV3dehYtywUNTFzSQPE2RQr-15nFBwPT3m4KwGIO-RxtEu_ffcekyvdL62OTpJbOHasmqn1w3KiKah-Sk5t0B-Qp7_5Vt67viYffXzxXVTr5b2VFVgijtUux9ecPsLtrBQ~~'
+      'eJxVTstuwjAQ_JXI51A5DwjkhtKGqqeUcPTFDUtiyVmnToxIER_QT-l38GPdUHrAa9na2ZnZObMj2F4ZZGngs4OxrRxYemZaYu1kDSxlB8t8VlvZNarq8zsDndY-M27o3FCqr4n3aWcfSuuZQT2SoodOWjkYuxs7-BccDA65bBUxbsjFJ9kOTuTIyiITyEPOBQYCs9fVnFO3oBvweRKuePAmsBS4saalwF65Frg-AjrwKBXKqjEoMIoFhnx6C-jBnSYngY8VJcFTyKdJfnPMrj9aIXjFODTG7QlooFXo7Z23sRL33hYqYwmPQ8rGY5Jev6tGag3Y_y14324p_OOJltFy-oMkWUxrX4pngezyCwxZfFI~'
     );
 
     const e3 = new Example(
@@ -90,19 +85,10 @@ export class ExampleService {
           postalCode: '8098',
           town: 'Zürich'
         },
-        finalCreditor: {
-          name: 'Schreinerei Habegger & Söhne',
-          street: 'Uetlibergstrasse',
-          houseNo: '138',
-          countryCode: 'CH',
-          postalCode: '8045',
-          town: 'Zürich'
-        },
         currency: 'EUR',
         amount: 287.3,
         referenceNo: '870012938238139900001238028',
-        additionalInfo: 'Rechnungsnr. 10978 / Auftragsrnr. 3987',
-        language: 'de',
+        unstructuredMessage: 'Rechnungsnr. 10978 / Auftragsrnr. 3987',
         debtor: {
           name: 'Simon Glarner',
           street: 'Bächliwis',
@@ -111,10 +97,13 @@ export class ExampleService {
           postalCode: '8184',
           town: 'Bachenbülach'
         },
-        dueDate: '2018-07-18'
+        format: {
+          language: 'de',
+          outputSize: 'qr-bill-only'
+        }
       },
       // tslint:disable-next-line:max-line-length
-      'eJxtT7FuwjAQ_RXLQyeg5xiUMxugCkZKylKxOOFwLKVGtUOpWvVv-g2d2PJjjQ1Dh1r2O7938nu-T_5GPtij41Mx4I125qQN8SnfEx_wV_9E723PivVi53cOBECsIsJiNZ4AZDJudVuz2NjOC1acbftBvjfcs9kyqutjaA-6quM9HgSFsT53F2-v8mIVsahqT9ZRD2ylSzKGPLtjRfdTO0r-1Da2JG9C63UISRMSr6bjyb-mGeYjmf7-sN0kAQQOIR-K9K6wL0fHlo32fW4U5t13VTf2bENkk2SKAsep109Bruwujf4b8bhJxpgDiExJzCQKqRRA5BIhS0kbqmp3ciY4P2ICVI7sns1Oh34UE3wUpcKcf_0CpgqLsQ~~'
+      'eJxNjkFuwjAQRa8SeR2oE4NiswNaYEkJbCpvTHASS2ac2k4pIG7TY7DjYnUQSIxn46__3_wz-pHWKQNolMSoNHYvPBqdkRZQtaKSaIR2EsWosqKpVeFmDwe0WsfItL5pfa5One_b9rZK654BfQwJJxthhTd2fWzkM1Aa8DOxV8FxVy5xiK3lbyCifDnlgFOMOSQcpovBEOOUdMseM-aQc9hM8ig_KH-SNrTcReM5h6VxvhRFzYEDxYxy-LpdreqE6aITX19Ksz4JVz42qzswV3sD0VwLC9JymNz-ilqrg3IchsPAS-ggqIEuYXu7avGkfq5CnmYYJykjNCU0IYxh3P0JxWkosZJFDS1UDmw_SjDLaPQWjdvSW1E524mE0Sw0Wb5zQJd_vTOFyA~~'
     );
 
     const e4 = new Example(
@@ -129,20 +118,21 @@ export class ExampleService {
           postalCode: '6900',
           town: 'Lugano'
         },
-        finalCreditor: {},
-        additionalInfo: '',
+        unstructuredMessage: '',
         referenceNo: '',
         debtor: {},
         currency: 'CHF',
-        language: 'it'
+        format: {
+          language: 'it',
+          outputSize: 'qr-bill-only'
+        }
       },
       // tslint:disable-next-line:max-line-length
-      'eJyFTU0LwjAM_SshZ4V2B3G7FmQHmWLF0y5BQynMVrtuyMT_bjvxqoHk5ePlvSeOHHrrHVZygR05M5BhrNBGXOA9HPkR06T3qg2tE1KIjDIXVctSlGKOVcJiXchyPgR_Zjj4vifQo50mDgRL0DwlH4YLd6B9jInkONj8cbIE1HUEiq43Mo7yctbKwhm3gyHnP7a5_kpVb_5Rml3zbfH1BiqXWw0~'
+      'eJxdj01vwjAMhv9K5HMrtT1MtNduFYcJ0IJ2ysVjJkRKnS4faBTx35ey7YJ9sGU_72v5CmfywTiGri7g6PyIEborWGSdUBN0YCIUoD1OJ3MIwx_BydoCXIpTitLMC_flyw9jbenYXrIi0IQeo_P7y0T_gqPjOOBoMnGf3Ios29N3dgS56xVXTVUprhX367qt2uoeT7k2q6ZuFcu88e5A4s2FgEKezTyTR1EKSXN-g8QnWSFdjBli8kbxu0GB1qLocZxQMyrORoun4tekkd1yTfFj9uvhcbTZbn6bl92zYrj9AM4dbfg~'
     );
 
     const e5 = new Example(
       {
-        language: 'en',
         version: 'V1_0',
         amount: 123949.75,
         currency: 'CHF',
@@ -155,16 +145,8 @@ export class ExampleService {
           town: 'Biel',
           countryCode: 'CH'
         },
-        finalCreditor: {
-          name: 'Robert Schneider Services Switzerland AG',
-          street: 'Rue du Lac',
-          houseNo: '1268/3/1',
-          postalCode: '2501',
-          town: 'Biel',
-          countryCode: 'CH'
-        },
         referenceNo: '210000000003139471430009017',
-        additionalInfo:
+        unstructuredMessage:
           'Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010',
         debtor: {
           name: 'Pia-Maria Rutschmann-Schnyder',
@@ -174,15 +156,17 @@ export class ExampleService {
           town: 'Rorschach',
           countryCode: 'CH'
         },
-        dueDate: '2019-10-30'
+        format: {
+          language: 'en',
+          outputSize: 'qr-bill-only'
+        }
       },
       // tslint:disable-next-line:max-line-length
-      'eJx1UctOwzAQ_BXLvTb1buI83BtUokUCqSQ99mJS01oURzhJeYl_Z-0icaE-rHe9s-Px-IufjO9t5_gcp_yo3X7Ue8Pn3Dg-5a9-Y94Hqpr1Yuu3DhAg7BjCYiVlhkopTDMAqCoFmIZG3T0aP7CmPThjd8azq2U8Hg3bjexOt5EiLSqRijROpDlEymtrjmfqf3ka40-2NT1r3uzwaTzJ3V0mzwRe5ibNSqpZmZ-PbiISUCUISRbfuLY6udfealaPQ98eXrRzSdDyQVICYOm7vjeMMM_DXlMaOaoQlTz7VHeeJnV7-Lv4oa4jjpz8XRmSlBJlMJEsLEP71vWDH9uBPoZ1TwzzGahZ0DeZNCgABeUlZKAEokCgSlKegqA9LjJWZIXKyQYQixVCEQaqQkiIeCGROgj8-wfJDZzJ'
+      'eJxVUM1OwzAMfpUqXLfFTrut2Q0GAySQRssxl1CyLaJzRpoiBuLdcQcccA6x7O_H9qd4c7HzgcQCR2IT4t4msfgUraVtb7dOLIQjMRLbaA8733SrXwT1bTsSoU-HPtX-Y8C9xvGTb9txoPbIjM4dbLQpxMfjwf0RNoHSyu49I06VrxHTHt07K4p6vTQECsAQGlreFEWOWmtUOQCUpQZUhmpDVXhyMWV1syPnn13Mzq-52Lvsuc_ubMNsNSulkorhagqsdeFdOyga-v9YWhd6Mp8OzdVJfO3t-N5Gb7OqT12z21ui8WB1ZCdD1zF0ncsY8ZK2llO2KA3pYpi6CpEZttn9eD1UFXcR_iJHdptjMazDy8wN3VKXYt8kPn8WNhlOJ6AnClCfndUoASXnc8hBS0SJfBosOFcg-T8F7yjzmZ6WMge5vEGYDYRyJgs44WWB3EGe7Wp9aUh8fQNyzZeA'
     );
 
     const e6 = new Example(
       {
-        language: 'fr',
         version: 'V1_0',
         amount: null,
         currency: 'CHF',
@@ -193,14 +177,16 @@ export class ExampleService {
           town: 'Bern',
           countryCode: 'CH'
         },
-        finalCreditor: {},
         referenceNo: null,
-        additionalInfo: 'Donation to the Winterfest campaign',
+        unstructuredMessage: 'Donation to the Winterfest campaign',
         debtor: {},
-        dueDate: null
+        format: {
+          language: 'fr',
+          outputSize: 'qr-bill-only'
+        }
       },
       // tslint:disable-next-line:max-line-length
-      'eJyFTcsKwjAQ_JWQcw_pQ8TetFJ6qkIFL70Eu9ZAu9FtWl_47zaGggfBhdndYYaZJx-AOqWRx77HG4l1L2vgMT8S9_iFdnAzIyu2SUklCl8Ie327kiyci4X4TCiiKAqCYGaFQjaDNGMmW1J7Z6nusXK8uCrzABprKmucEAoXuwJCl_yt_kKSpf8s-Saf3rVG1280Mydge4UG6AidYQfZnqWqkb_eEPdeig~~'
+      'eJxdTtFqg0AQ_BXZZwMXtZT61ppIntKAgb7cyzY5zcG5Z9c1rQn5956xhdKdhWWHmWGucDbcW0-QL2OoPbcokF_BITUDNgZyqBliaBi7kz305Y-CBudi8IN0g1T2Muk-ePFunVt4cmNw9KZDRvG8Hzvza6g9SYmtDYo7c4uDbW--QiJUu0KTSpTStNRUbNJH9aTuk6osy5IkedBUhUV3RgmVo2dux6j0Ax3nv_q0cjEcuh81TUjVlPZimKbAmfuLYlP-p7av2-msPM2Z4iM5mejNkhiuTS_RAdsObRNE691KE9y-Ad0qcXU~'
     );
 
     this.examples = [e3, e2, e1, e4, e5, e6];
