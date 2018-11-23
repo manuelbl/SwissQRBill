@@ -423,8 +423,11 @@ class BillLayout {
             payableByLines = FontMetrics.splitLines(payableBy, maxWidth * MM_TO_PT,textFontSize);
     }
 
+
+    private static final double CORNER_STROKE_WIDTH = 0.75;
+
     private void drawCorners(double x, double y, double width, double height) throws IOException {
-        final double lwh = 0.5 / 72 * 25.4;
+        final double lwh = CORNER_STROKE_WIDTH * 0.5 / 72 * 25.4;
         final double s = 3;
 
         graphics.startPath();
@@ -445,7 +448,7 @@ class BillLayout {
         graphics.lineTo(x + lwh, y + height - lwh);
         graphics.lineTo(x + lwh, y + height - s);
 
-        graphics.strokePath(1, 0);
+        graphics.strokePath(CORNER_STROKE_WIDTH, 0);
     }
 
     private static final DecimalFormat amountDisplayFormat;
