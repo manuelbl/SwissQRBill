@@ -118,7 +118,7 @@ class BillLayout {
         qrCode.draw(graphics, RECEIPT_WIDTH + MARGIN, SLIP_HEIGHT - 17 - QR_CODE_SIZE);
 
         // "Payment part" title
-        graphics.setTransformation(RECEIPT_WIDTH + MARGIN, 0,1, 1, 0);
+        graphics.setTransformation(RECEIPT_WIDTH + MARGIN, 0, 0, 1, 1);
         yPos = SLIP_HEIGHT - MARGIN - FontMetrics.getAscender(FONT_SIZE_TITLE);
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_PAYMENT_PART, bill.getFormat().getLanguage()), 0,
                 yPos, FONT_SIZE_TITLE, true);
@@ -128,7 +128,7 @@ class BillLayout {
         drawLabelAndText(MultilingualText.KEY_CURRENCY, bill.getCurrency());
 
         // amount
-        graphics.setTransformation(RECEIPT_WIDTH + MARGIN + CURRENCY_WIDTH_PP, 0, 1, 1, 0);
+        graphics.setTransformation(RECEIPT_WIDTH + MARGIN + CURRENCY_WIDTH_PP, 0, 0, 1, 1);
         yPos = CURRENCY_AMOUNT_BASE_LINE + FontMetrics.getAscender(labelFontSize);
         if (amount != null) {
             drawLabelAndText(MultilingualText.KEY_AMOUNT, amount);
@@ -138,7 +138,7 @@ class BillLayout {
         }
 
         // information section
-        graphics.setTransformation(SLIP_WIDTH - INFO_SECTION_WIDTH - MARGIN, 0, 1, 1, 0);
+        graphics.setTransformation(SLIP_WIDTH - INFO_SECTION_WIDTH - MARGIN, 0, 0, 1, 1);
         yPos = SLIP_HEIGHT - MARGIN;
 
         // account and creditor
@@ -165,7 +165,7 @@ class BillLayout {
     private void drawReceipt() throws  IOException {
 
         // "Receipt" title
-        graphics.setTransformation(MARGIN, 0, 1, 1, 0);
+        graphics.setTransformation(MARGIN, 0, 0, 1, 1);
         yPos = SLIP_HEIGHT - MARGIN - FontMetrics.getAscender(FONT_SIZE_TITLE);
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_RECEIPT, bill.getFormat().getLanguage()), 0,
                 yPos, FONT_SIZE_TITLE, true);
@@ -192,20 +192,20 @@ class BillLayout {
         drawLabelAndText(MultilingualText.KEY_CURRENCY, bill.getCurrency());
 
         // amount
-        graphics.setTransformation(MARGIN + CURRENCY_WIDTH_RC, 0, 1, 1, 0);
+        graphics.setTransformation(MARGIN + CURRENCY_WIDTH_RC, 0, 0, 1, 1);
         yPos = CURRENCY_AMOUNT_BASE_LINE + FontMetrics.getAscender(labelFontSize);
         if (amount != null) {
             drawLabelAndText(MultilingualText.KEY_AMOUNT, amount);
         } else {
             drawLabel(MultilingualText.KEY_AMOUNT);
-            graphics.setTransformation(0, 0, 1, 1, 0);
+            graphics.setTransformation(0, 0, 0, 1, 1);
             drawCorners(RECEIPT_WIDTH - MARGIN - AMOUNT_BOX_WIDTH_RC,
                     CURRENCY_AMOUNT_BASE_LINE + 2 - AMOUNT_BOX_HEIGHT_RC,
                     AMOUNT_BOX_WIDTH_RC, AMOUNT_BOX_HEIGHT_RC);
         }
 
         // acceptance point
-        graphics.setTransformation(0, 0, 1, 1, 0);
+        graphics.setTransformation(0, 0, 0, 1, 1);
         String label = MultilingualText.getText(MultilingualText.KEY_ACCEPTANCE_POINT, bill.getFormat().getLanguage());
         double w = FontMetrics.getTextWidth(label, labelFontSize) * 1.05; // TODO: proper text width for bold font
         graphics.putText(label, RECEIPT_WIDTH - MARGIN - w, 21, labelFontSize, true);
@@ -304,7 +304,7 @@ class BillLayout {
         if (separatorType == SeparatorType.NONE)
             return;
 
-		graphics.setTransformation(0, 0, 1, 1, 0);
+		graphics.setTransformation(0, 0, 0, 1, 1);
 		graphics.startPath();
 		graphics.moveTo(RECEIPT_WIDTH, 0);
 		if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS) {
@@ -342,7 +342,7 @@ class BillLayout {
         transform.rotate(angle);
         transform.translate(mirrored ? xOffset : -xOffset, yOffset);
         transform.scale(mirrored ? -scale : scale, scale);
-        graphics.setTransformation(transform.getTranslateX(), transform.getTranslateY(), mirrored ? -scale : scale, scale, angle);
+        graphics.setTransformation(transform.getTranslateX(), transform.getTranslateY(), angle, mirrored ? -scale : scale, scale);
 
 		graphics.startPath();
         graphics.moveTo(46.48, 126.784);

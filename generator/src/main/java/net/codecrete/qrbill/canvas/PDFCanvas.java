@@ -45,7 +45,7 @@ public class PDFCanvas extends AbstractCanvas {
     }
 
     @Override
-    public void setTransformation(double translateX, double translateY, double scaleX, double scaleY, double rotate) throws IOException {
+    public void setTransformation(double translateX, double translateY, double rotate, double scaleX, double scaleY) throws IOException {
         translateX *= MM_TO_PT;
         translateY *= MM_TO_PT;
 

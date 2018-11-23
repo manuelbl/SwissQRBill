@@ -52,7 +52,7 @@ class QRBillErrorsTest {
 		}
 
 		@Override
-		public void setTransformation(double translateX, double translateY, double scaleX, double scaleY, double rotate) throws IOException {
+		public void setTransformation(double translateX, double translateY, double rotate, double scaleX, double scaleY) throws IOException {
 			throw new IOException("not implemented");
 		}
 

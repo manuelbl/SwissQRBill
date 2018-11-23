@@ -196,7 +196,7 @@ public class SVGCanvas extends AbstractCanvas {
     }
 
     @Override
-    public void setTransformation(double translateX, double translateY, double scaleX, double scaleY, double rotate) throws IOException {
+    public void setTransformation(double translateX, double translateY, double rotate, double scaleX, double scaleY) throws IOException {
         if (isInGroup) {
             stream.write("</g>\n");
             isInGroup = false;
