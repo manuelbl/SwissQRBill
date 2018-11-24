@@ -8,6 +8,7 @@ package net.codecrete.qrbill.generator;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -201,6 +202,18 @@ public class Bill implements Serializable {
     }
 
     /**
+     * Gets the payment amount as a {@code Double} instance
+     *
+     * @return the amount
+     */
+    public Double getAmountAsDouble() {
+        if (amount != null)
+            return amount.doubleValue();
+        else
+            return null;
+    }
+
+    /**
      * Sets the payment amount.
      * <p>
      * Valid values are between 0.01 and 999,999,999.99
@@ -210,6 +223,21 @@ public class Bill implements Serializable {
      */
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    /**
+     * Sets the payment amount from a {@code Double} solid-line-with_scissors
+     * <p>
+     *     The value is saved with a scale of 2.
+     * </p>
+     *
+     * @param amount the amount
+     */
+    public void setAmountFromDouble(Double amount) {
+        if (amount != null)
+            this.amount = new BigDecimal(amount).setScale(2, RoundingMode.HALF_UP);
+        else
+            this.amount = null;
     }
 
     /**

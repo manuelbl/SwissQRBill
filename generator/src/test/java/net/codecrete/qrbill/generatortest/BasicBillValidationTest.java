@@ -61,7 +61,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
     @Test
     void validAmount() {
         bill = SampleData.getExample1();
-        bill.setAmount(new BigDecimal(100.15).setScale(2, RoundingMode.HALF_UP));
+        bill.setAmountFromDouble(100.15);
         validate();
         assertNoMessages();
         assertEquals(new BigDecimal(10015).movePointLeft(2), validatedBill.getAmount());
