@@ -15,7 +15,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
+import java.util.Locale;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
@@ -40,14 +40,17 @@ public class QRBillController implements BillApi {
 
     private final MessageLocalizer messageLocalizer;
 
+    private final NativeWebRequest request;
+
     /**
      * Creates an instance.
      * <p>
      * Single constructor for Spring dependency injection.
      * </p>
      */
-    public QRBillController(MessageLocalizer messageLocalizer) {
+    public QRBillController(MessageLocalizer messageLocalizer, NativeWebRequest request) {
         this.messageLocalizer = messageLocalizer;
+        this.request = request;
     }
 
     /**
@@ -272,28 +275,16 @@ public class QRBillController implements BillApi {
         if (outputSize == null)
             outputSize = OutputSize.A4_PORTRAIT_SHEET;
         if (language == null)
+            language = languageFromRequestHeader();
+        if (language == null)
             language = Language.EN;
         if (separatorType == null)
             separatorType = SeparatorType.SOLID_LINE_WITH_SCISSORS;
         if (fontFamily == null)
             fontFamily = "Helvetica";
 
-        if (graphicsFormat == null) {
-            Optional<NativeWebRequest> requestOptional = getRequest();
-            if (requestOptional.isPresent()) {
-                NativeWebRequest request = requestOptional.get();
-                for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("image/svg+xml"))) {
-                        graphicsFormat = GraphicsFormat.SVG;
-                        break;
-                    }
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("application/pdf"))) {
-                        graphicsFormat = GraphicsFormat.PDF;
-                        break;
-                    }
-                }
-            }
-        }
+        if (graphicsFormat == null)
+            graphicsFormat = graphicsFormatFromRequestHeader();
         if (graphicsFormat == null)
             graphicsFormat = GraphicsFormat.SVG;
 
@@ -308,4 +299,34 @@ public class QRBillController implements BillApi {
         format.setGraphicsFormat(graphicsFormat);
     }
 
+    private GraphicsFormat graphicsFormatFromRequestHeader() {
+        for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            if (mediaType.isCompatibleWith(MediaType.valueOf("image/svg+xml")))
+                return GraphicsFormat.SVG;
+            if (mediaType.isCompatibleWith(MediaType.valueOf("application/pdf")))
+                return GraphicsFormat.PDF;
+        }
+
+        return null;
+    }
+
+    private Language languageFromRequestHeader() {
+        String languages = request.getHeader("Accept-Language");
+        if (languages == null)
+            return null;
+
+        List<Locale.LanguageRange> languageList = Locale.LanguageRange.parse(languages);
+        for (Locale.LanguageRange range : languageList) {
+            if (range.getRange().startsWith("en"))
+                return Language.EN;
+            if (range.getRange().startsWith("de"))
+                return Language.DE;
+            if (range.getRange().startsWith("fr"))
+                return Language.FR;
+            if (range.getRange().startsWith("it"))
+                return Language.IT;
+        }
+
+        return null;
+    }
 }
