@@ -38,7 +38,7 @@ class SampleData {
         creditor.setTown("Irgendwo");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        bill.setReferenceNo("RF18539007547034");
+        bill.setReference("RF18539007547034");
         return bill;
     }
 }

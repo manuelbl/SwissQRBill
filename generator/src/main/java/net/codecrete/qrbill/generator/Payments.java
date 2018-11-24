@@ -199,27 +199,27 @@ public class Payments {
      * digit. White space is ignored.
      * </p>
      * 
-     * @param referenceNo ISO 11649 creditor reference to validate
+     * @param reference ISO 11649 creditor reference to validate
      * @return {@code true} if the creditor reference is valid, {@code false}
      *         otherwise
      */
-    public static boolean isValidISO11649Reference(String referenceNo) {
+    public static boolean isValidISO11649Reference(String reference) {
 
-        referenceNo = Strings.whiteSpaceRemoved(referenceNo);
+        reference = Strings.whiteSpaceRemoved(reference);
 
-        if (referenceNo.length() < 5 || referenceNo.length() > 25)
+        if (reference.length() < 5 || reference.length() > 25)
             return false;
 
-        if (!isAlphaNumeric(referenceNo))
+        if (!isAlphaNumeric(reference))
             return false;
 
-        if (referenceNo.charAt(0) != 'R' || referenceNo.charAt(1) != 'F')
+        if (reference.charAt(0) != 'R' || reference.charAt(1) != 'F')
             return false;
 
-        if (!Character.isDigit(referenceNo.charAt(2)) || !Character.isDigit(referenceNo.charAt(3)))
+        if (!Character.isDigit(reference.charAt(2)) || !Character.isDigit(reference.charAt(3)))
             return false;
 
-        return hasValidMod97CheckDigits(referenceNo);
+        return hasValidMod97CheckDigits(reference);
     }
 
     /**
@@ -286,33 +286,33 @@ public class Payments {
     private static final int[] MOD_10 = { 0, 9, 4, 6, 8, 2, 7, 1, 3, 5 };
 
     /**
-     * Validates if the string is a valid QR reference number.
+     * Validates if the string is a valid QR reference.
      * <p>
-     * A valid QR reference is a valid ISR reference number.
+     * A valid QR reference is a valid ISR reference.
      * </p>
      * <p>
      * The string is checked for valid characters, valid length and a valid check
      * digit. White space is ignored.
      * </p>
      * 
-     * @param referenceNo QR reference number to validate
+     * @param reference QR reference number to validate
      * @return {@code true} if the reference number is valid, {@code false}
      *         otherwise
      */
-    public static boolean isValidQRReferenceNo(String referenceNo) {
+    public static boolean isValidQRReference(String reference) {
 
-        referenceNo = Strings.whiteSpaceRemoved(referenceNo);
+        reference = Strings.whiteSpaceRemoved(reference);
 
-        if (!isNumeric(referenceNo))
+        if (!isNumeric(reference))
             return false;
 
         int carry = 0;
-        int len = referenceNo.length();
+        int len = reference.length();
         if (len != 27)
             return false;
 
         for (int i = 0; i < len; i++) {
-            int digit = referenceNo.charAt(i) - '0';
+            int digit = reference.charAt(i) - '0';
             carry = MOD_10[(carry + digit) % 10];
         }
 

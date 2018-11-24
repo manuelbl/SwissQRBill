@@ -24,55 +24,55 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
     @Test
     void validQRReference() {
         bill = SampleData.getExample1();
-        bill.setReferenceNo("210000000003139471430009017");
+        bill.setReference("210000000003139471430009017");
         validate();
         assertNoMessages();
-        assertEquals("210000000003139471430009017", validatedBill.getReferenceNo());
+        assertEquals("210000000003139471430009017", validatedBill.getReference());
     }
 
     @Test
     void validQRReferenceWithSpaces() {
         bill = SampleData.getExample1();
-        bill.setReferenceNo("21 00000 00003 13947 14300 09017");
+        bill.setReference("21 00000 00003 13947 14300 09017");
         validate();
         assertNoMessages();
-        assertEquals("210000000003139471430009017", validatedBill.getReferenceNo());
+        assertEquals("210000000003139471430009017", validatedBill.getReference());
     }
 
     @Test
     void validCreditorReference() {
         bill = SampleData.getExample1();
-        bill.setReferenceNo("RF18539007547034");
+        bill.setReference("RF18539007547034");
         validate();
         assertNoMessages();
-        assertEquals("RF18539007547034", validatedBill.getReferenceNo());
+        assertEquals("RF18539007547034", validatedBill.getReference());
     }
 
     @Test
     void qrIBANNoAndQRReference() {
         bill = SampleData.getExample1();
         bill.setAccount("CH3709000000304442225"); // non QR-IBAN
-        bill.setReferenceNo(null);
+        bill.setReference(null);
         validate();
         assertNoMessages();
-        assertNull(validatedBill.getReferenceNo());
+        assertNull(validatedBill.getReference());
     }
 
     @Test
-    void whitespaceReferenceNo() {
+    void whitespaceReference() {
         bill = SampleData.getExample1();
         bill.setAccount("CH3709000000304442225"); // non QR-IBAN
-        bill.setReferenceNo("   ");
+        bill.setReference("   ");
         validate();
         assertNoMessages();
-        assertNull(validatedBill.getReferenceNo());
+        assertNull(validatedBill.getReference());
     }
 
     @Test
     void missingReferenceForQRIBAN() {
         bill = SampleData.getExample1();
         bill.setAccount("CH4431999123000889012"); // QR-IBAN
-        bill.setReferenceNo(null);
+        bill.setReference(null);
         validate();
         assertSingleErrorMessage(Bill.FIELD_REFERENCE, "mandatory_for_qr_iban");
     }
@@ -80,31 +80,31 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
     @Test
     void whitespaceReferenceForQRIBAN() {
         bill = SampleData.getExample1();
-        bill.setReferenceNo("   ");
+        bill.setReference("   ");
         validate();
         assertSingleErrorMessage(Bill.FIELD_REFERENCE, "mandatory_for_qr_iban");
     }
 
     @Test
-    void invalidReferenceNo() {
+    void invalidReference() {
         bill = SampleData.getExample1();
-        bill.setReferenceNo("ABC");
+        bill.setReference("ABC");
         validate();
         assertSingleErrorMessage(Bill.FIELD_REFERENCE, "valid_qr_ref_no");
     }
 
     @Test
-    void invalidNumericReferenceNo() {
+    void invalidNumericReference() {
         bill = SampleData.getExample1();
-        bill.setReferenceNo("1234567890");
+        bill.setReference("1234567890");
         validate();
         assertSingleErrorMessage(Bill.FIELD_REFERENCE, "valid_qr_ref_no");
     }
 
     @Test
-    void invalidNonNumericReferenceNo() {
+    void invalidNonNumericReference() {
         bill = SampleData.getExample1();
-        bill.setReferenceNo("123ABC7890");
+        bill.setReference("123ABC7890");
         validate();
         assertSingleErrorMessage(Bill.FIELD_REFERENCE, "valid_qr_ref_no");
     }
@@ -112,7 +112,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
     @Test
     void invalidCharsInCreditorReference() {
         bill = SampleData.getExample1();
-        bill.setReferenceNo("RF38302!!3393");
+        bill.setReference("RF38302!!3393");
         validate();
         assertSingleErrorMessage(Bill.FIELD_REFERENCE, "valid_iso11649_creditor_ref");
     }
@@ -120,7 +120,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
     @Test
     void invalidCreditorReference() {
         bill = SampleData.getExample1();
-        bill.setReferenceNo("RF00539007547034");
+        bill.setReference("RF00539007547034");
         validate();
         assertSingleErrorMessage(Bill.FIELD_REFERENCE, "valid_iso11649_creditor_ref");
     }

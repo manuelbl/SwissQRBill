@@ -1,6 +1,6 @@
 {
     "preview_n_download": "Preview & Download",
-    "output_size": "Paper format of QR bill",
+    "output_size": "Paper format",
     "output_sizes": {
         "qr_bill_only": "QR bill only",
         "a4_portrait": "A4 portrait",
@@ -9,8 +9,8 @@
     "download_pdf": "Download as PDF",
     "download_svg": "Download as SVG",
     "close": "Close",
+    "account_payable_to": "Account / Payable to",
     "account": "Account",
-    "creditor": "Creditor",
     "name": "Name",
     "street": "Street",
     "house_number": "House number",
@@ -18,12 +18,13 @@
     "postal_code": "Postal code",
     "town": "Town",
     "payment_details": "Payment details",
+    "bill_format": "Bill format",
     "currency": "Currency",
     "amount": "Amount",
-    "reference_no": "Reference number",
+    "reference": "Reference",
     "unstructured_msg": "Additional information",
-    "slip_lang": "QR bill language",
-    "debtor": "Debtor",
+    "slip_lang": "Language",
+    "payable_by": "Payable by",
     "app_name": "Swiss QR Bill",
     "about": "About this app",
     "examples": "Examples",
@@ -39,6 +40,12 @@
         "de": "German",
         "fr": "French",
         "it": "Italian"
+    },
+    "separator_lines": "Separator lines",
+    "separator_type": {
+        "solid_line_with_scissors": "Lines with scisscors icon",
+        "solid_line": "Lines",
+        "none": "None"
     },
     "use_bill": "USE",
     "language": "Language"

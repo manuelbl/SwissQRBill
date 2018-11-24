@@ -35,7 +35,7 @@ class InvalidRequestTests {
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
                         "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
                         "\"postalCode\": \"2100\", \"town\": \"Irgendwo\", \"countryCode\": \"CH\" }, " +
-                        "\"referenceNo\": \"RF18539007547034\" }"
+                        "\"reference\": \"RF18539007547034\" }"
         );
 
         assertEquals(400, response.code());
@@ -51,7 +51,7 @@ class InvalidRequestTests {
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
                         "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
                         "\"postalCode\": \"2100\", \"town\": \"Irgendwo\", \"countryCode\": \"CH\" }, " +
-                        "\"referenceNo\": \"RF18539007547034\" }"
+                        "\"reference\": \"RF18539007547034\" }"
         );
 
         assertEquals(400, response.code());
@@ -65,7 +65,7 @@ class InvalidRequestTests {
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
                         "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
                         "\"postalCode\": \"2100\", \"town\": \"Irgendwo\", \"countryCode\": \"CH\" }, " +
-                        "\"referenceNo\": \"RF18539007547034\" }"
+                        "\"reference\": \"RF18539007547034\" }"
         );
 
         assertEquals(400, response.code());
@@ -78,7 +78,7 @@ class InvalidRequestTests {
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
                         "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
                         "\"postalCode\": \"2100\", \"town\": \"Irgendwo\", \"countryCode\": \"CH\" }, " +
-                        "\"referenceNo\": \"RF18539007547034\" }"
+                        "\"reference\": \"RF18539007547034\" }"
         );
 
         assertEquals(400, response.code());
@@ -91,7 +91,7 @@ class InvalidRequestTests {
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
                         "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
                         "\"postalCode\": \"2100\", \"town\": \"Irgendwo\", \"countryCode\": \"CH\" }, " +
-                        "\"referenceNo\": \"RF18539007547034\" }"
+                        "\"reference\": \"RF18539007547034\" }"
         );
 
         assertEquals(404, response.code());

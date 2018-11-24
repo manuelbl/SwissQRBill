@@ -144,7 +144,7 @@ class SampleQrCodeText {
         debtor.setTown(" Rorschach");
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
-        bill.setReferenceNo("210000000003139471430009017");
+        bill.setReference("210000000003139471430009017");
         bill.setUnstructuredMessage("Order dated 18.06.2020");
         bill.setBillInformation("//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
         bill.setAlternativeSchemes(new AlternativeScheme[] {
@@ -265,7 +265,7 @@ class SampleQrCodeText {
         debtor.setAddressLine2("9400 Rorschach");
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
-        bill.setReferenceNo("RF18539007547034");
+        bill.setReference("RF18539007547034");
         return bill;
     }
     private static String handleLinefeed(String text, boolean withCRLF) {

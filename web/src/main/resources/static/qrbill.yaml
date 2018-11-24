@@ -275,7 +275,7 @@ components:
           description: "Creditor's account"
         creditor:
           $ref: "#/components/schemas/Address"
-        referenceNo:
+        reference:
           type: string
           description: "Payment reference number (QR/ISR reference number or ISO 11649 creditor reference)"
         unstructuredMessage:

@@ -88,13 +88,14 @@ export class BillDataComponent implements OnInit {
         amount: new FormControl(this.bill.amount, {
           validators: [Validators.min(0.01), Validators.max(999999999.99)]
         }),
-        referenceNo: new FormControl(this.bill.referenceNo, {
+        reference: new FormControl(this.bill.reference, {
           validators: [Validators.pattern('[A-Za-z0-9 ]{5,40}')]
         }),
         unstructuredMessage: new FormControl(this.bill.unstructuredMessage),
         format: this.formBuilder.group({
           language: new FormControl(this.bill.format.language),
-          outputSize: new FormControl(this.bill.format.outputSize)
+          outputSize: new FormControl(this.bill.format.outputSize),
+          separatorType: new FormControl(this.bill.format.separatorType)
         }),
         debtor: this.formBuilder.group({
           name: new FormControl(this.bill.debtor.name),

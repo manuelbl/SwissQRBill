@@ -1,6 +1,6 @@
 {
     "preview_n_download": "Vorschau & Herunterladen",
-    "output_size": "Papierformat der QR-Rechnung",
+    "output_size": "Papierformat",
     "output_sizes": {
         "qr_bill_only": "Nur QR-Rechnung",
         "a4_portrait": "A4 Hochformat",
@@ -9,8 +9,8 @@
     "download_pdf": "Als PDF herunterladen",
     "download_svg": "Als SVG herunterladen",
     "close": "Schliessen",
+    "account_payable_to": "Konto / Zahlbar an",
     "account": "Konto",
-    "creditor": "Zahlungsempfänger",
     "name": "Name",
     "street": "Strasse",
     "house_number": "Hausnummer",
@@ -18,12 +18,13 @@
     "postal_code": "Postleitzahl",
     "town": "Ort",
     "payment_details": "Zahlungsinformationen",
+    "bill_format": "Rechnungsformat",
     "currency": "Währung",
     "amount": "Betrag",
-    "reference_no": "Referenznummer",
+    "reference": "Referenz",
     "unstructured_msg": "Zusätzliche Informationen",
-    "slip_lang": "Sprache der QR-Rechnung",
-    "debtor": "Zahlungspflichtiger",
+    "slip_lang": "Sprache",
+    "payable_by": "Zahlbar durch",
     "app_name": "Schweizer QR-Rechnung",
     "examples": "Beispiele",
     "about": "Über diese App",
@@ -39,6 +40,12 @@
         "de": "Deutsch",
         "fr": "Französisch",
         "it": "Italienisch"
+    },
+    "separator_lines": "Trennlinien",
+    "separator_type": {
+        "solid_line_with_scissors": "Linien mit Scherensymbol",
+        "solid_line": "Linien",
+        "none": "Keine"
     },
     "use_bill": "VERWENDEN",
     "language": "Sprache"

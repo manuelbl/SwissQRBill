@@ -40,7 +40,7 @@ class SampleData {
         debtor.setTown(" Rorschach");
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
-        bill.setReferenceNo("210000 000 00313 9471430009017");
+        bill.setReference("210000 000 00313 9471430009017");
         bill.setUnstructuredMessage("Instruction of 15.09.2019");
         bill.setBillInformation("//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
         return bill;
@@ -61,7 +61,7 @@ class SampleData {
         bill.setAmount(null);
         bill.setCurrency("CHF");
         bill.setDebtor(null);
-        bill.setReferenceNo("");
+        bill.setReference("");
         bill.setUnstructuredMessage("Donation to the Winterfest Campaign");
         return bill;
     }
@@ -88,7 +88,7 @@ class SampleData {
         debtor.setTown("Rorschach");
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
-        bill.setReferenceNo("RF18539007547034");
+        bill.setReference("RF18539007547034");
         bill.setUnstructuredMessage(null);
         return bill;
     }
@@ -108,7 +108,7 @@ class SampleData {
         bill.setAmount(null);
         bill.setCurrency("CHF");
         bill.setDebtor(null);
-        bill.setReferenceNo("");
+        bill.setReference("");
         bill.setUnstructuredMessage("");
         return bill;
     }
@@ -131,7 +131,7 @@ class SampleData {
         debtor.setAddressLine2("Poughkeepsie NY 12601-1233");
         debtor.setCountryCode("US");
         bill.setDebtor(debtor);
-        bill.setReferenceNo("210000 000 00313 9471430009017");
+        bill.setReference("210000 000 00313 9471430009017");
         bill.setUnstructuredMessage("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed");
         bill.setBillInformation("//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
         return bill;
@@ -148,7 +148,7 @@ class SampleData {
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
         bill.setCurrency("EUR");
-        bill.setReferenceNo("210000 000 00313 9471430009017");
+        bill.setReference("210000 000 00313 9471430009017");
         bill.setUnstructuredMessage("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed");
         bill.setBillInformation("//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
         return bill;

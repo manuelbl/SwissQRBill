@@ -58,14 +58,14 @@ public class QRCodeText {
 
         // RmtInf
         String referenceType = "NON";
-        if (bill.getReferenceNo() != null) {
-            if (bill.getReferenceNo().startsWith("RF"))
+        if (bill.getReference() != null) {
+            if (bill.getReference().startsWith("RF"))
                 referenceType = "SCOR";
-            else if (bill.getReferenceNo().length() > 0)
+            else if (bill.getReference().length() > 0)
                 referenceType = "QRR";
         }
         appendDataField(referenceType); // Tp
-        appendDataField(bill.getReferenceNo()); // Ref
+        appendDataField(bill.getReference()); // Ref
 
         // AddInf
         appendDataField(bill.getUnstructuredMessage()); // Unstrd
@@ -168,7 +168,7 @@ public class QRCodeText {
         bill.setDebtor(decodeAddress(lines, 20, true));
 
         // reference type is ignored (line 27)
-        bill.setReferenceNo(lines[28]);
+        bill.setReference(lines[28]);
         bill.setUnstructuredMessage(lines[29]);
         if (!"EPD".equals(lines[30]))
             throwSingleValidationError(Bill.FIELD_QR_TYPE, QRBill.KEY_VALID_DATA_STRUCTURE);

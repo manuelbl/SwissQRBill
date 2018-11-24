@@ -396,7 +396,7 @@ class BillLayout {
         String account = Payments.formatIBAN(bill.getAccount());
         accountPayableTo = account + "\n" + formatPersonForDisplay(bill.getCreditor());
 
-        reference = formatReferenceNumber(bill.getReferenceNo());
+        reference = formatReferenceNumber(bill.getReference());
 
         String info = bill.getUnstructuredMessage();
         if (bill.getBillInformation() != null) {

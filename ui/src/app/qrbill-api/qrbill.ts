@@ -13,7 +13,7 @@ export class QrBill {
   currency?: string;
   account?: string;
   creditor: Address;
-  referenceNo?: string;
+  reference?: string;
   unstructuredMessage?: string;
   debtor?: Address;
   format?: BillFormat;
@@ -25,7 +25,7 @@ export class QrBill {
       currency: bill.currency,
       account: bill.account,
       creditor: Address.clone(bill.creditor),
-      referenceNo: bill.referenceNo,
+      reference: bill.reference,
       unstructuredMessage: bill.unstructuredMessage,
       debtor: Address.clone(bill.debtor),
       format: BillFormat.clone(bill.format)

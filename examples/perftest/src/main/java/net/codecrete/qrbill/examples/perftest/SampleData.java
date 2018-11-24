@@ -62,7 +62,7 @@ public class SampleData {
         debtor.setTown(" Rorschach");
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
-        bill.setReferenceNo("210000 000 00313 9471430009017");
+        bill.setReference("210000 000 00313 9471430009017");
         bill.setAdditionalInfo("Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
         return bill;
     }
@@ -84,7 +84,7 @@ public class SampleData {
         bill.setCurrency("CHF");
         bill.setDueDate(null);
         bill.setDebtor(null);
-        bill.setReferenceNo("");
+        bill.setReference("");
         bill.setAdditionalInfo("Donation to the Winterfest Campaign");
         return bill;
     }
@@ -120,7 +120,7 @@ public class SampleData {
         debtor.setTown("Rorschach");
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
-        bill.setReferenceNo("RF18539007547034");
+        bill.setReference("RF18539007547034");
         bill.setAdditionalInfo(null);
         return bill;
     }
@@ -142,7 +142,7 @@ public class SampleData {
         bill.setCurrency("CHF");
         bill.setDueDate(null);
         bill.setDebtor(null);
-        bill.setReferenceNo("");
+        bill.setReference("");
         bill.setAdditionalInfo("");
         return bill;
     }

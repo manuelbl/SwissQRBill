@@ -46,28 +46,28 @@ export class Payments {
     return sum;
   }
 
-  public static createQRReference(referenceNo: string): string {
-    referenceNo = Payments.whiteSpaceRemoved(referenceNo);
-    if (referenceNo.length > 26) {
+  public static createQRReference(reference: string): string {
+    reference = Payments.whiteSpaceRemoved(reference);
+    if (reference.length > 26) {
       throw new PaymentValidationError(
-        'Reference number too long: ' + referenceNo
+        'Reference number too long: ' + reference
       );
     }
-    const mod10 = Payments.calcMod10(referenceNo);
-    return referenceNo + String.fromCharCode(48 + mod10);
+    const mod10 = Payments.calcMod10(reference);
+    return reference + String.fromCharCode(48 + mod10);
   }
 
-  private static calcMod10(referenceNo: string): number {
+  private static calcMod10(reference: string): number {
     let carry = 0;
-    const len = referenceNo.length;
-    if (referenceNo.replace(/\D/g, '') !== referenceNo) {
+    const len = reference.length;
+    if (reference.replace(/\D/g, '') !== reference) {
       throw new PaymentValidationError(
-        'Invalid character in reference number: ' + referenceNo
+        'Invalid character in reference number: ' + reference
       );
     }
 
     for (let i = 0; i < len; i++) {
-      const digit = referenceNo.charCodeAt(i) - 48;
+      const digit = reference.charCodeAt(i) - 48;
       carry = Payments.MOD_10[(carry + digit) % 10];
     }
     return (10 - carry) % 10;

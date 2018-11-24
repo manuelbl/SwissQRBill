@@ -24,32 +24,32 @@ class QRReferenceTest {
 
     @Test
     void validQRReference() {
-        assertTrue(Payments.isValidQRReferenceNo("210000000003139471430009017"));
+        assertTrue(Payments.isValidQRReference("210000000003139471430009017"));
     }
 
     @Test
     void invalidLengthQRReference() {
-        assertFalse(Payments.isValidQRReferenceNo("2100000003139471430009017"));
+        assertFalse(Payments.isValidQRReference("2100000003139471430009017"));
     }
 
     @Test
     void validQRReferenceWithSpaces() {
-        assertTrue(Payments.isValidQRReferenceNo("21 00000 00003 13947 14300 09017"));
+        assertTrue(Payments.isValidQRReference("21 00000 00003 13947 14300 09017"));
     }
 
     @Test
     void invalidQRReferenceWithLetters() {
-        assertFalse(Payments.isValidQRReferenceNo("210000S00003139471430009017"));
+        assertFalse(Payments.isValidQRReference("210000S00003139471430009017"));
     }
 
     @Test
     void invalidQRReferenceWithSpecialChar() {
-        assertFalse(Payments.isValidQRReferenceNo("210000000%03139471430009017"));
+        assertFalse(Payments.isValidQRReference("210000000%03139471430009017"));
     }
 
     @Test
     void invalidCheckDigitQRReference() {
-        assertFalse(Payments.isValidQRReferenceNo("210000000003139471430009016"));
+        assertFalse(Payments.isValidQRReference("210000000003139471430009016"));
     }
 
     @Test

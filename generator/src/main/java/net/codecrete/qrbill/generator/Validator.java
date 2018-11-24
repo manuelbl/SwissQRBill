@@ -51,7 +51,7 @@ class Validator {
         validateAmount();
         boolean isQRBillIBAN = validateAccountNumber();
         validateCreditor();
-        validateReferenceNo(isQRBillIBAN);
+        validateReference(isQRBillIBAN);
         validateUnstructuredMessage();
         validateDebtor();
         validateBillInformation();
@@ -114,30 +114,30 @@ class Validator {
         billOut.setCreditor(creditor);
     }
 
-    private void validateReferenceNo(boolean isQRBillIBAN) {
-        String referenceNo = Strings.trimmed(billIn.getReferenceNo());
+    private void validateReference(boolean isQRBillIBAN) {
+        String reference = Strings.trimmed(billIn.getReference());
 
-        if (referenceNo == null) {
+        if (reference == null) {
             if (isQRBillIBAN)
                 validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_MANDATORY_FOR_QR_IBAN);
             return;
         }
 
-        referenceNo = Strings.whiteSpaceRemoved(referenceNo);
-        if (referenceNo.startsWith("RF")) {
-            if (!Payments.isValidISO11649Reference(referenceNo)) {
+        reference = Strings.whiteSpaceRemoved(reference);
+        if (reference.startsWith("RF")) {
+            if (!Payments.isValidISO11649Reference(reference)) {
                 validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE,
                         QRBill.KEY_VALID_ISO11649_CREDITOR_REF);
             } else {
-                billOut.setReferenceNo(referenceNo);
+                billOut.setReference(reference);
             }
         } else {
-            if (referenceNo.length() < 27)
-                referenceNo = "00000000000000000000000000".substring(0, 27 - referenceNo.length()) + referenceNo;
-            if (!Payments.isValidQRReferenceNo(referenceNo))
+            if (reference.length() < 27)
+                reference = "00000000000000000000000000".substring(0, 27 - reference.length()) + reference;
+            if (!Payments.isValidQRReference(reference))
                 validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_VALID_QR_REF_NO);
             else
-                billOut.setReferenceNo(referenceNo);
+                billOut.setReference(reference);
         }
     }
 

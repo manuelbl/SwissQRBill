@@ -98,8 +98,8 @@ class DecodedTextTest {
     private void normalizeSourceBill(Bill bill) {
         bill.getFormat().setLanguage(Language.DE);
         bill.setAccount(bill.getAccount().replace(" ", ""));
-        if (bill.getReferenceNo() != null)
-            bill.setReferenceNo(bill.getReferenceNo().replace(" ", ""));
+        if (bill.getReference() != null)
+            bill.setReference(bill.getReference().replace(" ", ""));
         if (bill.getCreditor() != null) {
             if (bill.getCreditor().getStreet() == null)
                 bill.getCreditor().setStreet(""); // replace null with empty string
@@ -110,8 +110,8 @@ class DecodedTextTest {
             if (bill.getDebtor().getTown() != null)
                 bill.getDebtor().setTown(bill.getDebtor().getTown().trim());
         }
-        if (bill.getReferenceNo() == null)
-            bill.setReferenceNo(""); // replace null with empty string
+        if (bill.getReference() == null)
+            bill.setReference(""); // replace null with empty string
         if (bill.getUnstructuredMessage() == null)
             bill.setUnstructuredMessage(""); // replace null with empty string
         if (bill.getBillInformation() == null)

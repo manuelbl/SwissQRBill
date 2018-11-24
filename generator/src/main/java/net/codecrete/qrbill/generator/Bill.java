@@ -166,7 +166,7 @@ public class Bill implements Serializable {
     private String currency = "CHF";
     private String account = null;
     private Address creditor = new Address();
-    private String referenceNo = null;
+    private String reference = null;
     private Address debtor = null;
     private String unstructuredMessage = null;
     private String billInformation = null;
@@ -274,30 +274,30 @@ public class Bill implements Serializable {
     }
 
     /**
-     * Gets the payment reference number
+     * Gets the payment reference
      *
-     * @return the reference number
+     * @return the reference
      */
-    public String getReferenceNo() {
-        return referenceNo;
+    public String getReference() {
+        return reference;
     }
 
     /**
-     * Sets the payment reference number.
+     * Sets the payment reference.
      * <p>
-     * The reference number is mandatory for QR IBANs, i.e. IBANs in the range
+     * The reference is mandatory for QR IBANs, i.e. IBANs in the range
      * CHxx30000xxxxxx through CHxx31999xxxxx.
      * </p>
      * <p>
-     * If specified, the reference number must be either a valid QR reference (which
-     * corresponds to the form ISR reference number) or a valid creditor reference
+     * If specified, the reference must be either a valid QR reference (which
+     * corresponds to the form ISR reference) or a valid creditor reference
      * according to ISO 11649 ("RFxxxx"). Both may contain spaces for formatting.
      * </p>
      *
-     * @param referenceNo the payment reference number
+     * @param reference the payment reference number
      */
-    public void setReferenceNo(String referenceNo) {
-        this.referenceNo = referenceNo;
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     /**
@@ -312,7 +312,7 @@ public class Bill implements Serializable {
      *                                  characters
      */
     public void createAndSetCreditorReference(String rawReference) {
-        setReferenceNo(Payments.createISO11649Reference(rawReference));
+        setReference(Payments.createISO11649Reference(rawReference));
     }
 
     /**
@@ -429,7 +429,7 @@ public class Bill implements Serializable {
                 Objects.equals(currency, bill.currency) &&
                 Objects.equals(account, bill.account) &&
                 Objects.equals(creditor, bill.creditor) &&
-                Objects.equals(referenceNo, bill.referenceNo) &&
+                Objects.equals(reference, bill.reference) &&
                 Objects.equals(debtor, bill.debtor) &&
                 Objects.equals(unstructuredMessage, bill.unstructuredMessage) &&
                 Objects.equals(billInformation, bill.billInformation) &&
@@ -443,7 +443,7 @@ public class Bill implements Serializable {
     @Override
     public int hashCode() {
 
-        int result = Objects.hash(version, amount, currency, account, creditor, referenceNo, debtor, unstructuredMessage, billInformation, format);
+        int result = Objects.hash(version, amount, currency, account, creditor, reference, debtor, unstructuredMessage, billInformation, format);
         result = 31 * result + Arrays.hashCode(alternativeSchemes);
         return result;
     }
@@ -459,7 +459,7 @@ public class Bill implements Serializable {
                 ", currency='" + currency + '\'' +
                 ", account='" + account + '\'' +
                 ", creditor=" + creditor +
-                ", referenceNo='" + referenceNo + '\'' +
+                ", reference='" + reference + '\'' +
                 ", debtor=" + debtor +
                 ", unstructuredMessage='" + unstructuredMessage + '\'' +
                 ", billInformation='" + billInformation + '\'' +

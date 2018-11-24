@@ -29,7 +29,7 @@ class QrBillDTOConverter {
         dto.setCurrency(bill.getCurrency());
         dto.setAccount(bill.getAccount());
         dto.setCreditor(toDtoAddress(bill.getCreditor()));
-        dto.setReferenceNo(bill.getReferenceNo());
+        dto.setReference(bill.getReference());
         dto.setUnstructuredMessage(bill.getUnstructuredMessage());
         dto.setBillInformation(bill.getBillInformation());
         dto.setAlternativeSchemes(toDtoSchemes(bill.getAlternativeSchemes()));
@@ -48,7 +48,7 @@ class QrBillDTOConverter {
         bill.setCurrency(dto.getCurrency());
         bill.setAccount(dto.getAccount());
         bill.setCreditor(fromDtoAddress(dto.getCreditor()));
-        bill.setReferenceNo(dto.getReferenceNo());
+        bill.setReference(dto.getReference());
         bill.setUnstructuredMessage(dto.getUnstructuredMessage());
         bill.setBillInformation(dto.getBillInformation());
         bill.setAlternativeSchemes(fromDtoSchemes(dto.getAlternativeSchemes()));

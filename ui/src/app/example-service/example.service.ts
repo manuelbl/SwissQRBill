@@ -29,11 +29,12 @@ export class ExampleService {
           countryCode: 'CH'
         },
         unstructuredMessage: '',
-        referenceNo: '',
+        reference: '',
         debtor: {},
         format: {
           language: 'de',
-          outputSize: 'qr-bill-only'
+          outputSize: 'qr-bill-only',
+          separatorType: 'solid-line-with-scissors'
         }
       },
       // tslint:disable-next-line:max-line-length
@@ -54,7 +55,7 @@ export class ExampleService {
         },
         currency: 'CHF',
         amount: 371.2,
-        referenceNo: '0000383800001776',
+        reference: '0000383800001776',
         unstructuredMessage: '',
         debtor: {
           name: 'Céline Pythoud',
@@ -66,7 +67,8 @@ export class ExampleService {
         },
         format: {
           language: 'fr',
-          outputSize: 'qr-bill-only'
+          outputSize: 'qr-bill-only',
+          separatorType: 'solid-line-with-scissors'
         }
       },
       // tslint:disable-next-line:max-line-length
@@ -87,7 +89,7 @@ export class ExampleService {
         },
         currency: 'EUR',
         amount: 287.3,
-        referenceNo: '870012938238139900001238028',
+        reference: '870012938238139900001238028',
         unstructuredMessage: 'Rechnungsnr. 10978 / Auftragsrnr. 3987',
         debtor: {
           name: 'Simon Glarner',
@@ -99,7 +101,8 @@ export class ExampleService {
         },
         format: {
           language: 'de',
-          outputSize: 'qr-bill-only'
+          outputSize: 'qr-bill-only',
+          separatorType: 'solid-line-with-scissors'
         }
       },
       // tslint:disable-next-line:max-line-length
@@ -119,12 +122,13 @@ export class ExampleService {
           town: 'Lugano'
         },
         unstructuredMessage: '',
-        referenceNo: '',
+        reference: '',
         debtor: {},
         currency: 'CHF',
         format: {
           language: 'it',
-          outputSize: 'qr-bill-only'
+          outputSize: 'qr-bill-only',
+          separatorType: 'solid-line-with-scissors'
         }
       },
       // tslint:disable-next-line:max-line-length
@@ -145,7 +149,7 @@ export class ExampleService {
           town: 'Biel',
           countryCode: 'CH'
         },
-        referenceNo: '210000000003139471430009017',
+        reference: '210000000003139471430009017',
         unstructuredMessage:
           'Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010',
         debtor: {
@@ -158,7 +162,8 @@ export class ExampleService {
         },
         format: {
           language: 'en',
-          outputSize: 'qr-bill-only'
+          outputSize: 'qr-bill-only',
+          separatorType: 'solid-line-with-scissors'
         }
       },
       // tslint:disable-next-line:max-line-length
@@ -177,12 +182,13 @@ export class ExampleService {
           town: 'Bern',
           countryCode: 'CH'
         },
-        referenceNo: null,
+        reference: null,
         unstructuredMessage: 'Donation to the Winterfest campaign',
         debtor: {},
         format: {
           language: 'fr',
-          outputSize: 'qr-bill-only'
+          outputSize: 'qr-bill-only',
+          separatorType: 'solid-line-with-scissors'
         }
       },
       // tslint:disable-next-line:max-line-length

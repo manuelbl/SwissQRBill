@@ -94,7 +94,7 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
 
             // more bill data
             bill.setDueDate(LocalDate.of(2019, 10, 31));
-            bill.setReferenceNo("RF18539007547034");
+            bill.setReference("RF18539007547034");
             bill.setAdditionalInfo(null);
 
             // Set debtor

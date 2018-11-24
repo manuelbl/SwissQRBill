@@ -74,17 +74,17 @@ class BillTest {
     }
 
     @Test
-    void setReferenceNo() {
+    void setReference() {
         Bill bill = new Bill();
-        bill.setReferenceNo("RF839DF38202934");
-        assertEquals("RF839DF38202934", bill.getReferenceNo());
+        bill.setReference("RF839DF38202934");
+        assertEquals("RF839DF38202934", bill.getReference());
     }
 
     @Test
     void createCreditorReference() {
         Bill bill = new Bill();
         bill.createAndSetCreditorReference("ABCD3934803");
-        assertEquals("RF93ABCD3934803", bill.getReferenceNo());
+        assertEquals("RF93ABCD3934803", bill.getReference());
     }
 
     @Test
