@@ -28,7 +28,7 @@ import java.util.Objects;
 
 
 /**
- * An appendable sequence of bits (0's and 1's).
+ * An appendable sequence of bits (0s and 1s). Mainly used by {@link QrSegment}.
  */
 public final class BitBuffer implements Cloneable {
 	
@@ -36,7 +36,7 @@ public final class BitBuffer implements Cloneable {
 	
 	private BitSet data;
 	
-	private int bitLength;
+	private int bitLength;  // Non-negative
 	
 	
 	
@@ -59,6 +59,7 @@ public final class BitBuffer implements Cloneable {
 	 * @return the length of this sequence
 	 */
 	public int bitLength() {
+		assert bitLength >= 0;
 		return bitLength;
 	}
 	
@@ -67,7 +68,7 @@ public final class BitBuffer implements Cloneable {
 	 * Returns the bit at the specified index, yielding 0 or 1.
 	 * @param index the index to get the bit at
 	 * @return the bit at the specified index
-	 * @throws IndexOutOfBoundsException if index &lt; 0 or index &ge; bitLength
+	 * @throws IndexOutOfBoundsException if index &lt; 0 or index &#x2265; bitLength
 	 */
 	public int getBit(int index) {
 		if (index < 0 || index >= bitLength)
@@ -77,48 +78,43 @@ public final class BitBuffer implements Cloneable {
 	
 	
 	/**
-	 * Packs this buffer's bits into bytes in big endian,
-	 * padding with '0' bit values, and returns the new array.
-	 * @return this sequence as a new array of bytes (not {@code null})
-	 */
-	public byte[] getBytes() {
-		byte[] result = new byte[(bitLength + 7) / 8];
-		for (int i = 0; i < bitLength; i++)
-			result[i >>> 3] |= data.get(i) ? 1 << (7 - (i & 7)) : 0;
-		return result;
-	}
-	
-	
-	/**
-	 * Appends the specified number of low bits of the specified value
-	 * to this sequence. Requires 0 &le; val &lt; 2<sup>len</sup>.
+	 * Appends the specified number of low-order bits of the specified value to this
+	 * buffer. Requires 0 &#x2264; len &#x2264; 31 and 0 &#x2264; val &lt; 2<sup>len</sup>.
 	 * @param val the value to append
-	 * @param len the number of low bits in the value to take
+	 * @param len the number of low-order bits in the value to take
+	 * @throws IllegalArgumentException if the value or number of bits is out of range
+	 * @throws IllegalStateException if appending the data
+	 * would make bitLength exceed Integer.MAX_VALUE
 	 */
 	public void appendBits(int val, int len) {
 		if (len < 0 || len > 31 || val >>> len != 0)
 			throw new IllegalArgumentException("Value out of range");
+		if (Integer.MAX_VALUE - bitLength < len)
+			throw new IllegalStateException("Maximum length reached");
 		for (int i = len - 1; i >= 0; i--, bitLength++)  // Append bit by bit
-			data.set(bitLength, ((val >>> i) & 1) != 0);
+			data.set(bitLength, QrCode.getBit(val, i));
 	}
 	
 	
 	/**
-	 * Appends the bit data of the specified segment to this bit buffer.
-	 * @param seg the segment whose data to append (not {@code null})
-	 * @throws NullPointerException if the segment is {@code null}
+	 * Appends the content of the specified bit buffer to this buffer.
+	 * @param bb the bit buffer whose data to append (not {@code null})
+	 * @throws NullPointerException if the bit buffer is {@code null}
+	 * @throws IllegalStateException if appending the data
+	 * would make bitLength exceed Integer.MAX_VALUE
 	 */
-	public void appendData(QrSegment seg) {
-		Objects.requireNonNull(seg);
-		BitBuffer bb = seg.data;
+	public void appendData(BitBuffer bb) {
+		Objects.requireNonNull(bb);
+		if (Integer.MAX_VALUE - bitLength < bb.bitLength)
+			throw new IllegalStateException("Maximum length reached");
 		for (int i = 0; i < bb.bitLength; i++, bitLength++)  // Append bit by bit
 			data.set(bitLength, bb.data.get(i));
 	}
 	
 	
 	/**
-	 * Returns a copy of this bit buffer object.
-	 * @return a copy of this bit buffer object
+	 * Returns a new copy of this buffer.
+	 * @return a new copy of this buffer (not {@code null})
 	 */
 	public BitBuffer clone() {
 		try {

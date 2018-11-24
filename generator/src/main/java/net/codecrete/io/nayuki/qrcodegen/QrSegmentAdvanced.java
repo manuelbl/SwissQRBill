@@ -29,241 +29,261 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
+import net.codecrete.io.nayuki.qrcodegen.QrSegment.Mode;
 
 
+/**
+ * Splits text into optimal segments and encodes kanji segments.
+ * Provides static functions only; not instantiable.
+ * @see QrSegment
+ * @see QrCode
+ */
 public final class QrSegmentAdvanced {
 	
 	/*---- Optimal list of segments encoder ----*/
 	
 	/**
-	 * Returns a new mutable list of zero or more segments to represent the specified Unicode text string.
-	 * The resulting list optimally minimizes the total encoded bit length, subjected to the constraints given
-	 * by the specified {error correction level, minimum version number, maximum version number}, plus the additional
-	 * constraint that the segment modes {NUMERIC, ALPHANUMERIC, BYTE} can be used but KANJI cannot be used.
-	 * <p>This function can be viewed as a significantly more sophisticated and slower replacement
-	 * for {@link QrSegment#makeSegments(String)}, but requiring more input parameters in a way
-	 * that overlaps with {@link QrCode#encodeSegments(List,QrCode.Ecc,int,int,int,boolean)}.</p>
-	 * @param text the text to be encoded, which can be any Unicode string
-	 * @param ecl the error correction level to use
-	 * @param minVersion the minimum allowed version of the QR symbol (at least 1)
-	 * @param maxVersion the maximum allowed version of the QR symbol (at most 40)
-	 * @return a list of segments containing the text, minimizing the bit length with respect to the constraints
-	 * @throws NullPointerException if the data or error correction level is {@code null}
-	 * @throws IllegalArgumentException if 1 &le; minVersion &le; maxVersion &le; 40 is violated,
-	 * or if the data is too long to fit in a QR Code at maxVersion at the ECL
+	 * Returns a list of zero or more segments to represent the specified Unicode text string.
+	 * The resulting list optimally minimizes the total encoded bit length, subjected to the constraints
+	 * in the specified {error correction level, minimum version number, maximum version number}.
+	 * <p>This function can utilize all four text encoding modes: numeric, alphanumeric, byte (UTF-8),
+	 * and kanji. This can be considered as a sophisticated but slower replacement for {@link
+	 * QrSegment#makeSegments(String)}. This requires more input parameters because it searches a
+	 * range of versions, like {@link QrCode#encodeSegments(List,QrCode.Ecc,int,int,int,boolean)}.</p>
+	 * @param text the text to be encoded (not {@code null}), which can be any Unicode string
+	 * @param ecl the error correction level to use (not {@code null})
+	 * @param minVersion the minimum allowed version of the QR Code (at least 1)
+	 * @param maxVersion the maximum allowed version of the QR Code (at most 40)
+	 * @return a new mutable list (not {@code null}) of segments (not {@code null})
+	 * containing the text, minimizing the bit length with respect to the constraints
+	 * @throws NullPointerException if the text or error correction level is {@code null}
+	 * @throws IllegalArgumentException if 1 &#x2264; minVersion &#x2264; maxVersion &#x2264; 40 is violated
+	 * @throws DataTooLongException if the text fails to fit in the maxVersion QR Code at the ECL
 	 */
 	public static List<QrSegment> makeSegmentsOptimally(String text, QrCode.Ecc ecl, int minVersion, int maxVersion) {
 		// Check arguments
 		Objects.requireNonNull(text);
 		Objects.requireNonNull(ecl);
-		if (!(1 <= minVersion && minVersion <= maxVersion && maxVersion <= 40))
+		if (!(QrCode.MIN_VERSION <= minVersion && minVersion <= maxVersion && maxVersion <= QrCode.MAX_VERSION))
 			throw new IllegalArgumentException("Invalid value");
 		
 		// Iterate through version numbers, and make tentative segments
 		List<QrSegment> segs = null;
-		for (int version = minVersion; version <= maxVersion; version++) {
+		int[] codePoints = toCodePoints(text);
+		for (int version = minVersion; ; version++) {
 			if (version == minVersion || version == 10 || version == 27)
-				segs = makeSegmentsOptimally(text, version);
+				segs = makeSegmentsOptimally(codePoints, version);
+			assert segs != null;
 			
 			// Check if the segments fit
 			int dataCapacityBits = QrCode.getNumDataCodewords(version, ecl) * 8;
 			int dataUsedBits = QrSegment.getTotalBits(segs, version);
 			if (dataUsedBits != -1 && dataUsedBits <= dataCapacityBits)
-				return segs;
+				return segs;  // This version number is found to be suitable
+			if (version >= maxVersion) {  // All versions in the range could not fit the given text
+				String msg = "Segment too long";
+				if (dataUsedBits != -1)
+					msg = String.format("Data length = %d bits, Max capacity = %d bits", dataUsedBits, dataCapacityBits);
+				throw new DataTooLongException(msg);
+			}
 		}
-		throw new IllegalArgumentException("Data too long");
 	}
 	
 	
-	// Returns a list of segments that is optimal for the given text at the given version number.
-	private static List<QrSegment> makeSegmentsOptimally(String text, int version) {
-		byte[] data = text.getBytes(StandardCharsets.UTF_8);
-		int[][] bitCosts = computeBitCosts(data, version);
-		QrSegment.Mode[] charModes = computeCharacterModes(data, version, bitCosts);
-		return splitIntoSegments(data, charModes);
+	// Returns a new list of segments that is optimal for the given text at the given version number.
+	private static List<QrSegment> makeSegmentsOptimally(int[] codePoints, int version) {
+		if (codePoints.length == 0)
+			return new ArrayList<>();
+		Mode[] charModes = computeCharacterModes(codePoints, version);
+		return splitIntoSegments(codePoints, charModes);
 	}
 	
 	
-	private static int[][] computeBitCosts(byte[] data, int version) {
+	// Returns a new array representing the optimal mode per code point based on the given text and version.
+	private static Mode[] computeCharacterModes(int[] codePoints, int version) {
+		if (codePoints.length == 0)
+			throw new IllegalArgumentException();
+		final Mode[] modeTypes = {Mode.BYTE, Mode.ALPHANUMERIC, Mode.NUMERIC, Mode.KANJI};  // Do not modify
+		final int numModes = modeTypes.length;
+		
 		// Segment header sizes, measured in 1/6 bits
-		int bytesCost   = (4 + QrSegment.Mode.BYTE        .numCharCountBits(version)) * 6;
-		int alphnumCost = (4 + QrSegment.Mode.ALPHANUMERIC.numCharCountBits(version)) * 6;
-		int numberCost  = (4 + QrSegment.Mode.NUMERIC     .numCharCountBits(version)) * 6;
+		final int[] headCosts = new int[numModes];
+		for (int i = 0; i < numModes; i++)
+			headCosts[i] = (4 + modeTypes[i].numCharCountBits(version)) * 6;
 		
-		// result[mode][len] is the number of 1/6 bits to encode the first len characters of the text, ending in the mode
-		int[][] result = new int[3][data.length + 1];
-		Arrays.fill(result[1], Integer.MAX_VALUE / 2);
-		Arrays.fill(result[2], Integer.MAX_VALUE / 2);
-		result[0][0] = bytesCost;
-		result[1][0] = alphnumCost;
-		result[2][0] = numberCost;
+		// charModes[i][j] represents the mode to encode the code point at
+		// index i such that the final segment ends in modeTypes[j] and the
+		// total number of bits is minimized over all possible choices
+		Mode[][] charModes = new Mode[codePoints.length][numModes];
 		
-		// Calculate the cost table using dynamic programming
-		for (int i = 0; i < data.length; i++) {
-			// Encode a character
-			int j = i + 1;
-			char c = (char)data[i];
-			result[0][j] = result[0][i] + 48;  // 8 bits per byte
-			if (isAlphanumeric(c))
-				result[1][j] = result[1][i] + 33;  // 5.5 bits per alphanumeric char
-			if (isNumeric(c))
-				result[2][j] = result[2][i] + 20;  // 3.33 bits per digit
+		// At the beginning of each iteration of the loop below,
+		// prevCosts[j] is the exact minimum number of 1/6 bits needed to
+		// encode the entire string prefix of length i, and end in modeTypes[j]
+		int[] prevCosts = headCosts.clone();
+		
+		// Calculate costs using dynamic programming
+		for (int i = 0; i < codePoints.length; i++) {
+			int c = codePoints[i];
+			int[] curCosts = new int[numModes];
+			{  // Always extend a byte mode segment
+				curCosts[0] = prevCosts[0] + countUtf8Bytes(c) * 8 * 6;
+				charModes[i][0] = modeTypes[0];
+			}
+			// Extend a segment if possible
+			if (QrSegment.ALPHANUMERIC_CHARSET.indexOf(c) != -1) {  // Is alphanumeric
+				curCosts[1] = prevCosts[1] + 33;  // 5.5 bits per alphanumeric char
+				charModes[i][1] = modeTypes[1];
+			}
+			if ('0' <= c && c <= '9') {  // Is numeric
+				curCosts[2] = prevCosts[2] + 20;  // 3.33 bits per digit
+				charModes[i][2] = modeTypes[2];
+			}
+			if (isKanji(c)) {
+				curCosts[3] = prevCosts[3] + 78;  // 13 bits per Shift JIS char
+				charModes[i][3] = modeTypes[3];
+			}
 			
-			// Switch modes, rounding up fractional bits
-			result[0][j] = Math.min((Math.min(result[1][j], result[2][j]) + 5) / 6 * 6 + bytesCost  , result[0][j]);
-			result[1][j] = Math.min((Math.min(result[2][j], result[0][j]) + 5) / 6 * 6 + alphnumCost, result[1][j]);
-			result[2][j] = Math.min((Math.min(result[0][j], result[1][j]) + 5) / 6 * 6 + numberCost , result[2][j]);
-		}
-		return result;
-	}
-	
-	
-	private static QrSegment.Mode[] computeCharacterModes(byte[] data, int version, int[][] bitCosts) {
-		// Segment header sizes, measured in 1/6 bits
-		int bytesCost   = (4 + QrSegment.Mode.BYTE        .numCharCountBits(version)) * 6;
-		int alphnumCost = (4 + QrSegment.Mode.ALPHANUMERIC.numCharCountBits(version)) * 6;
-		int numberCost  = (4 + QrSegment.Mode.NUMERIC     .numCharCountBits(version)) * 6;
-		
-		// Infer the mode used for last character by taking the minimum
-		QrSegment.Mode curMode;
-		int end = bitCosts[0].length - 1;
-		if (bitCosts[0][end] <= Math.min(bitCosts[1][end], bitCosts[2][end]))
-			curMode = QrSegment.Mode.BYTE;
-		else if (bitCosts[1][end] <= bitCosts[2][end])
-			curMode = QrSegment.Mode.ALPHANUMERIC;
-		else
-			curMode = QrSegment.Mode.NUMERIC;
-		
-		// Work backwards to calculate optimal encoding mode for each character
-		QrSegment.Mode[] result = new QrSegment.Mode[data.length];
-		if (data.length == 0)
-			return result;
-		result[data.length - 1] = curMode;
-		for (int i = data.length - 2; i >= 0; i--) {
-			char c = (char)data[i];
-			if (curMode == QrSegment.Mode.NUMERIC) {
-				if (isNumeric(c))
-					curMode = QrSegment.Mode.NUMERIC;
-				else if (isAlphanumeric(c) && (bitCosts[1][i] + 33 + 5) / 6 * 6 + numberCost == bitCosts[2][i + 1])
-					curMode = QrSegment.Mode.ALPHANUMERIC;
-				else
-					curMode = QrSegment.Mode.BYTE;
-			} else if (curMode == QrSegment.Mode.ALPHANUMERIC) {
-				if (isNumeric(c) && (bitCosts[2][i] + 20 + 5) / 6 * 6 + alphnumCost == bitCosts[1][i + 1])
-					curMode = QrSegment.Mode.NUMERIC;
-				else if (isAlphanumeric(c))
-					curMode = QrSegment.Mode.ALPHANUMERIC;
-				else
-					curMode = QrSegment.Mode.BYTE;
-			} else if (curMode == QrSegment.Mode.BYTE) {
-				if (isNumeric(c) && (bitCosts[2][i] + 20 + 5) / 6 * 6 + bytesCost == bitCosts[0][i + 1])
-					curMode = QrSegment.Mode.NUMERIC;
-				else if (isAlphanumeric(c) && (bitCosts[1][i] + 33 + 5) / 6 * 6 + bytesCost == bitCosts[0][i + 1])
-					curMode = QrSegment.Mode.ALPHANUMERIC;
-				else
-					curMode = QrSegment.Mode.BYTE;
-			} else
-				throw new AssertionError();
-			result[i] = curMode;
-		}
-		return result;
-	}
-	
-	
-	private static List<QrSegment> splitIntoSegments(byte[] data, QrSegment.Mode[] charModes) {
-		List<QrSegment> result = new ArrayList<>();
-		if (data.length == 0)
-			return result;
-		
-		// Accumulate run of modes
-		QrSegment.Mode curMode = charModes[0];
-		int start = 0;
-		for (int i = 1; i < data.length; i++) {
-			if (charModes[i] != curMode) {
-				if (curMode == QrSegment.Mode.BYTE)
-					result.add(QrSegment.makeBytes(Arrays.copyOfRange(data, start, i)));
-				else {
-					String temp = new String(data, start, i - start, StandardCharsets.US_ASCII);
-					if (curMode == QrSegment.Mode.NUMERIC)
-						result.add(QrSegment.makeNumeric(temp));
-					else if (curMode == QrSegment.Mode.ALPHANUMERIC)
-						result.add(QrSegment.makeAlphanumeric(temp));
-					else
-						throw new AssertionError();
+			// Start new segment at the end to switch modes
+			for (int j = 0; j < numModes; j++) {  // To mode
+				for (int k = 0; k < numModes; k++) {  // From mode
+					int newCost = (curCosts[k] + 5) / 6 * 6 + headCosts[j];
+					if (charModes[i][k] != null && (charModes[i][j] == null || newCost < curCosts[j])) {
+						curCosts[j] = newCost;
+						charModes[i][j] = modeTypes[k];
+					}
 				}
-				curMode = charModes[i];
-				start = i;
+			}
+			
+			prevCosts = curCosts;
+		}
+		
+		// Find optimal ending mode
+		Mode curMode = null;
+		for (int i = 0, minCost = 0; i < numModes; i++) {
+			if (curMode == null || prevCosts[i] < minCost) {
+				minCost = prevCosts[i];
+				curMode = modeTypes[i];
 			}
 		}
 		
-		// Final segment
-		if (curMode == QrSegment.Mode.BYTE)
-			result.add(QrSegment.makeBytes(Arrays.copyOfRange(data, start, data.length)));
-		else {
-			String temp = new String(data, start, data.length - start, StandardCharsets.US_ASCII);
-			if (curMode == QrSegment.Mode.NUMERIC)
-				result.add(QrSegment.makeNumeric(temp));
-			else if (curMode == QrSegment.Mode.ALPHANUMERIC)
-				result.add(QrSegment.makeAlphanumeric(temp));
-			else
-				throw new AssertionError();
+		// Get optimal mode for each code point by tracing backwards
+		Mode[] result = new Mode[charModes.length];
+		for (int i = result.length - 1; i >= 0; i--) {
+			for (int j = 0; j < numModes; j++) {
+				if (modeTypes[j] == curMode) {
+					curMode = charModes[i][j];
+					result[i] = curMode;
+					break;
+				}
+			}
 		}
 		return result;
 	}
 	
 	
-	private static boolean isAlphanumeric(char c) {
-		return isNumeric(c) || 'A' <= c && c <= 'Z' || " $%*+./:-".indexOf(c) != -1;
+	// Returns a new list of segments based on the given text and modes, such that
+	// consecutive code points in the same mode are put into the same segment.
+	private static List<QrSegment> splitIntoSegments(int[] codePoints, Mode[] charModes) {
+		if (codePoints.length == 0)
+			throw new IllegalArgumentException();
+		List<QrSegment> result = new ArrayList<>();
+		
+		// Accumulate run of modes
+		Mode curMode = charModes[0];
+		int start = 0;
+		for (int i = 1; ; i++) {
+			if (i < codePoints.length && charModes[i] == curMode)
+				continue;
+			String s = new String(codePoints, start, i - start);
+			if (curMode == Mode.BYTE)
+				result.add(QrSegment.makeBytes(s.getBytes(StandardCharsets.UTF_8)));
+			else if (curMode == Mode.NUMERIC)
+				result.add(QrSegment.makeNumeric(s));
+			else if (curMode == Mode.ALPHANUMERIC)
+				result.add(QrSegment.makeAlphanumeric(s));
+			else if (curMode == Mode.KANJI)
+				result.add(makeKanji(s));
+			else
+				throw new AssertionError();
+			if (i >= codePoints.length)
+				return result;
+			curMode = charModes[i];
+			start = i;
+		}
 	}
 	
-	private static boolean isNumeric(char c) {
-		return '0' <= c && c <= '9';
+	
+	// Returns a new array of Unicode code points (effectively
+	// UTF-32 / UCS-4) representing the given UTF-16 string.
+	private static int[] toCodePoints(String s) {
+		int[] result = s.codePoints().toArray();
+		for (int c : result) {
+			if (Character.isSurrogate((char)c))
+				throw new IllegalArgumentException("Invalid UTF-16 string");
+		}
+		return result;
 	}
+	
+	
+	// Returns the number of UTF-8 bytes needed to encode the given Unicode code point.
+	private static int countUtf8Bytes(int cp) {
+		if      (cp <        0) throw new IllegalArgumentException("Invalid code point");
+		else if (cp <     0x80) return 1;
+		else if (cp <    0x800) return 2;
+		else if (cp <  0x10000) return 3;
+		else if (cp < 0x110000) return 4;
+		else                    throw new IllegalArgumentException("Invalid code point");
+	}
+	
 	
 	
 	/*---- Kanji mode segment encoder ----*/
 	
 	/**
-	 * Returns a segment representing the specified string encoded in kanji mode.
-	 * <p>Note that broadly speaking, the set of encodable characters are {kanji used in Japan, hiragana, katakana,
-	 * Asian punctuation, full-width ASCII}.<br>
-	 * In particular, non-encodable characters are {normal ASCII, half-width katakana, more extensive Chinese hanzi}.
-	 * @param text the text to be encoded, which must fall in the kanji mode subset of characters
-	 * @return a segment containing the data
+	 * Returns a segment representing the specified text string encoded in kanji mode.
+	 * Broadly speaking, the set of encodable characters are {kanji used in Japan,
+	 * hiragana, katakana, East Asian punctuation, full-width ASCII, Greek, Cyrillic}.
+	 * Examples of non-encodable characters include {ordinary ASCII, half-width katakana,
+	 * more extensive Chinese hanzi}.
+	 * @param text the text (not {@code null}), with only certain characters allowed
+	 * @return a segment (not {@code null}) containing the text
 	 * @throws NullPointerException if the string is {@code null}
-	 * @throws IllegalArgumentException if the string contains non-kanji-mode characters
+	 * @throws IllegalArgumentException if the string contains non-encodable characters
 	 * @see #isEncodableAsKanji(String)
 	 */
-	public static QrSegment makeKanjiSegment(String text) {
+	public static QrSegment makeKanji(String text) {
 		Objects.requireNonNull(text);
 		BitBuffer bb = new BitBuffer();
-		for (int i = 0; i < text.length(); i++) {
-			int val = UNICODE_TO_QR_KANJI[text.charAt(i)];
+		text.chars().forEachOrdered(c -> {
+			int val = UNICODE_TO_QR_KANJI[c];
 			if (val == -1)
 				throw new IllegalArgumentException("String contains non-kanji-mode characters");
 			bb.appendBits(val, 13);
-		}
-		return new QrSegment(QrSegment.Mode.KANJI, text.length(), bb);
+		});
+		return new QrSegment(Mode.KANJI, text.length(), bb);
 	}
 	
 	
 	/**
-	 * Tests whether the specified text string can be encoded as a segment in kanji mode.
-	 * <p>Note that broadly speaking, the set of encodable characters are {kanji used in Japan, hiragana, katakana,
-	 * Asian punctuation, full-width ASCII}.<br>
-	 * In particular, non-encodable characters are {normal ASCII, half-width katakana, more extensive Chinese hanzi}.
-	 * @param text the string to test for encodability
-	 * @return {@code true} if and only if the string can be encoded in kanji mode
+	 * Tests whether the specified string can be encoded as a segment in kanji mode.
+	 * Broadly speaking, the set of encodable characters are {kanji used in Japan,
+	 * hiragana, katakana, East Asian punctuation, full-width ASCII, Greek, Cyrillic}.
+	 * Examples of non-encodable characters include {ordinary ASCII, half-width katakana,
+	 * more extensive Chinese hanzi}.
+	 * @param text the string to test for encodability (not {@code null})
+	 * @return {@code true} iff each character is in the kanji mode character set
 	 * @throws NullPointerException if the string is {@code null}
-	 * @see #makeKanjiSegment(String)
+	 * @see #makeKanji(String)
 	 */
 	public static boolean isEncodableAsKanji(String text) {
 		Objects.requireNonNull(text);
-		for (int i = 0; i < text.length(); i++) {
-			if (UNICODE_TO_QR_KANJI[text.charAt(i)] == -1)
-				return false;
-		}
-		return true;
+		return text.chars().allMatch(
+			c -> isKanji((char)c));
+	}
+	
+	
+	private static boolean isKanji(int c) {
+		return c < UNICODE_TO_QR_KANJI.length && UNICODE_TO_QR_KANJI[c] != -1;
 	}
 	
 	
@@ -381,19 +401,24 @@ public final class QrSegmentAdvanced {
 		"/////////////////////////////////////////////w==";
 	
 	
-	private static short[] UNICODE_TO_QR_KANJI = new short[65536];
+	private static short[] UNICODE_TO_QR_KANJI = new short[1 << 16];
 	
 	static {  // Unpack the Shift JIS table into a more computation-friendly form
 		Arrays.fill(UNICODE_TO_QR_KANJI, (short)-1);
 		byte[] bytes = Base64.getDecoder().decode(PACKED_QR_KANJI_TO_UNICODE);
 		for (int i = 0; i < bytes.length; i += 2) {
-			int j = ((bytes[i] & 0xFF) << 8) | (bytes[i + 1] & 0xFF);
-			if (j == 0xFFFF)
+			char c = (char)(((bytes[i] & 0xFF) << 8) | (bytes[i + 1] & 0xFF));
+			if (c == 0xFFFF)
 				continue;
-			if (UNICODE_TO_QR_KANJI[j] != -1)
-				throw new AssertionError();
-			UNICODE_TO_QR_KANJI[j] = (short)(i / 2);
+			assert UNICODE_TO_QR_KANJI[c] == -1;
+			UNICODE_TO_QR_KANJI[c] = (short)(i / 2);
 		}
 	}
+	
+	
+	
+	/*---- Miscellaneous ----*/
+	
+	private QrSegmentAdvanced() {}  // Not instantiable
 	
 }
