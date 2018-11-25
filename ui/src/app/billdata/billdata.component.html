@@ -99,48 +99,6 @@
 
     <div class="col span_1_of_2">
 
-      <h2 class="top-spacing" translate>payable_by</h2>
-
-      <div class="form-group mat-elevation-z3" formGroupName="debtor">
-
-        <div class="form-line">
-          <mat-form-field class="form-field s12">
-            <input matInput placeholder="{{ 'name' | translate }}" formControlName="name">
-            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'name'])">{{billForm.getError('serverSide', 'debtor.name')}}</mat-error>
-          </mat-form-field>
-        </div>
-
-        <div class="form-line">
-          <mat-form-field class="form-field s9">
-            <input matInput placeholder="{{ 'street' | translate }}" formControlName="street">
-            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'street'])">{{billForm.getError('serverSide', 'debtor.street')}}</mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="form-field s3">
-            <input matInput placeholder="{{ 'house_number' | translate }}" formControlName="houseNo">
-            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'houseNo'])">{{billForm.getError('serverSide', 'debtor.houseNo')}}</mat-error>
-          </mat-form-field>
-        </div>
-  
-        <div class="form-line">
-          <mat-form-field class="form-field s2">
-            <input matInput placeholder="{{ 'country' | translate }}" formControlName="countryCode">
-            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'countryCode'])">{{billForm.getError('serverSide', 'debtor.countryCode')}}</mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="form-field s3">
-            <input matInput placeholder="{{ 'postal_code' | translate }}" formControlName="postalCode">
-            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'postalCode'])">{{billForm.getError('serverSide', 'debtor.postalCode')}}</mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="form-field s7">
-            <input matInput placeholder="{{ 'town' | translate }}" formControlName="town">
-            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'town'])">{{billForm.getError('serverSide', 'debtor.town')}}</mat-error>
-          </mat-form-field>
-        </div>
-
-      </div>
-
       <h2 class="top-spacing" translate>payment_details</h2>
 
       <div class="form-group mat-elevation-z3">
@@ -186,6 +144,48 @@
 
       </div>
       
+      <h2 class="top-spacing" translate>payable_by</h2>
+
+      <div class="form-group mat-elevation-z3" formGroupName="debtor">
+
+        <div class="form-line">
+          <mat-form-field class="form-field s12">
+            <input matInput placeholder="{{ 'name' | translate }}" formControlName="name">
+            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'name'])">{{billForm.getError('serverSide', 'debtor.name')}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-line">
+          <mat-form-field class="form-field s9">
+            <input matInput placeholder="{{ 'street' | translate }}" formControlName="street">
+            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'street'])">{{billForm.getError('serverSide', 'debtor.street')}}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field s3">
+            <input matInput placeholder="{{ 'house_number' | translate }}" formControlName="houseNo">
+            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'houseNo'])">{{billForm.getError('serverSide', 'debtor.houseNo')}}</mat-error>
+          </mat-form-field>
+        </div>
+  
+        <div class="form-line">
+          <mat-form-field class="form-field s2">
+            <input matInput placeholder="{{ 'country' | translate }}" formControlName="countryCode">
+            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'countryCode'])">{{billForm.getError('serverSide', 'debtor.countryCode')}}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field s3">
+            <input matInput placeholder="{{ 'postal_code' | translate }}" formControlName="postalCode">
+            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'postalCode'])">{{billForm.getError('serverSide', 'debtor.postalCode')}}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field s7">
+            <input matInput placeholder="{{ 'town' | translate }}" formControlName="town">
+            <mat-error *ngIf="billForm.hasError('serverSide', ['debtor', 'town'])">{{billForm.getError('serverSide', 'debtor.town')}}</mat-error>
+          </mat-form-field>
+        </div>
+
+      </div>
+
     </div>
 
   </div>
