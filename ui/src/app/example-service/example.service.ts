@@ -38,7 +38,7 @@ export class ExampleService {
         }
       },
       // tslint:disable-next-line:max-line-length
-      'eJxdjctuwjAQRX-lmnWoHEeBkm3aKAsESEHqZjaGDsGSM079aAuIf6_Tx6LVbEZzz7lzhTdyXluGKs_gaN2gAlRXMIr7qHqCCl4IMuidGk_64JsfgqMxGdgYxhg6fZm4Vzfba2Nmls05GZ5G5VSwbnce6Vc4Wg6NGnQivi63LGk7-kiN0G1rZCGFQM6R63ZZCLGYS5Hnc1k8lHJZLpA75BWpu04PAzHyM2nek-t9cMp7Qi6SWpZCIreRL8T-cHrXZqpD_ju5EPfTr7pt_kfrzfp7edo-IsPtE5kcZLw~'
+      'eJxdjUFPg0AQhf-KmTOYBUJruaKEg6lNaOJlL1s6wiTLLO4s1rbpfxfUi2Yuk7z3vu8KH-iFHEORRPDm_GACFFewhrvJdAgFHBEi6LwZe2ql-m3wZG0EbgrjFBq6LL13Hx_I2tixPc8LwdF4E5zfn8clFmfpGFtijE8U-lhaEnFeYNFyqMxA8-4bfItm2B4_Zw80u1KzSpXSnGgu602m1HqVqiRZpdlDnm7yteZG8zOau4aGAVnzKxIf0HcSvBFBzdk8zXOVaq4nviBL25_ILjjNfy9R6n5xlXX1P9q-bH-ep92jZrh9AQXZbMQ~'
     );
 
     const e2 = new Example(
@@ -55,7 +55,7 @@ export class ExampleService {
         },
         currency: 'CHF',
         amount: 371.2,
-        reference: '0000383800001776',
+        reference: 'RF23T2083QFT2800291F',
         unstructuredMessage: '',
         debtor: {
           name: 'Céline Pythoud',
@@ -72,24 +72,26 @@ export class ExampleService {
         }
       },
       // tslint:disable-next-line:max-line-length
-      'eJxVTstuwjAQ_JXI51A5DwjkhtKGqqeUcPTFDUtiyVmnToxIER_QT-l38GPdUHrAa9na2ZnZObMj2F4ZZGngs4OxrRxYemZaYu1kDSxlB8t8VlvZNarq8zsDndY-M27o3FCqr4n3aWcfSuuZQT2SoodOWjkYuxs7-BccDA65bBUxbsjFJ9kOTuTIyiITyEPOBQYCs9fVnFO3oBvweRKuePAmsBS4saalwF65Frg-AjrwKBXKqjEoMIoFhnx6C-jBnSYngY8VJcFTyKdJfnPMrj9aIXjFODTG7QlooFXo7Z23sRL33hYqYwmPQ8rGY5Jev6tGag3Y_y14324p_OOJltFy-oMkWUxrX4pngezyCwxZfFI~'
+      'eJxVT0tOwzAQvUrkdYIcJ6WfXRVIERtCk6U3JnETS844-FMaqh6Ao3COXgy7sEEzGmk-7zNndOTaCAVok8booPTILNqckWTQO9ZztEEHjWLUazYNojXl3wU4KWOknJ2crcVnuHvXyZuQMlEgZ48wfGKaWaWbeQpro6ToEimAJx_CDolphTFKGxRkwZZsFB53I77EnqzhJ6-D6qqggAnGFFIKxdN6gX137zPFiyVZ4_SZQk1hp9Xo34jqLYXtkYPjkfcKrB0UUMhyCgSHWnHD3SkwUfgf2TK9Izhsyhtjcf0ObqNqtoNynR8MfBQQdS7aaQZdtOet0n6eE-8N5x56_WoHJiUH8ytQFy97CvuSZA3Bq-y1bMjK21-nZRB8rB4ooMsP9iOEFg~~'
     );
 
+
+    // 87 00129 38238 13990 00012 38028
     const e3 = new Example(
       {
         version: 'V1_0',
         account: 'CH450023023099999999A',
         creditor: {
-          name: 'UBS Switzerland AG',
-          street: 'Postfach',
-          houseNo: '',
+          name: 'Schreinerei Habegger & Söhne',
+          street: 'Uetlibergstrasse',
+          houseNo: '138',
           countryCode: 'CH',
-          postalCode: '8098',
+          postalCode: '8045',
           town: 'Zürich'
         },
         currency: 'EUR',
         amount: 287.3,
-        reference: '870012938238139900001238028',
+        reference: 'RF192320QF02T3234UI234',
         unstructuredMessage: 'Rechnungsnr. 10978 / Auftragsrnr. 3987',
         debtor: {
           name: 'Simon Glarner',
@@ -106,7 +108,7 @@ export class ExampleService {
         }
       },
       // tslint:disable-next-line:max-line-length
-      'eJxNjkFuwjAQRa8SeR2oE4NiswNaYEkJbCpvTHASS2ac2k4pIG7TY7DjYnUQSIxn46__3_wz-pHWKQNolMSoNHYvPBqdkRZQtaKSaIR2EsWosqKpVeFmDwe0WsfItL5pfa5One_b9rZK654BfQwJJxthhTd2fWzkM1Aa8DOxV8FxVy5xiK3lbyCifDnlgFOMOSQcpovBEOOUdMseM-aQc9hM8ig_KH-SNrTcReM5h6VxvhRFzYEDxYxy-LpdreqE6aITX19Ksz4JVz42qzswV3sD0VwLC9JymNz-ilqrg3IchsPAS-ggqIEuYXu7avGkfq5CnmYYJykjNCU0IYxh3P0JxWkosZJFDS1UDmw_SjDLaPQWjdvSW1E524mE0Sw0Wb5zQJd_vTOFyA~~'
+      'eJxVjr9SwzAMxl8l54EpKc6fXpNupRDKRCHtwnlxUjf2nSsHO6GUXt-GZ2DqlhdDgTIg6TR8kn6fjuRNWKcMkGnok62xO96S6ZFoDnXHa0GmZCOIT2rLG6kql182oNPaJ6Zrm64t1Mew92qDUmkdGNAHvHCi4Za3xq4OzTB2RqtNoBWIYK9aGbhKOWesI4MttDnfKbz7AZ98hK3EO_qQYjlnQCNKGYQM5otkTGkUD5VdYsagwKqkFQjH5i14KepaWO_KK_ovCYLBWrRalcLWrrXcOVTCOGWQ0mTM4KU_W1XJAc_gf0bpZBSj9936-ddG7Qx495pbtGJw039WUqu9cgzGSErDNEGVV1JA2Z81_6MW80cEPOdhFsURfcpptIqjOFk_YENdVBI6qB3YkRfSbJJ6196s2-KvtbODGGfpBL9Y3jIgp28Ia5aI'
     );
 
     const e4 = new Example(
@@ -132,7 +134,7 @@ export class ExampleService {
         }
       },
       // tslint:disable-next-line:max-line-length
-      'eJxdj01vwjAMhv9K5HMrtT1MtNduFYcJ0IJ2ysVjJkRKnS4faBTx35ey7YJ9sGU_72v5CmfywTiGri7g6PyIEborWGSdUBN0YCIUoD1OJ3MIwx_BydoCXIpTitLMC_flyw9jbenYXrIi0IQeo_P7y0T_gqPjOOBoMnGf3Ios29N3dgS56xVXTVUprhX367qt2uoeT7k2q6ZuFcu88e5A4s2FgEKezTyTR1EKSXN-g8QnWSFdjBli8kbxu0GB1qLocZxQMyrORoun4tekkd1yTfFj9uvhcbTZbn6bl92zYrj9AM4dbfg~'
+      'eJxdT81OwzAMfpXI50Zqe0C010K1AxoTmTjlYrqQWUqdkqSDddq7kw5Osw-2_P3JFziZEMkztFUBnz6MmKC9gEO2M1oDLVCCAmzA6UhD7P8ZPDtXgJ_TNCdFy8r7CvKDnJOe3TkropkwYPJhf55WOHpHB-mIjfymdJRxoBh9iLDGcupxpKy7GV-LbLY3PzkH1K7TXNZlqbnS3G2qpmzKWz3kWT_WVaNZZST4wYg3HyMKdaJlMQGFFMos-TkjDsYJ5VPKJDaBNL8TCnQORYfjhJZRczZaPTW_zBbZr2ma77vb9Pen7ev2b3nePWmG6y8FaXYA'
     );
 
     const e5 = new Example(
@@ -167,7 +169,7 @@ export class ExampleService {
         }
       },
       // tslint:disable-next-line:max-line-length
-      'eJxVUM1OwzAMfpUqXLfFTrut2Q0GAySQRssxl1CyLaJzRpoiBuLdcQcccA6x7O_H9qd4c7HzgcQCR2IT4t4msfgUraVtb7dOLIQjMRLbaA8733SrXwT1bTsSoU-HPtX-Y8C9xvGTb9txoPbIjM4dbLQpxMfjwf0RNoHSyu49I06VrxHTHt07K4p6vTQECsAQGlreFEWOWmtUOQCUpQZUhmpDVXhyMWV1syPnn13Mzq-52Lvsuc_ubMNsNSulkorhagqsdeFdOyga-v9YWhd6Mp8OzdVJfO3t-N5Gb7OqT12z21ui8WB1ZCdD1zF0ncsY8ZK2llO2KA3pYpi6CpEZttn9eD1UFXcR_iJHdptjMazDy8wN3VKXYt8kPn8WNhlOJ6AnClCfndUoASXnc8hBS0SJfBosOFcg-T8F7yjzmZ6WMge5vEGYDYRyJgs44WWB3EGe7Wp9aUh8fQNyzZeA'
+      'eJxVUc1y2yAQfhUNuVqGRbItfGvdOulMO-NKOXIhMrGY4sUF1NbN5N27OO2hcGCH728XXtgPG5MLyLawYM8hnk1m2xfmDZ5mc7JsyyyyBTtFc5ncmPZ_GTh7v2Bhzpc5D-534X2P9ZPzvg7or6RI9mKiySE-Xi8FTsG7Y-0d2vqny1OdRpdSiImVWMx7c3akuxm_Lsjs0f6iHDYcdhqFFEIjaNw9tG0DSimQjRCi65QAqXHQ2IcnG3M1jBNad7SxendPl7OtjnP12YykluuOSy6JLleCvN4764ujxv83WatWLTerAu5v5gdn6i8mOlP1c07jdDaIdYm6UpLG-xhSshUxvuWToZIiOo2qLV33NOM4mXF6y_ra94SC-LcaoLQNtGUcGmaj8ROmHOcx06dU4bmC1VKopRSg7u4G4AI41RvRCMUBONDTQEu1FJzO26IZebNWq443gu8eQKyLoFvzVtz4vAVCgHr7ePigkb3-ATcQn4g~'
     );
 
     const e6 = new Example(
@@ -192,7 +194,7 @@ export class ExampleService {
         }
       },
       // tslint:disable-next-line:max-line-length
-      'eJxdTtFqg0AQ_BXZZwMXtZT61ppIntKAgb7cyzY5zcG5Z9c1rQn5956xhdKdhWWHmWGucDbcW0-QL2OoPbcokF_BITUDNgZyqBliaBi7kz305Y-CBudi8IN0g1T2Muk-ePFunVt4cmNw9KZDRvG8Hzvza6g9SYmtDYo7c4uDbW--QiJUu0KTSpTStNRUbNJH9aTuk6osy5IkedBUhUV3RgmVo2dux6j0Ax3nv_q0cjEcuh81TUjVlPZimKbAmfuLYlP-p7av2-msPM2Z4iM5mejNkhiuTS_RAdsObRNE691KE9y-Ad0qcXU~'
+      'eJxdj8FugzAMhl8F-QxSClTTuG10qKe2EpV2ySWDAJGCw5zQjVZ99yVlh2lxJMv27--Xb3CRZJVBKDYxdIZG4aC4gRbYz6KXUEBHEENPYhpUY6tfBc5ax2BmN82uVteg-6TkQ2mdGNSL37ByEiScofMyhbE1WrWJViiTL-WGxDbKWkMWgi26SozK7z3A99jDzvLb-0B9KjmylDGOG47lPntiz-zxMpbneZqmW461_0JfhPOHRC80LlFlZmzXuvZ2V0n-opZjiIwF2qskDMC19zfKffW_dTgeQtoZXJnORG6Q0btCJ6mT1kWNGCehei96O-04wv0HRDh5fQ~~'
     );
 
     this.examples = [e3, e2, e1, e4, e5, e6];

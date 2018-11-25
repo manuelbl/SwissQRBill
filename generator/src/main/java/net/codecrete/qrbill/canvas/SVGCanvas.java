@@ -50,7 +50,7 @@ public class SVGCanvas extends AbstractCanvas {
         stream.write(formatCoordinate(height));
         stream.write("\" xmlns=\"http://www.w3.org/2000/svg\">\n");
         stream.write("<g font-family=\"");
-        stream.write(fontMetrics.getFontFamilyList());
+        stream.write(escapeXML(fontMetrics.getFontFamilyList()));
         stream.write("\" transform=\"translate(0 ");
         stream.write(formatCoordinate(height));
         stream.write(")\">\n");

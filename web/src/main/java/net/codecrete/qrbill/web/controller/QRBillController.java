@@ -281,7 +281,7 @@ public class QRBillController implements BillApi {
         if (separatorType == null)
             separatorType = SeparatorType.SOLID_LINE_WITH_SCISSORS;
         if (fontFamily == null)
-            fontFamily = "Helvetica";
+            fontFamily = "Helvetica,Arial,\"Liberation Sans\"";
 
         if (graphicsFormat == null)
             graphicsFormat = graphicsFormatFromRequestHeader();
