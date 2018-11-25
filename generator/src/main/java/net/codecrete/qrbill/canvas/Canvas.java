@@ -166,6 +166,55 @@ public interface Canvas extends Closeable {
     void strokePath(double strokeWidth, int color) throws IOException;
 
     /**
+     * Distance between baseline and top of highest letter.
+     *
+     * @param fontSize the font size (in pt)
+     * @return the distance (in mm)
+     */
+    double getAscender(int fontSize);
+
+    /**
+     * Distance between baseline and bottom of letter extending the farest below the
+     * baseline.
+     *
+     * @param fontSize the font size (in pt)
+     * @return the distance (in mm)
+     */
+    double getDescender(int fontSize);
+
+    /**
+     * Distance between the baselines of two consecutive text lines.
+     *
+     * @param fontSize the font size (in pt)
+     * @return the distance (in mm)
+     */
+    double getLineHeight(int fontSize);
+
+    /**
+     * Returns the width of the specified text for the specified font size
+     *
+     * @param text text
+     * @param fontSize font size (in pt)
+     * @param isBold   indicates if the text is in bold or regular weight
+     * @return width (in mm)
+     */
+    double getTextWidth(CharSequence text, int fontSize, boolean isBold);
+
+    /**
+     * Splits the text into lines.
+     * <p>
+     * If a line would exceed the specified maximum length, line breaks are
+     * inserted. Newlines are treated as fixed line breaks.
+     * </p>
+     *
+     * @param text      the text
+     * @param maxLength the maximum line length (in pt)
+     * @param fontSize  the font size (in pt)
+     * @return an array of text lines
+     */
+    String[] splitLines(String text, double maxLength, int fontSize);
+
+    /**
      * Returns the generated graphics as a byte array
      * <p>
      * After this method was called, the page is no longer valid.

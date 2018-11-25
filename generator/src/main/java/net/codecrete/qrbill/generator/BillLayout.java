@@ -120,17 +120,17 @@ class BillLayout {
 
         // "Payment part" title
         graphics.setTransformation(RECEIPT_WIDTH + MARGIN, 0, 0, 1, 1);
-        yPos = SLIP_HEIGHT - MARGIN - FontMetrics.getAscender(FONT_SIZE_TITLE);
+        yPos = SLIP_HEIGHT - MARGIN - graphics.getAscender(FONT_SIZE_TITLE);
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_PAYMENT_PART, bill.getFormat().getLanguage()), 0,
                 yPos, FONT_SIZE_TITLE, true);
 
         // currency
-        yPos = CURRENCY_AMOUNT_BASE_LINE + FontMetrics.getAscender(labelFontSize);
+        yPos = CURRENCY_AMOUNT_BASE_LINE + graphics.getAscender(labelFontSize);
         drawLabelAndText(MultilingualText.KEY_CURRENCY, bill.getCurrency());
 
         // amount
         graphics.setTransformation(RECEIPT_WIDTH + MARGIN + CURRENCY_WIDTH_PP, 0, 0, 1, 1);
-        yPos = CURRENCY_AMOUNT_BASE_LINE + FontMetrics.getAscender(labelFontSize);
+        yPos = CURRENCY_AMOUNT_BASE_LINE + graphics.getAscender(labelFontSize);
         if (amount != null) {
             drawLabelAndText(MultilingualText.KEY_AMOUNT, amount);
         } else {
@@ -167,7 +167,7 @@ class BillLayout {
 
         // "Receipt" title
         graphics.setTransformation(MARGIN, 0, 0, 1, 1);
-        yPos = SLIP_HEIGHT - MARGIN - FontMetrics.getAscender(FONT_SIZE_TITLE);
+        yPos = SLIP_HEIGHT - MARGIN - graphics.getAscender(FONT_SIZE_TITLE);
         graphics.putText(MultilingualText.getText(MultilingualText.KEY_RECEIPT, bill.getFormat().getLanguage()), 0,
                 yPos, FONT_SIZE_TITLE, true);
 
@@ -189,12 +189,12 @@ class BillLayout {
         }
 
         // currency
-        yPos = CURRENCY_AMOUNT_BASE_LINE + FontMetrics.getAscender(labelFontSize);
+        yPos = CURRENCY_AMOUNT_BASE_LINE + graphics.getAscender(labelFontSize);
         drawLabelAndText(MultilingualText.KEY_CURRENCY, bill.getCurrency());
 
         // amount
         graphics.setTransformation(MARGIN + CURRENCY_WIDTH_RC, 0, 0, 1, 1);
-        yPos = CURRENCY_AMOUNT_BASE_LINE + FontMetrics.getAscender(labelFontSize);
+        yPos = CURRENCY_AMOUNT_BASE_LINE + graphics.getAscender(labelFontSize);
         if (amount != null) {
             drawLabelAndText(MultilingualText.KEY_AMOUNT, amount);
         } else {
@@ -208,7 +208,7 @@ class BillLayout {
         // acceptance point
         graphics.setTransformation(0, 0, 0, 1, 1);
         String label = MultilingualText.getText(MultilingualText.KEY_ACCEPTANCE_POINT, bill.getFormat().getLanguage());
-        double w = FontMetrics.getTextWidth(label, labelFontSize) * 1.05; // TODO: proper text width for bold font
+        double w = graphics.getTextWidth(label, labelFontSize, true);
         graphics.putText(label, RECEIPT_WIDTH - MARGIN - w, 21, labelFontSize, true);
     }
 
@@ -219,7 +219,7 @@ class BillLayout {
         double height = 0;
 
         numTextLines += 1 + accountPayableToLines.length;
-        height -= FontMetrics.getAscender(textFontSize) - FontMetrics.getAscender(labelFontSize);
+        height -= graphics.getAscender(textFontSize) - graphics.getAscender(labelFontSize);
         if (reference != null) {
             numPaddings++;
             numTextLines += 2;
@@ -236,7 +236,7 @@ class BillLayout {
             height += DEBTOR_BOX_HEIGHT_PP;
         }
 
-        height += numTextLines * FontMetrics.getLineHeight(textFontSize);
+        height += numTextLines * graphics.getLineHeight(textFontSize);
 
         return computeLeading(height, INFO_SECTION_MAX_HEIGHT, numTextLines, numPaddings);
     }
@@ -248,7 +248,7 @@ class BillLayout {
         double height = 0;
 
         numTextLines += 1 + accountPayableToLines.length;
-        height -= FontMetrics.getAscender(textFontSize) - FontMetrics.getAscender(labelFontSize);
+        height -= graphics.getAscender(textFontSize) - graphics.getAscender(labelFontSize);
         if (reference != null) {
             numPaddings++;
             numTextLines += 2;
@@ -261,7 +261,7 @@ class BillLayout {
             height += DEBTOR_BOX_HEIGHT_RC;
         }
 
-        height += numTextLines * FontMetrics.getLineHeight(textFontSize);
+        height += numTextLines * graphics.getLineHeight(textFontSize);
 
         computeLeading(height, RECEIPT_MAX_HEIGHT, numTextLines, numPaddings);
     }
@@ -277,10 +277,10 @@ class BillLayout {
                 labelLeading = 0;
             } else {
                 textLeading = (maxHeight - height) / numTextLines;
-                labelLeading = textLeading + FontMetrics.getDescender(textFontSize) - FontMetrics.getDescender(labelFontSize);
+                labelLeading = textLeading + graphics.getDescender(textFontSize) - graphics.getDescender(labelFontSize);
             }
         } else {
-            labelLeading = textLeading + FontMetrics.getDescender(textFontSize) - FontMetrics.getDescender(labelFontSize);
+            labelLeading = textLeading + graphics.getDescender(textFontSize) - graphics.getDescender(labelFontSize);
         }
 
 
@@ -368,27 +368,27 @@ class BillLayout {
 
     // Draws a label at (0, yPos) and advances vertically
     private void drawLabel(String labelKey) throws IOException {
-        yPos -= FontMetrics.getAscender(labelFontSize);
+        yPos -= graphics.getAscender(labelFontSize);
         graphics.putText(MultilingualText.getText(labelKey, bill.getFormat().getLanguage()), 0, yPos, labelFontSize, true);
-        yPos -= FontMetrics.getDescender(labelFontSize) + labelLeading;
+        yPos -= graphics.getDescender(labelFontSize) + labelLeading;
     }
 
     // Draws a label and a single line of text at (0, yPos) and advances vertically
     private void drawLabelAndText(String labelKey, String text) throws IOException {
         drawLabel(labelKey);
-        yPos -= FontMetrics.getAscender(textFontSize);
+        yPos -= graphics.getAscender(textFontSize);
         graphics.putText(text, 0, yPos, textFontSize, false);
-        yPos -= FontMetrics.getDescender(textFontSize) + textLeading + textBottomPadding;
+        yPos -= graphics.getDescender(textFontSize) + textLeading + textBottomPadding;
     }
 
     // Draws a label and a multiple lines of text at (0, yPos) and advances
     // vertically
     private void drawLabelAndTextLines(String labelKey, String[] textLines) throws IOException {
         drawLabel(labelKey);
-        yPos -= FontMetrics.getAscender(textFontSize);
+        yPos -= graphics.getAscender(textFontSize);
         graphics.putTextLines(textLines, 0, yPos, textFontSize, textLeading);
-        yPos -= textLines.length * (FontMetrics.getLineHeight(textFontSize) + textLeading)
-                - FontMetrics.getAscender(textFontSize) + textBottomPadding;
+        yPos -= textLines.length * (graphics.getLineHeight(textFontSize) + textLeading)
+                - graphics.getAscender(textFontSize) + textBottomPadding;
     }
 
     // Prepare the formatted text
@@ -417,11 +417,11 @@ class BillLayout {
 
     // Prepare the text (by breaking it into lines where necessary)
     private void breakLines(double maxWidth) {
-        accountPayableToLines = FontMetrics.splitLines(accountPayableTo, maxWidth * MM_TO_PT, textFontSize);
+        accountPayableToLines = graphics.splitLines(accountPayableTo, maxWidth * MM_TO_PT, textFontSize);
         if (additionalInfo != null)
-            additionalInfoLines = FontMetrics.splitLines(additionalInfo, maxWidth * MM_TO_PT, textFontSize);
+            additionalInfoLines = graphics.splitLines(additionalInfo, maxWidth * MM_TO_PT, textFontSize);
         if (payableBy != null)
-            payableByLines = FontMetrics.splitLines(payableBy, maxWidth * MM_TO_PT,textFontSize);
+            payableByLines = graphics.splitLines(payableBy, maxWidth * MM_TO_PT,textFontSize);
     }
 
 

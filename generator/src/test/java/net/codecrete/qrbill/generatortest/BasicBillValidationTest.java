@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import net.codecrete.qrbill.generator.Bill;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 /**
  * Various unit tests for the bill data validation

@@ -82,7 +82,7 @@ public class PDFCanvas extends AbstractCanvas {
     public void putTextLines(String[] lines, double x, double y, int fontSize, double leading) throws IOException {
         x *= MM_TO_PT;
         y *= MM_TO_PT;
-        float lineHeight = (float) ((FontMetrics.getLineHeight(fontSize) + leading) * MM_TO_PT);
+        float lineHeight = (float) ((fontMetrics.getLineHeight(fontSize) + leading) * MM_TO_PT);
         contentStream.setFont(PDType1Font.HELVETICA, fontSize);
         contentStream.beginText();
         contentStream.newLineAtOffset((float) x, (float) y);

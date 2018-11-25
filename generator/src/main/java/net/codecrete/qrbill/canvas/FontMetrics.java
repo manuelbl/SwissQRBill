@@ -20,13 +20,23 @@ public class FontMetrics {
 
     private static final double PT_TO_MM = 25.4 / 72;
 
+    private char defaultWidth;
+    private char[] charWidth20_7F;
+    private char[] charWidthA0_FF;
+
+    public FontMetrics() {
+        defaultWidth = DEFAULT_WIDTH;
+        charWidth20_7F = CHAR_WIDTH_20_7F;
+        charWidthA0_FF = CHAR_WIDTH_A0_FF;
+    }
+
     /**
      * Distance between baseline and top of highest letter.
      * 
      * @param fontSize the font size (in pt)
      * @return the distance (in mm)
      */
-    public static double getAscender(int fontSize) {
+    public double getAscender(int fontSize) {
         return fontSize * 0.8 * PT_TO_MM;
     }
 
@@ -37,7 +47,7 @@ public class FontMetrics {
      * @param fontSize the font size (in pt)
      * @return the distance (in mm)
      */
-    public static double getDescender(int fontSize) {
+    public double getDescender(int fontSize) {
         return fontSize * 0.2 * PT_TO_MM;
     }
 
@@ -47,7 +57,7 @@ public class FontMetrics {
      * @param fontSize the font size (in pt)
      * @return the distance (in mm)
      */
-    public static double getLineHeight(int fontSize) {
+    public double getLineHeight(int fontSize) {
         return fontSize * PT_TO_MM;
     }
 
@@ -63,7 +73,7 @@ public class FontMetrics {
      * @param fontSize  the font size (in pt)
      * @return an array of text lines
      */
-    public static String[] splitLines(String text, double maxLength, int fontSize) {
+    public String[] splitLines(String text, double maxLength, int fontSize) {
 
         /* Yes, this code has a cognitive complexity of 37. Deal with it. */
 
@@ -173,9 +183,10 @@ public class FontMetrics {
      * Returns the width of the specified text for the specified font size
      * @param text text
      * @param fontSize font size (in pt)
+     * @param isBold   indicates if the text is in bold or regular weight
      * @return width (in mm)
      */
-    public static double getTextWidth(CharSequence text, int fontSize) {
+    public double getTextWidth(CharSequence text, int fontSize, boolean isBold) {
         double width = 0;
         int len = text.length();
         for (int i = 0; i < len; i++)
@@ -199,15 +210,15 @@ public class FontMetrics {
      * @param ch the character
      * @return the width of the character
      */
-    private static double getCharWidth(char ch) {
+    private double getCharWidth(char ch) {
         char width = 0;
         if (ch >= 0x20 && ch <= 0x7f)
-            width = CHAR_WIDTH_20_7F[ch - 0x20];
+            width = charWidth20_7F[ch - 0x20];
         else if (ch >= 0xa0 && ch <= 0xff) {
-            width = CHAR_WIDTH_A0_FF[ch - 0xa0];
+            width = charWidthA0_FF[ch - 0xa0];
         }
         if (width == 0)
-            width = DEFAULT_WIDTH;
+            width = defaultWidth;
         return width;
     }
 
@@ -410,8 +421,4 @@ public class FontMetrics {
             0, // unused
             0 // unused
     };
-
-    private FontMetrics() {
-        // Do not create instances
-    }
 }
