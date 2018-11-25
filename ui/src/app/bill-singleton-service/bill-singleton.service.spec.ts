@@ -34,13 +34,15 @@ describe('BillSingletonService', () => {
 
   it('should retain singleton data', () => {
     const bill: QrBill = {
-      language: 'de',
-      version: 'V1_0',
+      version: 'V2_0',
       creditor: {
         name: 'Name-1',
         countryCode: 'CH',
         postalCode: '1234',
         town: 'Nana'
+      },
+      format: {
+        language: 'de'
       }
     };
     singletonService.setBill(bill);
