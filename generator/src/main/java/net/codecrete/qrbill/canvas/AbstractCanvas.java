@@ -46,10 +46,7 @@ public abstract class AbstractCanvas implements Canvas {
 
     @Override
     public double getTextWidth(CharSequence text, int fontSize, boolean isBold) {
-        double width = fontMetrics.getTextWidth(text, fontSize, isBold);
-        if (isBold)
-            width *= 1.05; // TODO: proper handling of bold font
-        return width;
+        return fontMetrics.getTextWidth(text, fontSize, isBold);
     }
 
     @Override

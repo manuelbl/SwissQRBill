@@ -20,14 +20,21 @@ public class FontMetrics {
 
     private static final double PT_TO_MM = 25.4 / 72;
 
-    private char defaultWidth;
-    private char[] charWidth20_7F;
-    private char[] charWidthA0_FF;
+    private final char[] charWidth_20_7F;
+    private final char[] charWidth_A0_FF;
+    private final char charDefaultWidth;
+    private final FontMetrics boldMetrics;
 
     public FontMetrics() {
-        defaultWidth = DEFAULT_WIDTH;
-        charWidth20_7F = CHAR_WIDTH_20_7F;
-        charWidthA0_FF = CHAR_WIDTH_A0_FF;
+        this(HELVETICA_NORMAL_20_7F, HELVATICA_NORMAL_A0_FF, HELVETICA_NORMAL_DEFAULT_WIDTH,
+                new FontMetrics(HELVETICA_BOLD_20_7F, HELVATICA_BOLD_A0_FF, HELVETICA_BOLD_DEFAULT_WIDTH, null));
+    }
+
+    private FontMetrics(char[] charWidth_20_7F, char[] charWidth_A0_FF, char charDefaultWidth, FontMetrics boldMetrics) {
+        this.charWidth_20_7F = charWidth_20_7F;
+        this.charWidth_A0_FF = charWidth_A0_FF;
+        this.charDefaultWidth = charDefaultWidth;
+        this.boldMetrics = boldMetrics;
     }
 
     /**
@@ -187,6 +194,9 @@ public class FontMetrics {
      * @return width (in mm)
      */
     public double getTextWidth(CharSequence text, int fontSize, boolean isBold) {
+        if (isBold)
+            return boldMetrics.getTextWidth(text, fontSize, false);
+
         double width = 0;
         int len = text.length();
         for (int i = 0; i < len; i++)
@@ -213,18 +223,19 @@ public class FontMetrics {
     private double getCharWidth(char ch) {
         char width = 0;
         if (ch >= 0x20 && ch <= 0x7f)
-            width = charWidth20_7F[ch - 0x20];
+            width = charWidth_20_7F[ch - 0x20];
         else if (ch >= 0xa0 && ch <= 0xff) {
-            width = charWidthA0_FF[ch - 0xa0];
+            width = charWidth_A0_FF[ch - 0xa0];
         }
         if (width == 0)
-            width = defaultWidth;
+            width = charDefaultWidth;
         return width;
     }
 
-    private static final char DEFAULT_WIDTH = 556;
 
-    private static final char[] CHAR_WIDTH_20_7F = { // start
+    private static final char HELVETICA_NORMAL_DEFAULT_WIDTH = 556;
+
+    private static final char[] HELVETICA_NORMAL_20_7F = {
             278, // 0x20
             278, // 0x21 !
             355, // 0x22 "
@@ -232,7 +243,7 @@ public class FontMetrics {
             556, // 0x24 $
             889, // 0x25 %
             667, // 0x26 &
-            222, // 0x27 '
+            191, // 0x27 '
             333, // 0x28 (
             333, // 0x29 )
             389, // 0x2A *
@@ -289,7 +300,7 @@ public class FontMetrics {
             278, // 0x5D ]
             0, // unused
             556, // 0x5F _
-            222, // 0x60 `
+            333, // 0x60 `
             556, // 0x61 a
             556, // 0x62 b
             500, // 0x63 c
@@ -323,15 +334,11 @@ public class FontMetrics {
             0 // unused
     };
 
-    private static final char[] CHAR_WIDTH_A0_FF = { // start
+    private static final char[] HELVATICA_NORMAL_A0_FF = {
             0, // unused
             0, // unused
             0, // unused
-            556, // 0xA3 £ Pound sign
-            0, // unused
-            0, // unused
-            0, // unused
-            0, // unused
+            556, // 0xA3 £
             0, // unused
             0, // unused
             0, // unused
@@ -344,7 +351,11 @@ public class FontMetrics {
             0, // unused
             0, // unused
             0, // unused
-            222, // 0xB4 ´ Acute accent
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            333, // 0xB4 ´
             0, // unused
             0, // unused
             0, // unused
@@ -356,69 +367,270 @@ public class FontMetrics {
             0, // unused
             0, // unused
             0, // unused
-            667, // 0xC0 À Latin Capital Letter A with grave
-            667, // 0xC1 Á Latin Capital letter A with acute
-            667, // 0xC2 Â Latin Capital letter A with circumflex
+            667, // 0xC0 À
+            667, // 0xC1 Á
+            667, // 0xC2 Â
             0, // unused
-            667, // 0xC4 Ä Latin Capital letter A with diaeresis
-            0, // unused
-            0, // unused
-            722, // 0xC7 Ç Latin Capital letter C with cedilla
-            667, // 0xC8 È Latin Capital letter E with grave
-            667, // 0xC9 É Latin Capital letter E with acute
-            667, // 0xCA Latin Capital letter E with circumflex
-            667, // 0xCB Ë Latin Capital letter E with diaeresis
-            278, // 0xCC Ì Latin Capital letter I with grave
-            278, // 0xCD Í Latin Capital letter I with acute
-            278, // 0xCE Î Latin Capital letter I with circumflex
-            278, // 0xCF Ï Latin Capital letter I with diaeresis
-            0, // unused
-            722, // 0xD1 Ñ Latin Capital letter N with tilde
-            778, // 0xD2 Ò Latin Capital letter O with grave
-            778, // 0xD3 Ó Latin Capital letter O with acute
-            778, // 0xD4 Ô Latin Capital letter O with circumflex
-            0, // unused
-            778, // 0xD6 Ö Latin Capital letter O with diaeresis
+            667, // 0xC4 Ä
             0, // unused
             0, // unused
-            722, // 0xD9 Ù Latin Capital letter U with grave
-            722, // 0xDA Ú Latin Capital letter U with acute
-            722, // 0xDB Û Latin Capital Letter U with circumflex
-            722, // 0xDC Ü Latin Capital Letter U with diaeresis
+            722, // 0xC7 Ç
+            667, // 0xC8 È
+            667, // 0xC9 É
+            667, // 0xCA Ê
+            667, // 0xCB Ë
+            278, // 0xCC Ì
+            278, // 0xCD Í
+            278, // 0xCE Î
+            278, // 0xCF Ï
+            0, // unused
+            722, // 0xD1 Ñ
+            778, // 0xD2 Ò
+            778, // 0xD3 Ó
+            778, // 0xD4 Ô
+            0, // unused
+            778, // 0xD6 Ö
             0, // unused
             0, // unused
-            611, // 0xDF ß Latin Small Letter sharp S
-            556, // 0xE0 à Latin Small Letter A with grave
-            556, // 0xE1 á Latin Small Letter A with acute
-            556, // 0xE2 â Latin Small Letter A with circumflex
-            0, // unused
-            556, // 0xE4 ä Latin Small Letter A with diaeresis
+            722, // 0xD9 Ù
+            722, // 0xDA Ú
+            722, // 0xDB Û
+            722, // 0xDC Ü
             0, // unused
             0, // unused
-            500, // 0xE7 ç Latin Small Letter C with cedilla
-            556, // 0xE8 è Latin Small Letter E with grave
-            556, // 0xE9 é Latin Small Letter E with acute
-            556, // 0xEA ê Latin Small Letter E with circumflex
-            556, // 0xEB ë Latin Small Letter E with diaeresis
-            278, // 0xEC ì Latin Small Letter I with grave
-            278, // 0xED í Latin Small Letter I with acute
-            278, // 0xEE î Latin Small Letter I with circumflex
-            278, // 0xEF ï Latin Small Letter I with diaeresis
+            611, // 0xDF ß
+            556, // 0xE0 à
+            556, // 0xE1 á
+            556, // 0xE2 â
             0, // unused
-            556, // 0xF1 ñ Latin Small Letter N with tilde
-            556, // 0xF2 ò Latin Small Letter O with grave
-            556, // 0xF3 ó Latin Small Letter O with acute
-            556, // 0xF4 ô Latin Small Letter O with circumflex
+            556, // 0xE4 ä
             0, // unused
-            556, // 0xF6 ö Latin Small Letter O with diaeresis
-            556, // 0xF7 ÷ Division sign
             0, // unused
-            556, // 0xF9 ù Latin Small Letter U with grave
-            556, // 0xFA ú Latin Small Letter U with acute
-            556, // 0xFB û Latin Small Letter U with circumflex
-            556, // 0xFC ü Latin Small Letter U with diaeresis
-            500, // 0xFD ý Latin Small Letter Y with acute
+            500, // 0xE7 ç
+            556, // 0xE8 è
+            556, // 0xE9 é
+            556, // 0xEA ê
+            556, // 0xEB ë
+            278, // 0xEC ì
+            278, // 0xED í
+            278, // 0xEE î
+            278, // 0xEF ï
+            0, // unused
+            556, // 0xF1 ñ
+            556, // 0xF2 ò
+            556, // 0xF3 ó
+            556, // 0xF4 ô
+            0, // unused
+            556, // 0xF6 ö
+            549, // 0xF7 ÷
+            0, // unused
+            556, // 0xF9 ù
+            556, // 0xFA ú
+            556, // 0xFB û
+            556, // 0xFC ü
+            500, // 0xFD ý
             0, // unused
             0 // unused
     };
+
+    private static final char HELVETICA_BOLD_DEFAULT_WIDTH = 611;
+
+    private static final char[] HELVETICA_BOLD_20_7F = {
+            278, // 0x20
+            333, // 0x21 !
+            474, // 0x22 "
+            556, // 0x23 #
+            556, // 0x24 $
+            889, // 0x25 %
+            722, // 0x26 &
+            238, // 0x27 '
+            333, // 0x28 (
+            333, // 0x29 )
+            389, // 0x2A *
+            584, // 0x2B +
+            278, // 0x2C ,
+            333, // 0x2D -
+            278, // 0x2E .
+            278, // 0x2F /
+            556, // 0x30 0
+            556, // 0x31 1
+            556, // 0x32 2
+            556, // 0x33 3
+            556, // 0x34 4
+            556, // 0x35 5
+            556, // 0x36 6
+            556, // 0x37 7
+            556, // 0x38 8
+            556, // 0x39 9
+            333, // 0x3A :
+            333, // 0x3B ;
+            584, // 0x3C <
+            584, // 0x3D =
+            584, // 0x3E >
+            611, // 0x3F ?
+            975, // 0x40 @
+            722, // 0x41 A
+            722, // 0x42 B
+            722, // 0x43 C
+            722, // 0x44 D
+            667, // 0x45 E
+            611, // 0x46 F
+            778, // 0x47 G
+            722, // 0x48 H
+            278, // 0x49 I
+            556, // 0x4A J
+            722, // 0x4B K
+            611, // 0x4C L
+            833, // 0x4D M
+            722, // 0x4E N
+            778, // 0x4F O
+            667, // 0x50 P
+            778, // 0x51 Q
+            722, // 0x52 R
+            667, // 0x53 S
+            611, // 0x54 T
+            722, // 0x55 U
+            667, // 0x56 V
+            944, // 0x57 W
+            667, // 0x58 X
+            667, // 0x59 Y
+            611, // 0x5A Z
+            333, // 0x5B [
+            278, // 0x5C \
+            333, // 0x5D ]
+            0, // unused
+            556, // 0x5F _
+            333, // 0x60 `
+            556, // 0x61 a
+            611, // 0x62 b
+            556, // 0x63 c
+            611, // 0x64 d
+            556, // 0x65 e
+            333, // 0x66 f
+            611, // 0x67 g
+            611, // 0x68 h
+            278, // 0x69 i
+            278, // 0x6A j
+            556, // 0x6B k
+            278, // 0x6C l
+            889, // 0x6D m
+            611, // 0x6E n
+            611, // 0x6F o
+            611, // 0x70 p
+            611, // 0x71 q
+            389, // 0x72 r
+            556, // 0x73 s
+            333, // 0x74 t
+            611, // 0x75 u
+            556, // 0x76 v
+            778, // 0x77 w
+            556, // 0x78 x
+            556, // 0x79 y
+            500, // 0x7A z
+            389, // 0x7B {
+            0, // unused
+            389, // 0x7D }
+            584, // 0x7E ~
+            0 // unused
+    };
+
+    private static final char[] HELVATICA_BOLD_A0_FF = {
+            0, // unused
+            0, // unused
+            0, // unused
+            556, // 0xA3 £
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            333, // 0xB4 ´
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            0, // unused
+            722, // 0xC0 À
+            722, // 0xC1 Á
+            722, // 0xC2 Â
+            0, // unused
+            722, // 0xC4 Ä
+            0, // unused
+            0, // unused
+            722, // 0xC7 Ç
+            667, // 0xC8 È
+            667, // 0xC9 É
+            667, // 0xCA Ê
+            667, // 0xCB Ë
+            278, // 0xCC Ì
+            278, // 0xCD Í
+            278, // 0xCE Î
+            278, // 0xCF Ï
+            0, // unused
+            722, // 0xD1 Ñ
+            778, // 0xD2 Ò
+            778, // 0xD3 Ó
+            778, // 0xD4 Ô
+            0, // unused
+            778, // 0xD6 Ö
+            0, // unused
+            0, // unused
+            722, // 0xD9 Ù
+            722, // 0xDA Ú
+            722, // 0xDB Û
+            722, // 0xDC Ü
+            0, // unused
+            0, // unused
+            611, // 0xDF ß
+            556, // 0xE0 à
+            556, // 0xE1 á
+            556, // 0xE2 â
+            0, // unused
+            556, // 0xE4 ä
+            0, // unused
+            0, // unused
+            556, // 0xE7 ç
+            556, // 0xE8 è
+            556, // 0xE9 é
+            556, // 0xEA ê
+            556, // 0xEB ë
+            278, // 0xEC ì
+            278, // 0xED í
+            278, // 0xEE î
+            278, // 0xEF ï
+            0, // unused
+            611, // 0xF1 ñ
+            611, // 0xF2 ò
+            611, // 0xF3 ó
+            611, // 0xF4 ô
+            0, // unused
+            611, // 0xF6 ö
+            549, // 0xF7 ÷
+            0, // unused
+            611, // 0xF9 ù
+            611, // 0xFA ú
+            611, // 0xFB û
+            611, // 0xFC ü
+            556, // 0xFD ý
+            0, // unused
+            0 // unused
+    };
+
 }
