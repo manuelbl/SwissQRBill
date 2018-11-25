@@ -28,7 +28,7 @@ class SampleData {
         bill.setFormat(format);
         bill.setAmount(new BigDecimal(100.35).setScale(2, RoundingMode.HALF_UP));
         bill.setCurrency("CHF");
-        bill.setAccount("CH4431999123000889012");
+        bill.setAccount("CH7300774010291134700");
         Address creditor = new Address();
         creditor.setAddressType(Address.AddressTypeEnum.STRUCTURED);
         creditor.setName("Meierhans AG");
