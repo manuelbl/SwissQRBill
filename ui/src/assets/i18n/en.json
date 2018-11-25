@@ -23,6 +23,7 @@
     "amount": "Amount",
     "reference": "Reference",
     "unstructured_msg": "Additional information",
+    "bill_information": "Structured bill information",
     "slip_lang": "Language",
     "payable_by": "Payable by",
     "app_name": "Swiss QR Bill",

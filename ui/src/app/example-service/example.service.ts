@@ -153,7 +153,8 @@ export class ExampleService {
         },
         reference: '210000000003139471430009017',
         unstructuredMessage:
-          'Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010',
+          'Instruction of 15.09.2019',
+        billInformation: '//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010',
         debtor: {
           name: 'Pia-Maria Rutschmann-Schnyder',
           street: 'Grosse Marktgasse',
@@ -169,7 +170,7 @@ export class ExampleService {
         }
       },
       // tslint:disable-next-line:max-line-length
-      'eJxVUc1y2yAQfhUNuVqGRbItfGvdOulMO-NKOXIhMrGY4sUF1NbN5N27OO2hcGCH728XXtgPG5MLyLawYM8hnk1m2xfmDZ5mc7JsyyyyBTtFc5ncmPZ_GTh7v2Bhzpc5D-534X2P9ZPzvg7or6RI9mKiySE-Xi8FTsG7Y-0d2vqny1OdRpdSiImVWMx7c3akuxm_Lsjs0f6iHDYcdhqFFEIjaNw9tG0DSimQjRCi65QAqXHQ2IcnG3M1jBNad7SxendPl7OtjnP12YykluuOSy6JLleCvN4764ujxv83WatWLTerAu5v5gdn6i8mOlP1c07jdDaIdYm6UpLG-xhSshUxvuWToZIiOo2qLV33NOM4mXF6y_ra94SC-LcaoLQNtGUcGmaj8ROmHOcx06dU4bmC1VKopRSg7u4G4AI41RvRCMUBONDTQEu1FJzO26IZebNWq443gu8eQKyLoFvzVtz4vAVCgHr7ePigkb3-ATcQn4g~'
+      'eJxVUc1y2yAQfhUNZ8vsSrItfGucOulMO-NKOXIhMrGY4sUF1NbN5N27ctpD4cDOfn8svIofNiYXSGxxIV5CPJsstq_CGzpN5mTFVlgSC3GK5jK6Ie3_MmjyfiHClC9T7t3vmfc9ls_O-zKQv7Ii2YuJJof4dL3McAreHUvvyJY_XR7LNLiUQkxijqW8N2fHupvx24LNnuwvzhH9YacJKgBNqGn32DQ1KqWwqgGgbRVgpanX1IVnG3PRDyNZd7Sx-PDAzckWx6n4bAZWV-tWVrJierUC9rpz1s-Omv7fbK0atdysZnB_Mz84U34x0Zmim3IaxrMhKueoKydpeoghJVsw41s-GS45otWkmvnWHc84jGYY37O-dh2jCP9WjZy2wWYeh4fZaPpEKcdpyPwpRXgpcLUEtawAlaaPh3tNUvYoASW3NlCDkogS-YWw4boCyedt8aiyXqtVK2uQu0eE9Sxo17KBG182yAiCePsDkxefoA~~'
     );
 
     const e6 = new Example(

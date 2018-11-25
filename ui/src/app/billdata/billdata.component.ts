@@ -92,6 +92,7 @@ export class BillDataComponent implements OnInit {
           validators: [Validators.pattern('[A-Za-z0-9 ]{5,40}')]
         }),
         unstructuredMessage: new FormControl(this.bill.unstructuredMessage),
+        billInformation: new FormControl(this.bill.billInformation),
         format: this.formBuilder.group({
           language: new FormControl(this.bill.format.language),
           outputSize: new FormControl(this.bill.format.outputSize),

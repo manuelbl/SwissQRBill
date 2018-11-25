@@ -23,6 +23,7 @@
     "amount": "Betrag",
     "reference": "Referenz",
     "unstructured_msg": "Zusätzliche Informationen",
+    "bill_information": "Strukturierte Rechnungsinformation",
     "slip_lang": "Sprache",
     "payable_by": "Zahlbar durch",
     "app_name": "Schweizer QR-Rechnung",

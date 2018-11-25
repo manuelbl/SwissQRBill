@@ -57,39 +57,39 @@
 
       </div>
 
-      <h2 class="top-spacing" translate>payment_details</h2>
+      <h2 class="top-spacing" translate>bill_format</h2>
 
-      <div class="form-group mat-elevation-z3">
+      <div class="form-group mat-elevation-z3" formGroupName="format">
 
         <div class="form-line">
-          <mat-form-field class="form-field s2">
-            <mat-select placeholder="{{ 'currency' | translate}}" formControlName="currency" required>
-              <mat-option value="CHF">CHF</mat-option>
-              <mat-option value="EUR">EUR</mat-option>
-            </mat-select>
-            <mat-error *ngIf="billForm.hasError('serverSide', ['currency'])">{{billForm.getError('serverSide', 'currency')}}</mat-error>
-          </mat-form-field>
-
           <mat-form-field class="form-field s4">
-            <input qrbillInputWithFormat [inputFormatter]="amountFormatter" placeholder="{{ 'amount' | translate}}" formControlName="amount">
-            <mat-error *ngIf="billForm.hasError('serverSide', ['amount'])">{{billForm.getError('serverSide', 'amount')}}</mat-error>
+              <mat-select placeholder="{{ 'slip_lang' | translate}}" formControlName="language" required>
+                  <mat-option value="de"><span translate>lang.de</span></mat-option>
+                  <mat-option value="fr"><span translate>lang.fr</span></mat-option>
+                  <mat-option value="it"><span translate>lang.it</span></mat-option>
+                  <mat-option value="en"><span translate>lang.en</span></mat-option>
+                </mat-select>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['format', 'language'])">{{billForm.getError('serverSide', 'format.language')}}</mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-line">
-          <mat-form-field class="form-field s12">
-            <input qrbillInputWithFormat [inputFormatter]="refNumberFormatter" [matAutocomplete]="refNoAuto" [qrBillAutoComplete]="refNoAuto" (input)="refNoChanges.next($event.target.value)" placeholder="{{ 'reference' | translate }}" formControlName="reference">
-            <mat-error *ngIf="billForm.hasError('serverSide', ['reference'])">{{billForm.getError('serverSide', 'reference')}}</mat-error>
+          <mat-form-field class="form-field s5">
+              <mat-select placeholder="{{ 'output_size' | translate}}" formControlName="outputSize" required>
+                <mat-option value="qr-bill-only"><span translate>output_sizes.qr_bill_only</span></mat-option>
+                <mat-option value="a4-portrait-sheet"><span translate>output_sizes.a4_portrait</span></mat-option>
+                <mat-option value="qr-code-only"><span translate>output_sizes.qr_code_only</span></mat-option>
+              </mat-select>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['format', 'outputSize'])">{{billForm.getError('serverSide', 'format.outputSize')}}</mat-error>
           </mat-form-field>
-          <mat-autocomplete #refNoAuto="matAutocomplete">
-            <mat-option *ngFor="let option of refNoSuggestions | async" [value]="option"><span *ngIf="option.startsWith('RF')" class="gen">{{ option.substr(0, 4) }}</span>{{ option.startsWith('RF') ? option.substring(4) : option.substr(0, option.length - 1)}}<span *ngIf="!option.startsWith('RF')" class="gen">{{ option.substr(-1) }}</span></mat-option>
-          </mat-autocomplete>
-        </div>
 
-        <div class="form-line">
-          <mat-form-field class="form-field s12">
-            <input matInput placeholder="{{ 'unstructured_msg' | translate }}" formControlName="unstructuredMessage">
-            <mat-error *ngIf="billForm.hasError('serverSide', ['unstructuredMessage'])">{{billForm.getError('serverSide', 'unstructuredMessage')}}</mat-error>
+          <mat-form-field class="form-field s7">
+              <mat-select placeholder="{{ 'separator_lines' | translate}}" formControlName="separatorType" required>
+                <mat-option value="solid-line-with-scissors"><span translate>separator_type.solid_line_with_scissors</span></mat-option>
+                <mat-option value="solid-line"><span translate>separator_type.solid_line</span></mat-option>
+                <mat-option value="none"><span translate>separator_type.none</span></mat-option>
+              </mat-select>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['format', 'separatorType'])">{{billForm.getError('serverSide', 'format.separatorType')}}</mat-error>
           </mat-form-field>
         </div>
 
@@ -141,39 +141,46 @@
 
       </div>
 
-      <h2 class="top-spacing" translate>bill_format</h2>
+      <h2 class="top-spacing" translate>payment_details</h2>
 
-      <div class="form-group mat-elevation-z3" formGroupName="format">
+      <div class="form-group mat-elevation-z3">
 
         <div class="form-line">
+          <mat-form-field class="form-field s2">
+            <mat-select placeholder="{{ 'currency' | translate}}" formControlName="currency" required>
+              <mat-option value="CHF">CHF</mat-option>
+              <mat-option value="EUR">EUR</mat-option>
+            </mat-select>
+            <mat-error *ngIf="billForm.hasError('serverSide', ['currency'])">{{billForm.getError('serverSide', 'currency')}}</mat-error>
+          </mat-form-field>
+
           <mat-form-field class="form-field s4">
-              <mat-select placeholder="{{ 'slip_lang' | translate}}" formControlName="language" required>
-                  <mat-option value="de"><span translate>lang.de</span></mat-option>
-                  <mat-option value="fr"><span translate>lang.fr</span></mat-option>
-                  <mat-option value="it"><span translate>lang.it</span></mat-option>
-                  <mat-option value="en"><span translate>lang.en</span></mat-option>
-                </mat-select>
-            <mat-error *ngIf="billForm.hasError('serverSide', ['format', 'language'])">{{billForm.getError('serverSide', 'format.language')}}</mat-error>
+            <input qrbillInputWithFormat [inputFormatter]="amountFormatter" placeholder="{{ 'amount' | translate}}" formControlName="amount">
+            <mat-error *ngIf="billForm.hasError('serverSide', ['amount'])">{{billForm.getError('serverSide', 'amount')}}</mat-error>
           </mat-form-field>
         </div>
 
         <div class="form-line">
-          <mat-form-field class="form-field s5">
-              <mat-select placeholder="{{ 'output_size' | translate}}" formControlName="outputSize" required>
-                <mat-option value="qr-bill-only"><span translate>output_sizes.qr_bill_only</span></mat-option>
-                <mat-option value="a4-portrait-sheet"><span translate>output_sizes.a4_portrait</span></mat-option>
-                <mat-option value="qr-code-only"><span translate>output_sizes.qr_code_only</span></mat-option>
-              </mat-select>
-            <mat-error *ngIf="billForm.hasError('serverSide', ['format', 'outputSize'])">{{billForm.getError('serverSide', 'format.outputSize')}}</mat-error>
+          <mat-form-field class="form-field s12">
+            <input qrbillInputWithFormat [inputFormatter]="refNumberFormatter" [matAutocomplete]="refNoAuto" [qrBillAutoComplete]="refNoAuto" (input)="refNoChanges.next($event.target.value)" placeholder="{{ 'reference' | translate }}" formControlName="reference">
+            <mat-error *ngIf="billForm.hasError('serverSide', ['reference'])">{{billForm.getError('serverSide', 'reference')}}</mat-error>
           </mat-form-field>
+          <mat-autocomplete #refNoAuto="matAutocomplete">
+            <mat-option *ngFor="let option of refNoSuggestions | async" [value]="option"><span *ngIf="option.startsWith('RF')" class="gen">{{ option.substr(0, 4) }}</span>{{ option.startsWith('RF') ? option.substring(4) : option.substr(0, option.length - 1)}}<span *ngIf="!option.startsWith('RF')" class="gen">{{ option.substr(-1) }}</span></mat-option>
+          </mat-autocomplete>
+        </div>
 
-          <mat-form-field class="form-field s7">
-              <mat-select placeholder="{{ 'separator_lines' | translate}}" formControlName="separatorType" required>
-                <mat-option value="solid-line-with-scissors"><span translate>separator_type.solid_line_with_scissors</span></mat-option>
-                <mat-option value="solid-line"><span translate>separator_type.solid_line</span></mat-option>
-                <mat-option value="none"><span translate>separator_type.none</span></mat-option>
-              </mat-select>
-            <mat-error *ngIf="billForm.hasError('serverSide', ['format', 'separatorType'])">{{billForm.getError('serverSide', 'format.separatorType')}}</mat-error>
+        <div class="form-line">
+          <mat-form-field class="form-field s12">
+            <input matInput placeholder="{{ 'unstructured_msg' | translate }}" formControlName="unstructuredMessage">
+            <mat-error *ngIf="billForm.hasError('serverSide', ['unstructuredMessage'])">{{billForm.getError('serverSide', 'unstructuredMessage')}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-line">
+          <mat-form-field class="form-field s12">
+            <input matInput placeholder="{{ 'bill_information' | translate }}" formControlName="billInformation">
+            <mat-error *ngIf="billForm.hasError('serverSide', ['billInformation'])">{{billForm.getError('serverSide', 'billInformation')}}</mat-error>
           </mat-form-field>
         </div>
 

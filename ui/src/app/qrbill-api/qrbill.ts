@@ -15,6 +15,7 @@ export class QrBill {
   creditor: Address;
   reference?: string;
   unstructuredMessage?: string;
+  billInformation?: string;
   debtor?: Address;
   format?: BillFormat;
 
@@ -27,6 +28,7 @@ export class QrBill {
       creditor: Address.clone(bill.creditor),
       reference: bill.reference,
       unstructuredMessage: bill.unstructuredMessage,
+      billInformation: bill.billInformation,
       debtor: Address.clone(bill.debtor),
       format: BillFormat.clone(bill.format)
     };
