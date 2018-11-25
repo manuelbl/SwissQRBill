@@ -34,7 +34,9 @@ class A4BillTest {
 
     @Test
     void createA4SVGBill2() {
-        generateAndCompareBill(SampleData.getExample2(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex2.svg");
+        Bill bill = SampleData.getExample2();
+        bill.getFormat().setFontFamily("Liberation Sans, Arial, Helvetica");
+        generateAndCompareBill(bill, OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex2.svg");
     }
 
     @Test
@@ -49,12 +51,16 @@ class A4BillTest {
 
     @Test
     void createA4PDFBill3() {
-        generateAndCompareBill(SampleData.getExample3(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex3.pdf");
+        Bill bill = SampleData.getExample3();
+        bill.getFormat().setFontFamily("Arial");
+        generateAndCompareBill(bill, OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex3.pdf");
     }
 
     @Test
     void createA4SVGBill4() {
-        generateAndCompareBill(SampleData.getExample4(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex4.svg");
+        Bill bill = SampleData.getExample4();
+        bill.getFormat().setFontFamily("Frutiger");
+        generateAndCompareBill(bill, OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex4.svg");
     }
 
     @Test

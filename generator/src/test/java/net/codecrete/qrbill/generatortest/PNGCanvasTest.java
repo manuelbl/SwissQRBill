@@ -24,6 +24,7 @@ class PNGCanvasTest {
     @Test
     void pngBillQRBill() {
         Bill bill = SampleData.getExample1();
+        bill.getFormat().setFontFamily("Arial");
         PNGCanvas canvas = new PNGCanvas(300);
         bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
         byte[] svg = QRBill.generate(bill, canvas);
@@ -33,6 +34,7 @@ class PNGCanvasTest {
     @Test
     void pngBillA4() {
         Bill bill = SampleData.getExample3();
+        bill.getFormat().setFontFamily("Arial,Helvetica");
         PNGCanvas canvas = new PNGCanvas(144);
         bill.getFormat().setOutputSize(OutputSize.A4_PORTRAIT_SHEET);
         byte[] svg = QRBill.generate(bill, canvas);
