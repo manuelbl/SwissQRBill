@@ -29,7 +29,7 @@ class CleanupTest {
             throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         PNGCanvas pngCanvas;
         try (PNGCanvas canvas = new PNGCanvas(300)) {
-            canvas.setupPage(200, 100);
+            canvas.setupPage(200, 100, "Arial");
             pngCanvas = canvas;
         }
 
@@ -43,7 +43,7 @@ class CleanupTest {
             IllegalAccessException, NoSuchFieldException {
         PDFCanvas pdfCanvas;
         try (PDFCanvas canvas = new PDFCanvas()) {
-            canvas.setupPage(200, 100);
+            canvas.setupPage(200, 100, "Arial");
             pdfCanvas = canvas;
         }
 

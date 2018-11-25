@@ -24,7 +24,7 @@ class FontMetricsTest {
 
     @BeforeEach
     void init() {
-        fontMetrics = new FontMetrics();
+        fontMetrics = new FontMetrics("Helvetica");
     }
 
     @Test

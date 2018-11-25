@@ -17,8 +17,8 @@ public abstract class AbstractCanvas implements Canvas {
 
     FontMetrics fontMetrics;
 
-    public AbstractCanvas() {
-        fontMetrics = new FontMetrics();
+    protected void setupFontMetrics(String fontFamilyList) {
+        fontMetrics = new FontMetrics(fontFamilyList);
     }
 
     @Override

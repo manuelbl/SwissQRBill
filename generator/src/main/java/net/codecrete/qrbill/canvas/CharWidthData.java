@@ -122,7 +122,7 @@ public class CharWidthData {
     /**
      * Character widths for Helvetica Normal (range 0xa0 to 0xff)
      */
-    public static final char[] HELVATICA_NORMAL_A0_FF = {
+    public static final char[] HELVETICA_NORMAL_A0_FF = {
             0, // unused
             0, // unused
             0, // unused
@@ -331,7 +331,7 @@ public class CharWidthData {
     /**
      * Character widths for Helvetica Bold (range 0xa0 to 0xff)
      */
-    public static final char[] HELVATICA_BOLD_A0_FF = {
+    public static final char[] HELVETICA_BOLD_A0_FF = {
             0, // unused
             0, // unused
             0, // unused

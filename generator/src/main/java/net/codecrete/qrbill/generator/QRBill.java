@@ -223,7 +223,7 @@ public class QRBill {
             break;
         }
 
-        canvas.setupPage(drawingWidth, drawingHeight);
+        canvas.setupPage(drawingWidth, drawingHeight, bill.getFormat().getFontFamily());
         BillLayout layout = new BillLayout(bill, canvas);
         layout.draw();
         return canvas.getResult();
@@ -238,7 +238,7 @@ public class QRBill {
      */
     private static byte[] generateQRCode(Bill bill, Canvas canvas) throws IOException {
 
-        canvas.setupPage(QRCode.SIZE, QRCode.SIZE);
+        canvas.setupPage(QRCode.SIZE, QRCode.SIZE, bill.getFormat().getFontFamily());
         QRCode qrCode = new QRCode(bill);
         qrCode.draw(canvas, 0, 0);
         return canvas.getResult();

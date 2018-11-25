@@ -33,7 +33,9 @@ public class SVGCanvas extends AbstractCanvas {
     }
 
     @Override
-    public void setupPage(double width, double height) throws IOException {
+    public void setupPage(double width, double height, String fontFamilyList) throws IOException {
+        setupFontMetrics(fontFamilyList);
+
         buffer = new ByteArrayOutputStream();
         stream = new OutputStreamWriter(buffer, StandardCharsets.UTF_8);
         stream.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
@@ -47,7 +49,9 @@ public class SVGCanvas extends AbstractCanvas {
         stream.write(" ");
         stream.write(formatCoordinate(height));
         stream.write("\" xmlns=\"http://www.w3.org/2000/svg\">\n");
-        stream.write("<g font-family=\"Helvetica,Arial\" transform=\"translate(0 ");
+        stream.write("<g font-family=\"");
+        stream.write(fontMetrics.getFontFamilyList());
+        stream.write("\" transform=\"translate(0 ");
         stream.write(formatCoordinate(height));
         stream.write(")\">\n");
         stream.write("<title>Swiss QR Bill</title>\n");

@@ -47,7 +47,7 @@ class QRBillErrorsTest {
 	static class FailingCanvas extends AbstractCanvas {
 
 		@Override
-		public void setupPage(double width, double height) throws IOException {
+		public void setupPage(double width, double height, String fontFamilyList) throws IOException {
 			throw new IOException("not implemented");
 		}
 

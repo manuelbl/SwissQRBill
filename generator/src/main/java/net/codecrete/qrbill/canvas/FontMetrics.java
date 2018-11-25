@@ -7,6 +7,7 @@
 package net.codecrete.qrbill.canvas;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Simple font metrics class, independent of graphics subsystems and
@@ -20,23 +21,80 @@ public class FontMetrics {
 
     private static final double PT_TO_MM = 25.4 / 72;
 
+    private final String fontFamilyList;
+    private final String firstFontFamily;
     private final char[] charWidth_20_7F;
     private final char[] charWidth_A0_FF;
     private final char charDefaultWidth;
     private final FontMetrics boldMetrics;
 
-    public FontMetrics() {
-        this(CharWidthData.HELVETICA_NORMAL_20_7F, CharWidthData.HELVATICA_NORMAL_A0_FF,
-                CharWidthData.HELVETICA_NORMAL_DEFAULT_WIDTH,
-                new FontMetrics(CharWidthData.HELVETICA_BOLD_20_7F, CharWidthData.HELVATICA_BOLD_A0_FF,
-                        CharWidthData.HELVETICA_BOLD_DEFAULT_WIDTH, null));
+    public FontMetrics(String fontFamilyList) {
+        this.fontFamilyList = fontFamilyList;
+        firstFontFamily = getFirstFontFamily(fontFamilyList);
+        String family = firstFontFamily.toLowerCase(Locale.US);
+
+        final char[] boldCharWidth_20_7F;
+        final char[] boldCharWidth_A0_FF;
+        final char boldCharDefaultWidth;
+
+        if (family.indexOf("arial") >= 0) {
+            charWidth_20_7F = CharWidthData.ARIAL_NORMAL_20_7F;
+            charWidth_A0_FF = CharWidthData.ARIAL_NORMAL_A0_FF;
+            charDefaultWidth = CharWidthData.ARIAL_NORMAL_DEFAULT_WIDTH;
+            boldCharWidth_20_7F = CharWidthData.ARIAL_BOLD_20_7F;
+            boldCharWidth_A0_FF = CharWidthData.ARIAL_BOLD_A0_FF;
+            boldCharDefaultWidth = CharWidthData.ARIAL_BOLD_DEFAULT_WIDTH;
+        } else if (family.indexOf("liberation") >= 0 && family.indexOf("sans") >= 0) {
+            charWidth_20_7F = CharWidthData.LIBERATION_SANS_NORMAL_20_7F;
+            charWidth_A0_FF = CharWidthData.LIBERATION_SANS_NORMAL_A0_FF;
+            charDefaultWidth = CharWidthData.LIBERATION_SANS_NORMAL_DEFAULT_WIDTH;
+            boldCharWidth_20_7F = CharWidthData.LIBERATION_SANS_BOLD_20_7F;
+            boldCharWidth_A0_FF = CharWidthData.LIBERATION_SANS_BOLD_A0_FF;
+            boldCharDefaultWidth = CharWidthData.LIBERATION_SANS_BOLD_DEFAULT_WIDTH;
+        } else if (family.indexOf("frutiger") >= 0) {
+            charWidth_20_7F = CharWidthData.FRUTIGER_NORMAL_20_7F;
+            charWidth_A0_FF = CharWidthData.FRUTIGER_NORMAL_A0_FF;
+            charDefaultWidth = CharWidthData.FRUTIGER_NORMAL_DEFAULT_WIDTH;
+            boldCharWidth_20_7F = CharWidthData.FRUTIGER_BOLD_20_7F;
+            boldCharWidth_A0_FF = CharWidthData.FRUTIGER_BOLD_A0_FF;
+            boldCharDefaultWidth = CharWidthData.FRUTIGER_BOLD_DEFAULT_WIDTH;
+        } else {
+            charWidth_20_7F = CharWidthData.HELVETICA_NORMAL_20_7F;
+            charWidth_A0_FF = CharWidthData.HELVETICA_NORMAL_A0_FF;
+            charDefaultWidth = CharWidthData.HELVETICA_NORMAL_DEFAULT_WIDTH;
+            boldCharWidth_20_7F = CharWidthData.HELVETICA_BOLD_20_7F;
+            boldCharWidth_A0_FF = CharWidthData.HELVETICA_BOLD_A0_FF;
+            boldCharDefaultWidth = CharWidthData.HELVETICA_BOLD_DEFAULT_WIDTH;
+        }
+
+        boldMetrics = new FontMetrics(boldCharWidth_20_7F, boldCharWidth_A0_FF, boldCharDefaultWidth);
     }
 
-    private FontMetrics(char[] charWidth_20_7F, char[] charWidth_A0_FF, char charDefaultWidth, FontMetrics boldMetrics) {
+    private FontMetrics(char[] charWidth_20_7F, char[] charWidth_A0_FF, char charDefaultWidth) {
+        fontFamilyList = null;
+        firstFontFamily = null;
         this.charWidth_20_7F = charWidth_20_7F;
         this.charWidth_A0_FF = charWidth_A0_FF;
         this.charDefaultWidth = charDefaultWidth;
-        this.boldMetrics = boldMetrics;
+        this.boldMetrics = null;
+    }
+
+    /**
+     * Gets the font family list.
+     *
+     * @return font family list (comma separated)
+     */
+    public String getFontFamilyList() {
+        return fontFamilyList;
+    }
+
+    /**
+     * Gets the first font family (from the font family list).
+     *
+     * @return first font family
+     */
+    public String getFirstFontFamily() {
+        return firstFontFamily;
     }
 
     /**
@@ -234,4 +292,15 @@ public class FontMetrics {
         return width;
     }
 
+    private static String getFirstFontFamily(String fontFamilyList) {
+        int index = fontFamilyList.indexOf(',');
+        if (index < 0)
+            return fontFamilyList;
+        String fontFamily = fontFamilyList.substring(0, index).trim();
+        if (fontFamily.startsWith("\""))
+            fontFamily = fontFamily.substring(1);
+        if (fontFamily.endsWith(("\"")))
+            fontFamily = fontFamily.substring(0, fontFamily.length() - 1);
+        return fontFamily;
+    }
 }

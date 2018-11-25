@@ -18,6 +18,9 @@ import java.io.IOException;
 
 /**
  * PDF graphics generator
+ * <p>
+ *     The PDF generator currently only supports the Helvetica font.
+ * </p>
  */
 public class PDFCanvas extends AbstractCanvas {
 
@@ -32,11 +35,11 @@ public class PDFCanvas extends AbstractCanvas {
      * Creates a new instance of the graphics generator
      */
     public PDFCanvas() {
-        // no further initialization needed here
     }
 
     @Override
-    public void setupPage(double width, double height) throws IOException {
+    public void setupPage(double width, double height, String fontFamilyList) throws IOException {
+        setupFontMetrics("Helvetica");
         document = new PDDocument();
         document.getDocumentInformation().setTitle("Swiss QR Bill");
         PDPage page = new PDPage(new PDRectangle((float) (width * MM_TO_PT), (float) (height * MM_TO_PT)));

@@ -34,12 +34,18 @@ public interface Canvas extends Closeable {
      * The page (and graphics context) is not valid until this method has been
      * called.
      * </p>
+     * <p>
+     * The font family can be specified as a comma separated list, e.g. "Helvetica,Arial,sans". The first
+     * family will be used to calculate text widths. For formats that support it (e.g. SVG), the entire list
+     * will be used in the generated graphics file. Other format will just use the first one.
+     * </p>
      * 
      * @param width  width of page (in mm)
      * @param height height of page (in mm)
+     * @param fontFamily font family to use
      * @throws IOException thrown if graphics cannot be generated
      */
-    void setupPage(double width, double height) throws IOException;
+    void setupPage(double width, double height, String fontFamily) throws IOException;
 
     /**
      * Sets a translation and a scale factor for the subsequent operations

@@ -60,7 +60,10 @@ public class PNGCanvas extends AbstractCanvas {
     }
 
     @Override
-    public void setupPage(double width, double height) {
+    public void setupPage(double width, double height, String fontFamilyList) {
+        // setup font metrics
+        setupFontMetrics(fontFamilyList);
+
         // create image
         int w = (int) (width * coordinateScale + 0.5);
         int h = (int) (height * coordinateScale + 0.5);
@@ -85,7 +88,7 @@ public class PNGCanvas extends AbstractCanvas {
 
     @Override
     public void setTransformation(double translateX, double translateY, double rotate, double scaleX, double scaleY) {
-        // Our coorinate system extends from the bottom up. Java Graphics2D's system
+        // Our coordinate system extends from the bottom up. Java Graphics2D's system
         // extends from the top down. So Y coordinates need to be treated specially.
         translateX *= coordinateScale;
         translateY *= coordinateScale;
@@ -103,7 +106,7 @@ public class PNGCanvas extends AbstractCanvas {
         x *= coordinateScale;
         y *= -coordinateScale;
         graphics.setColor(new Color(0));
-        Font font = new Font("Helvetica", isBold ? Font.BOLD : Font.PLAIN, (int) (fontSize * fontScale + 0.5));
+        Font font = new Font(fontMetrics.getFirstFontFamily(), isBold ? Font.BOLD : Font.PLAIN, (int) (fontSize * fontScale + 0.5));
         graphics.setFont(font);
         graphics.drawString(text, (float) x, (float) y);
     }
