@@ -74,10 +74,6 @@ public class Bill implements Serializable {
      */
     public static final String FIELD_CODING_TYPE = "codingType";
     /**
-     * Field name of the QR bill's coding type
-     */
-    public static final String FIELD_LANGUAGE = "language";
-    /**
      * Field name of the currency
      */
     public static final String FIELD_CURRENCY = "currency";
