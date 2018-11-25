@@ -45,12 +45,13 @@ class BillLayout {
     private static final double AMOUNT_BOX_HEIGHT_RC = 10; // mm
     private static final double DEBTOR_BOX_HEIGHT_PP = 25; // mm (must not be smaller than 25)
     private static final double DEBTOR_BOX_HEIGHT_RC = 25; // mm (must not be smaller than 25)
-    private static final double INFO_SECTION_MAX_HEIGHT = SLIP_HEIGHT - CURRENCY_AMOUNT_BASE_LINE
-            + AMOUNT_BOX_HEIGHT_PP - MARGIN;
+    private static final double ALTERNATIVE_SCHEMES_HEIGHT = 6; // mm
+    private static final double INFO_SECTION_MAX_HEIGHT = SLIP_HEIGHT - ALTERNATIVE_SCHEMES_HEIGHT - 3 * MARGIN;
     private static final double RECEIPT_MAX_HEIGHT = SLIP_HEIGHT - CURRENCY_AMOUNT_BASE_LINE - 7 - 0.5 - MARGIN;
     private static final double LEADING_PREF = 0.2; // relative to font size
     private static final double PADDING_PREF = 0.5; // relative to font size
     private static final double PADDING_MIN = 0.2; // relative to font size
+    private static final double ELLIPSIS_WIDTH =  0.3528; // mm * font size
 
 
     private Bill bill;
@@ -161,6 +162,9 @@ class BillLayout {
             yPos -= DEBTOR_BOX_HEIGHT_PP;
             drawCorners(0, yPos, INFO_SECTION_WIDTH, DEBTOR_BOX_HEIGHT_PP);
         }
+
+        // alternative schemes
+        drawAlternativeSchemes();
     }
 
     private void drawReceipt() throws  IOException {
@@ -210,6 +214,25 @@ class BillLayout {
         String label = MultilingualText.getText(MultilingualText.KEY_ACCEPTANCE_POINT, bill.getFormat().getLanguage());
         double w = graphics.getTextWidth(label, labelFontSize, true);
         graphics.putText(label, RECEIPT_WIDTH - MARGIN - w, 21, labelFontSize, true);
+    }
+
+    private void drawAlternativeSchemes() throws IOException {
+        if (bill.getAlternativeSchemes() == null || bill.getAlternativeSchemes().length == 0)
+            return;
+
+        graphics.setTransformation(RECEIPT_WIDTH + MARGIN, 0, 0, 1, 1);
+        double y = 11 - graphics.getAscender(7);
+        double maxWidth = PAYMEMT_PART_WIDTH - 2 * MARGIN;
+
+        for (AlternativeScheme scheme : bill.getAlternativeSchemes()) {
+            String boldText = String.format("%s: ", scheme.getName());
+            double boldTextWidth = graphics.getTextWidth(boldText, 7, true);
+            graphics.putText(boldText, 0, y, 7, true);
+
+            String normalText = truncateText(scheme.getInstruction(), maxWidth - boldTextWidth, 7);
+            graphics.putText(normalText, boldTextWidth, y, 7, false);
+            y -= graphics.getLineHeight(7) * 1.2;
+        }
     }
 
     private boolean computePaymentPartLeading() {
@@ -509,5 +532,13 @@ class BillLayout {
             return Payments.formatIBAN(refNo);
 
         return Payments.formatQRReferenceNumber(refNo);
+    }
+
+    private String truncateText(String text, double maxWidth, int fontSize) {
+        if (graphics.getTextWidth(text, fontSize, false) < maxWidth)
+            return text;
+
+        String[] lines = graphics.splitLines(text, maxWidth - fontSize * ELLIPSIS_WIDTH, fontSize);
+        return lines[0] + "…";
     }
 }

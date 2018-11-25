@@ -7,6 +7,7 @@
 package net.codecrete.qrbill.generatortest;
 
 import net.codecrete.qrbill.generator.Address;
+import net.codecrete.qrbill.generator.AlternativeScheme;
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.Language;
 
@@ -43,6 +44,10 @@ class SampleData {
         bill.setReference("210000 000 00313 9471430009017");
         bill.setUnstructuredMessage("Instruction of 15.09.2019");
         bill.setBillInformation("//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
+        bill.setAlternativeSchemes(new AlternativeScheme[] {
+                new AlternativeScheme("Ultraviolet", "UV;UltraPay005;12345"),
+                new AlternativeScheme("Xing Yong", "XY;XYService;54321")
+        });
         return bill;
     }
 

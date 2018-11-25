@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="210mm" height="105mm" version="1.1" viewBox="0 0 595.276 297.638" xmlns="http://www.w3.org/2000/svg">
-<g font-family="Helvetica,Arial" transform="translate(0 297.638)">
+<g font-family="Helvetica,Arial,"Liberation Sans"" transform="translate(0 297.638)">
 <title>Swiss QR Bill</title>
 <g transform="translate(188.702 -119.367) scale(2.288)">
 <path d="M0,-57h7v1h-7zm8,0h1v2h-1zm4,0h1v1h-1zm3,0h1v2h-1zm5,0h5v1h-5zm10,0h2v1h-2z
