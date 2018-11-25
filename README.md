@@ -4,9 +4,11 @@ Open-source Java library to generate Swiss QR bills.
 
 For demonstration pruposes, there is code for an Angular UI and a web service in addition to the Java library. Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill).
 
+**Note: Release candiate 1 is ready. It implements version 2 of the specification release on November 15, 2019.**
+
 ## Introduction
 
-The Swiss QR bill is the new QR code based payment format that will replace the current payment slip starting at 30 June, 2020. The new payment slip with the QR code is either directly printed at the bottom of an invoice or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app to initiate the payment. No other data needs to be entered. The payment just needs to be confirmed.
+The Swiss QR bill is the new QR code based payment format that will replace the current payment slip starting at 30 June, 2020. The new payment slip will in most cases be sent electronically. But it can still be printed at the bottom of an invoice or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app to initiate the payment. Only the payment dates needs to be entered. The payment just needs to be confirmed.
 
 The invoicing party can easily synchronize the received payment with the accounts-receivable accounting as they payment comes with a full set of data including the reference number used on the invoice. So the Swiss QR bill is convenient for the payer and payee.
 
@@ -19,7 +21,7 @@ The invoicing party can easily synchronize the received payment with the account
 The Swiss QR bill library:
 
 - generates PDF, SVG and PNG files
-- generates A6, A5 and A4 sheets and QR code only
+- generates payment slip (105mm by 210mm), A4 sheets or QR code only
 - multilingual: German, French, Italian, English
 - validates the invoice data and provides detailed validation information
 - can parse the invoice data embedded in the QR code
@@ -28,8 +30,6 @@ The Swiss QR bill library:
 - has a single dependency (PDFBox)
 - is free – even for commecial use (MIT License)
 - is available on Maven Central
-
-**Note**: This library implements version 1.0 of the *Swiss Implementation Guidelines QR-bill*. The document is currently undergoing a revsion. A new version is expected by mid of November 2018. The library will be updated by the end of 2018 to conform to the revised version of the document.
 
 ## Getting started
 
@@ -40,12 +40,12 @@ If you are using *Maven*, add the below dependency to your `pom.xml`:
     <dependency>
         <groupId>net.codecrete.qrbill</groupId>
         <artifactId>qrbill-generator</artifactId>
-        <version>1.0.0</version>
+        <version>2.0.0.RC1</version>
     </dependency>
 
 If you are using *Gradle*, add the below dependency to your *build.gradle* file:
 
-    compile group: 'net.codecrete.qrbill', name: 'qrbill-generator', version: '1.0.0'
+    compile group: 'net.codecrete.qrbill', name: 'qrbill-generator', version: '2.0.0.RC1'
 
 To generate a QR bill, you first fill in the `Bill` data structure and then call `QRBill.generate`:
 
@@ -69,45 +69,29 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
             Bill bill = new Bill();
             bill.setLanguage(Bill.Language.FR);
             bill.setAccount("CH4431999123000889012");
-            bill.setAmount(199.95);
+            bill.setAmountFromDouble(199.95);
             bill.setCurrency("CHF");
 
             // Set creditor
             Address creditor = new Address();
             creditor.setName("Robert Schneider AG");
-            creditor.setStreet("Rue du Lac");
-            creditor.setHouseNo("1268/2/22");
-            creditor.setPostalCode("2501");
-            creditor.setTown("Biel");
+            creditor.setAddressLine1("Rue du Lac 1268/2/22");
+            creditor.setAddressLine2("2501 Biel");
             creditor.setCountryCode("CH");
             bill.setCreditor(creditor);
 
-            // Set final creditor
-            Address finalCreditor = new Address();
-            finalCreditor.setName("Robert Schneider Services Switzerland AG");
-            finalCreditor.setStreet("Rue du Lac");
-            finalCreditor.setHouseNo("1268/3/1");
-            finalCreditor.setPostalCode("2501");
-            finalCreditor.setTown("Biel");
-            finalCreditor.setCountryCode("CH");
-            bill.setFinalCreditor(finalCreditor);
-
             // more bill data
-            bill.setDueDate(LocalDate.of(2019, 10, 31));
-            bill.setReference("RF18539007547034");
-            bill.setAdditionalInfo(null);
+            bill.setReference("210000000003139471430009017");
 
             // Set debtor
             Address debtor = new Address();
             debtor.setName("Pia-Maria Rutschmann-Schnyder");
-            debtor.setStreet("Grosse Marktgasse");
-            debtor.setHouseNo("28");
-            debtor.setPostalCode("9400");
-            debtor.setTown("Rorschach");
+            debtor.setAddressLine1("Grosse Marktgasse 28");
+            debtor.setAddressLine2("9400 Rorschach");
             debtor.setCountryCode("CH");
             bill.setDebtor(debtor);
-
-            byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.SVG);
+            
+            byte[] svg = QRBill.generate(bill);
 
             Path path = Paths.get("qrbill.svg");
             try {
