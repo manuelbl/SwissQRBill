@@ -49,9 +49,9 @@ class Validator {
 
         validateCurrency();
         validateAmount();
-        boolean isQRBillIBAN = validateAccountNumber();
+        validateAccountNumber();
         validateCreditor();
-        validateReference(isQRBillIBAN);
+        validateReference();
         validateUnstructuredMessage();
         validateDebtor();
         validateBillInformation();
@@ -90,8 +90,7 @@ class Validator {
         }
     }
 
-    private boolean validateAccountNumber() {
-        boolean isQRBillIBAN = false;
+    private void validateAccountNumber() {
         String account = Strings.trimmed(billIn.getAccount());
         if (validateMandatory(account, Bill.FIELD_ACCOUNT)) {
             account = Strings.whiteSpaceRemoved(account).toUpperCase(Locale.US);
@@ -102,11 +101,9 @@ class Validator {
                     validationResult.addMessage(Type.ERROR, Bill.FIELD_ACCOUNT, QRBill.KEY_ACCOUNT_IS_VALID_IBAN);
                 } else {
                     billOut.setAccount(account);
-                    isQRBillIBAN = account.charAt(4) == '3' && (account.charAt(5) == '0' || account.charAt(5) == '1');
                 }
             }
         }
-        return isQRBillIBAN;
     }
 
     private void validateCreditor() {
@@ -114,30 +111,39 @@ class Validator {
         billOut.setCreditor(creditor);
     }
 
-    private void validateReference(boolean isQRBillIBAN) {
+    private void validateReference() {
+        String account = billOut.getAccount();
+        boolean isValidAccount = account != null;
+        boolean isQRBillIBAN = account != null && account.charAt(4) == '3'
+                && (account.charAt(5) == '0' || account.charAt(5) == '1');
+
         String reference = Strings.trimmed(billIn.getReference());
+        if (reference != null)
+            reference = Strings.whiteSpaceRemoved(reference);
 
-        if (reference == null) {
-            if (isQRBillIBAN)
+        if (isQRBillIBAN) {
+            if (reference == null) {
                 validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_MANDATORY_FOR_QR_IBAN);
-            return;
-        }
-
-        reference = Strings.whiteSpaceRemoved(reference);
-        if (reference.startsWith("RF")) {
-            if (!Payments.isValidISO11649Reference(reference)) {
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE,
-                        QRBill.KEY_VALID_ISO11649_CREDITOR_REF);
-            } else {
-                billOut.setReference(reference);
+                return;
             }
-        } else {
+
             if (reference.length() < 27)
                 reference = "00000000000000000000000000".substring(0, 27 - reference.length()) + reference;
             if (!Payments.isValidQRReference(reference))
                 validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_VALID_QR_REF_NO);
             else
                 billOut.setReference(reference);
+
+        } else if (isValidAccount && reference != null) {
+
+            if (!Payments.isValidISO11649Reference(reference)) {
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_VALID_ISO11649_CREDITOR_REF);
+            } else {
+                billOut.setReference(reference);
+            }
+
+        } else {
+            billOut.setReference(null);
         }
     }
 

@@ -41,7 +41,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
 
     @Test
     void validCreditorReference() {
-        bill = SampleData.getExample1();
+        bill = SampleData.getExample3();
         bill.setReference("RF18539007547034");
         validate();
         assertNoMessages();
@@ -111,7 +111,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
 
     @Test
     void invalidCharsInCreditorReference() {
-        bill = SampleData.getExample1();
+        bill = SampleData.getExample3();
         bill.setReference("RF38302!!3393");
         validate();
         assertSingleErrorMessage(Bill.FIELD_REFERENCE, "valid_iso11649_creditor_ref");
@@ -119,7 +119,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
 
     @Test
     void invalidCreditorReference() {
-        bill = SampleData.getExample1();
+        bill = SampleData.getExample3();
         bill.setReference("RF00539007547034");
         validate();
         assertSingleErrorMessage(Bill.FIELD_REFERENCE, "valid_iso11649_creditor_ref");

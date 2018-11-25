@@ -74,7 +74,7 @@ class SampleData {
     static Bill getExample3() {
         Bill bill = new Bill();
         bill.getFormat().setLanguage(Language.FR);
-        bill.setAccount("CH4431999123000889012");
+        bill.setAccount("CH74 0070 0110 0061 1600 2");
         Address creditor = new Address();
         creditor.setName("Robert Schneider AG");
         creditor.setStreet("Rue du Lac");
