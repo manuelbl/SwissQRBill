@@ -2,15 +2,15 @@
 
 Open-source Java library to generate Swiss QR bills.
 
-For demonstration pruposes, there is code for an Angular UI and a web service in addition to the Java library. Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill).
+Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill). The code for this demonstration (Angular UI and RESTful service) can also be found here. 
 
-**Note: Release candiate 1 is ready. It implements version 2 of the specification release on November 15, 2019.**
+**Note: Release 2.0.0.RC1 is available. It implements version 2 of the *Swiss Implementation Guidelines QR-bill* released on November 15, 2019.**
 
 ## Introduction
 
-The Swiss QR bill is the new QR code based payment format that will replace the current payment slip starting at 30 June, 2020. The new payment slip will in most cases be sent electronically. But it can still be printed at the bottom of an invoice or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app to initiate the payment. Only the payment dates needs to be entered. The payment just needs to be confirmed.
+The Swiss QR bill is the new QR code based payment format that will replace the current payment slip starting at 30 June, 2020. The new payment slip will in most cases be sent electronically. But it can still be printed at the bottom of an invoice or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app to initiate the payment. The payment just needs to be confirmed.
 
-The invoicing party can easily synchronize the received payment with the accounts-receivable accounting as they payment comes with a full set of data including the reference number used on the invoice. So the Swiss QR bill is convenient for the payer and payee.
+The invoicing party can easily synchronize the received payment with the accounts-receivable accounting as the payment comes with a full set of data including the reference number used on the invoice. The Swiss QR bill is convenient for the payer and payee.
 
 ![QR Bill](https://raw.githubusercontent.com/wiki/manuelbl/SwissQRBill/images/qr-invoice-e1.svg?sanitize=true)
 
@@ -53,13 +53,14 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
 
     import net.codecrete.qrbill.generator.Address;
     import net.codecrete.qrbill.generator.Bill;
+    import net.codecrete.qrbill.generator.GraphicsFormat;
+    import net.codecrete.qrbill.generator.Language;
     import net.codecrete.qrbill.generator.QRBill;
 
     import java.io.IOException;
     import java.nio.file.Files;
     import java.nio.file.Path;
     import java.nio.file.Paths;
-    import java.time.LocalDate;
 
     public class QRBillExample {
 
@@ -90,6 +91,10 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
             debtor.setAddressLine2("9400 Rorschach");
             debtor.setCountryCode("CH");
             bill.setDebtor(debtor);
+            
+            // format
+            bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
+            bill.getFormat().setLanguage(Language.EN);
             
             byte[] svg = QRBill.generate(bill);
 
