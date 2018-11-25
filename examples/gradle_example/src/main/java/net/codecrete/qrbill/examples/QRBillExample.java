@@ -22,47 +22,31 @@ public class QRBillExample {
 
         // Setup bill
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.FR);
         bill.setAccount("CH4431999123000889012");
-        bill.setAmount(199.95);
+        bill.setAmountFromDouble(199.95);
         bill.setCurrency("CHF");
 
         // Set creditor
         Address creditor = new Address();
         creditor.setName("Robert Schneider AG");
-        creditor.setStreet("Rue du Lac");
-        creditor.setHouseNo("1268/2/22");
-        creditor.setPostalCode("2501");
-        creditor.setTown("Biel");
+        creditor.setAddressLine1("Rue du Lac 1268/2/22");
+        creditor.setAddressLine2("2501 Biel");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
 
-        // Set final creditor
-        Address finalCreditor = new Address();
-        finalCreditor.setName("Robert Schneider Services Switzerland AG");
-        finalCreditor.setStreet("Rue du Lac");
-        finalCreditor.setHouseNo("1268/3/1");
-        finalCreditor.setPostalCode("2501");
-        finalCreditor.setTown("Biel");
-        finalCreditor.setCountryCode("CH");
-        bill.setFinalCreditor(finalCreditor);
-
         // more bill data
-        bill.setDueDate(LocalDate.of(2019, 10, 31));
-        bill.setReference("RF18539007547034");
-        bill.setAdditionalInfo(null);
+        bill.setReference("210000000003139471430009017");
+        bill.setUnstructuredMessage(null);
 
         // Set debtor
         Address debtor = new Address();
         debtor.setName("Pia-Maria Rutschmann-Schnyder");
-        debtor.setStreet("Grosse Marktgasse");
-        debtor.setHouseNo("28");
-        debtor.setPostalCode("9400");
-        debtor.setTown("Rorschach");
+        debtor.setAddressLine1("Grosse Marktgasse 28");
+        debtor.setAddressLine2("9400 Rorschach");
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
 
-        byte[] svg = QRBill.generate(bill, QRBill.BillFormat.A6_LANDSCAPE_SHEET, QRBill.GraphicsFormat.SVG);
+        byte[] svg = QRBill.generate(bill);
 
         Path path = Paths.get("qrbill.svg");
         try {
