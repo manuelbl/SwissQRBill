@@ -75,4 +75,7 @@ dependencies {
 compileJava.dependsOn tasks.openApiGenerate
 
 sonarqube {
+    properties {
+        property 'sonar.exclusions', 'build/**/*'
+    }
 }
