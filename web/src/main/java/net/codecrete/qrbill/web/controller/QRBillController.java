@@ -160,17 +160,11 @@ public class QRBillController implements BillApi {
     }
 
     private static OutputSize getOutputSize(String value) {
-        if (value == null)
-            return null;
-
         BillFormat.OutputSizeEnum outputSizeEnum = BillFormat.OutputSizeEnum.fromValue(value);
         return OutputSize.valueOf(outputSizeEnum.name());
     }
 
     private static GraphicsFormat getGraphicsFormat(String value) {
-        if (value == null)
-            return null;
-
         BillFormat.GraphicsFormatEnum graphicsFormatEnum = BillFormat.GraphicsFormatEnum.fromValue(value);
         return GraphicsFormat.valueOf(graphicsFormatEnum.name());
     }

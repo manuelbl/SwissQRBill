@@ -31,9 +31,6 @@ class MessageLocalizer {
 
     void addLocalMessages(List<ValidationMessage> messages) {
 
-        if (messages == null)
-            return;
-
         Locale currentLocale = LocaleContextHolder.getLocale();
         for (ValidationMessage message : messages) {
             message.setMessage(getLocalMessage(message.getMessageKey(), currentLocale));
