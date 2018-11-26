@@ -17,6 +17,10 @@ import net.codecrete.qrbill.canvas.SVGCanvas;
  */
 public class QRBill {
 
+    private QRBill() {
+        // do not instantiate
+    }
+
     /** Validation message key: currency must be "CHF" or "EUR" */
     public static final String KEY_CURRENCY_IS_CHF_OR_EUR = "currency_is_chf_or_eur";
     /** Validation message key: amount must be between 0.01 and 999999999.99 */

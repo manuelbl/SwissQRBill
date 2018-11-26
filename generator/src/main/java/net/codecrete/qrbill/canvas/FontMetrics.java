@@ -23,8 +23,8 @@ public class FontMetrics {
 
     private final String fontFamilyList;
     private final String firstFontFamily;
-    private final char[] charWidth_20_7F;
-    private final char[] charWidth_A0_FF;
+    private final char[] charWidthx20x7F;
+    private final char[] charWidthxA0xFF;
     private final char charDefaultWidth;
     private final FontMetrics boldMetrics;
 
@@ -38,29 +38,29 @@ public class FontMetrics {
         final char boldCharDefaultWidth;
 
         if (family.indexOf("arial") >= 0) {
-            charWidth_20_7F = CharWidthData.ARIAL_NORMAL_20_7F;
-            charWidth_A0_FF = CharWidthData.ARIAL_NORMAL_A0_FF;
+            charWidthx20x7F = CharWidthData.ARIAL_NORMAL_20_7F;
+            charWidthxA0xFF = CharWidthData.ARIAL_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.ARIAL_NORMAL_DEFAULT_WIDTH;
             boldCharWidth_20_7F = CharWidthData.ARIAL_BOLD_20_7F;
             boldCharWidth_A0_FF = CharWidthData.ARIAL_BOLD_A0_FF;
             boldCharDefaultWidth = CharWidthData.ARIAL_BOLD_DEFAULT_WIDTH;
         } else if (family.indexOf("liberation") >= 0 && family.indexOf("sans") >= 0) {
-            charWidth_20_7F = CharWidthData.LIBERATION_SANS_NORMAL_20_7F;
-            charWidth_A0_FF = CharWidthData.LIBERATION_SANS_NORMAL_A0_FF;
+            charWidthx20x7F = CharWidthData.LIBERATION_SANS_NORMAL_20_7F;
+            charWidthxA0xFF = CharWidthData.LIBERATION_SANS_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.LIBERATION_SANS_NORMAL_DEFAULT_WIDTH;
             boldCharWidth_20_7F = CharWidthData.LIBERATION_SANS_BOLD_20_7F;
             boldCharWidth_A0_FF = CharWidthData.LIBERATION_SANS_BOLD_A0_FF;
             boldCharDefaultWidth = CharWidthData.LIBERATION_SANS_BOLD_DEFAULT_WIDTH;
         } else if (family.indexOf("frutiger") >= 0) {
-            charWidth_20_7F = CharWidthData.FRUTIGER_NORMAL_20_7F;
-            charWidth_A0_FF = CharWidthData.FRUTIGER_NORMAL_A0_FF;
+            charWidthx20x7F = CharWidthData.FRUTIGER_NORMAL_20_7F;
+            charWidthxA0xFF = CharWidthData.FRUTIGER_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.FRUTIGER_NORMAL_DEFAULT_WIDTH;
             boldCharWidth_20_7F = CharWidthData.FRUTIGER_BOLD_20_7F;
             boldCharWidth_A0_FF = CharWidthData.FRUTIGER_BOLD_A0_FF;
             boldCharDefaultWidth = CharWidthData.FRUTIGER_BOLD_DEFAULT_WIDTH;
         } else {
-            charWidth_20_7F = CharWidthData.HELVETICA_NORMAL_20_7F;
-            charWidth_A0_FF = CharWidthData.HELVETICA_NORMAL_A0_FF;
+            charWidthx20x7F = CharWidthData.HELVETICA_NORMAL_20_7F;
+            charWidthxA0xFF = CharWidthData.HELVETICA_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.HELVETICA_NORMAL_DEFAULT_WIDTH;
             boldCharWidth_20_7F = CharWidthData.HELVETICA_BOLD_20_7F;
             boldCharWidth_A0_FF = CharWidthData.HELVETICA_BOLD_A0_FF;
@@ -70,11 +70,11 @@ public class FontMetrics {
         boldMetrics = new FontMetrics(boldCharWidth_20_7F, boldCharWidth_A0_FF, boldCharDefaultWidth);
     }
 
-    private FontMetrics(char[] charWidth_20_7F, char[] charWidth_A0_FF, char charDefaultWidth) {
+    private FontMetrics(char[] charWidthx20x7F, char[] charWidthxA0xFF, char charDefaultWidth) {
         fontFamilyList = null;
         firstFontFamily = null;
-        this.charWidth_20_7F = charWidth_20_7F;
-        this.charWidth_A0_FF = charWidth_A0_FF;
+        this.charWidthx20x7F = charWidthx20x7F;
+        this.charWidthxA0xFF = charWidthxA0xFF;
         this.charDefaultWidth = charDefaultWidth;
         this.boldMetrics = null;
     }
@@ -283,9 +283,9 @@ public class FontMetrics {
     private double getCharWidth(char ch) {
         char width = 0;
         if (ch >= 0x20 && ch <= 0x7f)
-            width = charWidth_20_7F[ch - 0x20];
+            width = charWidthx20x7F[ch - 0x20];
         else if (ch >= 0xa0 && ch <= 0xff) {
-            width = charWidth_A0_FF[ch - 0xa0];
+            width = charWidthxA0xFF[ch - 0xa0];
         }
         if (width == 0)
             width = charDefaultWidth;

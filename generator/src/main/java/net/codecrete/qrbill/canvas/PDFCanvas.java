@@ -31,12 +31,6 @@ public class PDFCanvas extends AbstractCanvas {
     private double lastLineWidth = 1;
     private boolean hasSavedGraphicsState = false;
 
-    /**
-     * Creates a new instance of the graphics generator
-     */
-    public PDFCanvas() {
-    }
-
     @Override
     public void setupPage(double width, double height, String fontFamilyList) throws IOException {
         setupFontMetrics("Helvetica");

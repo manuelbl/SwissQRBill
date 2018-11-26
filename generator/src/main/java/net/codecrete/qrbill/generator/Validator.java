@@ -44,7 +44,7 @@ class Validator {
 
     private ValidationResult validateBill() {
 
-        billOut.setFormat(billIn.getFormat() != null ? billIn.getFormat().cloneInstance() : null);
+        billOut.setFormat(billIn.getFormat() != null ? new BillFormat(billIn.getFormat()) : null);
         billOut.setVersion(billIn.getVersion());
 
         validateCurrency();
@@ -107,7 +107,7 @@ class Validator {
     }
 
     private void validateCreditor() {
-        Address creditor = validatePerson(billIn.getCreditor(), Bill.FIELDROOT_CREDITOR, true);
+        Address creditor = validateAddress(billIn.getCreditor(), Bill.FIELDROOT_CREDITOR, true);
         billOut.setCreditor(creditor);
     }
 
@@ -122,28 +122,37 @@ class Validator {
             reference = Strings.whiteSpaceRemoved(reference);
 
         if (isQRBillIBAN) {
-            if (reference == null) {
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_MANDATORY_FOR_QR_IBAN);
-                return;
-            }
 
-            if (reference.length() < 27)
-                reference = "00000000000000000000000000".substring(0, 27 - reference.length()) + reference;
-            if (!Payments.isValidQRReference(reference))
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_VALID_QR_REF_NO);
-            else
-                billOut.setReference(reference);
+            validateQRReference(reference);
 
         } else if (isValidAccount && reference != null) {
 
-            if (!Payments.isValidISO11649Reference(reference)) {
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_VALID_ISO11649_CREDITOR_REF);
-            } else {
-                billOut.setReference(reference);
-            }
+            validateISOReference(reference);
 
         } else {
             billOut.setReference(null);
+        }
+    }
+
+    private void validateQRReference(String cleanedReference) {
+        if (cleanedReference == null) {
+            validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_MANDATORY_FOR_QR_IBAN);
+            return;
+        }
+
+        if (cleanedReference.length() < 27)
+            cleanedReference = "00000000000000000000000000".substring(0, 27 - cleanedReference.length()) + cleanedReference;
+        if (!Payments.isValidQRReference(cleanedReference))
+            validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_VALID_QR_REF_NO);
+        else
+            billOut.setReference(cleanedReference);
+    }
+
+    private void validateISOReference(String cleanedReference) {
+        if (!Payments.isValidISO11649Reference(cleanedReference)) {
+            validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_VALID_ISO11649_CREDITOR_REF);
+        } else {
+            billOut.setReference(cleanedReference);
         }
     }
 
@@ -176,51 +185,68 @@ class Validator {
                     }
                 }
             }
-            if (schemeList.size() > 0)
+            if (!schemeList.isEmpty())
                 schemesOut = schemeList.toArray(new AlternativeScheme[0]);
         }
         billOut.setAlternativeSchemes(schemesOut);
     }
 
     private void validateDebtor() {
-        Address debtor = validatePerson(billIn.getDebtor(), Bill.FIELDROOT_DEBTOR, false);
+        Address debtor = validateAddress(billIn.getDebtor(), Bill.FIELDROOT_DEBTOR, false);
         billOut.setDebtor(debtor);
     }
 
-    private Address validatePerson(Address addressIn, String fieldRoot, boolean mandatory) {
+    private Address validateAddress(Address addressIn, String fieldRoot, boolean mandatory) {
         Address addressOut = cleanedPerson(addressIn, fieldRoot);
         if (addressOut == null) {
-            if (mandatory) {
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_NAME, QRBill.KEY_FIELD_IS_MANDATORY);
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_POSTAL_CODE,
-                        QRBill.KEY_FIELD_IS_MANDATORY);
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_ADDRESS_LINE_2,
-                        QRBill.KEY_FIELD_IS_MANDATORY);
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_TOWN, QRBill.KEY_FIELD_IS_MANDATORY);
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE,
-                        QRBill.KEY_FIELD_IS_MANDATORY);
-            }
+            validateEmptyAddress(fieldRoot, mandatory);
             return null;
         }
 
-        if (addressOut.getType() == Address.Type.CONFLICTING) {
-            if (addressOut.getAddressLine1() != null)
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_ADDRESS_LINE_1, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
-            if (addressOut.getAddressLine2() != null)
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_ADDRESS_LINE_2, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
-            if (addressOut.getStreet() != null)
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_STREET, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
-            if (addressOut.getHouseNo() != null)
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_HOUSE_NO, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
-            if (addressOut.getPostalCode() != null)
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_POSTAL_CODE, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
-            if (addressOut.getTown() != null)
-                validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_TOWN, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+        if (addressOut.getType() == Address.Type.CONFLICTING)
+            emitErrorsForConflictingType(addressOut, fieldRoot);
+
+        checkMandatoryAddressFields(addressOut, fieldRoot);
+
+        if (addressOut.getCountryCode() != null
+                && (addressOut.getCountryCode().length() != 2 || !Payments.isAlphaNumeric(addressOut.getCountryCode())))
+            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE,
+                    QRBill.KEY_VALID_COUNTRY_CODE);
+
+        cleanAddressFields(addressOut, fieldRoot);
+
+        return addressOut;
+    }
+
+    private void validateEmptyAddress(String fieldRoot, boolean mandatory) {
+        if (mandatory) {
+            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_NAME, QRBill.KEY_FIELD_IS_MANDATORY);
+            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_POSTAL_CODE,
+                    QRBill.KEY_FIELD_IS_MANDATORY);
+            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_ADDRESS_LINE_2,
+                    QRBill.KEY_FIELD_IS_MANDATORY);
+            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_TOWN, QRBill.KEY_FIELD_IS_MANDATORY);
+            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE,
+                    QRBill.KEY_FIELD_IS_MANDATORY);
         }
+    }
 
-        if (addressOut.getCountryCode() != null)
-            addressOut.setCountryCode(addressOut.getCountryCode().toUpperCase(Locale.US));
+    private void emitErrorsForConflictingType(Address addressOut, String fieldRoot) {
+        if (addressOut.getAddressLine1() != null)
+            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_ADDRESS_LINE_1, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+        if (addressOut.getAddressLine2() != null)
+            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_ADDRESS_LINE_2, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+        if (addressOut.getStreet() != null)
+            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_STREET, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+        if (addressOut.getHouseNo() != null)
+            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_HOUSE_NO, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+        if (addressOut.getPostalCode() != null)
+            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_POSTAL_CODE, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+        if (addressOut.getTown() != null)
+            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_TOWN, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+    }
 
+    private void checkMandatoryAddressFields(Address addressOut, String fieldRoot) {
         validateMandatory(addressOut.getName(), fieldRoot, Bill.SUBFIELD_NAME);
         if (addressOut.getType() == Address.Type.STRUCTURED || addressOut.getType() == Address.Type.UNDETERMINED) {
             validateMandatory(addressOut.getPostalCode(), fieldRoot, Bill.SUBFIELD_POSTAL_CODE);
@@ -230,7 +256,9 @@ class Validator {
             validateMandatory(addressOut.getAddressLine2(), fieldRoot, Bill.SUBFIELD_ADDRESS_LINE_2);
         }
         validateMandatory(addressOut.getCountryCode(), fieldRoot, Bill.SUBFIELD_COUNTRY_CODE);
+    }
 
+    private void cleanAddressFields(Address addressOut, String fieldRoot) {
         addressOut.setName(clippedValue(addressOut.getName(), 70, fieldRoot, Bill.SUBFIELD_NAME));
         if (addressOut.getType() == Address.Type.STRUCTURED) {
             addressOut.setStreet(clippedValue(addressOut.getStreet(), 70, fieldRoot, Bill.SUBFIELD_STREET));
@@ -242,13 +270,8 @@ class Validator {
             addressOut.setAddressLine1(clippedValue(addressOut.getAddressLine1(), 70, fieldRoot, Bill.SUBFIELD_ADDRESS_LINE_1));
             addressOut.setAddressLine2(clippedValue(addressOut.getAddressLine2(), 70, fieldRoot, Bill.SUBFIELD_ADDRESS_LINE_2));
         }
-
-        if (addressOut.getCountryCode() != null
-                && (addressOut.getCountryCode().length() != 2 || !Payments.isAlphaNumeric(addressOut.getCountryCode())))
-            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE,
-                    QRBill.KEY_VALID_COUNTRY_CODE);
-
-        return addressOut;
+        if (addressOut.getCountryCode() != null)
+            addressOut.setCountryCode(addressOut.getCountryCode().toUpperCase(Locale.US));
     }
 
     private boolean validateIBAN(String iban) {

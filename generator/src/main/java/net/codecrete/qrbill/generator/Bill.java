@@ -231,7 +231,7 @@ public class Bill implements Serializable {
      */
     public void setAmountFromDouble(Double amount) {
         if (amount != null)
-            this.amount = new BigDecimal(amount).setScale(2, RoundingMode.HALF_UP);
+            this.amount = BigDecimal.valueOf((long)(amount * 100 + 0.5), 2);
         else
             this.amount = null;
     }

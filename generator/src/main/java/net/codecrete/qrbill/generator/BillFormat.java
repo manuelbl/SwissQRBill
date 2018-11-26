@@ -7,18 +7,40 @@
 
 package net.codecrete.qrbill.generator;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Formatting properties for QR bill
  */
-public class BillFormat implements Cloneable {
+public class BillFormat implements Serializable {
+
+    private static final long serialVersionUID = -2874086922578292745L;
 
     private OutputSize outputSize = OutputSize.QR_BILL_ONLY;
     private Language language = Language.EN;
     private SeparatorType separatorType = SeparatorType.SOLID_LINE_WITH_SCISSORS;
     private String fontFamily = "Helvetica,Arial,\"Liberation Sans\"";
     private GraphicsFormat graphicsFormat = GraphicsFormat.SVG;
+
+    /**
+     * Creates a new instance with default values
+     */
+    public BillFormat() {
+        // default constructor
+    }
+
+    /**
+     * Copy constructor: creates a copy of the specified format
+     * @param format format to copy
+     */
+    public BillFormat(BillFormat format) {
+        outputSize = format.outputSize;
+        language = format.language;
+        separatorType = format.separatorType;
+        fontFamily = format.fontFamily;
+        graphicsFormat = format.graphicsFormat;
+    }
 
     /**
      * Gets the output size for the generated QR bill
@@ -140,23 +162,6 @@ public class BillFormat implements Cloneable {
      */
     public void setGraphicsFormat(GraphicsFormat graphicsFormat) {
         this.graphicsFormat = graphicsFormat;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
-    protected BillFormat cloneInstance() {
-        try {
-            return (BillFormat) clone();
-        } catch (CloneNotSupportedException e) {
-            // cannot happen
-            throw new RuntimeException(e);
-        }
     }
 
     /**

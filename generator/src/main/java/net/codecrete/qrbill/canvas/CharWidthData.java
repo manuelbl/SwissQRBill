@@ -10,17 +10,21 @@ package net.codecrete.qrbill.canvas;
 /**
  * Character width data for Helvetica, Arial, Frutiger and Liberation Sans.
  */
-public class CharWidthData {
+class CharWidthData {
+
+    private CharWidthData() {
+        // don't instantiate
+    }
 
     /**
      * Default character width for Helvetica Normal
      */
-    public static final char HELVETICA_NORMAL_DEFAULT_WIDTH = 556;
+    static final char HELVETICA_NORMAL_DEFAULT_WIDTH = 556;
 
     /**
      * Character widths for Helvetica Normal (range 0x20 to 0x7f)
      */
-    public static final char[] HELVETICA_NORMAL_20_7F = {
+    static final char[] HELVETICA_NORMAL_20_7F = {
             278, // 0x20
             278, // 0x21 !
             355, // 0x22 "
@@ -122,7 +126,7 @@ public class CharWidthData {
     /**
      * Character widths for Helvetica Normal (range 0xa0 to 0xff)
      */
-    public static final char[] HELVETICA_NORMAL_A0_FF = {
+    static final char[] HELVETICA_NORMAL_A0_FF = {
             0, // unused
             0, // unused
             0, // unused
@@ -224,12 +228,12 @@ public class CharWidthData {
     /**
      * Default character width for Helvetica Bold
      */
-    public static final char HELVETICA_BOLD_DEFAULT_WIDTH = 611;
+    static final char HELVETICA_BOLD_DEFAULT_WIDTH = 611;
 
     /**
      * Character widths for Helvetica Bold (range 0x20 to 0x7f)
      */
-    public static final char[] HELVETICA_BOLD_20_7F = {
+    static final char[] HELVETICA_BOLD_20_7F = {
             278, // 0x20
             333, // 0x21 !
             474, // 0x22 "
@@ -331,7 +335,7 @@ public class CharWidthData {
     /**
      * Character widths for Helvetica Bold (range 0xa0 to 0xff)
      */
-    public static final char[] HELVETICA_BOLD_A0_FF = {
+    static final char[] HELVETICA_BOLD_A0_FF = {
             0, // unused
             0, // unused
             0, // unused
@@ -433,12 +437,12 @@ public class CharWidthData {
     /**
      * Default character width for Arial Normal
      */
-    public static final char ARIAL_NORMAL_DEFAULT_WIDTH = 556;
+    static final char ARIAL_NORMAL_DEFAULT_WIDTH = 556;
 
     /**
      * Character widths for Arial Normal (range 0x20 to 0x7f)
      */
-    public static final char[] ARIAL_NORMAL_20_7F = {
+    static final char[] ARIAL_NORMAL_20_7F = {
             278, // 0x20
             278, // 0x21 !
             355, // 0x22 "
@@ -540,7 +544,7 @@ public class CharWidthData {
     /**
      * Character widths for Arial Normal (range 0xa0 to 0xff)
      */
-    public static final char[] ARIAL_NORMAL_A0_FF = {
+    static final char[] ARIAL_NORMAL_A0_FF = {
             0, // unused
             0, // unused
             0, // unused
@@ -642,12 +646,12 @@ public class CharWidthData {
     /**
      * Default character width for Arial Bold
      */
-    public static final char ARIAL_BOLD_DEFAULT_WIDTH = 611;
+    static final char ARIAL_BOLD_DEFAULT_WIDTH = 611;
 
     /**
      * Character widths for Arial Bold (range 0x20 to 0x7f)
      */
-    public static final char[] ARIAL_BOLD_20_7F = {
+    static final char[] ARIAL_BOLD_20_7F = {
             278, // 0x20
             333, // 0x21 !
             474, // 0x22 "
@@ -749,7 +753,7 @@ public class CharWidthData {
     /**
      * Character widths for Arial Bold (range 0xa0 to 0xff)
      */
-    public static final char[] ARIAL_BOLD_A0_FF = {
+    static final char[] ARIAL_BOLD_A0_FF = {
             0, // unused
             0, // unused
             0, // unused
@@ -851,12 +855,12 @@ public class CharWidthData {
     /**
      * Default character width for Liberation Sans Normal
      */
-    public static final char LIBERATION_SANS_NORMAL_DEFAULT_WIDTH = 556;
+    static final char LIBERATION_SANS_NORMAL_DEFAULT_WIDTH = 556;
 
     /**
      * Character widths for LIberation Sans Normal (range 0x20 to 0x7f)
      */
-    public static final char[] LIBERATION_SANS_NORMAL_20_7F = {
+    static final char[] LIBERATION_SANS_NORMAL_20_7F = {
             278, // 0x20
             278, // 0x21 !
             355, // 0x22 "
@@ -958,7 +962,7 @@ public class CharWidthData {
     /**
      * Character widths for Liberation Sans Normal (range 0xa0 to 0xff)
      */
-    public static final char[] LIBERATION_SANS_NORMAL_A0_FF = {
+    static final char[] LIBERATION_SANS_NORMAL_A0_FF = {
             0, // unused
             0, // unused
             0, // unused
@@ -1060,12 +1064,12 @@ public class CharWidthData {
     /**
      * Default character width for Liberation Sans Bold
      */
-    public static final char LIBERATION_SANS_BOLD_DEFAULT_WIDTH = 611;
+    static final char LIBERATION_SANS_BOLD_DEFAULT_WIDTH = 611;
 
     /**
      * Character widths for Liberation Sans Bold (range 0x20 to 0x7f)
      */
-    public static final char[] LIBERATION_SANS_BOLD_20_7F = {
+    static final char[] LIBERATION_SANS_BOLD_20_7F = {
             278, // 0x20
             333, // 0x21 !
             474, // 0x22 "
@@ -1167,7 +1171,7 @@ public class CharWidthData {
     /**
      * Character widths for Liberation Sans Bold (range 0xa0 to 0xff)
      */
-    public static final char[] LIBERATION_SANS_BOLD_A0_FF = {
+    static final char[] LIBERATION_SANS_BOLD_A0_FF = {
             0, // unused
             0, // unused
             0, // unused
@@ -1269,12 +1273,12 @@ public class CharWidthData {
     /**
      * Default character width for Frutiger Normal.
      */
-    public static final char FRUTIGER_NORMAL_DEFAULT_WIDTH = 556;
+    static final char FRUTIGER_NORMAL_DEFAULT_WIDTH = 556;
 
     /**
      * Character widths for Frutiger Normal (range 0x20 to 0x7f)
      */
-    public static final char[] FRUTIGER_NORMAL_20_7F = {
+    static final char[] FRUTIGER_NORMAL_20_7F = {
             278, // 0x20
             389, // 0x21 !
             556, // 0x22 "
@@ -1376,7 +1380,7 @@ public class CharWidthData {
     /**
      * Character widths for Frutiger Normal (range 0xa0 to 0xff)
      */
-    public static final char[] FRUTIGER_NORMAL_A0_FF = {
+    static final char[] FRUTIGER_NORMAL_A0_FF = {
             0, // unused
             0, // unused
             0, // unused
@@ -1478,12 +1482,12 @@ public class CharWidthData {
     /**
      * Default character width for Frutiger Bold
      */
-    public static final char FRUTIGER_BOLD_DEFAULT_WIDTH = 611;
+    static final char FRUTIGER_BOLD_DEFAULT_WIDTH = 611;
 
     /**
      * Character widths for Frutiger Bold (range 0x20 to 0x7f)
      */
-    public static final char[] FRUTIGER_BOLD_20_7F = {
+    static final char[] FRUTIGER_BOLD_20_7F = {
             278, // 0x20
             389, // 0x21 !
             481, // 0x22 "
@@ -1585,7 +1589,7 @@ public class CharWidthData {
     /**
      * Character widths for Frutiger Bold (range 0xa0 to 0xff)
      */
-    public static final char[] FRUTIGER_BOLD_A0_FF = {
+    static final char[] FRUTIGER_BOLD_A0_FF = {
             0, // unused
             0, // unused
             0, // unused

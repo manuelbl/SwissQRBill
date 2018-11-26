@@ -7,12 +7,15 @@
 
 package net.codecrete.qrbill.generator;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Alternative payment scheme instructions
  */
-public class AlternativeScheme {
+public class AlternativeScheme implements Serializable {
+
+    private static final long serialVersionUID = -8304082204378228870L;
 
     private String name;
     private String instruction;
