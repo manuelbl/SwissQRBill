@@ -190,12 +190,12 @@ public class PostalCodeData {
             if (postalCodeList == null)
                 postalCodeList = readCSV(zipData, StandardCharsets.ISO_8859_1);
             if (postalCodeList == null)
-                throw new RuntimeException("Invalid encoding of postal code data");
+                throw new PostalCodeDataException("Invalid encoding of postal code data");
 
             setupSortedArrays(postalCodeList);
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new PostalCodeDataException(e);
         }
 
     }
@@ -269,6 +269,17 @@ public class PostalCodeData {
             this.code = code;
             this.town = town;
             this.townLowercase = town.toLowerCase(Locale.FRENCH);
+        }
+    }
+
+    public static class PostalCodeDataException extends RuntimeException {
+
+        public PostalCodeDataException(String message) {
+            super(message);
+        }
+
+        public PostalCodeDataException(Exception ex) {
+            super(ex);
         }
     }
 }

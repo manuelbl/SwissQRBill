@@ -121,7 +121,7 @@ public class QRBillController implements BillApi {
      *         messages otherwise
      */
     @Override
-    public ResponseEntity<Resource> generateBill(QrBill qrBill) throws BadRequestException {
+    public ResponseEntity<Resource> generateBill(QrBill qrBill) {
         Bill bill = QrBillDTOConverter.fromDtoQrBill(qrBill);
         setFormatDefaults(bill);
         byte[] result = QRBill.generate(bill);
@@ -138,7 +138,7 @@ public class QRBillController implements BillApi {
      * @return the generated bill
      */
     @Override
-    public ResponseEntity<Resource> getBillImage(String billID, String outputSize, String graphicsFormat) throws BadRequestException {
+    public ResponseEntity<Resource> getBillImage(String billID, String outputSize, String graphicsFormat) {
         Bill bill;
         try {
             bill = decodeID(billID);
@@ -216,7 +216,7 @@ public class QRBillController implements BillApi {
             encodedData = buffer.toByteArray();
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); // NOSONAR
         }
 
         String id = new String(encodedData, StandardCharsets.US_ASCII);
@@ -248,7 +248,7 @@ public class QRBillController implements BillApi {
             payload = mapper.readValue(head, BillPayload.class);
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return null; // invalid ID
         }
 
         Bill bill = QRBill.decodeQrCodeText(payload.getQrText());

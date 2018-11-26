@@ -8,7 +8,7 @@ package net.codecrete.qrbill.web.model;
 
 public class PostalCode {
 
-    private String postalCode;
+    private String postalCode; // NOSONAR
     private String town;
 
     public String getPostalCode() {

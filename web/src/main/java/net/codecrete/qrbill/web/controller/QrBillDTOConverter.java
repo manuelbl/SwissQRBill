@@ -19,6 +19,10 @@ import java.util.List;
 
 class QrBillDTOConverter {
 
+    private QrBillDTOConverter() {
+        // do not instantiate
+    }
+
     static QrBill toDTOQrBill(Bill bill) {
         if (bill == null)
             return null;
@@ -124,7 +128,7 @@ class QrBillDTOConverter {
 
     private static List<AlternativeScheme> toDtoSchemes(net.codecrete.qrbill.generator.AlternativeScheme[] alternativeSchemes) {
         if (alternativeSchemes == null)
-            return null;
+            return null; // NOSONAR
 
         List<AlternativeScheme> dto = new ArrayList<>();
         for (net.codecrete.qrbill.generator.AlternativeScheme scheme : alternativeSchemes) {
@@ -141,7 +145,7 @@ class QrBillDTOConverter {
 
     private static net.codecrete.qrbill.generator.AlternativeScheme[] fromDtoSchemes(List<AlternativeScheme> dto) {
         if (dto == null)
-            return null;
+            return null; // NOSONAR
 
         net.codecrete.qrbill.generator.AlternativeScheme[] schemes
                 = new net.codecrete.qrbill.generator.AlternativeScheme[dto.size()];
