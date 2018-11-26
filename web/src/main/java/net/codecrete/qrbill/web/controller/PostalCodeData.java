@@ -224,7 +224,7 @@ public class PostalCodeData {
         }
 
         if (!containsZurich)
-            return null;
+            return null; // NOSONAR
 
         return postalCodeList;
     }

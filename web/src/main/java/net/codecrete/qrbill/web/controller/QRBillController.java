@@ -142,6 +142,8 @@ public class QRBillController implements BillApi {
         Bill bill;
         try {
             bill = decodeID(billID);
+            if (bill == null)
+                throw new BadRequestException("Invalid bill ID. Validate bill data to get a valid ID");
             setFormatDefaults(bill);
         } catch (Exception e) {
             throw new BadRequestException("Invalid bill ID. Validate bill data to get a valid ID");

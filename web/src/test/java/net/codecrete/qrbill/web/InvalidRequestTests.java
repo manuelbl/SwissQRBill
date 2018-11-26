@@ -29,7 +29,7 @@ class InvalidRequestTests {
 
     @Test
     void testInvalidEnum() throws IOException {
-        Response response = postRequest("/qrbill-api/bill/validate",
+        Response response = postRequest("/bill/validate",
                 "{ \"format\": { \"language\": \"pl\" }, " +
                         "\"amount\": 100.34, \"currency\": \"CHF\", " +
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
@@ -45,7 +45,7 @@ class InvalidRequestTests {
 
     @Test
     void testInvalidNumber1() throws IOException {
-        Response response = postRequest("/qrbill-api/bill/validate",
+        Response response = postRequest("/bill/validate",
                 "{ \"format\": { \"language\": \"pl\" }, " +
                         "\"amount\": abc, \"currency\": \"CHF\", " +
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
@@ -59,7 +59,7 @@ class InvalidRequestTests {
 
     @Test
     void testInvalidNumber2() throws IOException {
-        Response response = postRequest("/qrbill-api/bill/validate",
+        Response response = postRequest("/bill/validate",
                 "{ \"format\": { \"language\": \"pl\" }, " +
                         "\"amount\": \"abc\", \"currency\": \"CHF\", " +
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
@@ -73,7 +73,7 @@ class InvalidRequestTests {
 
     @Test
     void testInvalidJson() throws IOException {
-        Response response = postRequest("/qrbill-api/bill/validate",
+        Response response = postRequest("/bill/validate",
                 "{ \"language\": \"de\", \"amount\": \"100.34\", \"currency\": \"CHF\", [" +
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
                         "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
@@ -86,7 +86,7 @@ class InvalidRequestTests {
 
     @Test
     void testInvalidUrl() throws IOException {
-        Response response = postRequest("/qrbill-api/bill2/validate",
+        Response response = postRequest("/bill2/validate",
                 "{ \"language\": \"de\", \"amount\": \"100.34\", \"currency\": \"CHF\", " +
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
                         "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
@@ -101,7 +101,7 @@ class InvalidRequestTests {
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(JSON, body.getBytes(StandardCharsets.UTF_8));
         Request request = new Request.Builder()
-                .url(String.format("http://localhost:%d%s", randomServerPort, relativeUrl))
+                .url(String.format("http://localhost:%d/qrbill-api%s", randomServerPort, relativeUrl))
                 .method("POST", requestBody)
                 .build();
 

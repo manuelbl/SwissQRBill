@@ -26,7 +26,7 @@ class SchemaTests {
 
     @Test
     void testInvalidEnum() throws IOException {
-        Response response = getRequest("/qrbill-api/qrbill.yaml");
+        Response response = getRequest("/qrbill.yaml");
 
         assertEquals(200, response.code());
         assertEquals("application/x-yaml;charset=UTF-8", response.header("Content-Type"));
@@ -40,7 +40,7 @@ class SchemaTests {
     private Response getRequest(String relativeUrl) throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url(String.format("http://localhost:%d%s", randomServerPort, relativeUrl))
+                .url(String.format("http://localhost:%d/qrbill-api%s", randomServerPort, relativeUrl))
                 .build();
 
         return client.newCall(request).execute();
