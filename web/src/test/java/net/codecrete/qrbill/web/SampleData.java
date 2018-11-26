@@ -26,7 +26,7 @@ class SampleData {
         format.setGraphicsFormat(BillFormat.GraphicsFormatEnum.SVG);
         format.setOutputSize(BillFormat.OutputSizeEnum.QR_BILL_ONLY);
         bill.setFormat(format);
-        bill.setAmount(new BigDecimal(100.35).setScale(2, RoundingMode.HALF_UP));
+        bill.setAmount(BigDecimal.valueOf(10035, 2);
         bill.setCurrency("CHF");
         bill.setAccount("CH7300774010291134700");
         Address creditor = new Address();

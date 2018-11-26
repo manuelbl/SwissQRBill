@@ -46,7 +46,7 @@ class BillTest {
     @Test
     void setAmount() {
         Bill bill = new Bill();
-        bill.setAmount(new BigDecimal("37.45").setScale(2, RoundingMode.HALF_UP));
+        bill.setAmount(BigDecimal.valueOf(37.45));
         assertEquals(37.45, bill.getAmountAsDouble().doubleValue());
     }
 

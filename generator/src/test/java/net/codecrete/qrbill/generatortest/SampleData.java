@@ -31,7 +31,7 @@ class SampleData {
         creditor.setTown("Biel");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        bill.setAmount(new BigDecimal(123949.75).setScale(2, RoundingMode.HALF_UP));
+        bill.setAmount(BigDecimal.valueOf(123949.75));
         bill.setCurrency("CHF");
         Address debtor = new Address();
         debtor.setName("Pia-Maria Rutschmann-Schnyder");
@@ -83,7 +83,7 @@ class SampleData {
         creditor.setTown("Biel");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        bill.setAmount(new BigDecimal(19995).movePointLeft(2));
+        bill.setAmount(BigDecimal.valueOf(19995, 2));
         bill.setCurrency("CHF");
         Address debtor = new Address();
         debtor.setName("Pia-Maria Rutschmann-Schnyder");
@@ -128,7 +128,7 @@ class SampleData {
         creditor.setAddressLine2("9527 Niederhelfenschwil bei Schönholzerswilen SG");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        bill.setAmount(new BigDecimal(987654321.50).setScale(2, RoundingMode.HALF_UP));
+        bill.setAmount(BigDecimal.valueOf(98765432150L, 2));
         bill.setCurrency("CHF");
         Address debtor = new Address();
         debtor.setName("Annegret Karin & Hansruedi Frischknecht-Bernhardsgrütter");

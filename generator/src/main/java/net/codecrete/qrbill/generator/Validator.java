@@ -73,8 +73,8 @@ class Validator {
         }
     }
 
-    private static final BigDecimal AMOUNT_MIN = new BigDecimal(1).movePointLeft(2);
-    private static final BigDecimal AMOUNT_MAX = new BigDecimal(99999999999L).movePointLeft(2);
+    private static final BigDecimal AMOUNT_MIN = BigDecimal.valueOf(1, 2);
+    private static final BigDecimal AMOUNT_MAX = BigDecimal.valueOf(99999999999L, 2);
 
     private void validateAmount() {
         BigDecimal amount = billIn.getAmount();

@@ -63,13 +63,13 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill.setAmountFromDouble(100.15);
         validate();
         assertNoMessages();
-        assertEquals(new BigDecimal(10015).movePointLeft(2), validatedBill.getAmount());
+        assertEquals(BigDecimal.valueOf(10015, 2), validatedBill.getAmount());
     }
 
     @Test
     void amountOutOfRange() {
         bill = SampleData.getExample1();
-        bill.setAmount(new BigDecimal(0));
+        bill.setAmount(BigDecimal.valueOf(0));
         validate();
         assertSingleErrorMessage(Bill.FIELD_AMOUNT, "amount_in_valid_range");
     }

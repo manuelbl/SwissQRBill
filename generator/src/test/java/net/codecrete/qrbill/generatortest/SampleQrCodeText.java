@@ -67,7 +67,7 @@ class SampleQrCodeText {
         creditor.setTown("Biel");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        bill.setAmount(new BigDecimal(3949.75).setScale(2, RoundingMode.HALF_UP));
+        bill.setAmount(BigDecimal.valueOf(3949.75));
         bill.setCurrency("CHF");
         Address debtor = new Address();
         debtor.setName("Pia Rutschmann");
@@ -134,7 +134,7 @@ class SampleQrCodeText {
         creditor.setTown("Biel");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        bill.setAmount(new BigDecimal("1949.75").setScale(2, RoundingMode.HALF_UP));
+        bill.setAmount(BigDecimal.valueOf(194975, 2));
         bill.setCurrency("CHF");
         Address debtor = new Address();
         debtor.setName("Pia-Maria Rutschmann-Schnyder");
@@ -257,7 +257,7 @@ class SampleQrCodeText {
         creditor.setTown("Biel");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        bill.setAmount(new BigDecimal(19995).movePointLeft(2));
+        bill.setAmount(BigDecimal.valueOf(199.95));
         bill.setCurrency("CHF");
         Address debtor = new Address();
         debtor.setName("Pia-Maria Rutschmann-Schnyder");
