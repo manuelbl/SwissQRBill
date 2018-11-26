@@ -33,41 +33,41 @@ public class FontMetrics {
         firstFontFamily = getFirstFontFamily(fontFamilyList);
         String family = firstFontFamily.toLowerCase(Locale.US);
 
-        final char[] boldCharWidth_20_7F;
-        final char[] boldCharWidth_A0_FF;
+        final char[] boldCharWidthx20x7F;
+        final char[] boldCharWidthxA0xFF;
         final char boldCharDefaultWidth;
 
         if (family.indexOf("arial") >= 0) {
             charWidthx20x7F = CharWidthData.ARIAL_NORMAL_20_7F;
             charWidthxA0xFF = CharWidthData.ARIAL_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.ARIAL_NORMAL_DEFAULT_WIDTH;
-            boldCharWidth_20_7F = CharWidthData.ARIAL_BOLD_20_7F;
-            boldCharWidth_A0_FF = CharWidthData.ARIAL_BOLD_A0_FF;
+            boldCharWidthx20x7F = CharWidthData.ARIAL_BOLD_20_7F;
+            boldCharWidthxA0xFF = CharWidthData.ARIAL_BOLD_A0_FF;
             boldCharDefaultWidth = CharWidthData.ARIAL_BOLD_DEFAULT_WIDTH;
         } else if (family.indexOf("liberation") >= 0 && family.indexOf("sans") >= 0) {
             charWidthx20x7F = CharWidthData.LIBERATION_SANS_NORMAL_20_7F;
             charWidthxA0xFF = CharWidthData.LIBERATION_SANS_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.LIBERATION_SANS_NORMAL_DEFAULT_WIDTH;
-            boldCharWidth_20_7F = CharWidthData.LIBERATION_SANS_BOLD_20_7F;
-            boldCharWidth_A0_FF = CharWidthData.LIBERATION_SANS_BOLD_A0_FF;
+            boldCharWidthx20x7F = CharWidthData.LIBERATION_SANS_BOLD_20_7F;
+            boldCharWidthxA0xFF = CharWidthData.LIBERATION_SANS_BOLD_A0_FF;
             boldCharDefaultWidth = CharWidthData.LIBERATION_SANS_BOLD_DEFAULT_WIDTH;
         } else if (family.indexOf("frutiger") >= 0) {
             charWidthx20x7F = CharWidthData.FRUTIGER_NORMAL_20_7F;
             charWidthxA0xFF = CharWidthData.FRUTIGER_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.FRUTIGER_NORMAL_DEFAULT_WIDTH;
-            boldCharWidth_20_7F = CharWidthData.FRUTIGER_BOLD_20_7F;
-            boldCharWidth_A0_FF = CharWidthData.FRUTIGER_BOLD_A0_FF;
+            boldCharWidthx20x7F = CharWidthData.FRUTIGER_BOLD_20_7F;
+            boldCharWidthxA0xFF = CharWidthData.FRUTIGER_BOLD_A0_FF;
             boldCharDefaultWidth = CharWidthData.FRUTIGER_BOLD_DEFAULT_WIDTH;
         } else {
             charWidthx20x7F = CharWidthData.HELVETICA_NORMAL_20_7F;
             charWidthxA0xFF = CharWidthData.HELVETICA_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.HELVETICA_NORMAL_DEFAULT_WIDTH;
-            boldCharWidth_20_7F = CharWidthData.HELVETICA_BOLD_20_7F;
-            boldCharWidth_A0_FF = CharWidthData.HELVETICA_BOLD_A0_FF;
+            boldCharWidthx20x7F = CharWidthData.HELVETICA_BOLD_20_7F;
+            boldCharWidthxA0xFF = CharWidthData.HELVETICA_BOLD_A0_FF;
             boldCharDefaultWidth = CharWidthData.HELVETICA_BOLD_DEFAULT_WIDTH;
         }
 
-        boldMetrics = new FontMetrics(boldCharWidth_20_7F, boldCharWidth_A0_FF, boldCharDefaultWidth);
+        boldMetrics = new FontMetrics(boldCharWidthx20x7F, boldCharWidthxA0xFF, boldCharDefaultWidth);
     }
 
     private FontMetrics(char[] charWidthx20x7F, char[] charWidthxA0xFF, char charDefaultWidth) {

@@ -11,8 +11,6 @@ import net.codecrete.qrbill.web.model.BillFormat;
 import net.codecrete.qrbill.web.model.QrBill;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 
 /**
  * Creates sample bill data
@@ -26,7 +24,7 @@ class SampleData {
         format.setGraphicsFormat(BillFormat.GraphicsFormatEnum.SVG);
         format.setOutputSize(BillFormat.OutputSizeEnum.QR_BILL_ONLY);
         bill.setFormat(format);
-        bill.setAmount(BigDecimal.valueOf(10035, 2);
+        bill.setAmount(BigDecimal.valueOf(10035, 2));
         bill.setCurrency("CHF");
         bill.setAccount("CH7300774010291134700");
         Address creditor = new Address();

@@ -12,7 +12,6 @@ import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.Language;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 /**
  * Generates valid sample bill data.

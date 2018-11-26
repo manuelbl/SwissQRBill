@@ -17,7 +17,6 @@ import net.codecrete.qrbill.generator.Language;
 import net.codecrete.qrbill.generator.Bill.Version;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 import static org.junit.jupiter.api.Assertions.*;
 

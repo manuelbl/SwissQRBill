@@ -147,6 +147,22 @@ class CreditorValidationTest extends BillDataValidationBase {
         assertSingleErrorMessage(Bill.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
     }
 
+    @Test
+    void creditorWithConflictingAddress() {
+        bill = SampleData.getExample1();
+        bill.getCreditor().setAddressLine1("Conflict");
+        validate();
+        assertTrue(result.hasErrors());
+        assertFalse(result.hasWarnings());
+        assertTrue(result.hasMessages());
+        assertEquals(5, result.getValidationMessages().size());
+        for (ValidationMessage msg : result.getValidationMessages()) {
+            assertEquals(ValidationMessage.Type.ERROR, msg.getType());
+            assertEquals("adress_type_conflict", msg.getMessageKey());
+            assertTrue(msg.getField().startsWith(Bill.FIELDROOT_CREDITOR));
+        }
+    }
+
     private void assertMandatoryPersonMessages() {
         assertTrue(result.hasErrors());
         assertFalse(result.hasWarnings());

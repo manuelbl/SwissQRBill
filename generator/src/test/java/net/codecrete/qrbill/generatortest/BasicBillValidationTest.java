@@ -10,6 +10,7 @@ package net.codecrete.qrbill.generatortest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import net.codecrete.qrbill.generator.AlternativeScheme;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -67,7 +68,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
     }
 
     @Test
-    void amountOutOfRange() {
+    void amountTooLow() {
         bill = SampleData.getExample1();
         bill.setAmount(BigDecimal.valueOf(0));
         validate();
@@ -75,12 +76,29 @@ class BasicBillValidationTest extends BillDataValidationBase {
     }
 
     @Test
-    void validAccount() {
+    void amountTooHigh2() {
+        bill = SampleData.getExample1();
+        bill.setAmount(BigDecimal.valueOf(1000000000.0));
+        validate();
+        assertSingleErrorMessage(Bill.FIELD_AMOUNT, "amount_in_valid_range");
+    }
+
+    @Test
+    void validCHAccount() {
         bill = SampleData.getExample1();
         bill.setAccount("CH4431999123000889012");
         validate();
         assertNoMessages();
         assertEquals("CH4431999123000889012", validatedBill.getAccount());
+    }
+
+    @Test
+    void validLIAccount() {
+        bill = SampleData.getExample3();
+        bill.setAccount("LI56 0880 0000 0209 4080 8");
+        validate();
+        assertNoMessages();
+        assertEquals("LI5608800000020940808", validatedBill.getAccount());
     }
 
     @Test
@@ -109,9 +127,17 @@ class BasicBillValidationTest extends BillDataValidationBase {
     }
 
     @Test
-    void invalidIBAN() {
+    void invalidIBAN1() {
         bill = SampleData.getExample1();
         bill.setAccount("CH0031999123000889012");
+        validate();
+        assertSingleErrorMessage(Bill.FIELD_ACCOUNT, "account_is_valid_iban");
+    }
+
+    @Test
+    void invalidIBAN2() {
+        bill = SampleData.getExample1();
+        bill.setAccount("CH503199912300088333339012");
         validate();
         assertSingleErrorMessage(Bill.FIELD_ACCOUNT, "account_is_valid_iban");
     }
@@ -142,5 +168,17 @@ class BasicBillValidationTest extends BillDataValidationBase {
         validate();
         assertNoMessages();
         assertEquals("Bill no 39133", validatedBill.getUnstructuredMessage());
+    }
+
+    @Test
+    void tooManyAltSchemes() {
+        bill = SampleData.getExample1();
+        bill.setAlternativeSchemes(new AlternativeScheme[] {
+                new AlternativeScheme("Ultraviolet", "UV;UltraPay005;12345"),
+                new AlternativeScheme("Xing Yong", "XY;XYService;54321"),
+                new AlternativeScheme("Too Much", "TM/asdfa/asdfa/")
+        });
+        validate();
+        assertSingleErrorMessage(Bill.FIELD_ALTERNATIVE_SCHEMES, "alt_scheme_max_exceed");
     }
 }

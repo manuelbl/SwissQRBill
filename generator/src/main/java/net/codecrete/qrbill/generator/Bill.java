@@ -8,7 +8,6 @@ package net.codecrete.qrbill.generator;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Objects;
 
