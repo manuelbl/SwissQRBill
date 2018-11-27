@@ -53,6 +53,7 @@ class DecodedTextTest {
     @Test
     void decodeText4() {
         Bill bill = SampleData.getExample4();
+        bill.setFormat(new BillFormat()); // set default values
         normalizeSourceBill(bill);
         Bill bill2 = QRBill.decodeQrCodeText(QRBill.encodeQrCodeText(bill));
         normalizeDecodedBill(bill2);

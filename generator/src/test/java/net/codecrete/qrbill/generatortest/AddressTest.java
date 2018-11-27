@@ -8,6 +8,8 @@
 package net.codecrete.qrbill.generatortest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -146,6 +148,62 @@ class AddressTest {
         Address address1 = createCombinedElementAddress();
         Address address2 = createCombinedElementAddress();
         assertEquals(address1.hashCode(), address2.hashCode());
+    }
+
+    @Test
+    void clearTestStructed() {
+        Address address1 = createStructuredAddress();
+        address1.clear();
+        assertEquals(Address.Type.UNDETERMINED, address1.getType());
+        assertNull(address1.getName());
+        assertNull(address1.getAddressLine1());
+        assertNull(address1.getAddressLine2());
+        assertNull(address1.getStreet());
+        assertNull(address1.getHouseNo());
+        assertNull(address1.getPostalCode());
+        assertNull(address1.getTown());
+        assertNull(address1.getCountryCode());
+    }
+
+    @Test
+    void clearTestCombined() {
+        Address address1 = createCombinedElementAddress();
+        address1.clear();
+        assertEquals(Address.Type.UNDETERMINED, address1.getType());
+        assertNull(address1.getName());
+        assertNull(address1.getAddressLine1());
+        assertNull(address1.getAddressLine2());
+        assertNull(address1.getStreet());
+        assertNull(address1.getHouseNo());
+        assertNull(address1.getPostalCode());
+        assertNull(address1.getTown());
+        assertNull(address1.getCountryCode());
+    }
+
+    @Test
+    void toStringTest() {
+        Address address = createStructuredAddress();
+        String addressText = address.toString();
+        assertEquals("Address{type=STRUCTURED, name='Cornelia Singer', addressLine1='null', addressLine2='null', street='Alte Landstrasse', houseNo='73', postalCode='3410', town='Hunzenschwil', countryCode='CH'}", addressText);
+    }
+
+    @Test
+    void testEqualsTrivial() {
+        Address address = createCombinedElementAddress();
+        assertEquals(address, address);
+        assertNotEquals(address,null);
+        assertNotEquals("xxx", address);
+    }
+
+    @Test
+    void testEquals() {
+        Address address1 = createCombinedElementAddress();
+        Address address2 = createCombinedElementAddress();
+        assertEquals(address1, address2);
+        assertEquals(address2, address1);
+
+        address2.setCountryCode("FR");
+        assertNotEquals(address1, address2);
     }
 
     private Address createStructuredAddress() {

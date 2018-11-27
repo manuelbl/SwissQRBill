@@ -50,6 +50,30 @@ class BillTest {
     }
 
     @Test
+    void setAmountFromDouble() {
+        Bill bill = new Bill();
+        bill.setAmountFromDouble(37.45);
+        assertEquals(37.45, bill.getAmountAsDouble().doubleValue());
+        assertEquals(BigDecimal.valueOf(3745, 2), bill.getAmount());
+    }
+
+    @Test
+    void setAmountFromDoubleWithRounding() {
+        Bill bill = new Bill();
+        bill.setAmountFromDouble(37.45123);
+        assertEquals(37.45, bill.getAmountAsDouble().doubleValue());
+        assertEquals(BigDecimal.valueOf(3745, 2), bill.getAmount());
+    }
+
+    @Test
+    void setAmountFromDoubleNull() {
+        Bill bill = new Bill();
+        bill.setAmountFromDouble(null);
+        assertNull(bill.getAmountAsDouble());
+        assertNull(bill.getAmount());
+    }
+
+    @Test
     void setCurrency() {
         Bill bill = new Bill();
         bill.setCurrency("EUR");
@@ -117,6 +141,39 @@ class BillTest {
         assertArrayEquals(createAlternativeSchemes(), bill.getAlternativeSchemes());
     }
 
+    @Test
+    void testEqualsTrivial() {
+        Bill bill = new Bill();
+        assertEquals(bill, bill);
+        assertNotEquals(bill, null);
+        assertNotEquals("xxx", bill);
+    }
+
+    @Test
+    void testEquals() {
+        Bill bill1 = createBill();
+        Bill bill2 = createBill();
+        assertEquals(bill1, bill2);
+        assertEquals(bill2, bill1);
+
+        bill2.setUnstructuredMessage("ABC");
+        assertNotEquals(bill1, bill2);
+    }
+
+    @Test
+    void testHashCode() {
+        Bill bill1 = createBill();
+        Bill bill2 = createBill();
+        assertEquals(bill1.hashCode(), bill2.hashCode());
+    }
+
+    @Test
+    void testToString() {
+        Bill bill = createBill();
+        String text = bill.toString();
+        assertEquals("Bill{version=V2_0, amount=100.30, currency='CHF', account='CH12343345345', creditor=Address{type=STRUCTURED, name='Vision Consult GmbH', addressLine1='null', addressLine2='null', street='Hintergasse', houseNo='7b', postalCode='8400', town='Winterthur', countryCode='CH'}, reference='null', debtor=Address{type=STRUCTURED, name='Vision Consult GmbH', addressLine1='null', addressLine2='null', street='Hintergasse', houseNo='7b', postalCode='8400', town='Winterthur', countryCode='CH'}, unstructuredMessage='null', billInformation='null', alternativeSchemes=null, format=BillFormat{outputSize=QR_BILL_ONLY, language=EN, separatorType=SOLID_LINE_WITH_SCISSORS, fontFamily='Helvetica,Arial,\"Liberation Sans\"', graphicsFormat=SVG}}", text);
+    }
+
     private Address createAddress() {
         Address address = new Address();
         address.setName("Vision Consult GmbH");
@@ -126,6 +183,15 @@ class BillTest {
         address.setTown("Winterthur");
         address.setCountryCode("CH");
         return address;
+    }
+
+    private Bill createBill() {
+        Bill bill = new Bill();
+        bill.setAccount("CH12343345345");
+        bill.setCreditor(createAddress());
+        bill.setAmountFromDouble(100.3);
+        bill.setDebtor(createAddress());
+        return bill;
     }
 
     private AlternativeScheme[] createAlternativeSchemes() {

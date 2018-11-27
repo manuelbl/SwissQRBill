@@ -10,6 +10,7 @@ import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.AlternativeScheme;
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.Language;
+import net.codecrete.qrbill.generator.SeparatorType;
 
 import java.math.BigDecimal;
 
@@ -100,6 +101,7 @@ class SampleData {
     static Bill getExample4() {
         Bill bill = new Bill();
         bill.getFormat().setLanguage(Language.IT);
+        bill.getFormat().setSeparatorType(SeparatorType.SOLID_LINE);
         bill.setAccount("CH3709000000304442225");
         Address creditor = new Address();
         creditor.setName("ABC AG");
