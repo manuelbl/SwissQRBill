@@ -6,13 +6,12 @@
 //
 package net.codecrete.qrbill.generatortest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import net.codecrete.qrbill.canvas.FontMetrics;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import net.codecrete.qrbill.canvas.FontMetrics;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit tests for {@link FontMetrics} class

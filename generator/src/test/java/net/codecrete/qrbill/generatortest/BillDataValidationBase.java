@@ -7,16 +7,16 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
 import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.ValidationMessage;
-import net.codecrete.qrbill.generator.ValidationResult;
 import net.codecrete.qrbill.generator.ValidationMessage.Type;
+import net.codecrete.qrbill.generator.ValidationResult;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Base class for bill data validation tests
@@ -43,7 +43,7 @@ class BillDataValidationBase {
 
     /**
      * Asserts that the validation produced a single validation error message
-     * 
+     *
      * @param field      the field that triggered the validation error
      * @param messageKey the message key of the validation error
      */
@@ -61,7 +61,7 @@ class BillDataValidationBase {
 
     /**
      * Asserts thta the validation succeeded with a single warning
-     * 
+     *
      * @param field      the field that triggered the validation warning
      * @param messageKey the message key of the validation warning
      */
@@ -79,7 +79,7 @@ class BillDataValidationBase {
 
     /**
      * Creates an address with valid person data
-     * 
+     *
      * @return the address
      */
     Address createValidPerson() {

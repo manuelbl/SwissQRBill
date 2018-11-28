@@ -7,18 +7,21 @@
 
 package net.codecrete.qrbill.generatortest;
 
+import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.AlternativeScheme;
+import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.Bill.Version;
+import net.codecrete.qrbill.generator.Language;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import net.codecrete.qrbill.generator.Address;
-import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.Language;
-import net.codecrete.qrbill.generator.Bill.Version;
-
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * Unit tests for class {@link Bill}

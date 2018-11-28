@@ -7,15 +7,14 @@
 
 package net.codecrete.qrbill.generatortest;
 
+import net.codecrete.qrbill.generator.QRBillUnexpectedException;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import net.codecrete.qrbill.generator.QRBillUnexpectedException;
 
 /**
  * Tests for the {@link QRBillUnexpectedException} class

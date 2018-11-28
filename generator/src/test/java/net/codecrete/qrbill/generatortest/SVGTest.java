@@ -7,13 +7,12 @@
 
 package net.codecrete.qrbill.generatortest;
 
+import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.GraphicsFormat;
 import net.codecrete.qrbill.generator.OutputSize;
+import net.codecrete.qrbill.generator.QRBill;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.QRBill;
 
 /**
  * Unit tests with characters challening for SVG (XML relevant characters)

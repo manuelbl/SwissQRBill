@@ -7,14 +7,13 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
+import net.codecrete.qrbill.generator.Address;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import net.codecrete.qrbill.generator.Address;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Unit test for class {@link Address}
@@ -191,7 +190,7 @@ class AddressTest {
     void testEqualsTrivial() {
         Address address = createCombinedElementAddress();
         assertEquals(address, address);
-        assertNotEquals(address,null);
+        assertNotEquals(address, null);
         assertNotEquals("xxx", address);
     }
 

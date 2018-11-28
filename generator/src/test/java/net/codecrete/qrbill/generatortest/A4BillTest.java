@@ -89,7 +89,7 @@ class A4BillTest {
     }
 
     private void generateAndCompareBill(Bill bill, OutputSize outputSize, GraphicsFormat graphicsFormat,
-                                          String expectedFileName) {
+                                        String expectedFileName) {
         bill.getFormat().setOutputSize(outputSize);
         bill.getFormat().setGraphicsFormat(graphicsFormat);
         byte[] imageData = QRBill.generate(bill);

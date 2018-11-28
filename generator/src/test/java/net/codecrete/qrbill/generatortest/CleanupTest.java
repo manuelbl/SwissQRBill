@@ -7,16 +7,15 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+import net.codecrete.qrbill.canvas.PDFCanvas;
+import net.codecrete.qrbill.canvas.PNGCanvas;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import net.codecrete.qrbill.canvas.PDFCanvas;
-import net.codecrete.qrbill.canvas.PNGCanvas;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Unit test for checking that resources are properly released

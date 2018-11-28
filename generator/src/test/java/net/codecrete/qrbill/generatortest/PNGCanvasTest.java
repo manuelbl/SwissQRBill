@@ -6,14 +6,12 @@
 //
 package net.codecrete.qrbill.generatortest;
 
-import net.codecrete.qrbill.generator.GraphicsFormat;
-import net.codecrete.qrbill.generator.OutputSize;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import net.codecrete.qrbill.canvas.PNGCanvas;
 import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.OutputSize;
 import net.codecrete.qrbill.generator.QRBill;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for generating QR bills as PNG

@@ -7,18 +7,19 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.imageio.ImageIO;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-/** Compares two images pixel by pixel */
+/**
+ * Compares two images pixel by pixel
+ */
 class ImageComparison {
 
     static void assertGrayscaleImageContentEquals(byte[] expectedContent, byte[] actualContent) {

@@ -267,6 +267,7 @@ class SampleQrCodeText {
         bill.setReference("RF18539007547034");
         return bill;
     }
+
     private static String handleLinefeed(String text, boolean withCRLF) {
         if (withCRLF)
             text = text.replace("\n", "\r\n");

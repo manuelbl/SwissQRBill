@@ -7,15 +7,14 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import net.codecrete.qrbill.generator.Address;
+import net.codecrete.qrbill.generator.Bill;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import net.codecrete.qrbill.generator.Address;
-import net.codecrete.qrbill.generator.Bill;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Various unit tests for character set validations and replacements

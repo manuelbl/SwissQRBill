@@ -7,21 +7,20 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import net.codecrete.qrbill.generator.ValidationMessage;
+import net.codecrete.qrbill.generator.ValidationMessage.Type;
+import net.codecrete.qrbill.generator.ValidationResult;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
-import net.codecrete.qrbill.generator.ValidationMessage;
-import net.codecrete.qrbill.generator.ValidationResult;
-import net.codecrete.qrbill.generator.ValidationMessage.Type;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ValidationResultTest {
 

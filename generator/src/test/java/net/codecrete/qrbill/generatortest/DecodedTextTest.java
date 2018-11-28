@@ -7,15 +7,22 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import net.codecrete.qrbill.generator.AlternativeScheme;
+import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.BillFormat;
+import net.codecrete.qrbill.generator.Language;
+import net.codecrete.qrbill.generator.QRBill;
+import net.codecrete.qrbill.generator.QRBillValidationError;
+import net.codecrete.qrbill.generator.ValidationMessage;
+import net.codecrete.qrbill.generator.ValidationResult;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import net.codecrete.qrbill.generator.*;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for decoding the embedded QR code text

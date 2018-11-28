@@ -7,13 +7,12 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import net.codecrete.qrbill.generator.Address;
+import net.codecrete.qrbill.generator.Bill;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import net.codecrete.qrbill.generator.Address;
-import net.codecrete.qrbill.generator.Bill;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit tests for field length validation and clipping

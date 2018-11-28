@@ -7,15 +7,14 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import java.util.Locale;
-
+import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.GraphicsFormat;
 import net.codecrete.qrbill.generator.OutputSize;
+import net.codecrete.qrbill.generator.QRBill;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.QRBill;
+import java.util.Locale;
 
 /**
  * Unit tests for verifying the library works with different default locales

@@ -36,7 +36,7 @@ class FileComparison {
      * checked for a file starting with the name "actual_". If it exists, it is
      * deleted.
      * </p>
-     * 
+     *
      * @param actualContent    content of actual file
      * @param expectedFileName file name of expected file (reference file)
      */
