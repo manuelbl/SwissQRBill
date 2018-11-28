@@ -169,7 +169,7 @@ public class QRCodeText {
         bill.setReference(lines[28]);
         bill.setUnstructuredMessage(lines[29]);
         if (!"EPD".equals(lines[30]))
-            throwSingleValidationError(Bill.FIELD_QR_TYPE, QRBill.KEY_VALID_DATA_STRUCTURE);
+            throwSingleValidationError(Bill.FIELD_TRAILER, QRBill.KEY_VALID_DATA_STRUCTURE);
 
         bill.setBillInformation(lines[31]);
 

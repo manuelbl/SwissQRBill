@@ -197,7 +197,7 @@ class DecodedTextTest {
         String invalidText = SampleQrCodeText.getQrCodeText1(false).replace("EPD", "E_P");
         QRBillValidationError err = assertThrows(QRBillValidationError.class,
                 () -> QRBill.decodeQrCodeText(invalidText));
-        assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_AMOUNT);
+        assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_TRAILER);
     }
 
     private void assertSingleError(ValidationResult result, String messageKey, String field) {

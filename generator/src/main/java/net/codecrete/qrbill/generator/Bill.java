@@ -73,6 +73,10 @@ public class Bill implements Serializable {
      */
     public static final String FIELD_CODING_TYPE = "codingType";
     /**
+     * Field name of the QR bill's trailer ("EPD")
+     */
+    public static final String FIELD_TRAILER = "trailer";
+    /**
      * Field name of the currency
      */
     public static final String FIELD_CURRENCY = "currency";
