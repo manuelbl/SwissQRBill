@@ -7,6 +7,29 @@
 package net.codecrete.qrbill.web.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.GraphicsFormat;
+import net.codecrete.qrbill.generator.Language;
+import net.codecrete.qrbill.generator.OutputSize;
+import net.codecrete.qrbill.generator.QRBill;
+import net.codecrete.qrbill.generator.QRBillValidationError;
+import net.codecrete.qrbill.generator.SeparatorType;
+import net.codecrete.qrbill.generator.ValidationResult;
+import net.codecrete.qrbill.web.api.BillApi;
+import net.codecrete.qrbill.web.model.BillFormat;
+import net.codecrete.qrbill.web.model.QrBill;
+import net.codecrete.qrbill.web.model.QrCodeInformation;
+import net.codecrete.qrbill.web.model.ValidationMessage;
+import net.codecrete.qrbill.web.model.ValidationResponse;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.NativeWebRequest;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -18,22 +41,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import net.codecrete.qrbill.generator.*;
-import net.codecrete.qrbill.web.api.BillApi;
-import net.codecrete.qrbill.web.model.*;
-import net.codecrete.qrbill.web.model.BillFormat;
-import net.codecrete.qrbill.web.model.ValidationMessage;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.NativeWebRequest;
 
 @RestController
 public class QRBillController implements BillApi {
@@ -55,11 +62,11 @@ public class QRBillController implements BillApi {
 
     /**
      * Validates the QR bill data
-     * 
+     *
      * @param qrBill the QR bill data
      * @return returns the validation result: validated, possibly modified bill, the
-     *         validation messages (if any), a bill ID (if the bill is valid) and
-     *         the QR code text (if the bill is valid)
+     * validation messages (if any), a bill ID (if the bill is valid) and
+     * the QR code text (if the bill is valid)
      */
     @Override
     public ResponseEntity<ValidationResponse> validateBill(QrBill qrBill) {
@@ -69,11 +76,11 @@ public class QRBillController implements BillApi {
 
     /**
      * Decodes the text from the QR code and validates the information.
-     * 
+     *
      * @param qrCodeInformation the text from the QR code
      * @return returns the validation result: decoded bill data, the validation
-     *         messages (if any), a bill ID (if the bill is valid) and the QR code
-     *         text
+     * messages (if any), a bill ID (if the bill is valid) and the QR code
+     * text
      */
     @Override
     public ResponseEntity<ValidationResponse> decodeQRCode(QrCodeInformation qrCodeInformation) {
@@ -115,10 +122,10 @@ public class QRBillController implements BillApi {
 
     /**
      * Generates the QR bill as an SVG or PDF.
-     * 
+     *
      * @param qrBill the QR bill data
      * @return the generated bill if the data is valid; a list of validation
-     *         messages otherwise
+     * messages otherwise
      */
     @Override
     public ResponseEntity<Resource> generateBill(QrBill qrBill) {
@@ -131,9 +138,9 @@ public class QRBillController implements BillApi {
 
     /**
      * Generates the QR bill as an SVG or PDF.
-     * 
-     * @param billID the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
-     * @param outputSize output size for QR bill (overrides the one specified in the *billID*, optional)
+     *
+     * @param billID         the bill format (qrCodeOnly, a6Landscape, a5Landscape, a4Portrait)
+     * @param outputSize     output size for QR bill (overrides the one specified in the *billID*, optional)
      * @param graphicsFormat graphics format for QR bill (overrides the one specified in the *billID*, optional)
      * @return the generated bill
      */
@@ -188,7 +195,7 @@ public class QRBillController implements BillApi {
      * The ID is made URL safe by using the URL-safe RFC4648 Base 64 encoding and
      * replacing all equal signs (=) with tildes (~).
      * </p>
-     * 
+     *
      * @param qrCodeText the QR code text
      * @param billFormat the billFormat
      * @return the generated ID
@@ -203,8 +210,8 @@ public class QRBillController implements BillApi {
         Base64.Encoder base64 = Base64.getUrlEncoder();
         byte[] encodedData;
         try (ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                OutputStream intermediate = base64.wrap(buffer);
-                DeflaterOutputStream head = new DeflaterOutputStream(intermediate)) {
+             OutputStream intermediate = base64.wrap(buffer);
+             DeflaterOutputStream head = new DeflaterOutputStream(intermediate)) {
 
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(head, payload);
@@ -225,7 +232,7 @@ public class QRBillController implements BillApi {
      * The bill ID is assumed to have been generated by
      * {@link #generateID(String, BillFormat)}.
      * </p>
-     * 
+     *
      * @param id the ID
      * @return the bill data
      */
@@ -237,8 +244,8 @@ public class QRBillController implements BillApi {
         Base64.Decoder base64 = Base64.getUrlDecoder();
         BillPayload payload;
         try (InputStream dataStream = new ByteArrayInputStream(encodedData);
-                InputStream intermediate = base64.wrap(dataStream);
-                InflaterInputStream head = new InflaterInputStream(intermediate)) {
+             InputStream intermediate = base64.wrap(dataStream);
+             InflaterInputStream head = new InflaterInputStream(intermediate)) {
 
             ObjectMapper mapper = new ObjectMapper();
             payload = mapper.readValue(head, BillPayload.class);
@@ -296,7 +303,7 @@ public class QRBillController implements BillApi {
     }
 
     private GraphicsFormat graphicsFormatFromRequestHeader() {
-        for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+        for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
             if (mediaType.isCompatibleWith(MediaType.valueOf("image/svg+xml")))
                 return GraphicsFormat.SVG;
             if (mediaType.isCompatibleWith(MediaType.valueOf("application/pdf")))

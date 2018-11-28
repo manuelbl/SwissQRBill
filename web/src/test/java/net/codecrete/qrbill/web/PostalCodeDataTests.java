@@ -6,18 +6,17 @@
 //
 package net.codecrete.qrbill.web;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
-import java.util.Locale;
-
+import net.codecrete.qrbill.web.controller.PostalCodeData;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import net.codecrete.qrbill.web.controller.PostalCodeData;
+import java.util.List;
+import java.util.Locale;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit test for the {@link PostalCodeData} class

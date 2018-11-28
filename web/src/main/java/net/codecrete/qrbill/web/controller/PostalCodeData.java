@@ -6,7 +6,12 @@
 //
 package net.codecrete.qrbill.web.controller;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -114,13 +119,13 @@ public class PostalCodeData {
      * In contrast to {@link Arrays#binarySearch(Object[], Object)}, the first
      * matching element is returned if the the array contains several matching ones.
      * </p>
-     * 
+     *
      * @param a          the array to be searched (must be sorted in ascending
      *                   order)
      * @param postalCode the postal code to search for
      * @return the index of the first matching element (if found) or the index where
-     *         the element would need to be inserted to retain the order (if not
-     *         found)
+     * the element would need to be inserted to retain the order (if not
+     * found)
      */
     private static int binarySearchForPostalCode(PostalCode[] a, String postalCode) {
         int lower = 0;
@@ -146,12 +151,12 @@ public class PostalCodeData {
      * In contrast to {@link Arrays#binarySearch(Object[], Object)}, the first
      * matching element is returned if the the array contains several matching ones.
      * </p>
-     * 
+     *
      * @param a    the array to be searched (must be sorted in ascending order)
      * @param town the towb to search for
      * @return the index of the first matching element (if found) or the index where
-     *         the element would need to be inserted to retain the order (if not
-     *         found)
+     * the element would need to be inserted to retain the order (if not
+     * found)
      */
     private static int binarySearchForTown(PostalCode[] a, String town) {
         int lower = 0;

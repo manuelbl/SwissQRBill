@@ -6,14 +6,13 @@
 //
 package net.codecrete.qrbill.web.controller;
 
-import java.util.List;
-
+import net.codecrete.qrbill.web.model.PostalCode;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.codecrete.qrbill.web.model.PostalCode;
+import java.util.List;
 
 @RestController
 public class PostalCodeController {
@@ -33,7 +32,7 @@ public class PostalCodeController {
     @RequestMapping(value = "/postal-codes/suggest")
     @ResponseBody
     public PostalCode[] suggestPostalCodes(@RequestParam(name = "country", defaultValue = "") String country,
-            @RequestParam("substring") String substring) {
+                                           @RequestParam("substring") String substring) {
 
         // get postal code
         List<PostalCodeData.PostalCode> postalCodeList = postalCodeData.suggestPostalCodes(country, substring);

@@ -1,7 +1,5 @@
 package net.codecrete.qrbill.web;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -16,6 +14,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

@@ -6,7 +6,9 @@
 //
 package net.codecrete.qrbill.web;
 
+import net.codecrete.qrbill.web.model.QrCodeInformation;
 import net.codecrete.qrbill.web.model.ValidationMessage;
+import net.codecrete.qrbill.web.model.ValidationResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,10 +17,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import net.codecrete.qrbill.web.model.QrCodeInformation;
-import net.codecrete.qrbill.web.model.ValidationResponse;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit test for QR code decoding API

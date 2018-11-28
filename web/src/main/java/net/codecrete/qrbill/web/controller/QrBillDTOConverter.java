@@ -6,11 +6,15 @@
 //
 package net.codecrete.qrbill.web.controller;
 
-import net.codecrete.qrbill.generator.*;
-import net.codecrete.qrbill.web.model.*;
+import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.GraphicsFormat;
+import net.codecrete.qrbill.generator.Language;
+import net.codecrete.qrbill.generator.OutputSize;
+import net.codecrete.qrbill.generator.SeparatorType;
 import net.codecrete.qrbill.web.model.Address;
 import net.codecrete.qrbill.web.model.AlternativeScheme;
 import net.codecrete.qrbill.web.model.BillFormat;
+import net.codecrete.qrbill.web.model.QrBill;
 import net.codecrete.qrbill.web.model.ValidationMessage;
 
 import java.util.ArrayList;
