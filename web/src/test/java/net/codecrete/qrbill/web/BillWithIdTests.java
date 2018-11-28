@@ -88,6 +88,30 @@ class BillWithIdTests {
     }
 
     @Test
+    void validateAndRetrieveBillWithNullFormatValues() {
+        QrBill bill = SampleData.createBill2();
+        bill.getFormat().setGraphicsFormat(null);
+        bill.getFormat().setOutputSize(null);
+        bill.getFormat().setLanguage(null);
+        bill.getFormat().setFontFamily(null);
+        bill.getFormat().setSeparatorType(null);
+
+        ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
+        assertNotNull(response);
+
+        String billId = response.getBillID();
+        byte[] result = restTemplate.getForObject("/bill/generate/" + billId, byte[].class);
+
+        assertNotNull(result);
+        assertTrue(result.length > 10000);
+
+        String text = new String(result, StandardCharsets.UTF_8);
+        assertTrue(text.startsWith("<?xml"));
+        assertTrue(text.indexOf("<svg") > 0);
+        assertTrue(text.indexOf("Kramer") > 0);
+    }
+
+    @Test
     void retrieveBillOverrideOutputSize() {
         byte[] result = restTemplate.getForObject("/bill/generate/" + VALID_BILL_ID + "?outputSize=qr-code-only", byte[].class);
 

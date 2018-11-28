@@ -66,6 +66,7 @@ class SampleData {
         AlternativeScheme scheme = new AlternativeScheme();
         scheme.setName("TWINT");
         scheme.setInstruction("TW:CHF:40.80:+41798739292:+41763123572:Danke für den schönen Abend");
+        schemeList.add(scheme);
         bill.setAlternativeSchemes(schemeList);
         return bill;
     }
