@@ -232,17 +232,14 @@ public class QRCodeText {
             if (pos < 0)
                 break;
             int pos2 = pos;
-            if (pos2 > lastPos + 1 && text.charAt(pos2 - 1) == '\r')
+            if (pos2 > lastPos && text.charAt(pos2 - 1) == '\r')
                 pos2--;
             lines.add(text.substring(lastPos, pos2));
             lastPos = pos + 1;
         }
 
         // add last line
-        int pos2 = text.length();
-        if (pos2 > lastPos + 1 && text.charAt(pos2 - 1) == '\r')
-            pos2--;
-        lines.add(text.substring(lastPos, pos2));
+        lines.add(text.substring(lastPos, text.length()));
         return lines.toArray(new String[0]);
     }
 

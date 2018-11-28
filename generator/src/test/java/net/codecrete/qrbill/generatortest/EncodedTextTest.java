@@ -9,12 +9,15 @@ package net.codecrete.qrbill.generatortest;
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.QRBillValidationError;
+import net.codecrete.qrbill.generator.QRCodeText;
+import net.codecrete.qrbill.generator.ValidationResult;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -54,6 +57,16 @@ class EncodedTextTest {
             bill.setAmount(BigDecimal.valueOf(0));
             QRBill.encodeQrCodeText(bill);
         });
+    }
+
+    @Test
+    void createText6() {
+        Bill bill = SampleQrCodeText.getBillData3();
+        ValidationResult result = QRBill.validate(bill);
+        assertFalse(result.hasErrors());
+        bill = result.getCleanedBill();
+        bill.setReference("");
+        assertEquals(SampleQrCodeText.getQrCodeText3(false), QRCodeText.create(bill));
     }
 
 }

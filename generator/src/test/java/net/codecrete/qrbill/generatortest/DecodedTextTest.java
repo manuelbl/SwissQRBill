@@ -68,10 +68,19 @@ class DecodedTextTest {
     }
 
     @Test
-    void decodeTextB1() {
+    void decodeTextB1a() {
         Bill bill = SampleQrCodeText.getBillData1();
         normalizeSourceBill(bill);
         Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText1(false));
+        normalizeDecodedBill(bill2);
+        assertEquals(bill, bill2);
+    }
+
+    @Test
+    void decodeTextB1b() {
+        Bill bill = SampleQrCodeText.getBillData1();
+        normalizeSourceBill(bill);
+        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText1(true));
         normalizeDecodedBill(bill2);
         assertEquals(bill, bill2);
     }
@@ -141,9 +150,16 @@ class DecodedTextTest {
     }
 
     @Test
-    void decodeInvalidFormat2() {
+    void decodeInvalidFormat2a() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class,
                 () -> QRBill.decodeQrCodeText("SPC\r\n0100\r\n\r\n\r\n"));
+        assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_QR_TYPE);
+    }
+
+    @Test
+    void decodeInvalidFormat2b() {
+        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
+                "SPC1\r\n0200\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
         assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_QR_TYPE);
     }
 
@@ -174,6 +190,14 @@ class DecodedTextTest {
         QRBillValidationError err = assertThrows(QRBillValidationError.class,
                 () -> QRBill.decodeQrCodeText(invalidText));
         assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_NUMBER, Bill.FIELD_AMOUNT);
+    }
+
+    @Test
+    void decodeMissingEPD() {
+        String invalidText = SampleQrCodeText.getQrCodeText1(false).replace("EPD", "E_P");
+        QRBillValidationError err = assertThrows(QRBillValidationError.class,
+                () -> QRBill.decodeQrCodeText(invalidText));
+        assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_AMOUNT);
     }
 
     private void assertSingleError(ValidationResult result, String messageKey, String field) {

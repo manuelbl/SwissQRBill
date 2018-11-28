@@ -37,21 +37,21 @@ public class FontMetrics {
         final char[] boldCharWidthxA0xFF;
         final char boldCharDefaultWidth;
 
-        if (family.indexOf("arial") >= 0) {
+        if (family.contains("arial")) {
             charWidthx20x7F = CharWidthData.ARIAL_NORMAL_20_7F;
             charWidthxA0xFF = CharWidthData.ARIAL_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.ARIAL_NORMAL_DEFAULT_WIDTH;
             boldCharWidthx20x7F = CharWidthData.ARIAL_BOLD_20_7F;
             boldCharWidthxA0xFF = CharWidthData.ARIAL_BOLD_A0_FF;
             boldCharDefaultWidth = CharWidthData.ARIAL_BOLD_DEFAULT_WIDTH;
-        } else if (family.indexOf("liberation") >= 0 && family.indexOf("sans") >= 0) {
+        } else if (family.contains("liberation") && family.contains("sans")) {
             charWidthx20x7F = CharWidthData.LIBERATION_SANS_NORMAL_20_7F;
             charWidthxA0xFF = CharWidthData.LIBERATION_SANS_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.LIBERATION_SANS_NORMAL_DEFAULT_WIDTH;
             boldCharWidthx20x7F = CharWidthData.LIBERATION_SANS_BOLD_20_7F;
             boldCharWidthxA0xFF = CharWidthData.LIBERATION_SANS_BOLD_A0_FF;
             boldCharDefaultWidth = CharWidthData.LIBERATION_SANS_BOLD_DEFAULT_WIDTH;
-        } else if (family.indexOf("frutiger") >= 0) {
+        } else if (family.contains("frutiger")) {
             charWidthx20x7F = CharWidthData.FRUTIGER_NORMAL_20_7F;
             charWidthxA0xFF = CharWidthData.FRUTIGER_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.FRUTIGER_NORMAL_DEFAULT_WIDTH;

@@ -22,7 +22,7 @@ class QRCode {
 
     static final double SIZE = 46; // mm
 
-    private String embeddedText;
+    private final String embeddedText;
 
     /**
      * Creates an instance of the QR code for the specified bill data.

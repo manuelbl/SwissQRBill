@@ -130,7 +130,7 @@ public class PNGCanvas extends AbstractCanvas {
     }
 
     @Override
-    public void cubicCurveTo(double x1, double y1, double x2, double y2, double x, double y) throws IOException {
+    public void cubicCurveTo(double x1, double y1, double x2, double y2, double x, double y) {
         x1 *= coordinateScale;
         y1 *= -coordinateScale;
         x2 *= coordinateScale;
@@ -154,7 +154,7 @@ public class PNGCanvas extends AbstractCanvas {
     }
 
     @Override
-    public void closeSubpath() throws IOException {
+    public void closeSubpath() {
         currentPath.closePath();
     }
 
