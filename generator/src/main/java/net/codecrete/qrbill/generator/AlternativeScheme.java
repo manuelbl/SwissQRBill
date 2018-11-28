@@ -30,7 +30,7 @@ public class AlternativeScheme implements Serializable {
     /**
      * Creates an instance and sets name and instruction.
      *
-     * @param name scheme name
+     * @param name        scheme name
      * @param instruction payment instruction
      */
     public AlternativeScheme(String name, String instruction) {
@@ -49,7 +49,7 @@ public class AlternativeScheme implements Serializable {
 
     /**
      * Sets the payment scheme name
-     *
+     * <p>
      * The instruction consists of a two letter abbreviation for the scheme, a separator characters
      * and a sequence of parameters (separated by the character at index 2).
      *
@@ -61,7 +61,7 @@ public class AlternativeScheme implements Serializable {
 
     /**
      * Gets the payment instruction for a given bill.
-     *
+     * <p>
      * The instruction consists of a two letter abbreviation for the scheme, a separator characters
      * and a sequence of parameters (separated by the character at index 2).
      *

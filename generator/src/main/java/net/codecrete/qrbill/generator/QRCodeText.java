@@ -27,7 +27,6 @@ public class QRCodeText {
      * defined by SIX)
      *
      * @param bill bill data
-     *
      * @return QR code text
      */
     public static String create(Bill bill) {
@@ -153,7 +152,7 @@ public class QRCodeText {
 
         if (lines[18].length() > 0) {
             ParsePosition position = new ParsePosition(0);
-            BigDecimal amount = (BigDecimal)amountFieldFormat.parse(lines[18], position);
+            BigDecimal amount = (BigDecimal) amountFieldFormat.parse(lines[18], position);
             if (position.getIndex() == lines[18].length())
                 bill.setAmount(amount);
             else

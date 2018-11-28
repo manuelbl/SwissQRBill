@@ -18,11 +18,17 @@ public class Payments {
         // Do not create instances
     }
 
-    /** Result of cleaning a string value */
+    /**
+     * Result of cleaning a string value
+     */
     static class CleaningResult {
-        /** Cleaned string */
+        /**
+         * Cleaned string
+         */
         String cleanedString;
-        /** Flag indicating that unsupported characters have been replaced */
+        /**
+         * Flag indicating that unsupported characters have been replaced
+         */
         boolean replacedUnsupportedChars;
     }
 
@@ -43,7 +49,7 @@ public class Payments {
      * <p>
      * If the resulting strings is all white space, {@code null} is returned.
      * </p>
-     * 
+     *
      * @param value  string value to clean
      * @param result result to be filled with cleaned string and flag
      */
@@ -137,7 +143,7 @@ public class Payments {
      * The string is checked for valid characters, valid length and for a valid
      * check digit. White space is ignored.
      * </p>
-     * 
+     *
      * @param iban IBAN to validate
      * @return {@code true} if the IBAN is valid, {@code false} otherwise
      */
@@ -173,7 +179,7 @@ public class Payments {
      * Spaces are inserted to form groups of 4 letters/digits. If a group of less
      * than 4 letters/digits is needed, it appears at the end.
      * </p>
-     * 
+     *
      * @param iban IBAN or creditor reference without spaces
      * @return formatted IBAN or creditor reference
      */
@@ -198,10 +204,10 @@ public class Payments {
      * The string is checked for valid characters, valid length and a valid check
      * digit. White space is ignored.
      * </p>
-     * 
+     *
      * @param reference ISO 11649 creditor reference to validate
      * @return {@code true} if the creditor reference is valid, {@code false}
-     *         otherwise
+     * otherwise
      */
     public static boolean isValidISO11649Reference(String reference) {
 
@@ -228,7 +234,7 @@ public class Payments {
      * <p>
      * Whitespace is removed from the reference
      * </p>
-     * 
+     *
      * @param rawReference The raw string
      * @return ISO11649 creditor reference
      * @throws IllegalArgumentException if {@code rawReference} contains invalid
@@ -251,7 +257,7 @@ public class Payments {
      * The string may only contains digits, letters ('A' to 'Z' and 'a' to 'z', no
      * accents). It must not contain white space.
      * </p>
-     * 
+     *
      * @param reference the reference
      * @return the checksum (0 to 96)
      * @throws IllegalArgumentException thrown if the reference contains an invalid
@@ -294,10 +300,10 @@ public class Payments {
      * The string is checked for valid characters, valid length and a valid check
      * digit. White space is ignored.
      * </p>
-     * 
+     *
      * @param reference QR reference number to validate
      * @return {@code true} if the reference number is valid, {@code false}
-     *         otherwise
+     * otherwise
      */
     public static boolean isValidQRReference(String reference) {
 
@@ -325,7 +331,7 @@ public class Payments {
      * Spaces are inserted to create groups of 5 digits. If a group of less than 5
      * digits is needed, it appears at the start of the formatted reference number.
      * </p>
-     * 
+     *
      * @param refNo reference number without white space
      * @return formatted reference number
      */

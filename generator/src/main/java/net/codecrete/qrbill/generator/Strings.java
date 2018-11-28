@@ -21,7 +21,7 @@ public class Strings {
      * <p>
      * For empty strings or {@code null}, {@code null} is returned.
      * </p>
-     * 
+     *
      * @param value string to trim or {@code null}
      * @return trimmed string
      */
@@ -36,7 +36,7 @@ public class Strings {
 
     /**
      * Returns string without white space
-     * 
+     *
      * @param value string to process (non null)
      * @return resulting string with all whitespace removed
      */
@@ -77,7 +77,7 @@ public class Strings {
      * <p>
      * A string consisting of all whitespace is considered empty.
      * </p>
-     * 
+     *
      * @param value string to test
      * @return boolean indicating if string is null or empty
      */

@@ -63,7 +63,7 @@ public class Address implements Serializable {
      * If fields of both types are set, the address type becomes <i>conflicting</i>.
      * </p>
      * <p>
-     *     The address type can be reset by calling {@link #clear}.
+     * The address type can be reset by calling {@link #clear}.
      * </p>
      *
      * @return address type
@@ -84,7 +84,7 @@ public class Address implements Serializable {
     /**
      * Gets the name, either the first and last name of a natural person or the
      * company name of a legal person.
-     * 
+     *
      * @return the name
      */
     public String getName() {
@@ -98,7 +98,7 @@ public class Address implements Serializable {
      * The name is mandatory unless the entire address contains {@code null} or
      * empty values.
      * </p>
-     * 
+     *
      * @param name the name
      */
     public void setName(String name) {
@@ -108,10 +108,10 @@ public class Address implements Serializable {
     /**
      * Gets the address line 1
      * <p>
-     *     Address line 1 contains street name, house number or P.O. box.
+     * Address line 1 contains street name, house number or P.O. box.
      * </p>
      * <p>
-     *     This field is only used for combined elements addresses and is optional.
+     * This field is only used for combined elements addresses and is optional.
      * </p>
      *
      * @return address line 1
@@ -123,11 +123,11 @@ public class Address implements Serializable {
     /**
      * Sets the address line 1.
      * <p>
-     *     Address line 1 contains street name, house number or P.O. box.
+     * Address line 1 contains street name, house number or P.O. box.
      * </p>
      * <p>
-     *     Settings this field sets the address type to {@link Type#COMBINED_ELEMENTS} unless it's already
-     *     {@link Type#STRUCTURED}, in which case it becomes {@link Type#CONFLICTING}.
+     * Settings this field sets the address type to {@link Type#COMBINED_ELEMENTS} unless it's already
+     * {@link Type#STRUCTURED}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>
      * This field is only used for combined elements addresses and is optional.
@@ -143,10 +143,10 @@ public class Address implements Serializable {
     /**
      * Gets the address line 2
      * <p>
-     *     Address line 2 contains postal code and town.
+     * Address line 2 contains postal code and town.
      * </p>
      * <p>
-     *     This field is only used for combined elements addresses. For this type, it's mandatory.
+     * This field is only used for combined elements addresses. For this type, it's mandatory.
      * </p>
      *
      * @return address line 2
@@ -158,11 +158,11 @@ public class Address implements Serializable {
     /**
      * Sets the address line 2.
      * <p>
-     *     Address line 2 contains postal code and town
+     * Address line 2 contains postal code and town
      * </p>
      * <p>
-     *     Settings this field sets the address type to {@link Type#COMBINED_ELEMENTS} unless it's already
-     *     {@link Type#STRUCTURED}, in which case it becomes {@link Type#CONFLICTING}.
+     * Settings this field sets the address type to {@link Type#COMBINED_ELEMENTS} unless it's already
+     * {@link Type#STRUCTURED}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>
      * This field is only used for combined elements addresses. For this type, it's mandatory.
@@ -178,9 +178,9 @@ public class Address implements Serializable {
     /**
      * Gets the street.
      * <p>
-     *     This field is only used for structured addresses and is optional.
+     * This field is only used for structured addresses and is optional.
      * </p>
-     * 
+     *
      * @return the street
      */
     public String getStreet() {
@@ -193,13 +193,13 @@ public class Address implements Serializable {
      * This field must not contain the house or building number.
      * </p>
      * <p>
-     *     Settings this field sets the address type to {@link Type#STRUCTURED} unless it's already
-     *     {@link Type#COMBINED_ELEMENTS}, in which case it becomes {@link Type#CONFLICTING}.
+     * Settings this field sets the address type to {@link Type#STRUCTURED} unless it's already
+     * {@link Type#COMBINED_ELEMENTS}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>
      * This field is only used for structured addresses and is optional.
      * </p>
-     * 
+     *
      * @param street the street
      */
     public void setStreet(String street) {
@@ -210,7 +210,7 @@ public class Address implements Serializable {
     /**
      * Gets the house or building number.
      * <p>
-     *     This field is only used for structured addresses and is optional.
+     * This field is only used for structured addresses and is optional.
      * </p>
      *
      * @return the house number
@@ -222,13 +222,13 @@ public class Address implements Serializable {
     /**
      * Sets the house or building number.
      * <p>
-     *     Settings this field sets the address type to {@link Type#STRUCTURED} unless it's already
-     *     {@link Type#COMBINED_ELEMENTS}, in which case it becomes {@link Type#CONFLICTING}.
+     * Settings this field sets the address type to {@link Type#STRUCTURED} unless it's already
+     * {@link Type#COMBINED_ELEMENTS}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>
      * This field is only used for structured addresses and is optional.
      * </p>
-     * 
+     *
      * @param houseNo the house number
      */
     public void setHouseNo(String houseNo) {
@@ -239,7 +239,7 @@ public class Address implements Serializable {
     /**
      * Gets the postal code
      * <p>
-     *     This field is only used for structured addresses. For this type, it's mandatory.
+     * This field is only used for structured addresses. For this type, it's mandatory.
      * </p>
      *
      * @return the postal code
@@ -251,13 +251,13 @@ public class Address implements Serializable {
     /**
      * Sets the postal code
      * <p>
-     *     Settings this field sets the address type to {@link Type#STRUCTURED} unless it's already
-     *     {@link Type#COMBINED_ELEMENTS}, in which case it becomes {@link Type#CONFLICTING}.
+     * Settings this field sets the address type to {@link Type#STRUCTURED} unless it's already
+     * {@link Type#COMBINED_ELEMENTS}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>
      * This field is only used for structured addresses. For this type, it's mandatory.
      * </p>
-     * 
+     *
      * @param postalCode the postal code
      */
     public void setPostalCode(String postalCode) {
@@ -268,7 +268,7 @@ public class Address implements Serializable {
     /**
      * Gets the town.
      * <p>
-     *     This field is only used for structured addresses. For this type, it's mandatory.
+     * This field is only used for structured addresses. For this type, it's mandatory.
      * </p>
      *
      * @return the town
@@ -280,13 +280,13 @@ public class Address implements Serializable {
     /**
      * Sets the town
      * <p>
-     *     Settings this field sets the address type to {@link Type#STRUCTURED} unless it's already
-     *     {@link Type#COMBINED_ELEMENTS}, in which case it becomes {@link Type#CONFLICTING}.
+     * Settings this field sets the address type to {@link Type#STRUCTURED} unless it's already
+     * {@link Type#COMBINED_ELEMENTS}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>
      * This field is only used for structured addresses. For this type, it's mandatory.
      * </p>
-     * 
+     *
      * @param town the town
      */
     public void setTown(String town) {
@@ -296,7 +296,7 @@ public class Address implements Serializable {
 
     /**
      * Gets the two-letter ISO country code.
-     * 
+     *
      * @return the ISO country code
      */
     public String getCountryCode() {
@@ -309,7 +309,7 @@ public class Address implements Serializable {
      * The country code is mandatory unless the entire address contains {@code null}
      * or empty values.
      * </p>
-     * 
+     *
      * @param countryCode the ISO country code
      */
     public void setCountryCode(String countryCode) {

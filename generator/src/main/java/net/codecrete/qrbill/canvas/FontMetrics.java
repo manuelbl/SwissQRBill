@@ -99,7 +99,7 @@ public class FontMetrics {
 
     /**
      * Distance between baseline and top of highest letter.
-     * 
+     *
      * @param fontSize the font size (in pt)
      * @return the distance (in mm)
      */
@@ -110,7 +110,7 @@ public class FontMetrics {
     /**
      * Distance between baseline and bottom of letter extending the farest below the
      * baseline.
-     * 
+     *
      * @param fontSize the font size (in pt)
      * @return the distance (in mm)
      */
@@ -120,7 +120,7 @@ public class FontMetrics {
 
     /**
      * Distance between the baselines of two consecutive text lines.
-     * 
+     *
      * @param fontSize the font size (in pt)
      * @return the distance (in mm)
      */
@@ -134,7 +134,7 @@ public class FontMetrics {
      * If a line would exceed the specified maximum length, line breaks are
      * inserted. Newlines are treated as fixed line breaks.
      * </p>
-     * 
+     *
      * @param text      the text
      * @param maxLength the maximum line length (in pt)
      * @param fontSize  the font size (in pt)
@@ -234,7 +234,7 @@ public class FontMetrics {
      * <p>
      * Trim trailing white space
      * </p>
-     * 
+     *
      * @param lines resulting lines array
      * @param text  text
      * @param start start of text range (including)
@@ -248,7 +248,8 @@ public class FontMetrics {
 
     /**
      * Returns the width of the specified text for the specified font size
-     * @param text text
+     *
+     * @param text     text
      * @param fontSize font size (in pt)
      * @param isBold   indicates if the text is in bold or regular weight
      * @return width (in mm)
@@ -276,7 +277,7 @@ public class FontMetrics {
      * Guidelines for Credit Transfer Initiation". For all other characters, a
      * default width is returned.
      * </p>
-     * 
+     *
      * @param ch the character
      * @return the width of the character
      */

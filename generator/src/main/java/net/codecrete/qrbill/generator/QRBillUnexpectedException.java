@@ -15,7 +15,7 @@ public class QRBillUnexpectedException extends RuntimeException {
 
     /**
      * Constructs a new runtime exception with the specified detail message.
-     * 
+     *
      * @param message detail message
      */
     public QRBillUnexpectedException(String message) {
@@ -24,7 +24,7 @@ public class QRBillUnexpectedException extends RuntimeException {
 
     /**
      * Constructs a new runtime exception with the specified cause.
-     * 
+     *
      * @param cause cause
      */
     public QRBillUnexpectedException(Throwable cause) {
@@ -34,7 +34,7 @@ public class QRBillUnexpectedException extends RuntimeException {
     /**
      * Constructs a new runtime exception with the specified detail message and
      * cause.
-     * 
+     *
      * @param message detail message
      * @param cause   cause
      */

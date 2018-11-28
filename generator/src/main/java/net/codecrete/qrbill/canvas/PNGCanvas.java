@@ -6,6 +6,15 @@
 //
 package net.codecrete.qrbill.canvas;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.metadata.IIOInvalidTreeException;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataNode;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -18,16 +27,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
-
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageTypeSpecifier;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.metadata.IIOInvalidTreeException;
-import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.metadata.IIOMetadataNode;
-import javax.imageio.stream.ImageOutputStream;
 
 /**
  * Canvas for generating PNG files.
@@ -50,7 +49,7 @@ public class PNGCanvas extends AbstractCanvas {
      * <p>
      * It is recommended to use at least 144 dpi for a readable result.
      * </p>
-     * 
+     *
      * @param resolution resolution of the result (in dpi)
      */
     public PNGCanvas(int resolution) {
@@ -202,7 +201,7 @@ public class PNGCanvas extends AbstractCanvas {
         ImageWriteParam writeParam = null;
         IIOMetadata metadata = null;
 
-        for (Iterator<ImageWriter> iw = ImageIO.getImageWritersByFormatName("png"); iw.hasNext();) {
+        for (Iterator<ImageWriter> iw = ImageIO.getImageWritersByFormatName("png"); iw.hasNext(); ) {
             writer = iw.next();
             writeParam = writer.getDefaultWriteParam();
             ImageTypeSpecifier typeSpecifier = ImageTypeSpecifier.createFromBufferedImageType(image.getType());

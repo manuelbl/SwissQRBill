@@ -6,10 +6,10 @@
 //
 package net.codecrete.qrbill.generator;
 
-import java.io.IOException;
-
 import net.codecrete.io.nayuki.qrcodegen.QrCode;
 import net.codecrete.qrbill.canvas.Canvas;
+
+import java.io.IOException;
 
 /**
  * Generates the QR code for the Swiss QR bill.
@@ -29,7 +29,7 @@ class QRCode {
      * <p>
      * The bill data must have been validated and cleaned.
      * </p>
-     * 
+     *
      * @param bill bill data
      */
     QRCode(Bill bill) {
@@ -39,7 +39,7 @@ class QRCode {
     /**
      * Draws the QR code to the specified graphics context (canvas). The QR code is
      * always 46 mm by 46 mm.
-     * 
+     *
      * @param graphics graphics context
      * @param offsetX  x offset
      * @param offsetY  y offset

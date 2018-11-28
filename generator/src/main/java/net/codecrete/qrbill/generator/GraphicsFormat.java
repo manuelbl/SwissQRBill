@@ -10,8 +10,12 @@ package net.codecrete.qrbill.generator;
  * Graphics format of generated QR bill.
  */
 public enum GraphicsFormat {
-    /** PDF */
+    /**
+     * PDF
+     */
     PDF,
-    /** SVG */
+    /**
+     * SVG
+     */
     SVG
 }

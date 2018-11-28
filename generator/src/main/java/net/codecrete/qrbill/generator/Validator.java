@@ -6,14 +6,14 @@
 //
 package net.codecrete.qrbill.generator;
 
+import net.codecrete.qrbill.generator.Payments.CleaningResult;
+import net.codecrete.qrbill.generator.ValidationMessage.Type;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import net.codecrete.qrbill.generator.Payments.CleaningResult;
-import net.codecrete.qrbill.generator.ValidationMessage.Type;
 
 /**
  * Validates and cleans QR bill data.
@@ -27,7 +27,7 @@ class Validator {
     /**
      * Validates the QR bill data and returns the validation messages (if any) and
      * the cleaned bill data.
-     * 
+     *
      * @param bill bill data to validate
      * @return validation result
      */

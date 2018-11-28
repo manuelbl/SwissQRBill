@@ -49,7 +49,7 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Constructs a new validation message with the given values.
-     * 
+     *
      * @param type       the message type
      * @param field      the affect field
      * @param messageKey the language-neutral key of the message
@@ -62,7 +62,7 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Constructs a new validation message with the given values.
-     * 
+     *
      * @param type              the message type
      * @param field             the affect field
      * @param messageKey        the language-neutral key of the message
@@ -78,7 +78,7 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Gets the type of message
-     * 
+     *
      * @return the message type
      */
     public Type getType() {
@@ -87,7 +87,7 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Sets the type of message
-     * 
+     *
      * @param type message type
      */
     public void setType(Type type) {
@@ -100,7 +100,7 @@ public class ValidationMessage implements Serializable {
      * All field names are available as constants in {@link Bill}. Examples are:
      * "account", "creditor.street"
      * </p>
-     * 
+     *
      * @return the field name
      */
     public String getField() {
@@ -113,7 +113,7 @@ public class ValidationMessage implements Serializable {
      * All field names are available as constants in {@link Bill}. Examples are:
      * "account", "creditor.street"
      * </p>
-     * 
+     *
      * @param field the field name
      */
     public void setField(String field) {
@@ -122,7 +122,7 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Gets the language neutral key of the message.
-     * 
+     *
      * @return the message key
      */
     public String getMessageKey() {
@@ -131,7 +131,7 @@ public class ValidationMessage implements Serializable {
 
     /**
      * Sets the language neutral key of the message.
-     * 
+     *
      * @param messageKey the message key
      */
     public void setMessageKey(String messageKey) {
@@ -141,7 +141,7 @@ public class ValidationMessage implements Serializable {
     /**
      * Gets additional message parameters (text) that are inserted into the
      * localized message.
-     * 
+     *
      * @return the additional message parameters
      */
     public String[] getMessageParameters() {
@@ -151,7 +151,7 @@ public class ValidationMessage implements Serializable {
     /**
      * Sets additional message parameters (text) that are inserted into the
      * localized message.
-     * 
+     *
      * @param messageParameters the additional message parameters
      */
     public void setMessageParameters(String[] messageParameters) {

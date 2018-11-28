@@ -261,20 +261,20 @@ public class SVGCanvas extends AbstractCanvas {
                     result.append(text, lastCopiedPosition, i);
                 String entity;
                 switch (ch) {
-                case '<':
-                    entity = "&lt;";
-                    break;
-                case '>':
-                    entity = "&gt;";
-                    break;
-                case '&':
-                    entity = "&amp;";
-                    break;
-                case '\'':
-                    entity = "&apos;";
-                    break;
-                default:
-                    entity = "&quot;";
+                    case '<':
+                        entity = "&lt;";
+                        break;
+                    case '>':
+                        entity = "&gt;";
+                        break;
+                    case '&':
+                        entity = "&amp;";
+                        break;
+                    case '\'':
+                        entity = "&apos;";
+                        break;
+                    default:
+                        entity = "&quot;";
                 }
                 result.append(entity);
                 lastCopiedPosition = i + 1;

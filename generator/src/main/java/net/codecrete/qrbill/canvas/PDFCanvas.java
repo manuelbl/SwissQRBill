@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * PDF graphics generator
  * <p>
- *     The PDF generator currently only supports the Helvetica font.
+ * The PDF generator currently only supports the Helvetica font.
  * </p>
  */
 public class PDFCanvas extends AbstractCanvas {
@@ -124,7 +124,7 @@ public class PDFCanvas extends AbstractCanvas {
         y *= MM_TO_PT;
         contentStream.curveTo((float) x1, (float) y1, (float) x2, (float) y2, (float) x, (float) y);
     }
-    
+
     @Override
     public void addRectangle(double x, double y, double width, double height) throws IOException {
         x *= MM_TO_PT;
@@ -133,7 +133,7 @@ public class PDFCanvas extends AbstractCanvas {
         height *= MM_TO_PT;
         contentStream.addRect((float) x, (float) y, (float) width, (float) height);
     }
-    
+
     @Override
     public void closeSubpath() throws IOException {
         contentStream.closePath();

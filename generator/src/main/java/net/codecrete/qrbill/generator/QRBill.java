@@ -6,11 +6,11 @@
 //
 package net.codecrete.qrbill.generator;
 
-import java.io.IOException;
-
 import net.codecrete.qrbill.canvas.Canvas;
 import net.codecrete.qrbill.canvas.PDFCanvas;
 import net.codecrete.qrbill.canvas.SVGCanvas;
+
+import java.io.IOException;
 
 /**
  * Generates Swiss QR bill payment part.
@@ -21,9 +21,13 @@ public class QRBill {
         // do not instantiate
     }
 
-    /** Validation message key: currency must be "CHF" or "EUR" */
+    /**
+     * Validation message key: currency must be "CHF" or "EUR"
+     */
     public static final String KEY_CURRENCY_IS_CHF_OR_EUR = "currency_is_chf_or_eur";
-    /** Validation message key: amount must be between 0.01 and 999999999.99 */
+    /**
+     * Validation message key: amount must be between 0.01 and 999999999.99
+     */
     public static final String KEY_AMOUNT_IS_IN_VALID_RANGE = "amount_in_valid_range";
     /**
      * Validation message key: IBAN must be from bank in Switzerland or
@@ -48,31 +52,47 @@ public class QRBill {
      * Validation message key: Reference number is mandatory for IBANs with QR-IID
      */
     public static final String KEY_MANDATORY_FOR_QR_IBAN = "mandatory_for_qr_iban";
-    /** Validation message key: Field is mandatory */
+    /**
+     * Validation message key: Field is mandatory
+     */
     public static final String KEY_FIELD_IS_MANDATORY = "field_is_mandatory";
-    /** Validation message key: Fields for both structured and combined elements address type have been filled in */
+    /**
+     * Validation message key: Fields for both structured and combined elements address type have been filled in
+     */
     public static final String KEY_ADDRESS_TYPE_CONFLICT = "adress_type_conflict";
-    /** Validation message key: Country code must consist of two letters */
+    /**
+     * Validation message key: Country code must consist of two letters
+     */
     public static final String KEY_VALID_COUNTRY_CODE = "valid_country_code";
     /**
      * Validation message key: Field has been clipped to not exceed the maximum
      * length
      */
     public static final String KEY_FIELD_CLIPPED = "field_clipped";
-    /** Validation message key: Unsupported characters have been replaced */
+    /**
+     * Validation message key: Unsupported characters have been replaced
+     */
     public static final String KEY_REPLACED_UNSUPPORTED_CHARACTERS = "replaced_unsupported_characters";
     /**
      * Validation message key: Valid data structure starts with "SPC" and consists
      * of 28 to 30 lines of text
      */
     public static final String KEY_VALID_DATA_STRUCTURE = "valid_data_structure";
-    /** Validation message key: Version 01.00 is supported only */
+    /**
+     * Validation message key: Version 01.00 is supported only
+     */
     public static final String KEY_SUPPORTED_VERSION = "supported_version";
-    /** Validation message key: Coding type 1 is supported only */
+    /**
+     * Validation message key: Coding type 1 is supported only
+     */
     public static final String KEY_SUPPORTED_CODING_TYPE = "supported_coding_type";
-    /** Validation message key: Valid number required (nnnnn.nn) */
+    /**
+     * Validation message key: Valid number required (nnnnn.nn)
+     */
     public static final String KEY_VALID_NUMBER = "valid_number";
-    /** Validation message key: The maximum of 2 alternative schemes has been exceeded */
+    /**
+     * Validation message key: The maximum of 2 alternative schemes has been exceeded
+     */
     public static final String KEY_ALT_SCHEME_MAX_EXCEEDED = "alt_scheme_max_exceed";
 
     /**
@@ -86,7 +106,7 @@ public class QRBill {
      * "https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data
      * validation</a>
      * </p>
-     * 
+     *
      * @param bill bill data
      * @return validation result
      */
@@ -103,8 +123,8 @@ public class QRBill {
      * "https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data
      * validation</a>
      * </p>
-     * 
-     * @param bill           the bill data
+     *
+     * @param bill the bill data
      * @return the generated QR bill (as a byte array)
      * @throws QRBillValidationError thrown if the bill data does not validate
      */
@@ -129,9 +149,9 @@ public class QRBill {
      * The canvas will be initialized with {@code Canvas#setupPage} and it will be
      * closed before returning the generated QR bill
      * </p>
-     * 
-     * @param bill       the bill data
-     * @param canvas     the canvas to draw to
+     *
+     * @param bill   the bill data
+     * @param canvas the canvas to draw to
      * @return the generated QR bill (as a byte array)
      * @throws QRBillValidationError thrown if the bill data does not validate
      */
@@ -168,7 +188,7 @@ public class QRBill {
      * "https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data
      * validation</a>
      * </p>
-     * 
+     *
      * @param bill the bill data to encode
      * @return the QR code text
      * @throws QRBillValidationError thrown if the bill data does not validate
@@ -193,7 +213,7 @@ public class QRBill {
      * "https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data
      * validation</a>.
      * </p>
-     * 
+     *
      * @param text the text to decode
      * @return the decoded bill data
      * @throws QRBillValidationError thrown if the bill data does not validate
@@ -205,8 +225,8 @@ public class QRBill {
     /**
      * Generates the payment part as a byte array
      *
-     * @param bill       the cleaned bill data
-     * @param canvas     the canvas to draw to
+     * @param bill   the cleaned bill data
+     * @param canvas the canvas to draw to
      * @return byte array containing the binary data in the selected format
      */
     private static byte[] generatePaymentPart(Bill bill, Canvas canvas) throws IOException {
@@ -217,14 +237,14 @@ public class QRBill {
         // define page size
         switch (bill.getFormat().getOutputSize()) {
             case QR_BILL_ONLY:
-            drawingWidth = 210;
-            drawingHeight = 105;
-            break;
-        case A4_PORTRAIT_SHEET:
-        default:
-            drawingWidth = 210;
-            drawingHeight = 297;
-            break;
+                drawingWidth = 210;
+                drawingHeight = 105;
+                break;
+            case A4_PORTRAIT_SHEET:
+            default:
+                drawingWidth = 210;
+                drawingHeight = 297;
+                break;
         }
 
         canvas.setupPage(drawingWidth, drawingHeight, bill.getFormat().getFontFamily());
@@ -235,7 +255,7 @@ public class QRBill {
 
     /**
      * Generate the QR code only
-     * 
+     *
      * @param bill   the bill data
      * @param canvas the canvas to draw to
      * @return byte array containing the binary data in the selected format
@@ -251,14 +271,14 @@ public class QRBill {
     private static Canvas createCanvas(GraphicsFormat graphicsFormat) {
         Canvas canvas;
         switch (graphicsFormat) {
-        case SVG:
-            canvas = new SVGCanvas();
-            break;
-        case PDF:
-            canvas = new PDFCanvas();
-            break;
-        default:
-            throw new QRBillUnexpectedException("Invalid graphics format specified");
+            case SVG:
+                canvas = new SVGCanvas();
+                break;
+            case PDF:
+                canvas = new PDFCanvas();
+                break;
+            default:
+                throw new QRBillUnexpectedException("Invalid graphics format specified");
         }
         return canvas;
     }

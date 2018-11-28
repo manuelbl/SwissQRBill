@@ -43,17 +43,17 @@ public class MultilingualText {
     private static int getLanguageIndex(Language language) {
         int index;
         switch (language) {
-        case DE:
-            index = 0;
-            break;
-        case FR:
-            index = 1;
-            break;
-        case IT:
-            index = 2;
-            break;
-        default:
-            index = 3;
+            case DE:
+                index = 0;
+                break;
+            case FR:
+                index = 1;
+                break;
+            case IT:
+                index = 2;
+                break;
+            default:
+                index = 3;
         }
 
         return index;

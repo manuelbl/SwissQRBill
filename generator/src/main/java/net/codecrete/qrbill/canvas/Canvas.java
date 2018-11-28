@@ -39,9 +39,9 @@ public interface Canvas extends Closeable {
      * family will be used to calculate text widths. For formats that support it (e.g. SVG), the entire list
      * will be used in the generated graphics file. Other format will just use the first one.
      * </p>
-     * 
-     * @param width  width of page (in mm)
-     * @param height height of page (in mm)
+     *
+     * @param width      width of page (in mm)
+     * @param height     height of page (in mm)
      * @param fontFamily font family to use
      * @throws IOException thrown if graphics cannot be generated
      */
@@ -53,7 +53,7 @@ public interface Canvas extends Closeable {
      * Before a new translation is applied, the coordinate system is reset to it's
      * original state after page setup (see {@code setupPage}).
      * </p>
-     * 
+     *
      * @param translateX translation in x direction (in mm)
      * @param translateY translation in y direction (in mm)
      * @param rotate     rotation angle, in radians
@@ -68,7 +68,7 @@ public interface Canvas extends Closeable {
      * <p>
      * The text position refers to the left most point on the text's baseline.
      * </p>
-     * 
+     *
      * @param text     the text
      * @param x        x position of the text's start (in mm)
      * @param y        y position of the text's top (in mm)
@@ -84,7 +84,7 @@ public interface Canvas extends Closeable {
      * The text position refers to the left most point on the baseline of the first
      * text line. Additional lines then follow below.
      * </p>
-     * 
+     *
      * @param lines    the text lines
      * @param x        x position of the text's start (in mm)
      * @param y        y position of the text's top (in mm)
@@ -96,14 +96,14 @@ public interface Canvas extends Closeable {
 
     /**
      * Starts a path that can be filled or stroked
-     * 
+     *
      * @throws IOException thrown if the graphics cannot be generated
      */
     void startPath() throws IOException;
 
     /**
      * Moves the current point of the open path to the specified position.
-     * 
+     *
      * @param x x-coordinate of position
      * @param y y-coordinate of position
      * @throws IOException thrown if the graphics cannot be generated
@@ -113,7 +113,7 @@ public interface Canvas extends Closeable {
     /**
      * Adds a line segment to the open path from the previous point to the speicifed
      * position.
-     * 
+     *
      * @param x x-coordinate of position
      * @param y y-coordinate of position
      * @throws IOException thrown if the graphics cannot be generated
@@ -123,20 +123,20 @@ public interface Canvas extends Closeable {
     /**
      * Adds a cubic Beziér curve to the open path going from the previous point to the speicifed
      * position. Two control points control the curve
-     * 
+     *
      * @param x1 x-coordinate of first control point
      * @param y1 y-coordinate of first control point
      * @param x2 x-coordinate of second control point
      * @param y2 y-coordinate of second control point
-     * @param x x-coordinate of position
-     * @param y y-coordinate of position
+     * @param x  x-coordinate of position
+     * @param y  y-coordinate of position
      * @throws IOException thrown if the graphics cannot be generated
      */
     void cubicCurveTo(double x1, double y1, double x2, double y2, double x, double y) throws IOException;
 
     /**
      * Adds a rectangle to the path
-     * 
+     *
      * @param x      the rectangle's left position (in mm)
      * @param y      the rectangle's top position (in mm)
      * @param width  the rectangle's width (in mm)
@@ -147,14 +147,14 @@ public interface Canvas extends Closeable {
 
     /**
      * Closes the current subpath
-     * 
+     *
      * @throws IOException thrown if the graphics cannot be generated
      */
     void closeSubpath() throws IOException;
 
     /**
      * Fills the current path and ends it
-     * 
+     *
      * @param color the fill color (expressed similar to HTML, e.g. 0xffffff for
      *              white)
      * @throws IOException thrown if the graphics cannot be generated
@@ -163,7 +163,7 @@ public interface Canvas extends Closeable {
 
     /**
      * Strokes the current path and ends it
-     * 
+     *
      * @param strokeWidth the stroke width (in pt)
      * @param color       the stroke color (expressed similar to HTML, e.g. 0xffffff
      *                    for white)
@@ -199,7 +199,7 @@ public interface Canvas extends Closeable {
     /**
      * Returns the width of the specified text for the specified font size
      *
-     * @param text text
+     * @param text     text
      * @param fontSize font size (in pt)
      * @param isBold   indicates if the text is in bold or regular weight
      * @return width (in mm)
@@ -225,7 +225,7 @@ public interface Canvas extends Closeable {
      * <p>
      * After this method was called, the page is no longer valid.
      * </p>
-     * 
+     *
      * @return the byte array
      * @throws IOException thrown if the graphics cannot be generated
      */

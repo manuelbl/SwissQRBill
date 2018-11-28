@@ -10,12 +10,20 @@ package net.codecrete.qrbill.generator;
  * QR bill language
  */
 public enum Language {
-    /** German */
+    /**
+     * German
+     */
     DE,
-    /** French */
+    /**
+     * French
+     */
     FR,
-    /** Italian */
+    /**
+     * Italian
+     */
     IT,
-    /** English */
+    /**
+     * English
+     */
     EN
 }

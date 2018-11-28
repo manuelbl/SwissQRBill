@@ -6,14 +6,14 @@
 //
 package net.codecrete.qrbill.generator;
 
+import net.codecrete.qrbill.canvas.Canvas;
+
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
-
-import net.codecrete.qrbill.canvas.Canvas;
 
 /**
  * Layouting and drawing of QR bill payment slip
@@ -50,7 +50,7 @@ class BillLayout {
     private static final double LEADING_PREF = 0.2; // relative to font size
     private static final double PADDING_PREF = 0.5; // relative to font size
     private static final double PADDING_MIN = 0.2; // relative to font size
-    private static final double ELLIPSIS_WIDTH =  0.3528; // mm * font size
+    private static final double ELLIPSIS_WIDTH = 0.3528; // mm * font size
 
 
     private Bill bill;
@@ -166,7 +166,7 @@ class BillLayout {
         drawAlternativeSchemes();
     }
 
-    private void drawReceipt() throws  IOException {
+    private void drawReceipt() throws IOException {
 
         // "Receipt" title
         graphics.setTransformation(MARGIN, 0, 0, 1, 1);
@@ -327,21 +327,21 @@ class BillLayout {
         if (separatorType == SeparatorType.NONE)
             return;
 
-		graphics.setTransformation(0, 0, 0, 1, 1);
-		graphics.startPath();
-		graphics.moveTo(RECEIPT_WIDTH, 0);
-		if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS) {
-		    graphics.lineTo(RECEIPT_WIDTH, SLIP_HEIGHT - 8);
-		    graphics.moveTo(RECEIPT_WIDTH, SLIP_HEIGHT - 5);
+        graphics.setTransformation(0, 0, 0, 1, 1);
+        graphics.startPath();
+        graphics.moveTo(RECEIPT_WIDTH, 0);
+        if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS) {
+            graphics.lineTo(RECEIPT_WIDTH, SLIP_HEIGHT - 8);
+            graphics.moveTo(RECEIPT_WIDTH, SLIP_HEIGHT - 5);
         }
         graphics.lineTo(RECEIPT_WIDTH, SLIP_HEIGHT);
 
-		graphics.moveTo(0, SLIP_HEIGHT);
-		if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS && outputSize != OutputSize.QR_BILL_ONLY) {
-		    graphics.lineTo(5, SLIP_HEIGHT);
-		    graphics.moveTo(8, SLIP_HEIGHT);
+        graphics.moveTo(0, SLIP_HEIGHT);
+        if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS && outputSize != OutputSize.QR_BILL_ONLY) {
+            graphics.lineTo(5, SLIP_HEIGHT);
+            graphics.moveTo(8, SLIP_HEIGHT);
         }
-		graphics.lineTo(SLIP_WIDTH, SLIP_HEIGHT);
+        graphics.lineTo(SLIP_WIDTH, SLIP_HEIGHT);
         graphics.strokePath(0.5, 0);
 
         if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS) {
@@ -367,7 +367,7 @@ class BillLayout {
         transform.scale(mirrored ? -scale : scale, scale);
         graphics.setTransformation(transform.getTranslateX(), transform.getTranslateY(), angle, mirrored ? -scale : scale, scale);
 
-		graphics.startPath();
+        graphics.startPath();
         graphics.moveTo(46.48, 126.784);
         graphics.cubicCurveTo(34.824, 107.544, 28.0, 87.924, 28.0, 59.0);
         graphics.cubicCurveTo(28.0, 36.88, 33.387, 16.436, 42.507, -0.124);
@@ -443,7 +443,7 @@ class BillLayout {
         if (additionalInfo != null)
             additionalInfoLines = graphics.splitLines(additionalInfo, maxWidth * MM_TO_PT, textFontSize);
         if (payableBy != null)
-            payableByLines = graphics.splitLines(payableBy, maxWidth * MM_TO_PT,textFontSize);
+            payableByLines = graphics.splitLines(payableBy, maxWidth * MM_TO_PT, textFontSize);
     }
 
 

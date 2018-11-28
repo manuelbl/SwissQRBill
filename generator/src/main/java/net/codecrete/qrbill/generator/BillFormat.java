@@ -32,6 +32,7 @@ public class BillFormat implements Serializable {
 
     /**
      * Copy constructor: creates a copy of the specified format
+     *
      * @param format format to copy
      */
     public BillFormat(BillFormat format) {
@@ -45,7 +46,7 @@ public class BillFormat implements Serializable {
     /**
      * Gets the output size for the generated QR bill
      * <p>
-     *     Defaults to {@link OutputSize#QR_BILL_ONLY}, i.e. the QR bill only (about 105 by 210 mm)
+     * Defaults to {@link OutputSize#QR_BILL_ONLY}, i.e. the QR bill only (about 105 by 210 mm)
      * </p>
      *
      * @return output size
@@ -57,7 +58,7 @@ public class BillFormat implements Serializable {
     /**
      * Sets the output size for the generated QR bill
      *
-     * @param outputSize  output size
+     * @param outputSize output size
      */
     public void setOutputSize(OutputSize outputSize) {
         this.outputSize = outputSize;
@@ -87,7 +88,7 @@ public class BillFormat implements Serializable {
     /**
      * Gets the type of separator drawn above and between the payment part and the receipt
      * <p>
-     *     Defaults to {@link SeparatorType#SOLID_LINE_WITH_SCISSORS}
+     * Defaults to {@link SeparatorType#SOLID_LINE_WITH_SCISSORS}
      * </p>
      *
      * @return separator type
@@ -99,7 +100,7 @@ public class BillFormat implements Serializable {
     /**
      * Sets the type of separator drawn above and between the payment part and the receipt
      *
-     * @param separatorType  separator type
+     * @param separatorType separator type
      */
     public void setSeparatorType(SeparatorType separatorType) {
         this.separatorType = separatorType;
@@ -147,8 +148,9 @@ public class BillFormat implements Serializable {
     /**
      * Gets the graphics format for the generated QR bill
      * <p>
-     *     Defaults to SVG.
+     * Defaults to SVG.
      * </p>
+     *
      * @return graphics format
      */
     public GraphicsFormat getGraphicsFormat() {
@@ -158,7 +160,7 @@ public class BillFormat implements Serializable {
     /**
      * Sets the graphics format for the generated QR bill
      *
-     * @param graphicsFormat  graphics format
+     * @param graphicsFormat graphics format
      */
     public void setGraphicsFormat(GraphicsFormat graphicsFormat) {
         this.graphicsFormat = graphicsFormat;

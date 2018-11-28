@@ -223,14 +223,14 @@ public class Bill implements Serializable {
     /**
      * Sets the payment amount from a {@code Double} solid-line-with_scissors
      * <p>
-     *     The value is saved with a scale of 2.
+     * The value is saved with a scale of 2.
      * </p>
      *
      * @param amount the amount
      */
     public void setAmountFromDouble(Double amount) {
         if (amount != null)
-            this.amount = BigDecimal.valueOf((long)(amount * 100 + 0.5), 2);
+            this.amount = BigDecimal.valueOf((long) (amount * 100 + 0.5), 2);
         else
             this.amount = null;
     }

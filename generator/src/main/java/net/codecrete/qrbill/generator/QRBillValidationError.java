@@ -17,7 +17,7 @@ public class QRBillValidationError extends RuntimeException {
 
     /**
      * Constructs a new instance with the specified validation result.
-     * 
+     *
      * @param validationResult validation result
      */
     public QRBillValidationError(ValidationResult validationResult) {
@@ -27,7 +27,7 @@ public class QRBillValidationError extends RuntimeException {
 
     /**
      * Gets the validation result with the error messages.
-     * 
+     *
      * @return the validation result
      */
     public ValidationResult getValidationResult() {
