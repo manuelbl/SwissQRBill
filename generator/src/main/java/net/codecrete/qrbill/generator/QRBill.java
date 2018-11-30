@@ -14,6 +14,9 @@ import java.io.IOException;
 
 /**
  * Generates Swiss QR bill payment part.
+ * <p>
+ * Can also validate the bill data and encode and decode the text embedded in the QR code.
+ * </p>
  */
 public class QRBill {
 
@@ -57,7 +60,7 @@ public class QRBill {
      */
     public static final String KEY_FIELD_IS_MANDATORY = "field_is_mandatory";
     /**
-     * Validation message key: Fields for both structured and combined elements address type have been filled in
+     * Validation message key: Conflicting fields for both structured and combined elements address type have been used
      */
     public static final String KEY_ADDRESS_TYPE_CONFLICT = "adress_type_conflict";
     /**
@@ -75,11 +78,11 @@ public class QRBill {
     public static final String KEY_REPLACED_UNSUPPORTED_CHARACTERS = "replaced_unsupported_characters";
     /**
      * Validation message key: Valid data structure starts with "SPC" and consists
-     * of 28 to 30 lines of text
+     * of 32 to 34 lines of text
      */
     public static final String KEY_VALID_DATA_STRUCTURE = "valid_data_structure";
     /**
-     * Validation message key: Version 01.00 is supported only
+     * Validation message key: Version 02.00 is supported only
      */
     public static final String KEY_SUPPORTED_VERSION = "supported_version";
     /**

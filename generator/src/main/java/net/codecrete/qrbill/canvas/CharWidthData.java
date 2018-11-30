@@ -9,6 +9,10 @@ package net.codecrete.qrbill.canvas;
 
 /**
  * Character width data for Helvetica, Arial, Frutiger and Liberation Sans.
+ * <p>
+ * Character widths are given in 1/1000 pt for font size 1. Only the character
+ * range allowed for QR bill text is covered.
+ * </p>
  */
 class CharWidthData {
 

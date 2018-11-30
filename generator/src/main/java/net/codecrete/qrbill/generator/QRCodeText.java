@@ -13,6 +13,10 @@ import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Locale;
 
+
+/**
+ * Internal class for encoding and decoding the text embedded in the QR code.
+ */
 public class QRCodeText {
 
     private Bill bill;

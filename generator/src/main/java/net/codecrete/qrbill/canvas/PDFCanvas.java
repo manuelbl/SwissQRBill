@@ -17,7 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
- * PDF graphics generator
+ * Canvas for generating PDF files.
  * <p>
  * The PDF generator currently only supports the Helvetica font.
  * </p>

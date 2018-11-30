@@ -10,6 +10,9 @@ import java.io.IOException;
 
 /**
  * Abstract base class for simplified implementation of {@code Canvas} classes.
+ * <p>
+ * The class mainly implements text measurement and a helper for multi-line text.
+ * </p>
  */
 public abstract class AbstractCanvas implements Canvas {
 

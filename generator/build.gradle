@@ -23,7 +23,7 @@ javadoc {
     include 'net/codecrete/qrbill/canvas/*'
     include 'net/codecrete/qrbill/generator/*'
 
-    title = 'QR Bill Generator ${version}'
+    title = "QR Bill Generator ${version}"
     options.addBooleanOption('html5', true)
 }
 

@@ -17,9 +17,8 @@ import java.io.IOException;
  * to the right and in y-direction to the top.
  * </p>
  * <p>
- * All text has to be in the font Helvetica. Arial should also do as the font
- * metrics are similar enough and advanced text placing such a justified text is
- * not used.
+ * The font family is specified at initialization and then used for the entire
+ * lifecycle.
  * </p>
  * <p>
  * A canvas may only be used to generate a single page. After the result has
@@ -48,10 +47,13 @@ public interface Canvas extends Closeable {
     void setupPage(double width, double height, String fontFamily) throws IOException;
 
     /**
-     * Sets a translation and a scale factor for the subsequent operations
+     * Sets a translation, rotation and scaling for the subsequent operations
      * <p>
      * Before a new translation is applied, the coordinate system is reset to it's
      * original state after page setup (see {@code setupPage}).
+     * </p>
+     * <p>
+     * The transformations are applied in the order translation, rotation, scaling.
      * </p>
      *
      * @param translateX translation in x direction (in mm)

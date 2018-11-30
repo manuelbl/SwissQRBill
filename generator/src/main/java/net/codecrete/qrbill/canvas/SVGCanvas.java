@@ -15,6 +15,9 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+/**
+ * Canvas for generating SVG files.
+ */
 public class SVGCanvas extends AbstractCanvas {
 
     private ByteArrayOutputStream buffer;

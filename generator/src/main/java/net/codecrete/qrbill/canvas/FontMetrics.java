@@ -14,7 +14,7 @@ import java.util.Locale;
  * installed fonts.
  *
  * <p>
- * It supports Helvetica, Arial, Frutiger, Liberation Sans. Kerning and ligatures not supported.
+ * It supports Helvetica, Arial, Frutiger, Liberation Sans. Kerning and ligatures are not supported.
  * </p>
  */
 public class FontMetrics {
