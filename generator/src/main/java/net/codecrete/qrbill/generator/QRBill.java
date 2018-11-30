@@ -20,10 +20,6 @@ import java.io.IOException;
  */
 public class QRBill {
 
-    private QRBill() {
-        // do not instantiate
-    }
-
     /**
      * Validation message key: currency must be "CHF" or "EUR"
      */
@@ -38,21 +34,21 @@ public class QRBill {
      */
     public static final String KEY_ACCOUNT_IS_CH_LI_IBAN = "account_is_ch_li_iban";
     /**
-     * Validation message key: IBAN number must have valid format and check digit
+     * Validation message key: IBAN must have valid format and check digit
      */
     public static final String KEY_ACCOUNT_IS_VALID_IBAN = "account_is_valid_iban";
     /**
-     * Validation message key: ISO 11649 reference number must have valid format and
-     * check digit
+     * Validation message key: Due to regular IBAN (outside QR-IID range) an ISO 11649 references is expected
+     * but it has invalid format or check digit
      */
     public static final String KEY_VALID_ISO11649_CREDITOR_REF = "valid_iso11649_creditor_ref";
     /**
-     * Validation message key: QR reference number must have valid format and check
-     * digit
+     * Validation message key: Due to QR-IBAN (IBAN in QR-IID range) a QR reference number is expected
+     * but it has invalid format or check digit
      */
     public static final String KEY_VALID_QR_REF_NO = "valid_qr_ref_no";
     /**
-     * Validation message key: Reference number is mandatory for IBANs with QR-IID
+     * Validation message key: For QR-IBANs (IBAN in QR-IID range) a QR reference is mandatory
      */
     public static final String KEY_MANDATORY_FOR_QR_IBAN = "mandatory_for_qr_iban";
     /**
@@ -97,6 +93,10 @@ public class QRBill {
      * Validation message key: The maximum of 2 alternative schemes has been exceeded
      */
     public static final String KEY_ALT_SCHEME_MAX_EXCEEDED = "alt_scheme_max_exceed";
+
+    private QRBill() {
+        // do not instantiate
+    }
 
     /**
      * Validates and cleans the bill data.

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Validates and cleans QR bill data.
+ * Internal class for validating and cleaning QR bill data.
  */
 class Validator {
 
