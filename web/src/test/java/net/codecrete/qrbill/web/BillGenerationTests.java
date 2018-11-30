@@ -104,12 +104,37 @@ class BillGenerationTests {
     }
 
     @Test
-    void languageFromHeader() {
+    void languageFromHeaderIT() {
+        testLanguageFromHeader("it-CH", "Sezione pagamento");
+    }
+
+    @Test
+    void languageFromHeaderDE() {
+        testLanguageFromHeader("zh, de", "Zahlteil");
+    }
+
+    @Test
+    void languageFromHeaderFR() {
+        testLanguageFromHeader("fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5", "Section paiement");
+    }
+
+    @Test
+    void languageFromHeaderEN() {
+        testLanguageFromHeader("en-US, en", "Payment part");
+    }
+
+    @Test
+    void languageFromHeaderDefault() {
+        testLanguageFromHeader(null, "Payment part");
+    }
+
+    private void testLanguageFromHeader(String language, String textFragment) {
         QrBill bill = SampleData.createBill1();
         bill.setFormat(null);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setAcceptLanguage(Locale.LanguageRange.parse("it-ch"));
+        if (language != null)
+            headers.setAcceptLanguage(Locale.LanguageRange.parse(language));
 
         HttpEntity<QrBill> entity = new HttpEntity<>(bill, headers);
         byte[] response = restTemplate.postForObject("/bill/generate", entity, byte[].class);
@@ -120,7 +145,7 @@ class BillGenerationTests {
         String text = new String(response, StandardCharsets.UTF_8);
         assertTrue(text.startsWith("<?xml"));
         assertTrue(text.indexOf("<svg") > 0);
-        assertTrue(text.indexOf("Sezione pagamento") > 0);
+        assertTrue(text.contains(textFragment));
     }
 
     @Test
@@ -143,5 +168,18 @@ class BillGenerationTests {
         assertNotNull(response);
         assertTrue(response.length > 1000);
         assertTrue(response[0] == '%' && response[1] == 'P' && response[2] == 'D' && response[3] == 'F');
+    }
+
+    @Test
+    void testDefault() {
+        QrBill bill = SampleData.createBill1();
+        bill.setFormat(null);
+
+        byte[] response = restTemplate.postForObject("/bill/generate", bill, byte[].class);
+
+        String text = new String(response, StandardCharsets.UTF_8);
+        assertTrue(text.startsWith("<?xml"));
+        assertTrue(text.indexOf("<svg") > 0);
+        assertTrue(text.contains("Payment part"));
     }
 }
