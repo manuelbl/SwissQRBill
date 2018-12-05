@@ -72,4 +72,10 @@ export class Payments {
     }
     return (10 - carry) % 10;
   }
+
+  public static isQRIBAN(account: string): boolean {
+    account = Payments.whiteSpaceRemoved(account);
+    return account.length > 6
+      && (account.substring(4, 6) === '30' || account.substring(4, 6) === '31');
+  }
 }

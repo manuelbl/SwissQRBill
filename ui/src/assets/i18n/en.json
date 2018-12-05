@@ -21,6 +21,8 @@
     "bill_format": "Bill format",
     "currency": "Currency",
     "amount": "Amount",
+    "reference_iso": "Creditor reference RF... (for IBAN account without QR-IID)",
+    "reference_qr": "QR reference (for QR-IBAN account)",
     "reference": "Reference",
     "unstructured_msg": "Additional information",
     "bill_information": "Structured bill information",

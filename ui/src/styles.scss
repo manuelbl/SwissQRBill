@@ -92,7 +92,8 @@ html, body {
 
 .form-line {
   display: block;
-  position: relative;
+	position: relative;
+	margin-top: 8px;
 }
 .form-line:after {
   content: "";

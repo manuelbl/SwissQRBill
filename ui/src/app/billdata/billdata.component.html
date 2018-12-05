@@ -120,7 +120,7 @@
 
         <div class="form-line">
           <mat-form-field class="form-field s12">
-            <input qrbillInputWithFormat [inputFormatter]="refNumberFormatter" [matAutocomplete]="refNoAuto" [qrBillAutoComplete]="refNoAuto" (input)="refNoChanges.next($event.target.value)" placeholder="{{ 'reference' | translate }}" formControlName="reference">
+            <input qrbillInputWithFormat [inputFormatter]="refNumberFormatter" [matAutocomplete]="refNoAuto" [qrBillAutoComplete]="refNoAuto" (input)="refNoChanges.next($event.target.value)" placeholder="{{ (isQRIBAN ? 'reference_qr' : 'reference_iso') | translate }}" formControlName="reference">
             <mat-error *ngIf="billForm.hasError('serverSide', ['reference'])">{{billForm.getError('serverSide', 'reference')}}</mat-error>
           </mat-form-field>
           <mat-autocomplete #refNoAuto="matAutocomplete">

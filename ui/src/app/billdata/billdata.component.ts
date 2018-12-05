@@ -34,6 +34,7 @@ import { startWith, map } from 'rxjs/operators';
 export class BillDataComponent implements OnInit {
   public bill: QrBill;
   public billForm: FormGroup;
+  public isQRIBAN: boolean;
   public readonly refNoChanges: Subject<string> = new Subject<string>();
   public refNoSuggestions: Observable<string[]>;
   private validatedBill: QrBill;
@@ -46,13 +47,14 @@ export class BillDataComponent implements OnInit {
     private qrBillService: QrBillService,
     private dialog: MatDialog,
     private translate: TranslateService,
-    private billSingleton: BillSingletonService,
+    billSingleton: BillSingletonService,
     public amountFormatter: AmountFormatter,
     public ibanFormatter: IBANFormatter,
     public refNumberFormatter: ReferenceNumberFormatter,
     private ngZone: NgZone
   ) {
     this.bill = billSingleton.getBill();
+    this.checkAccountKind(this.bill);
   }
 
   ngOnInit() {
@@ -115,7 +117,11 @@ export class BillDataComponent implements OnInit {
     );
 
     // Server-side validation on each change
-    this.billForm.valueChanges.subscribe(val => this.validateServerSide(val));
+    this.billForm.valueChanges.subscribe(val => {
+      const bill = this.getBill(val);
+      this.checkAccountKind(bill);
+      this.validateServerSide(bill);
+    });
 
     this.translate.onLangChange.subscribe((params: LangChangeEvent) => {
       this.validateServerSide(this.billForm.value);
@@ -123,18 +129,21 @@ export class BillDataComponent implements OnInit {
 
     this.refNoSuggestions = this.refNoChanges.pipe(
       startWith(''),
-      map(val => this.generateRefNos(val))
+      map(val => this.generateRefNos(val, this.isQRIBAN))
     );
   }
 
   // Send data to server for validation
-  private validateServerSide(value: any): Subscription {
+  private validateServerSide(bill: QrBill): Subscription {
     this.validationInProgress++;
     this.previewPressed = false;
-    const bill = this.getBill(value);
     return this.qrBillService
       .validate(bill, this.translate.currentLang)
       .subscribe(response => this.updateServerSideErrors(response));
+  }
+
+  private checkAccountKind(bill: QrBill) {
+    this.isQRIBAN = Payments.isQRIBAN(bill.account);
   }
 
   // Use the validation response to update the error messages in the UI
@@ -146,20 +155,29 @@ export class BillDataComponent implements OnInit {
     this.clearServerSideErrors(this.billForm);
 
     const messages = response.validationMessages;
-    let controlPath: string;
+    let controlPath: string; // control to receive the focus
     if (messages) {
       for (const msg of messages) {
         if (msg.type === 'Error') {
+          const control = this.billForm.get(msg.field);
+          if (!control) {
+            continue; // certain fields such as 'addressLine2' are not shown
+          }
           if (!controlPath) {
             controlPath = msg.field;
           }
-          const control = this.billForm.get(msg.field);
           let errors = control.errors;
           if (!errors) {
             errors = {};
           }
           errors['serverSide'] = msg.message;
           control.setErrors(errors);
+          if (msg.messageKey !== 'field_is_mandatory') {
+            // Due to to dependency between 'account' and 'reference',
+            // the 'reference' can become invalid without ever being touched.
+            // Untouched fields do not show errors, so we mark it as touched.
+            control.markAsTouched();
+          }
         }
       }
     }
@@ -244,19 +262,25 @@ export class BillDataComponent implements OnInit {
     });
   }
 
-  private generateRefNos(rawReference: string): string[] {
+  private generateRefNos(rawReference: string, isQRIBAN: boolean): string[] {
     const suggestions: string[] = [];
     let str = rawReference.toUpperCase();
     str = str.replace(/\W/g, '');
-    if (str.startsWith('RF') && str.length > 4) {
-      suggestions.push(Payments.createISO11649(str.substring(4)));
+
+    if (isQRIBAN) {
+      if (str.length > 0 && str.length <= 26 && str.replace(/\D/g, '') === str) {
+        suggestions.push(Payments.createQRReference(str));
+      }
+
+    } else {
+      if (str.startsWith('RF') && str.length > 4) {
+        suggestions.push(Payments.createISO11649(str.substring(4)));
+      }
+      if (str.length > 0 && str.length <= 21) {
+        suggestions.push(Payments.createISO11649(str));
+      }
     }
-    if (str.length > 0 && str.length <= 21) {
-      suggestions.push(Payments.createISO11649(str));
-    }
-    if (str.length > 0 && str.length <= 26 && str.replace(/\D/g, '') === str) {
-      suggestions.push(Payments.createQRReference(str));
-    }
+
     return suggestions;
   }
 
