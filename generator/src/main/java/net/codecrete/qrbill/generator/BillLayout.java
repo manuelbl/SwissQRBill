@@ -328,6 +328,8 @@ class BillLayout {
             return;
 
         graphics.setTransformation(0, 0, 0, 1, 1);
+
+        // draw vertical separator line between receipt and payment part
         graphics.startPath();
         graphics.moveTo(RECEIPT_WIDTH, 0);
         if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS) {
@@ -336,14 +338,18 @@ class BillLayout {
         }
         graphics.lineTo(RECEIPT_WIDTH, SLIP_HEIGHT);
 
-        graphics.moveTo(0, SLIP_HEIGHT);
-        if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS && outputSize != OutputSize.QR_BILL_ONLY) {
-            graphics.lineTo(5, SLIP_HEIGHT);
-            graphics.moveTo(8, SLIP_HEIGHT);
+        // draw horizontal separator line between bill and rest of A4 sheet
+        if (outputSize != OutputSize.QR_BILL_ONLY) {
+            graphics.moveTo(0, SLIP_HEIGHT);
+            if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS) {
+                graphics.lineTo(5, SLIP_HEIGHT);
+                graphics.moveTo(8, SLIP_HEIGHT);
+            }
+            graphics.lineTo(SLIP_WIDTH, SLIP_HEIGHT);
         }
-        graphics.lineTo(SLIP_WIDTH, SLIP_HEIGHT);
         graphics.strokePath(0.5, 0);
 
+        // draw scissors
         if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS) {
             drawScissors(RECEIPT_WIDTH, SLIP_HEIGHT - 5, 3, 0);
             if (outputSize != OutputSize.QR_BILL_ONLY)
