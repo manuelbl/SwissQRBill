@@ -3,7 +3,7 @@
 <mat-dialog-content>
 
   <div class="preview-section">
-    <img class="bill-preview mat-elevation-z6" src="../qrbill-api/bill/generate/{{billID}}">
+    <img [attr.width]="imageWidth" [attr.height]="imageHeight" class="bill-preview mat-elevation-z6" src="../qrbill-api/bill/generate/{{billID}}">
   </div>
 
 </mat-dialog-content>
