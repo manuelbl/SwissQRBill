@@ -56,7 +56,7 @@ class ImageComparison {
 
         // compare pixels
         int length = expectedPixels.length;
-        int diff = 0;
+        long diff = 0;
         for (int i = 0; i < length; i++) {
             if (expectedPixels[i] != actualPixels[i]) {
                 int d = Math.abs(expectedPixels[i] - actualPixels[i]);
@@ -67,7 +67,7 @@ class ImageComparison {
             }
         }
 
-        if (diff > 20000)
+        if (diff > 200000)
             fail(String.format("Pixel value difference too big: %d", diff));
     }
 }
