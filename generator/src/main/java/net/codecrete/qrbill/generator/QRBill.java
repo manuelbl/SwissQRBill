@@ -69,6 +69,10 @@ public class QRBill {
      */
     public static final String KEY_FIELD_CLIPPED = "field_clipped";
     /**
+     * Validation message key: Field value exceed the maximum length
+     */
+    public static final String KEY_FIELD_TOO_LONG = "field_value_too_long";
+    /**
      * Validation message key: Unsupported characters have been replaced
      */
     public static final String KEY_REPLACED_UNSUPPORTED_CHARACTERS = "replaced_unsupported_characters";

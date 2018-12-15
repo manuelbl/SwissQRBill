@@ -170,6 +170,14 @@ class BasicBillValidationTest extends BillDataValidationBase {
     }
 
     @Test
+    void tooLongBillInformation() {
+        bill = SampleData.getExample1();
+        bill.setBillInformation("01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789x");
+        validate();
+        assertSingleErrorMessage(Bill.FIELD_BILL_INFORMATION, "field_value_too_long");
+    }
+
+    @Test
     void tooManyAltSchemes() {
         bill = SampleData.getExample1();
         bill.setAlternativeSchemes(new AlternativeScheme[] {
@@ -179,5 +187,17 @@ class BasicBillValidationTest extends BillDataValidationBase {
         });
         validate();
         assertSingleErrorMessage(Bill.FIELD_ALTERNATIVE_SCHEMES, "alt_scheme_max_exceed");
+    }
+
+    @Test
+    void tooLongAltSchemeInstructions() {
+        bill = SampleData.getExample1();
+        bill.setAlternativeSchemes(new AlternativeScheme[] {
+                new AlternativeScheme("Ultraviolet",
+                        "UV;UltraPay005;12345;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
+                new AlternativeScheme("Xing Yong", "XY;XYService;54321")
+        });
+        validate();
+        assertSingleErrorMessage(Bill.FIELD_ALTERNATIVE_SCHEMES, "field_value_too_long");
     }
 }

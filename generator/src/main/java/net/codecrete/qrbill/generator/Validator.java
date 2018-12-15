@@ -12,6 +12,7 @@ import net.codecrete.qrbill.generator.ValidationMessage.Type;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,13 +48,13 @@ class Validator {
         billOut.setFormat(billIn.getFormat() != null ? new BillFormat(billIn.getFormat()) : null);
         billOut.setVersion(billIn.getVersion());
 
-        validateCurrency();
-        validateAmount();
         validateAccountNumber();
         validateCreditor();
+        validateCurrency();
+        validateAmount();
+        validateDebtor();
         validateReference();
         validateUnstructuredMessage();
-        validateDebtor();
         validateBillInformation();
         validateAlternativeSchemes();
 
@@ -164,29 +165,42 @@ class Validator {
 
     private void validateBillInformation() {
         String billInformation = Strings.trimmed(billIn.getBillInformation());
-        billInformation = clippedValue(billInformation, 140, Bill.FIELD_BILL_INFORMATION);
+        if (billInformation != null && billInformation.length() > 140) {
+            validationResult.addMessage(Type.ERROR, Bill.FIELD_BILL_INFORMATION, QRBill.KEY_FIELD_TOO_LONG);
+            billInformation = null;
+        }
         billOut.setBillInformation(billInformation);
     }
 
     private void validateAlternativeSchemes() {
         AlternativeScheme[] schemesOut = null;
         if (billIn.getAlternativeSchemes() != null) {
+
             int len = billIn.getAlternativeSchemes().length;
             List<AlternativeScheme> schemeList = new ArrayList<>(len);
+
             for (AlternativeScheme schemeIn : billIn.getAlternativeSchemes()) {
+
                 AlternativeScheme schemeOut = new AlternativeScheme();
                 schemeOut.setName(Strings.trimmed(schemeIn.getName()));
                 schemeOut.setInstruction(Strings.trimmed(schemeIn.getInstruction()));
                 if (schemeOut.getName() != null || schemeOut.getInstruction() != null) {
-                    if (schemeList.size() == 2) {
-                        validationResult.addMessage(Type.ERROR, Bill.FIELD_ALTERNATIVE_SCHEMES, QRBill.KEY_ALT_SCHEME_MAX_EXCEEDED);
+                    if (schemeOut.getInstruction() != null && schemeOut.getInstruction().length() > 100) {
+                        validationResult.addMessage(Type.ERROR, Bill.FIELD_ALTERNATIVE_SCHEMES, QRBill.KEY_FIELD_TOO_LONG);
                     } else {
                         schemeList.add(schemeOut);
                     }
                 }
             }
-            if (!schemeList.isEmpty())
+
+            if (!schemeList.isEmpty()) {
                 schemesOut = schemeList.toArray(new AlternativeScheme[0]);
+
+                if (schemesOut.length > 2) {
+                    validationResult.addMessage(Type.ERROR, Bill.FIELD_ALTERNATIVE_SCHEMES, QRBill.KEY_ALT_SCHEME_MAX_EXCEEDED);
+                    schemesOut = Arrays.copyOfRange(schemesOut, 0, 2);
+                }
+            }
         }
         billOut.setAlternativeSchemes(schemesOut);
     }

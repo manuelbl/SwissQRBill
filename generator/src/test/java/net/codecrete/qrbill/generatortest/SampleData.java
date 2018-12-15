@@ -139,7 +139,7 @@ class SampleData {
         bill.setDebtor(debtor);
         bill.setReference("210000 000 00313 9471430009017");
         bill.setUnstructuredMessage("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed");
-        bill.setBillInformation("//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
+        bill.setBillInformation("//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086");
         return bill;
     }
 
@@ -156,7 +156,7 @@ class SampleData {
         bill.setCurrency("EUR");
         bill.setReference("210000 000 00313 9471430009017");
         bill.setUnstructuredMessage("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed");
-        bill.setBillInformation("//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
+        bill.setBillInformation("//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086");
         return bill;
     }
 }
