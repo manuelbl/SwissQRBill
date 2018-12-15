@@ -28,9 +28,9 @@ class BillLayout {
     private static final int PP_TEXT_MIN_FONT_SIZE = 8; // pt
     private static final int RC_LABEL_PREF_FONT_SIZE = 6; // pt
     private static final int RC_TEXT_PREF_FONT_SIZE = 8; // pt
-    private static final double SLIP_WIDTH = 210.22; // mm
-    private static final double SLIP_HEIGHT = 105.11; // mm
-    private static final double PAYMEMT_PART_WIDTH = 148.65; // mm
+    private static final double SLIP_WIDTH = 210; // mm
+    private static final double SLIP_HEIGHT = 105; // mm
+    private static final double PAYMEMT_PART_WIDTH = 148; // mm
     private static final double RECEIPT_WIDTH = SLIP_WIDTH - PAYMEMT_PART_WIDTH; // mm
     private static final double MARGIN = 5; // mm
     private static final double QR_CODE_SIZE = QRCode.SIZE; // 46 mm

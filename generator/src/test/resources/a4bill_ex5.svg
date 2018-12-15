@@ -3,7 +3,7 @@
 <svg width="210mm" height="297mm" version="1.1" viewBox="0 0 595.276 841.89" xmlns="http://www.w3.org/2000/svg">
 <g font-family="Helvetica,Arial,&quot;Liberation Sans&quot;" transform="translate(0 841.89)">
 <title>Swiss QR Bill</title>
-<g transform="translate(188.702 -119.367) scale(1.291)">
+<g transform="translate(189.921 -119.055) scale(1.291)">
 <path d="M0,-101h7v1h-7zm10,0h3v1h-3zm5,-0h2v2h-2zm4,0h1v1h-1zm3,-0h1v2h-1zm2,0h1v8h-1z
 m2,0h1v2h-1zm2,0h1v1h-1zm6,0h2v1h-2zm6,0h3v1h-3zm4,-0h1v2h-1zm3,0h2v1h-2z
 m3,0h2v1h-2zm3,-0h1v2h-1zm2,0h5v1h-5zm10,0h1v5h-1zm2,0h2v1h-2zm6,0h1v3h-1z
@@ -370,59 +370,59 @@ m3,0h1v1h-1zm3,0h2v1h-2zm3,0h2v1h-2zm3,0h1v1h-1zm15,0h1v1h-1zm5,0h1v1h-1z
 m4,0h1v1h-1zm2,0h1v1h-1zm3,0h1v1h-1zm5,0h2v1h-2zm8,0h3v1h-3zm7,0h1v1h-1z
 m7,0h2v1h-2zm3,0h2v1h-2zm5,0h1v1h-1z" fill="#000000"/>
 </g>
-<g transform="translate(188.702 -119.367)">
+<g transform="translate(189.921 -119.055)">
 <path d="M56.693,-73.701h17.008v17.008h-17.008z" fill="#000000"/>
 <path d="M63.543,-70.709h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z" fill="#ffffff"/>
 </g>
-<g transform="translate(188.702 -0)">
-<text x="0" y="-274.976" font-size="11" font-weight="bold">Payment part</text>
+<g transform="translate(189.921 -0)">
+<text x="0" y="-274.665" font-size="11" font-weight="bold">Payment part</text>
 <text x="0" y="-90.709" font-size="6" font-weight="bold">Currency</text>
 <text x="0" y="-81.109" font-size="8">CHF</text>
 </g>
-<g transform="translate(231.222 -0)">
+<g transform="translate(232.441 -0)">
 <text x="0" y="-90.709" font-size="6" font-weight="bold">Amount</text>
 <text x="0" y="-81.109" font-size="8">987 654 321.50</text>
 </g>
-<g transform="translate(352.12 -0)">
-<text x="0" y="-278.976" font-size="6" font-weight="bold">Account / Payable to</text>
-<text x="0" y="-269.376" font-size="8">CH44 3199 9123 0008 8901 2</text>
-<text x="0" y="-259.776" font-size="8">Ambikaipagan &amp; Deepshikha Thirugnanasampanthamoorthy</text>
-<text x="0" y="-250.176" font-size="8">c/o Pereira De Carvalho, Conrad-Ferdinand-Meyer-Strasse 317</text>
-<text x="0" y="-240.576" font-size="8">Wohnung 7B</text>
-<text x="0" y="-230.976" font-size="8">9527 Niederhelfenschwil bei Schönholzerswilen SG</text>
-<text x="0" y="-218.976" font-size="6" font-weight="bold">Reference</text>
-<text x="0" y="-209.376" font-size="8">21 00000 00003 13947 14300 09017</text>
-<text x="0" y="-197.376" font-size="6" font-weight="bold">Additional information</text>
-<text x="0" y="-187.776" font-size="8">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</text>
-<text x="0" y="-178.176" font-size="8">diam nonumy eirmod tempor invidunt ut labore et dolore magna</text>
-<text x="0" y="-168.576" font-size="8">aliquyam erat, sed</text>
-<text x="0" y="-158.976" font-size="8">//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH1</text>
-<text x="0" y="-149.376" font-size="8">06017086/40/1020/41/3010/01/20170309/11/10201409/20/1400</text>
-<text x="0" y="-139.776" font-size="8">0000/22/36958/30/CH106017086</text>
-<text x="0" y="-127.776" font-size="6" font-weight="bold">Payable by</text>
-<text x="0" y="-118.176" font-size="8">Annegret Karin &amp; Hansruedi Frischknecht-Bernhardsgrütter</text>
-<text x="0" y="-108.576" font-size="8">1503 South New Hampshire Avenue, Lower East-side Bellvue</text>
-<text x="0" y="-98.976" font-size="8">Poughkeepsie NY 12601-1233</text>
+<g transform="translate(351.496 -0)">
+<text x="0" y="-278.665" font-size="6" font-weight="bold">Account / Payable to</text>
+<text x="0" y="-269.065" font-size="8">CH44 3199 9123 0008 8901 2</text>
+<text x="0" y="-259.465" font-size="8">Ambikaipagan &amp; Deepshikha Thirugnanasampanthamoorthy</text>
+<text x="0" y="-249.865" font-size="8">c/o Pereira De Carvalho, Conrad-Ferdinand-Meyer-Strasse 317</text>
+<text x="0" y="-240.265" font-size="8">Wohnung 7B</text>
+<text x="0" y="-230.665" font-size="8">9527 Niederhelfenschwil bei Schönholzerswilen SG</text>
+<text x="0" y="-218.665" font-size="6" font-weight="bold">Reference</text>
+<text x="0" y="-209.065" font-size="8">21 00000 00003 13947 14300 09017</text>
+<text x="0" y="-197.065" font-size="6" font-weight="bold">Additional information</text>
+<text x="0" y="-187.465" font-size="8">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</text>
+<text x="0" y="-177.865" font-size="8">diam nonumy eirmod tempor invidunt ut labore et dolore magna</text>
+<text x="0" y="-168.265" font-size="8">aliquyam erat, sed</text>
+<text x="0" y="-158.665" font-size="8">//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH1</text>
+<text x="0" y="-149.065" font-size="8">06017086/40/1020/41/3010/01/20170309/11/10201409/20/1400</text>
+<text x="0" y="-139.465" font-size="8">0000/22/36958/30/CH106017086</text>
+<text x="0" y="-127.465" font-size="6" font-weight="bold">Payable by</text>
+<text x="0" y="-117.865" font-size="8">Annegret Karin &amp; Hansruedi Frischknecht-Bernhardsgrütter</text>
+<text x="0" y="-108.265" font-size="8">1503 South New Hampshire Avenue, Lower East-side Bellvue</text>
+<text x="0" y="-98.665" font-size="8">Poughkeepsie NY 12601-1233</text>
 </g>
 <g transform="translate(14.173 -0)">
-<text x="0" y="-274.976" font-size="11" font-weight="bold">Receipt</text>
-<text x="0" y="-259.134" font-size="6" font-weight="bold">Account / Payable to</text>
-<text x="0" y="-249.534" font-size="8">CH44 3199 9123 0008 8901 2</text>
-<text x="0" y="-239.934" font-size="8">Ambikaipagan &amp; Deepshikha</text>
-<text x="0" y="-230.334" font-size="8">Thirugnanasampanthamoorthy</text>
-<text x="0" y="-220.734" font-size="8">c/o Pereira De Carvalho,</text>
-<text x="0" y="-211.134" font-size="8">Conrad-Ferdinand-Meyer-Strasse 317</text>
-<text x="0" y="-201.534" font-size="8">Wohnung 7B</text>
-<text x="0" y="-191.934" font-size="8">9527 Niederhelfenschwil bei</text>
-<text x="0" y="-182.334" font-size="8">Schönholzerswilen SG</text>
-<text x="0" y="-170.931" font-size="6" font-weight="bold">Reference</text>
-<text x="0" y="-161.331" font-size="8">21 00000 00003 13947 14300 09017</text>
-<text x="0" y="-149.929" font-size="6" font-weight="bold">Payable by</text>
-<text x="0" y="-140.329" font-size="8">Annegret Karin &amp; Hansruedi</text>
-<text x="0" y="-130.729" font-size="8">Frischknecht-Bernhardsgrütter</text>
-<text x="0" y="-121.129" font-size="8">1503 South New Hampshire Avenue,</text>
-<text x="0" y="-111.529" font-size="8">Lower East-side Bellvue</text>
-<text x="0" y="-101.929" font-size="8">Poughkeepsie NY 12601-1233</text>
+<text x="0" y="-274.665" font-size="11" font-weight="bold">Receipt</text>
+<text x="0" y="-258.822" font-size="6" font-weight="bold">Account / Payable to</text>
+<text x="0" y="-249.222" font-size="8">CH44 3199 9123 0008 8901 2</text>
+<text x="0" y="-239.622" font-size="8">Ambikaipagan &amp; Deepshikha</text>
+<text x="0" y="-230.022" font-size="8">Thirugnanasampanthamoorthy</text>
+<text x="0" y="-220.422" font-size="8">c/o Pereira De Carvalho,</text>
+<text x="0" y="-210.822" font-size="8">Conrad-Ferdinand-Meyer-Strasse 317</text>
+<text x="0" y="-201.222" font-size="8">Wohnung 7B</text>
+<text x="0" y="-191.622" font-size="8">9527 Niederhelfenschwil bei</text>
+<text x="0" y="-182.022" font-size="8">Schönholzerswilen SG</text>
+<text x="0" y="-170.723" font-size="6" font-weight="bold">Reference</text>
+<text x="0" y="-161.123" font-size="8">21 00000 00003 13947 14300 09017</text>
+<text x="0" y="-149.825" font-size="6" font-weight="bold">Payable by</text>
+<text x="0" y="-140.225" font-size="8">Annegret Karin &amp; Hansruedi</text>
+<text x="0" y="-130.625" font-size="8">Frischknecht-Bernhardsgrütter</text>
+<text x="0" y="-121.025" font-size="8">1503 South New Hampshire Avenue,</text>
+<text x="0" y="-111.425" font-size="8">Lower East-side Bellvue</text>
+<text x="0" y="-101.825" font-size="8">Poughkeepsie NY 12601-1233</text>
 <text x="0" y="-90.709" font-size="6" font-weight="bold">Currency</text>
 <text x="0" y="-81.109" font-size="8">CHF</text>
 </g>
@@ -430,24 +430,24 @@ m7,0h2v1h-2zm3,0h2v1h-2zm5,0h1v1h-1z" fill="#000000"/>
 <text x="0" y="-90.709" font-size="6" font-weight="bold">Amount</text>
 <text x="0" y="-81.109" font-size="8">987 654 321.50</text>
 </g>
-<text x="110.346" y="-59.528" font-size="6" font-weight="bold">Acceptance point</text>
-<path d="M174.529,-0l0,-275.272m0,-8.504l0,-14.173m-174.529,0l14.173,0m8.504,0l573.222,0" stroke="#000000" stroke-width="0.5" fill="none"/>
-<g transform="translate(171.468 -274.847) scale(0.006)">
+<text x="111.565" y="-59.528" font-size="6" font-weight="bold">Acceptance point</text>
+<path d="M175.748,-0l0,-274.961m0,-8.504l0,-14.173m-175.748,0l14.173,0m8.504,0l572.598,0" stroke="#000000" stroke-width="0.5" fill="none"/>
+<g transform="translate(172.687 -274.535) scale(0.006)">
 <path d="M131.754,-359.388c-33.041,54.539,-52.384,110.154,-52.384,192.144c0,62.702,15.27,120.654,41.122,167.596l567.598,-926.232c10.25,-16.724,34.279,-23.091,63.969,-5.805c33.06,19.242,71.495,30.268,112.507,30.268
 c123.676,0,223.937,-100.261,223.937,-223.937c0,-123.676,-100.261,-223.937,-223.937,-223.937c-76.348,0,-143.773,38.208,-184.195,96.548l-548.617,893.353zm728.561,-904.861c75.929,0,137.48,61.551,137.48,137.48
 c0,75.929,-61.551,137.48,-137.48,137.48c-75.929,0,-137.48,-61.551,-137.48,-137.48c0,-75.929,61.551,-137.48,137.48,-137.48z" fill="#000000"/>
 </g>
-<g transform="translate(177.591 -274.847) scale(-0.006 0.006)">
+<g transform="translate(178.809 -274.535) scale(-0.006 0.006)">
 <path d="M131.754,-359.388c-33.041,54.539,-52.384,110.154,-52.384,192.144c0,62.702,15.27,120.654,41.122,167.596l567.598,-926.232c10.25,-16.724,34.279,-23.091,63.969,-5.805c33.06,19.242,71.495,30.268,112.507,30.268
 c123.676,0,223.937,-100.261,223.937,-223.937c0,-123.676,-100.261,-223.937,-223.937,-223.937c-76.348,0,-143.773,38.208,-184.195,96.548l-548.617,893.353zm728.561,-904.861c75.929,0,137.48,61.551,137.48,137.48
 c0,75.929,-61.551,137.48,-137.48,137.48c-75.929,0,-137.48,-61.551,-137.48,-137.48c0,-75.929,61.551,-137.48,137.48,-137.48z" fill="#000000"/>
 </g>
-<g transform="translate(23.102 -294.888) rotate(-90) scale(0.006)">
+<g transform="translate(23.102 -294.576) rotate(-90) scale(0.006)">
 <path d="M131.754,-359.388c-33.041,54.539,-52.384,110.154,-52.384,192.144c0,62.702,15.27,120.654,41.122,167.596l567.598,-926.232c10.25,-16.724,34.279,-23.091,63.969,-5.805c33.06,19.242,71.495,30.268,112.507,30.268
 c123.676,0,223.937,-100.261,223.937,-223.937c0,-123.676,-100.261,-223.937,-223.937,-223.937c-76.348,0,-143.773,38.208,-184.195,96.548l-548.617,893.353zm728.561,-904.861c75.929,0,137.48,61.551,137.48,137.48
 c0,75.929,-61.551,137.48,-137.48,137.48c-75.929,0,-137.48,-61.551,-137.48,-137.48c0,-75.929,61.551,-137.48,137.48,-137.48z" fill="#000000"/>
 </g>
-<g transform="translate(23.102 -301.011) rotate(-90) scale(-0.006 0.006)">
+<g transform="translate(23.102 -300.699) rotate(-90) scale(-0.006 0.006)">
 <path d="M131.754,-359.388c-33.041,54.539,-52.384,110.154,-52.384,192.144c0,62.702,15.27,120.654,41.122,167.596l567.598,-926.232c10.25,-16.724,34.279,-23.091,63.969,-5.805c33.06,19.242,71.495,30.268,112.507,30.268
 c123.676,0,223.937,-100.261,223.937,-223.937c0,-123.676,-100.261,-223.937,-223.937,-223.937c-76.348,0,-143.773,38.208,-184.195,96.548l-548.617,893.353zm728.561,-904.861c75.929,0,137.48,61.551,137.48,137.48
 c0,75.929,-61.551,137.48,-137.48,137.48c-75.929,0,-137.48,-61.551,-137.48,-137.48c0,-75.929,61.551,-137.48,137.48,-137.48z" fill="#000000"/>
