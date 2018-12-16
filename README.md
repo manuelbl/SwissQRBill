@@ -50,29 +50,26 @@ If you are using *Gradle*, add the below dependency to your *build.gradle* file:
 To generate a QR bill, you first fill in the `Bill` data structure and then call `QRBill.generate`:
 
     package net.codecrete.qrbill.examples;
-
+    
     import net.codecrete.qrbill.generator.Address;
     import net.codecrete.qrbill.generator.Bill;
-    import net.codecrete.qrbill.generator.GraphicsFormat;
-    import net.codecrete.qrbill.generator.Language;
     import net.codecrete.qrbill.generator.QRBill;
-
+    
     import java.io.IOException;
     import java.nio.file.Files;
     import java.nio.file.Path;
     import java.nio.file.Paths;
-
+    
     public class QRBillExample {
-
+    
         public static void main(String[] args) {
-
+    
             // Setup bill
             Bill bill = new Bill();
-            bill.setLanguage(Bill.Language.FR);
             bill.setAccount("CH4431999123000889012");
             bill.setAmountFromDouble(199.95);
             bill.setCurrency("CHF");
-
+    
             // Set creditor
             Address creditor = new Address();
             creditor.setName("Robert Schneider AG");
@@ -80,10 +77,11 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
             creditor.setAddressLine2("2501 Biel");
             creditor.setCountryCode("CH");
             bill.setCreditor(creditor);
-
+    
             // more bill data
             bill.setReference("210000000003139471430009017");
-
+            bill.setUnstructuredMessage("Abonnement für 2020");
+    
             // Set debtor
             Address debtor = new Address();
             debtor.setName("Pia-Maria Rutschmann-Schnyder");
@@ -91,19 +89,18 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
             debtor.setAddressLine2("9400 Rorschach");
             debtor.setCountryCode("CH");
             bill.setDebtor(debtor);
-            
-            // format
-            bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
-            bill.getFormat().setLanguage(Language.EN);
-            
+    
+            // Generate QR bill
             byte[] svg = QRBill.generate(bill);
-
+    
+            // Save QR bill
             Path path = Paths.get("qrbill.svg");
             try {
                 Files.write(path, svg);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+    
             System.out.println("QR bill saved at " + path.toAbsolutePath());
         }
     }
