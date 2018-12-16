@@ -6,10 +6,9 @@
 //
 package net.codecrete.qrbill.examples.perftest;
 
-import java.time.LocalDate;
-
 import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.Language;
 
 public class SampleData {
 
@@ -33,7 +32,7 @@ public class SampleData {
 
     public static Bill getBill1() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.EN);
+        bill.getFormat().setLanguage(Language.EN);
         bill.setAccount("CH44 3199 9123 0008  89012");
         Address creditor = new Address();
         creditor.setName("Robert Schneider AG");
@@ -43,17 +42,8 @@ public class SampleData {
         creditor.setTown("Biel");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        Address finalCreditor = new Address();
-        finalCreditor.setName("Robert Schneider Services Switzerland AG");
-        finalCreditor.setStreet("Rue du Lac ");
-        finalCreditor.setHouseNo("1268/3/1");
-        finalCreditor.setPostalCode("2501");
-        finalCreditor.setTown("Biel");
-        finalCreditor.setCountryCode("CH");
-        bill.setFinalCreditor(finalCreditor);
-        bill.setAmount(123949.75);
+        bill.setAmountFromDouble(123949.75);
         bill.setCurrency("CHF");
-        bill.setDueDate(LocalDate.of(2019, 10, 31));
         Address debtor = new Address();
         debtor.setName("Pia-Maria Rutschmann-Schnyder");
         debtor.setStreet("Grosse Marktgasse");
@@ -63,13 +53,13 @@ public class SampleData {
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
         bill.setReference("210000 000 00313 9471430009017");
-        bill.setAdditionalInfo("Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
+        bill.setUnstructuredMessage("Instruction of 15.09.2019##S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
         return bill;
     }
 
     public static Bill getBill2() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.DE);
+        bill.getFormat().setLanguage(Language.DE);
         bill.setAccount("CH3709000000304442225");
         Address creditor = new Address();
         creditor.setName("Salvation Army Foundation Switzerland");
@@ -79,20 +69,18 @@ public class SampleData {
         creditor.setTown("Berne");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        bill.setFinalCreditor(null);
         bill.setAmount(null);
         bill.setCurrency("CHF");
-        bill.setDueDate(null);
         bill.setDebtor(null);
         bill.setReference("");
-        bill.setAdditionalInfo("Donation to the Winterfest Campaign");
+        bill.setUnstructuredMessage("Donation to the Winterfest Campaign");
         return bill;
     }
 
     public static Bill getBill3() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.FR);
-        bill.setAccount("CH4431999123000889012");
+        bill.getFormat().setLanguage(Language.FR);
+        bill.setAccount("CH93 0076 2011 6238 5295 7");
         Address creditor = new Address();
         creditor.setName("Robert Schneider AG");
         creditor.setStreet("Rue du Lac");
@@ -101,17 +89,8 @@ public class SampleData {
         creditor.setTown("Biel");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        Address finalCreditor = new Address();
-        finalCreditor.setName("Robert Schneider Services Switzerland AG");
-        finalCreditor.setStreet("Rue du Lac");
-        finalCreditor.setHouseNo("1268/3/1");
-        finalCreditor.setPostalCode("2501");
-        finalCreditor.setTown("Biel");
-        finalCreditor.setCountryCode("CH");
-        bill.setFinalCreditor(finalCreditor);
-        bill.setAmount(199.95);
+        bill.setAmountFromDouble(199.95);
         bill.setCurrency("CHF");
-        bill.setDueDate(LocalDate.of(2019, 10, 31));
         Address debtor = new Address();
         debtor.setName("Pia-Maria Rutschmann-Schnyder");
         debtor.setStreet("Grosse Marktgasse");
@@ -121,13 +100,13 @@ public class SampleData {
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
         bill.setReference("RF18539007547034");
-        bill.setAdditionalInfo(null);
+        bill.setUnstructuredMessage(null);
         return bill;
     }
 
     public static Bill getBill4() {
         Bill bill = new Bill();
-        bill.setLanguage(Bill.Language.IT);
+        bill.getFormat().setLanguage(Language.IT);
         bill.setAccount("CH3709000000304442225");
         Address creditor = new Address();
         creditor.setName("ABC AG");
@@ -137,13 +116,11 @@ public class SampleData {
         creditor.setTown("Bern");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
-        bill.setFinalCreditor(null);
         bill.setAmount(null);
         bill.setCurrency("CHF");
-        bill.setDueDate(null);
         bill.setDebtor(null);
         bill.setReference("");
-        bill.setAdditionalInfo("");
+        bill.setUnstructuredMessage("");
         return bill;
     }
 }

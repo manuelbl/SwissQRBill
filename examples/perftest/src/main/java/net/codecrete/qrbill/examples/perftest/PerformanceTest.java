@@ -13,64 +13,58 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.GraphicsFormat;
+import net.codecrete.qrbill.generator.OutputSize;
 import net.codecrete.qrbill.generator.QRBill;
-import net.codecrete.qrbill.generator.QRBill.BillFormat;
-import net.codecrete.qrbill.generator.QRBill.GraphicsFormat;
 
 public class PerformanceTest {
 
-    private static final int BATCH_SIZE = 24;
+    private static final int BATCH_SIZE = 8;
     private static final int BATCH_COUNT = 1000;
 
-    private ExecutorService executor;
     AtomicInteger counter = new AtomicInteger();
-
 
     public static void main(String[] args) {
         PerformanceTest test = new PerformanceTest();
         try {
-            test.execute();
+            test.execute(GraphicsFormat.SVG);
+            test.execute(GraphicsFormat.PDF);
+
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
+    void execute(GraphicsFormat graphicsFormat) throws InterruptedException {
+        ExecutorService executor = Executors.newFixedThreadPool(8);
 
-    PerformanceTest() {
-        executor = Executors.newFixedThreadPool(8);
-    }
-
-    void execute() throws InterruptedException {
         // warm up
-        addBatchOfWork();
-        addBatchOfWork();
-        while (counter.intValue() != 2 * BATCH_SIZE) {
+        counter.set(0);
+        addBatchOfWork(executor, graphicsFormat);
+        while (counter.intValue() != BATCH_SIZE) {
             Thread.sleep(100);
         }
 
         counter.set(0);
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < BATCH_COUNT; i++) {
-            addBatchOfWork();
+            addBatchOfWork(executor, graphicsFormat);
         }
         executor.shutdown();
         executor.awaitTermination(100, TimeUnit.SECONDS);
         long endTime = System.currentTimeMillis();
 
         double billPerSecond = (endTime - startTime) * 1000.0 / counter.intValue();
-        System.out.printf("Performance: %f bill/second", billPerSecond);
+        System.out.printf("Performance for %s: %.0f bill/second", graphicsFormat.name(), billPerSecond);
     }
 
-    void addBatchOfWork() {
-        final BillFormat[] sizes = { BillFormat.A6_LANDSCAPE_SHEET, BillFormat.A5_LANDSCAPE_SHEET, BillFormat.A4_PORTRAIT_SHEET };
-        final GraphicsFormat[] outputFormats = { GraphicsFormat.SVG, GraphicsFormat.PDF };
+    void addBatchOfWork(ExecutorService executor, GraphicsFormat graphicsFormat) {
+        final OutputSize[] sizes = { OutputSize.QR_BILL_ONLY, OutputSize.A4_PORTRAIT_SHEET };
 
-        for (BillFormat size : sizes) {
-            for (GraphicsFormat format : outputFormats) {
-                for (int i = 0; i < 4; i++) {
-                    QRBillTask task = new QRBillTask(i, size, format);
-                    executor.submit(task);
-                }
+        for (OutputSize size : sizes) {
+            for (int i = 0; i < 4; i++) {
+                QRBillTask task = new QRBillTask(i, size, graphicsFormat);
+                executor.submit(task);
             }
         }
     }
@@ -79,19 +73,28 @@ public class PerformanceTest {
     class QRBillTask implements Runnable {
 
         private int billID;
-        private BillFormat size;
-        private GraphicsFormat outputFormat;
+        private OutputSize outputSize;
+        private GraphicsFormat graphicsFormat;
 
-        QRBillTask(int billID, BillFormat size, GraphicsFormat outputFormat) {
+        QRBillTask(int billID, OutputSize outputSize, GraphicsFormat graphicsFormat) {
             this.billID = billID;
-            this.size = size;
-            this.outputFormat = outputFormat;
+            this.outputSize = outputSize;
+            this.graphicsFormat = graphicsFormat;
         }
 
 		@Override
 		public void run() {
             Bill bill = SampleData.generateBill(billID);
-            QRBill.generate(bill, size, outputFormat);
+            bill.getFormat().setOutputSize(outputSize);
+            bill.getFormat().setGraphicsFormat(graphicsFormat);
+
+            try {
+                QRBill.generate(bill);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+
             counter.incrementAndGet();
 		}
     }
