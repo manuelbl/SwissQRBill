@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 
 public class QRBillExample {
 
@@ -36,7 +35,7 @@ public class QRBillExample {
 
         // more bill data
         bill.setReference("210000000003139471430009017");
-        bill.setUnstructuredMessage(null);
+        bill.setUnstructuredMessage("Abonnment für 2020");
 
         // Set debtor
         Address debtor = new Address();
@@ -46,8 +45,10 @@ public class QRBillExample {
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
 
+        // Generate QR bill
         byte[] svg = QRBill.generate(bill);
 
+        // Save QR bill
         Path path = Paths.get("qrbill.svg");
         try {
             Files.write(path, svg);

@@ -1,4 +1,3 @@
 #!/bin/sh
-version=2.0.0.RC1
 mvn package
-java -classpath target/maven-example-1.0-SNAPSHOT.jar:/Users/bleichenbacher/.m2/repository/net/codecrete/qrbill/qrbill-generator/$version/qrbill-generator-$version.jar net.codecrete.qrbill.examples.QRBillExample
+mvn exec:java -Dexec.mainClass="net.codecrete.qrbill.examples.QRBillExample"
