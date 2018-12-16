@@ -172,9 +172,25 @@ class BasicBillValidationTest extends BillDataValidationBase {
     @Test
     void tooLongBillInformation() {
         bill = SampleData.getExample1();
-        bill.setBillInformation("01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789x");
+        bill.setBillInformation("//AA4567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789x");
         validate();
         assertSingleErrorMessage(Bill.FIELD_BILL_INFORMATION, "field_value_too_long");
+    }
+
+    @Test
+    void invalidBillInformation1() {
+        bill = SampleData.getExample1();
+        bill.setBillInformation("ABCD");
+        validate();
+        assertSingleErrorMessage(Bill.FIELD_BILL_INFORMATION, "bill_info_invalid");
+    }
+
+    @Test
+    void invalidBillInformation2() {
+        bill = SampleData.getExample1();
+        bill.setBillInformation("//A");
+        validate();
+        assertSingleErrorMessage(Bill.FIELD_BILL_INFORMATION, "bill_info_invalid");
     }
 
     @Test

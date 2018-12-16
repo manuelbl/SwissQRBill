@@ -165,9 +165,15 @@ class Validator {
 
     private void validateBillInformation() {
         String billInformation = Strings.trimmed(billIn.getBillInformation());
-        if (billInformation != null && billInformation.length() > 140) {
-            validationResult.addMessage(Type.ERROR, Bill.FIELD_BILL_INFORMATION, QRBill.KEY_FIELD_TOO_LONG);
-            billInformation = null;
+        if (billInformation != null) {
+            if (billInformation.length() > 140) {
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_BILL_INFORMATION, QRBill.KEY_FIELD_TOO_LONG);
+                return;
+            }
+            if (!billInformation.startsWith("//") || billInformation.length() < 4) {
+                validationResult.addMessage(Type.ERROR, Bill.FIELD_BILL_INFORMATION, QRBill.KEY_BILL_INFO_INVALID);
+                return;
+            }
         }
         billOut.setBillInformation(billInformation);
     }

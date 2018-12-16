@@ -97,6 +97,10 @@ public class QRBill {
      * Validation message key: The maximum of 2 alternative schemes has been exceeded
      */
     public static final String KEY_ALT_SCHEME_MAX_EXCEEDED = "alt_scheme_max_exceed";
+    /**
+     * Validation message key: The bill information is invalid (does not start with // or is too short)
+     */
+    public static final String KEY_BILL_INFO_INVALID = "bill_info_invalid";
 
     private QRBill() {
         // do not instantiate
