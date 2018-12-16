@@ -24,11 +24,11 @@ The Swiss QR bill library:
 - generates payment slip (105mm by 210mm), A4 sheets or QR code only
 - multilingual: German, French, Italian, English
 - validates the invoice data and provides detailed validation information
-- can parse the invoice data embedded in the QR code
+- parses the invoice data embedded in the QR code
 - is easy to use (see example below)
 - is small and fast
-- has a single dependency (PDFBox)
 - is free – even for commecial use (MIT License)
+- has only two dependencies (PDFBox and Nayuki's QR code generator)
 - is available on Maven Central
 
 ## Getting started
@@ -116,8 +116,6 @@ More information can be found in the [Wiki](https://github.com/manuelbl/SwissQRB
 ## QR Code
 
 For the generation of the QR code itself, [Nayuki's QR code generator](https://github.com/nayuki/QR-Code-generator) is used.
-As it is not available on Maven Central, it is included in this library (with a modified package name to avoid conflicts).
-The library has also been released under the MIT license.
 
 ## Other programming languages
 
