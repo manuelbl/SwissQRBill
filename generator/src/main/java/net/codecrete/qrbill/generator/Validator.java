@@ -165,11 +165,9 @@ class Validator {
 
     private void validateBillInformation() {
         String billInformation = Strings.trimmed(billIn.getBillInformation());
+        if (!validateLength(billInformation, 140, Bill.FIELD_BILL_INFORMATION))
+            return;
         if (billInformation != null) {
-            if (billInformation.length() > 140) {
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_BILL_INFORMATION, QRBill.KEY_FIELD_TOO_LONG);
-                return;
-            }
             if (!billInformation.startsWith("//") || billInformation.length() < 4) {
                 validationResult.addMessage(Type.ERROR, Bill.FIELD_BILL_INFORMATION, QRBill.KEY_BILL_INFO_INVALID);
                 return;
@@ -191,11 +189,8 @@ class Validator {
                 schemeOut.setName(Strings.trimmed(schemeIn.getName()));
                 schemeOut.setInstruction(Strings.trimmed(schemeIn.getInstruction()));
                 if (schemeOut.getName() != null || schemeOut.getInstruction() != null) {
-                    if (schemeOut.getInstruction() != null && schemeOut.getInstruction().length() > 100) {
-                        validationResult.addMessage(Type.ERROR, Bill.FIELD_ALTERNATIVE_SCHEMES, QRBill.KEY_FIELD_TOO_LONG);
-                    } else {
+                    if (validateLength(schemeOut.getInstruction(), 100, Bill.FIELD_ALTERNATIVE_SCHEMES))
                         schemeList.add(schemeOut);
-                    }
                 }
             }
 
@@ -346,6 +341,16 @@ class Validator {
     private void validateMandatory(String value, String fieldRoot, String subfield) {
         if (Strings.isNullOrEmpty(value))
             validationResult.addMessage(Type.ERROR, fieldRoot + subfield, QRBill.KEY_FIELD_IS_MANDATORY);
+    }
+
+    private boolean validateLength(String value, int maxLength, String field) {
+        if (value != null && value.length() > maxLength) {
+            validationResult.addMessage(Type.ERROR, field, QRBill.KEY_FIELD_TOO_LONG,
+                    new String[] { Integer.toString(maxLength) });
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private String clippedValue(String value, int maxLength, String field) {

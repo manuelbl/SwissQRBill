@@ -33,11 +33,14 @@ class MessageLocalizer {
 
         Locale currentLocale = LocaleContextHolder.getLocale();
         for (ValidationMessage message : messages) {
-            message.setMessage(getLocalMessage(message.getMessageKey(), currentLocale));
+            message.setMessage(getLocalMessage(message.getMessageKey(), message.getMessageParameters(), currentLocale));
         }
     }
 
-    String getLocalMessage(String messageKey, Locale locale) {
-        return messageSource.getMessage(messageKey, null, locale);
+    String getLocalMessage(String messageKey, List<String> messageParameters, Locale locale) {
+        String[] parameters = null;
+        if (messageParameters != null && messageParameters.size() > 0)
+            parameters = messageParameters.toArray(new String[0]);
+        return messageSource.getMessage(messageKey, parameters, locale);
     }
 }
