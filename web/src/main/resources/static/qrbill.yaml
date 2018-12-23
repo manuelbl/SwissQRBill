@@ -162,7 +162,6 @@ paths:
       summary: "Decode the text embedded in the QR code"
       operationId: decodeQRCode
       requestBody:
-      requestBody:
         description: "QR code information"
         required: true
         content:
