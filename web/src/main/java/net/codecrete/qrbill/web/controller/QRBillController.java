@@ -24,6 +24,7 @@ import net.codecrete.qrbill.web.model.ValidationMessage;
 import net.codecrete.qrbill.web.model.ValidationResponse;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
@@ -136,6 +138,8 @@ public class QRBillController implements BillApi {
         return ResponseEntity.ok().contentType(contentType).body(new ByteArrayResource(result));
     }
 
+    private static CacheControl IMAGE_CACHE_CONTROL = CacheControl.maxAge(10, TimeUnit.DAYS);
+
     /**
      * Generates the QR bill as an SVG or PDF.
      *
@@ -163,7 +167,10 @@ public class QRBillController implements BillApi {
 
         byte[] result = QRBill.generate(bill);
         MediaType contentType = getContentType(bill.getFormat().getGraphicsFormat());
-        return ResponseEntity.ok().contentType(contentType).body(new ByteArrayResource(result));
+        return ResponseEntity.ok()
+                .contentType(contentType)
+                .cacheControl(IMAGE_CACHE_CONTROL)
+                .body(new ByteArrayResource(result));
     }
 
     private static OutputSize getOutputSize(String value) {
