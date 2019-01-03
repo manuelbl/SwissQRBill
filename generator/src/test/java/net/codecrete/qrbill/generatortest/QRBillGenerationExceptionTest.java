@@ -7,7 +7,7 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import net.codecrete.qrbill.generator.QRBillUnexpectedException;
+import net.codecrete.qrbill.generator.QRBillGenerationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,15 +17,15 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Tests for the {@link QRBillUnexpectedException} class
+ * Tests for the {@link QRBillGenerationException} class
  */
-@DisplayName("QRBillUnexpectedException exceptions")
-class QRBillUnexpectedExceptionTest {
+@DisplayName("QRBillGenerationException exceptions")
+class QRBillGenerationExceptionTest {
 
     @Test
     void messageOnly() {
-        QRBillUnexpectedException e = assertThrows(QRBillUnexpectedException.class, () -> {
-            throw new QRBillUnexpectedException("ABC");
+        QRBillGenerationException e = assertThrows(QRBillGenerationException.class, () -> {
+            throw new QRBillGenerationException("ABC");
         });
         assertEquals("ABC", e.getMessage());
         assertNull(e.getCause());
@@ -33,11 +33,11 @@ class QRBillUnexpectedExceptionTest {
 
     @Test
     void messageAndCause() {
-        QRBillUnexpectedException e = assertThrows(QRBillUnexpectedException.class, () -> {
+        QRBillGenerationException e = assertThrows(QRBillGenerationException.class, () -> {
             try {
                 ((String) null).length();
             } catch (Exception npe) {
-                throw new QRBillUnexpectedException("QRS", npe);
+                throw new QRBillGenerationException("QRS", npe);
             }
         });
         assertEquals("QRS", e.getMessage());

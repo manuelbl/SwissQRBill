@@ -12,7 +12,7 @@ import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.GraphicsFormat;
 import net.codecrete.qrbill.generator.OutputSize;
 import net.codecrete.qrbill.generator.QRBill;
-import net.codecrete.qrbill.generator.QRBillUnexpectedException;
+import net.codecrete.qrbill.generator.QRBillGenerationException;
 import net.codecrete.qrbill.generator.QRBillValidationError;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class QRBillErrorsTest {
 
     @Test
     void throwsRuntimeException() {
-        assertThrows(QRBillUnexpectedException.class, () -> {
+        assertThrows(QRBillGenerationException.class, () -> {
             Bill bill = SampleData.getExample1();
             FailingCanvas canvas = new FailingCanvas();
             bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);

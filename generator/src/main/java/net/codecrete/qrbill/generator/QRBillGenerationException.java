@@ -8,8 +8,11 @@ package net.codecrete.qrbill.generator;
 
 /**
  * Exception thrown if the bill could not be generated.
+ * <p>
+ *     If the bill data is not valid, a {@link QRBillValidationError} exception is thrown instead.
+ * </p>
  */
-public class QRBillUnexpectedException extends RuntimeException {
+public class QRBillGenerationException extends RuntimeException {
 
     private static final long serialVersionUID = 6512029854952325813L;
 
@@ -18,7 +21,7 @@ public class QRBillUnexpectedException extends RuntimeException {
      *
      * @param message detail message
      */
-    public QRBillUnexpectedException(String message) {
+    public QRBillGenerationException(String message) {
         super(message);
     }
 
@@ -27,7 +30,7 @@ public class QRBillUnexpectedException extends RuntimeException {
      *
      * @param cause cause
      */
-    public QRBillUnexpectedException(Throwable cause) {
+    public QRBillGenerationException(Throwable cause) {
         super(cause);
     }
 
@@ -38,7 +41,7 @@ public class QRBillUnexpectedException extends RuntimeException {
      * @param message detail message
      * @param cause   cause
      */
-    public QRBillUnexpectedException(String message, Throwable cause) {
+    public QRBillGenerationException(String message, Throwable cause) {
         super(message, cause);
     }
 }

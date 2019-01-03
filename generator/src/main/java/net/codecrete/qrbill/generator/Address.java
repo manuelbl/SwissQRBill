@@ -126,7 +126,7 @@ public class Address implements Serializable {
      * Address line 1 contains street name, house number or P.O. box.
      * </p>
      * <p>
-     * Settings this field sets the address type to {@link Type#COMBINED_ELEMENTS} unless it's already
+     * Setting this field sets the address type to {@link Type#COMBINED_ELEMENTS} unless it's already
      * {@link Type#STRUCTURED}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>
@@ -161,7 +161,7 @@ public class Address implements Serializable {
      * Address line 2 contains postal code and town
      * </p>
      * <p>
-     * Settings this field sets the address type to {@link Type#COMBINED_ELEMENTS} unless it's already
+     * Setting this field sets the address type to {@link Type#COMBINED_ELEMENTS} unless it's already
      * {@link Type#STRUCTURED}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>
@@ -193,7 +193,7 @@ public class Address implements Serializable {
      * This field must not contain the house or building number.
      * </p>
      * <p>
-     * Settings this field sets the address type to {@link Type#STRUCTURED} unless it's already
+     * Setting this field sets the address type to {@link Type#STRUCTURED} unless it's already
      * {@link Type#COMBINED_ELEMENTS}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>
@@ -222,7 +222,7 @@ public class Address implements Serializable {
     /**
      * Sets the house or building number.
      * <p>
-     * Settings this field sets the address type to {@link Type#STRUCTURED} unless it's already
+     * Setting this field sets the address type to {@link Type#STRUCTURED} unless it's already
      * {@link Type#COMBINED_ELEMENTS}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>
@@ -251,7 +251,7 @@ public class Address implements Serializable {
     /**
      * Sets the postal code
      * <p>
-     * Settings this field sets the address type to {@link Type#STRUCTURED} unless it's already
+     * Setting this field sets the address type to {@link Type#STRUCTURED} unless it's already
      * {@link Type#COMBINED_ELEMENTS}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>
@@ -280,7 +280,7 @@ public class Address implements Serializable {
     /**
      * Sets the town
      * <p>
-     * Settings this field sets the address type to {@link Type#STRUCTURED} unless it's already
+     * Setting this field sets the address type to {@link Type#STRUCTURED} unless it's already
      * {@link Type#COMBINED_ELEMENTS}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>

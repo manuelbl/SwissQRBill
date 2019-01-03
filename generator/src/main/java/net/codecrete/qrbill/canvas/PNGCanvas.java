@@ -6,6 +6,8 @@
 //
 package net.codecrete.qrbill.canvas;
 
+import net.codecrete.qrbill.generator.QRBillGenerationException;
+
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageTypeSpecifier;
@@ -95,7 +97,7 @@ public class PNGCanvas extends AbstractCanvas {
         at.translate(translateX, image.getHeight() - translateY);
         if (rotate != 0)
             at.rotate(-rotate);
-        if (scaleX != 0 || scaleY != 0)
+        if (scaleX != 1 || scaleY != 1)
             at.scale(scaleX, scaleY);
         graphics.setTransform(at);
     }
@@ -211,7 +213,7 @@ public class PNGCanvas extends AbstractCanvas {
         }
 
         if (writer == null || writeParam == null)
-            throw new net.codecrete.qrbill.generator.QRBillUnexpectedException("No valid PNG writer found");
+            throw new QRBillGenerationException("No valid PNG writer found");
 
         addDpiMetadata(metadata, resolution);
         addTextMetadata(metadata);
