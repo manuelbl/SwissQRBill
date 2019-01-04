@@ -1,6 +1,6 @@
 # Swiss QR Bill
 
-Open-source Java library to generate Swiss QR bills.
+Open-source Java library to generate Swiss QR bills (jointly developed with the [.NET version](https://github.com/manuelbl/SwissQRBill.NET)).
 
 Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill). The code for this demonstration (Angular UI and RESTful service) can also be found here. 
 
@@ -111,7 +111,7 @@ See Javadoc [API Documentation](https://www.codecrete.net/qrbill-javadoc/).
 
 ## More information
 
-More information can be found in the [Wiki](https://github.com/manuelbl/SwissQRBill/wiki).
+More information can be found in the [Wiki](https://github.com/manuelbl/SwissQRBill/wiki). It's the joint Wiki for the .NET and the Java version.
 
 ## QR Code
 
@@ -119,4 +119,4 @@ For the generation of the QR code itself, [Nayuki's QR code generator](https://g
 
 ## Other programming languages
 
-If you are looking for a library for a different programming language or for a library with professional services, you might want to check out [Services & Tools](https://www.moneytoday.ch/iso20022/movers-shakers/software-hersteller/services-tools/) on [MoneyToday.ch](https://www.moneytoday.ch).
+A [.NET version](https://github.com/manuelbl/SwissQRBill.NET) of this library is also available. If you are looking for a library for yet another programming language or for a library with professional services, you might want to check out [Services & Tools](https://www.moneytoday.ch/iso20022/movers-shakers/software-hersteller/services-tools/) on [MoneyToday.ch](https://www.moneytoday.ch).
