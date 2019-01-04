@@ -1,4 +1,4 @@
-# Swiss QR Bill
+# Swiss QR Bill for Java
 
 Open-source Java library to generate Swiss QR bills (jointly developed with the [.NET version](https://github.com/manuelbl/SwissQRBill.NET)).
 
