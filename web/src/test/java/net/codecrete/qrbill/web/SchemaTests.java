@@ -33,7 +33,7 @@ class SchemaTests {
         String body = response.body().string();
         assertNotNull(body);
         assertTrue(body.startsWith("openapi: "));
-        assertTrue(body.contains("/bill/validate"));
+        assertTrue(body.contains("/bill/validated"));
         assertTrue(body.length() > 10000);
     }
 

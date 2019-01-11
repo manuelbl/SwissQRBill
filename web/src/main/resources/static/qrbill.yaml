@@ -46,7 +46,7 @@ tags:
   description: "Generate and validate QR bills"
 
 paths:
-  /bill/validate:
+  /bill/validated:
     post:
       tags:
       - bills
@@ -68,7 +68,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ValidationResponse"
 
-  /bill/generate:
+  /bill/image:
     post:
       tags:
       - bills
@@ -102,7 +102,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/ValidationMessage"
 
-  /bill/generate/{billID}:
+  /bill/image/{billID}:
     get:
       tags:
       - bills
@@ -155,11 +155,11 @@ paths:
                 items:
                   $ref: "#/components/schemas/ValidationMessage"
 
-  /bill/decode:
+  /bill/qrdata:
     post:
       tags:
       - bills
-      summary: "Decode the text embedded in the QR code"
+      summary: "Decode the text embedded in the QR code and return it as bill data"
       operationId: decodeQRCode
       requestBody:
         description: "QR code information"
@@ -222,6 +222,8 @@ components:
 
     BillFormat:
       type: object
+      description: |
+        Formatting information for QR bill
       properties:
         language:
           type: string
@@ -257,6 +259,8 @@ components:
 
     QrBill:
       type: object
+      description: |
+        QR bill data
       properties:
         version:
           type: string
@@ -294,6 +298,8 @@ components:
 
     ValidationMessage:
       type: object
+      description: |
+        Message generated as the result of bill data validation
       properties:
         type:
           type: string
@@ -318,6 +324,8 @@ components:
 
     ValidationResponse:
       type: object
+      description: |
+        Result of bill data validation
       properties:
         valid:
           type: boolean
@@ -337,6 +345,8 @@ components:
 
     QrCodeInformation:
       type: object
+      description: |
+        Text embedded in QR code of a QR bill
       properties:
         text:
           type: string
@@ -344,6 +354,8 @@ components:
 
     AlternativeScheme:
       type: object
+      description: |
+        Alternative processing information / payment scheme
       properties:
         name:
           type: string

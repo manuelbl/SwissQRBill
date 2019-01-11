@@ -41,7 +41,7 @@ class ValidationTests {
     void validBill() {
         QrBill bill = SampleData.createBill1();
 
-        ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/bill/validated", bill, ValidationResponse.class);
 
         assertNotNull(response);
         assertTrue(response.getValid());
@@ -59,7 +59,7 @@ class ValidationTests {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown("city56789012345678901234567890123456");
 
-        ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/bill/validated", bill, ValidationResponse.class);
 
         assertNotNull(response);
         assertTrue(response.getValid());
@@ -85,7 +85,7 @@ class ValidationTests {
         QrBill bill = SampleData.createBill1();
         bill.setCreditor(null);
 
-        ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/bill/validated", bill, ValidationResponse.class);
 
         assertNotNull(response);
         assertFalse(response.getValid());

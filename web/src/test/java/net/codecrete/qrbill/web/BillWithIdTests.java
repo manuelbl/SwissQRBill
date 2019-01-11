@@ -52,11 +52,11 @@ class BillWithIdTests {
     void validateAndRetrieveBill() {
         QrBill bill = SampleData.createBill1();
 
-        ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/bill/validated", bill, ValidationResponse.class);
         assertNotNull(response);
 
         String billId = response.getBillID();
-        byte[] result = restTemplate.getForObject("/bill/generate/" + billId, byte[].class);
+        byte[] result = restTemplate.getForObject("/bill/image/" + billId, byte[].class);
 
         assertNotNull(result);
         assertTrue(result.length > 10000);
@@ -72,11 +72,11 @@ class BillWithIdTests {
         QrBill bill = SampleData.createBill2();
         bill.setFormat(null);
 
-        ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/bill/validated", bill, ValidationResponse.class);
         assertNotNull(response);
 
         String billId = response.getBillID();
-        byte[] result = restTemplate.getForObject("/bill/generate/" + billId, byte[].class);
+        byte[] result = restTemplate.getForObject("/bill/image/" + billId, byte[].class);
 
         assertNotNull(result);
         assertTrue(result.length > 10000);
@@ -96,11 +96,11 @@ class BillWithIdTests {
         bill.getFormat().setFontFamily(null);
         bill.getFormat().setSeparatorType(null);
 
-        ValidationResponse response = restTemplate.postForObject("/bill/validate", bill, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/bill/validated", bill, ValidationResponse.class);
         assertNotNull(response);
 
         String billId = response.getBillID();
-        byte[] result = restTemplate.getForObject("/bill/generate/" + billId, byte[].class);
+        byte[] result = restTemplate.getForObject("/bill/image/" + billId, byte[].class);
 
         assertNotNull(result);
         assertTrue(result.length > 10000);
@@ -113,7 +113,7 @@ class BillWithIdTests {
 
     @Test
     void retrieveBillOverrideOutputSize() {
-        byte[] result = restTemplate.getForObject("/bill/generate/" + VALID_BILL_ID + "?outputSize=qr-code-only", byte[].class);
+        byte[] result = restTemplate.getForObject("/bill/image/" + VALID_BILL_ID + "?outputSize=qr-code-only", byte[].class);
 
         assertNotNull(result);
         assertTrue(result.length > 1000 && result.length < 10000);
@@ -126,7 +126,7 @@ class BillWithIdTests {
 
     @Test
     void retrieveBillOverrideGraphicsFormat() {
-        byte[] result = restTemplate.getForObject("/bill/generate/" + VALID_BILL_ID + "?graphicsFormat=pdf", byte[].class);
+        byte[] result = restTemplate.getForObject("/bill/image/" + VALID_BILL_ID + "?graphicsFormat=pdf", byte[].class);
 
         assertNotNull(result);
         assertTrue(result.length > 1000);
@@ -136,7 +136,7 @@ class BillWithIdTests {
 
     @Test
     void retrieveWithInvalidBillID() throws IOException {
-        Response response = getRequest("/bill/generate/eJxdT81OwzAMfpXI50Zqe0C010K1AxoTmTjlYrqQWUqdkqSDddq7kw5Osw");
+        Response response = getRequest("/bill/image/eJxdT81OwzAMfpXI50Zqe0C010K1AxoTmTjlYrqQWUqdkqSDddq7kw5Osw");
         assertEquals(400, response.code());
     }
 

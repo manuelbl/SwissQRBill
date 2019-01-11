@@ -29,7 +29,7 @@ class InvalidRequestTests {
 
     @Test
     void testInvalidEnum() throws IOException {
-        Response response = postRequest("/bill/validate",
+        Response response = postRequest("/bill/validated",
                 "{ \"format\": { \"language\": \"pl\" }, " +
                         "\"amount\": 100.34, \"currency\": \"CHF\", " +
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
@@ -45,7 +45,7 @@ class InvalidRequestTests {
 
     @Test
     void testInvalidNumber1() throws IOException {
-        Response response = postRequest("/bill/validate",
+        Response response = postRequest("/bill/validated",
                 "{ \"format\": { \"language\": \"pl\" }, " +
                         "\"amount\": abc, \"currency\": \"CHF\", " +
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
@@ -59,7 +59,7 @@ class InvalidRequestTests {
 
     @Test
     void testInvalidNumber2() throws IOException {
-        Response response = postRequest("/bill/validate",
+        Response response = postRequest("/bill/validated",
                 "{ \"format\": { \"language\": \"pl\" }, " +
                         "\"amount\": \"abc\", \"currency\": \"CHF\", " +
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
@@ -73,7 +73,7 @@ class InvalidRequestTests {
 
     @Test
     void testInvalidJson() throws IOException {
-        Response response = postRequest("/bill/validate",
+        Response response = postRequest("/bill/validated",
                 "{ \"language\": \"de\", \"amount\": \"100.34\", \"currency\": \"CHF\", [" +
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
                         "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +
@@ -86,7 +86,7 @@ class InvalidRequestTests {
 
     @Test
     void testInvalidUrl() throws IOException {
-        Response response = postRequest("/bill2/validate",
+        Response response = postRequest("/bill2/validated",
                 "{ \"language\": \"de\", \"amount\": \"100.34\", \"currency\": \"CHF\", " +
                         "\"account\": \"CH4431999123000889012\", \"creditor\": {" +
                         "\"name\": \"Meierhans AG\", \"street\": \"Bahnhofstrasse\", \"houseNo\": \"16\", " +

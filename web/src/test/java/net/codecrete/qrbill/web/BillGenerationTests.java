@@ -47,7 +47,7 @@ class BillGenerationTests {
     void svgQrBill() {
 
         QrBill bill = SampleData.createBill1();
-        byte[] response = restTemplate.postForObject("/bill/generate", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/image", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -63,7 +63,7 @@ class BillGenerationTests {
 
         QrBill bill = SampleData.createBill1();
         bill.getFormat().setGraphicsFormat(BillFormat.GraphicsFormatEnum.PDF);
-        byte[] response = restTemplate.postForObject("/bill/generate", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/image", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -77,7 +77,7 @@ class BillGenerationTests {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown("city56789012345678901234567890123456");
 
-        byte[] response = restTemplate.postForObject("/bill/generate", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/image", bill, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -93,7 +93,7 @@ class BillGenerationTests {
         QrBill bill = SampleData.createBill1();
         bill.getCreditor().setTown(null);
 
-        ValidationMessage[] response = restTemplate.postForObject("/bill/generate", bill,
+        ValidationMessage[] response = restTemplate.postForObject("/bill/image", bill,
                 ValidationMessage[].class);
 
         assertNotNull(response);
@@ -137,7 +137,7 @@ class BillGenerationTests {
             headers.setAcceptLanguage(Locale.LanguageRange.parse(language));
 
         HttpEntity<QrBill> entity = new HttpEntity<>(bill, headers);
-        byte[] response = restTemplate.postForObject("/bill/generate", entity, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/image", entity, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -163,7 +163,7 @@ class BillGenerationTests {
         headers.setAccept(mediaTypes);
 
         HttpEntity<QrBill> entity = new HttpEntity<>(bill, headers);
-        byte[] response = restTemplate.postForObject("/bill/generate", entity, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/image", entity, byte[].class);
 
         assertNotNull(response);
         assertTrue(response.length > 1000);
@@ -175,7 +175,7 @@ class BillGenerationTests {
         QrBill bill = SampleData.createBill1();
         bill.setFormat(null);
 
-        byte[] response = restTemplate.postForObject("/bill/generate", bill, byte[].class);
+        byte[] response = restTemplate.postForObject("/bill/image", bill, byte[].class);
 
         String text = new String(response, StandardCharsets.UTF_8);
         assertTrue(text.startsWith("<?xml"));

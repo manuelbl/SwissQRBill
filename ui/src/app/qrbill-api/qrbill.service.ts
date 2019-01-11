@@ -18,7 +18,7 @@ export class QrBillService {
 
   validate(bill: QrBill, language: string): Observable<ValidationResponse> {
     return this.http.post<ValidationResponse>(
-      '../qrbill-api/bill/validate',
+      '../qrbill-api/bill/validated',
       bill,
       { headers: { 'Accept-Language': language } }
     );

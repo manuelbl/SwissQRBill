@@ -112,7 +112,7 @@ class DecodeTests {
         QrCodeInformation info = new QrCodeInformation();
         info.setText(VALID_QR_CODE_TEXT);
 
-        ValidationResponse response = restTemplate.postForObject("/bill/decode", info, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/bill/qrdata", info, ValidationResponse.class);
 
         assertNotNull(response);
         assertTrue(response.getValid());
@@ -130,7 +130,7 @@ class DecodeTests {
         QrCodeInformation info = new QrCodeInformation();
         info.setText(INVALID_QR_CODE_TEXT);
 
-        ValidationResponse response = restTemplate.postForObject("/bill/decode", info, ValidationResponse.class);
+        ValidationResponse response = restTemplate.postForObject("/bill/qrdata", info, ValidationResponse.class);
 
         assertNotNull(response);
         assertFalse(response.getValid());
