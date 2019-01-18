@@ -64,10 +64,10 @@ class Validator {
 
     private void validateCurrency() {
         String currency = Strings.trimmed(billIn.getCurrency());
-        if (validateMandatory(currency, Bill.FIELD_CURRENCY)) {
+        if (validateMandatory(currency, ValidationConstants.FIELD_CURRENCY)) {
             currency = currency.toUpperCase(Locale.US);
             if (!"CHF".equals(currency) && !"EUR".equals(currency)) {
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_CURRENCY, QRBill.KEY_CURRENCY_IS_CHF_OR_EUR);
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_CURRENCY, ValidationConstants.KEY_CURRENCY_IS_CHF_OR_EUR);
             } else {
                 billOut.setCurrency(currency);
             }
@@ -84,7 +84,7 @@ class Validator {
         } else {
             amount = amount.setScale(2, RoundingMode.HALF_UP); // round to multiple of 0.01
             if (AMOUNT_MIN.compareTo(amount) > 0 || AMOUNT_MAX.compareTo(amount) < 0) {
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_AMOUNT, QRBill.KEY_AMOUNT_IS_IN_VALID_RANGE);
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_AMOUNT, ValidationConstants.KEY_AMOUNT_IS_IN_VALID_RANGE);
             } else {
                 billOut.setAmount(amount);
             }
@@ -93,13 +93,13 @@ class Validator {
 
     private void validateAccountNumber() {
         String account = Strings.trimmed(billIn.getAccount());
-        if (validateMandatory(account, Bill.FIELD_ACCOUNT)) {
+        if (validateMandatory(account, ValidationConstants.FIELD_ACCOUNT)) {
             account = Strings.whiteSpaceRemoved(account).toUpperCase(Locale.US);
             if (validateIBAN(account)) {
                 if (!account.startsWith("CH") && !account.startsWith("LI")) {
-                    validationResult.addMessage(Type.ERROR, Bill.FIELD_ACCOUNT, QRBill.KEY_ACCOUNT_IS_CH_LI_IBAN);
+                    validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_ACCOUNT, ValidationConstants.KEY_ACCOUNT_IS_CH_LI_IBAN);
                 } else if (account.length() != 21) {
-                    validationResult.addMessage(Type.ERROR, Bill.FIELD_ACCOUNT, QRBill.KEY_ACCOUNT_IS_VALID_IBAN);
+                    validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_ACCOUNT, ValidationConstants.KEY_ACCOUNT_IS_VALID_IBAN);
                 } else {
                     billOut.setAccount(account);
                 }
@@ -108,7 +108,7 @@ class Validator {
     }
 
     private void validateCreditor() {
-        Address creditor = validateAddress(billIn.getCreditor(), Bill.FIELDROOT_CREDITOR, true);
+        Address creditor = validateAddress(billIn.getCreditor(), ValidationConstants.FIELDROOT_CREDITOR, true);
         billOut.setCreditor(creditor);
     }
 
@@ -137,21 +137,21 @@ class Validator {
 
     private void validateQRReference(String cleanedReference) {
         if (cleanedReference == null) {
-            validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_MANDATORY_FOR_QR_IBAN);
+            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_MANDATORY_FOR_QR_IBAN);
             return;
         }
 
         if (cleanedReference.length() < 27)
             cleanedReference = "00000000000000000000000000".substring(0, 27 - cleanedReference.length()) + cleanedReference;
         if (!Payments.isValidQRReference(cleanedReference))
-            validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_VALID_QR_REF_NO);
+            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_VALID_QR_REF_NO);
         else
             billOut.setReference(cleanedReference);
     }
 
     private void validateISOReference(String cleanedReference) {
         if (!Payments.isValidISO11649Reference(cleanedReference)) {
-            validationResult.addMessage(Type.ERROR, Bill.FIELD_REFERENCE, QRBill.KEY_VALID_ISO11649_CREDITOR_REF);
+            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_VALID_ISO11649_CREDITOR_REF);
         } else {
             billOut.setReference(cleanedReference);
         }
@@ -159,17 +159,17 @@ class Validator {
 
     private void validateUnstructuredMessage() {
         String unstructuredMessage = Strings.trimmed(billIn.getUnstructuredMessage());
-        unstructuredMessage = clippedValue(unstructuredMessage, 140, Bill.FIELD_UNSTRUCTURED_MESSAGE);
+        unstructuredMessage = clippedValue(unstructuredMessage, 140, ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE);
         billOut.setUnstructuredMessage(unstructuredMessage);
     }
 
     private void validateBillInformation() {
         String billInformation = Strings.trimmed(billIn.getBillInformation());
-        if (!validateLength(billInformation, 140, Bill.FIELD_BILL_INFORMATION))
+        if (!validateLength(billInformation, 140, ValidationConstants.FIELD_BILL_INFORMATION))
             return;
         if (billInformation != null) {
             if (!billInformation.startsWith("//") || billInformation.length() < 4) {
-                validationResult.addMessage(Type.ERROR, Bill.FIELD_BILL_INFORMATION, QRBill.KEY_BILL_INFO_INVALID);
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_BILL_INFORMATION, ValidationConstants.KEY_BILL_INFO_INVALID);
                 return;
             }
         }
@@ -189,7 +189,7 @@ class Validator {
                 schemeOut.setName(Strings.trimmed(schemeIn.getName()));
                 schemeOut.setInstruction(Strings.trimmed(schemeIn.getInstruction()));
                 if (schemeOut.getName() != null || schemeOut.getInstruction() != null) {
-                    if (validateLength(schemeOut.getInstruction(), 100, Bill.FIELD_ALTERNATIVE_SCHEMES))
+                    if (validateLength(schemeOut.getInstruction(), 100, ValidationConstants.FIELD_ALTERNATIVE_SCHEMES))
                         schemeList.add(schemeOut);
                 }
             }
@@ -198,7 +198,7 @@ class Validator {
                 schemesOut = schemeList.toArray(new AlternativeScheme[0]);
 
                 if (schemesOut.length > 2) {
-                    validationResult.addMessage(Type.ERROR, Bill.FIELD_ALTERNATIVE_SCHEMES, QRBill.KEY_ALT_SCHEME_MAX_EXCEEDED);
+                    validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_ALTERNATIVE_SCHEMES, ValidationConstants.KEY_ALT_SCHEME_MAX_EXCEEDED);
                     schemesOut = Arrays.copyOfRange(schemesOut, 0, 2);
                 }
             }
@@ -207,7 +207,7 @@ class Validator {
     }
 
     private void validateDebtor() {
-        Address debtor = validateAddress(billIn.getDebtor(), Bill.FIELDROOT_DEBTOR, false);
+        Address debtor = validateAddress(billIn.getDebtor(), ValidationConstants.FIELDROOT_DEBTOR, false);
         billOut.setDebtor(debtor);
     }
 
@@ -225,8 +225,8 @@ class Validator {
 
         if (addressOut.getCountryCode() != null
                 && (addressOut.getCountryCode().length() != 2 || !Payments.isAlphaNumeric(addressOut.getCountryCode())))
-            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE,
-                    QRBill.KEY_VALID_COUNTRY_CODE);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_COUNTRY_CODE,
+                    ValidationConstants.KEY_VALID_COUNTRY_CODE);
 
         cleanAddressFields(addressOut, fieldRoot);
 
@@ -235,55 +235,55 @@ class Validator {
 
     private void validateEmptyAddress(String fieldRoot, boolean mandatory) {
         if (mandatory) {
-            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_NAME, QRBill.KEY_FIELD_IS_MANDATORY);
-            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_POSTAL_CODE,
-                    QRBill.KEY_FIELD_IS_MANDATORY);
-            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_ADDRESS_LINE_2,
-                    QRBill.KEY_FIELD_IS_MANDATORY);
-            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_TOWN, QRBill.KEY_FIELD_IS_MANDATORY);
-            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_COUNTRY_CODE,
-                    QRBill.KEY_FIELD_IS_MANDATORY);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_NAME, ValidationConstants.KEY_FIELD_IS_MANDATORY);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_POSTAL_CODE,
+                    ValidationConstants.KEY_FIELD_IS_MANDATORY);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_ADDRESS_LINE_2,
+                    ValidationConstants.KEY_FIELD_IS_MANDATORY);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_TOWN, ValidationConstants.KEY_FIELD_IS_MANDATORY);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_COUNTRY_CODE,
+                    ValidationConstants.KEY_FIELD_IS_MANDATORY);
         }
     }
 
     private void emitErrorsForConflictingType(Address addressOut, String fieldRoot) {
         if (addressOut.getAddressLine1() != null)
-            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_ADDRESS_LINE_1, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_ADDRESS_LINE_1, ValidationConstants.KEY_ADDRESS_TYPE_CONFLICT);
         if (addressOut.getAddressLine2() != null)
-            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_ADDRESS_LINE_2, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_ADDRESS_LINE_2, ValidationConstants.KEY_ADDRESS_TYPE_CONFLICT);
         if (addressOut.getStreet() != null)
-            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_STREET, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_STREET, ValidationConstants.KEY_ADDRESS_TYPE_CONFLICT);
         if (addressOut.getHouseNo() != null)
-            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_HOUSE_NO, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_HOUSE_NO, ValidationConstants.KEY_ADDRESS_TYPE_CONFLICT);
         if (addressOut.getPostalCode() != null)
-            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_POSTAL_CODE, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_POSTAL_CODE, ValidationConstants.KEY_ADDRESS_TYPE_CONFLICT);
         if (addressOut.getTown() != null)
-            validationResult.addMessage(Type.ERROR, fieldRoot + Bill.SUBFIELD_TOWN, QRBill.KEY_ADDRESS_TYPE_CONFLICT);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_TOWN, ValidationConstants.KEY_ADDRESS_TYPE_CONFLICT);
     }
 
     private void checkMandatoryAddressFields(Address addressOut, String fieldRoot) {
-        validateMandatory(addressOut.getName(), fieldRoot, Bill.SUBFIELD_NAME);
+        validateMandatory(addressOut.getName(), fieldRoot, ValidationConstants.SUBFIELD_NAME);
         if (addressOut.getType() == Address.Type.STRUCTURED || addressOut.getType() == Address.Type.UNDETERMINED) {
-            validateMandatory(addressOut.getPostalCode(), fieldRoot, Bill.SUBFIELD_POSTAL_CODE);
-            validateMandatory(addressOut.getTown(), fieldRoot, Bill.SUBFIELD_TOWN);
+            validateMandatory(addressOut.getPostalCode(), fieldRoot, ValidationConstants.SUBFIELD_POSTAL_CODE);
+            validateMandatory(addressOut.getTown(), fieldRoot, ValidationConstants.SUBFIELD_TOWN);
         }
         if (addressOut.getType() == Address.Type.COMBINED_ELEMENTS || addressOut.getType() == Address.Type.UNDETERMINED) {
-            validateMandatory(addressOut.getAddressLine2(), fieldRoot, Bill.SUBFIELD_ADDRESS_LINE_2);
+            validateMandatory(addressOut.getAddressLine2(), fieldRoot, ValidationConstants.SUBFIELD_ADDRESS_LINE_2);
         }
-        validateMandatory(addressOut.getCountryCode(), fieldRoot, Bill.SUBFIELD_COUNTRY_CODE);
+        validateMandatory(addressOut.getCountryCode(), fieldRoot, ValidationConstants.SUBFIELD_COUNTRY_CODE);
     }
 
     private void cleanAddressFields(Address addressOut, String fieldRoot) {
-        addressOut.setName(clippedValue(addressOut.getName(), 70, fieldRoot, Bill.SUBFIELD_NAME));
+        addressOut.setName(clippedValue(addressOut.getName(), 70, fieldRoot, ValidationConstants.SUBFIELD_NAME));
         if (addressOut.getType() == Address.Type.STRUCTURED) {
-            addressOut.setStreet(clippedValue(addressOut.getStreet(), 70, fieldRoot, Bill.SUBFIELD_STREET));
-            addressOut.setHouseNo(clippedValue(addressOut.getHouseNo(), 16, fieldRoot, Bill.SUBFIELD_HOUSE_NO));
-            addressOut.setPostalCode(clippedValue(addressOut.getPostalCode(), 16, fieldRoot, Bill.SUBFIELD_POSTAL_CODE));
-            addressOut.setTown(clippedValue(addressOut.getTown(), 35, fieldRoot, Bill.SUBFIELD_TOWN));
+            addressOut.setStreet(clippedValue(addressOut.getStreet(), 70, fieldRoot, ValidationConstants.SUBFIELD_STREET));
+            addressOut.setHouseNo(clippedValue(addressOut.getHouseNo(), 16, fieldRoot, ValidationConstants.SUBFIELD_HOUSE_NO));
+            addressOut.setPostalCode(clippedValue(addressOut.getPostalCode(), 16, fieldRoot, ValidationConstants.SUBFIELD_POSTAL_CODE));
+            addressOut.setTown(clippedValue(addressOut.getTown(), 35, fieldRoot, ValidationConstants.SUBFIELD_TOWN));
         }
         if (addressOut.getType() == Address.Type.COMBINED_ELEMENTS) {
-            addressOut.setAddressLine1(clippedValue(addressOut.getAddressLine1(), 70, fieldRoot, Bill.SUBFIELD_ADDRESS_LINE_1));
-            addressOut.setAddressLine2(clippedValue(addressOut.getAddressLine2(), 70, fieldRoot, Bill.SUBFIELD_ADDRESS_LINE_2));
+            addressOut.setAddressLine1(clippedValue(addressOut.getAddressLine1(), 70, fieldRoot, ValidationConstants.SUBFIELD_ADDRESS_LINE_1));
+            addressOut.setAddressLine2(clippedValue(addressOut.getAddressLine2(), 70, fieldRoot, ValidationConstants.SUBFIELD_ADDRESS_LINE_2));
         }
         if (addressOut.getCountryCode() != null)
             addressOut.setCountryCode(addressOut.getCountryCode().toUpperCase(Locale.US));
@@ -291,7 +291,7 @@ class Validator {
 
     private boolean validateIBAN(String iban) {
         if (!Payments.isValidIBAN(iban)) {
-            validationResult.addMessage(Type.ERROR, Bill.FIELD_ACCOUNT, QRBill.KEY_ACCOUNT_IS_VALID_IBAN);
+            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_ACCOUNT, ValidationConstants.KEY_ACCOUNT_IS_VALID_IBAN);
             return false;
         }
         return true;
@@ -301,23 +301,23 @@ class Validator {
         if (addressIn == null)
             return null;
         Address addressOut = new Address();
-        addressOut.setName(cleanedValue(addressIn.getName(), fieldRoot, Bill.SUBFIELD_NAME));
-        String value = cleanedValue(addressIn.getAddressLine1(), fieldRoot, Bill.SUBFIELD_ADDRESS_LINE_1);
+        addressOut.setName(cleanedValue(addressIn.getName(), fieldRoot, ValidationConstants.SUBFIELD_NAME));
+        String value = cleanedValue(addressIn.getAddressLine1(), fieldRoot, ValidationConstants.SUBFIELD_ADDRESS_LINE_1);
         if (value != null)
             addressOut.setAddressLine1(value);
-        value = cleanedValue(addressIn.getAddressLine2(), fieldRoot, Bill.SUBFIELD_ADDRESS_LINE_2);
+        value = cleanedValue(addressIn.getAddressLine2(), fieldRoot, ValidationConstants.SUBFIELD_ADDRESS_LINE_2);
         if (value != null)
             addressOut.setAddressLine2(value);
-        value = cleanedValue(addressIn.getStreet(), fieldRoot, Bill.SUBFIELD_STREET);
+        value = cleanedValue(addressIn.getStreet(), fieldRoot, ValidationConstants.SUBFIELD_STREET);
         if (value != null)
             addressOut.setStreet(value);
-        value = cleanedValue(addressIn.getHouseNo(), fieldRoot, Bill.SUBFIELD_HOUSE_NO);
+        value = cleanedValue(addressIn.getHouseNo(), fieldRoot, ValidationConstants.SUBFIELD_HOUSE_NO);
         if (value != null)
             addressOut.setHouseNo(value);
-        value = cleanedValue(addressIn.getPostalCode(), fieldRoot, Bill.SUBFIELD_POSTAL_CODE);
+        value = cleanedValue(addressIn.getPostalCode(), fieldRoot, ValidationConstants.SUBFIELD_POSTAL_CODE);
         if (value != null)
             addressOut.setPostalCode(value);
-        value = cleanedValue(addressIn.getTown(), fieldRoot, Bill.SUBFIELD_TOWN);
+        value = cleanedValue(addressIn.getTown(), fieldRoot, ValidationConstants.SUBFIELD_TOWN);
         if (value != null)
             addressOut.setTown(value);
         addressOut.setCountryCode(Strings.trimmed(addressIn.getCountryCode()));
@@ -331,7 +331,7 @@ class Validator {
 
     private boolean validateMandatory(String value, String field) {
         if (Strings.isNullOrEmpty(value)) {
-            validationResult.addMessage(Type.ERROR, field, QRBill.KEY_FIELD_IS_MANDATORY);
+            validationResult.addMessage(Type.ERROR, field, ValidationConstants.KEY_FIELD_IS_MANDATORY);
             return false;
         }
 
@@ -340,12 +340,12 @@ class Validator {
 
     private void validateMandatory(String value, String fieldRoot, String subfield) {
         if (Strings.isNullOrEmpty(value))
-            validationResult.addMessage(Type.ERROR, fieldRoot + subfield, QRBill.KEY_FIELD_IS_MANDATORY);
+            validationResult.addMessage(Type.ERROR, fieldRoot + subfield, ValidationConstants.KEY_FIELD_IS_MANDATORY);
     }
 
     private boolean validateLength(String value, int maxLength, String field) {
         if (value != null && value.length() > maxLength) {
-            validationResult.addMessage(Type.ERROR, field, QRBill.KEY_FIELD_TOO_LONG,
+            validationResult.addMessage(Type.ERROR, field, ValidationConstants.KEY_FIELD_TOO_LONG,
                     new String[] { Integer.toString(maxLength) });
             return false;
         } else {
@@ -355,7 +355,7 @@ class Validator {
 
     private String clippedValue(String value, int maxLength, String field) {
         if (value != null && value.length() > maxLength) {
-            validationResult.addMessage(Type.WARNING, field, QRBill.KEY_FIELD_CLIPPED,
+            validationResult.addMessage(Type.WARNING, field, ValidationConstants.KEY_FIELD_CLIPPED,
                     new String[] { Integer.toString(maxLength) });
             return value.substring(0, maxLength);
         }
@@ -365,7 +365,7 @@ class Validator {
 
     private String clippedValue(String value, int maxLength, String fieldRoot, String subfield) {
         if (value != null && value.length() > maxLength) {
-            validationResult.addMessage(Type.WARNING, fieldRoot + subfield, QRBill.KEY_FIELD_CLIPPED,
+            validationResult.addMessage(Type.WARNING, fieldRoot + subfield, ValidationConstants.KEY_FIELD_CLIPPED,
                     new String[] { Integer.toString(maxLength) });
             return value.substring(0, maxLength);
         }
@@ -377,7 +377,7 @@ class Validator {
         CleaningResult result = new CleaningResult();
         Payments.cleanValue(value, result);
         if (result.replacedUnsupportedChars)
-            validationResult.addMessage(Type.WARNING, fieldRoot + subfield, QRBill.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
+            validationResult.addMessage(Type.WARNING, fieldRoot + subfield, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         return result.cleanedString;
     }
 }

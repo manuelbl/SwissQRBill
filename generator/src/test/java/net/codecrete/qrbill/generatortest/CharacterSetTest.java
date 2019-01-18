@@ -8,7 +8,7 @@
 package net.codecrete.qrbill.generatortest;
 
 import net.codecrete.qrbill.generator.Address;
-import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.ValidationConstants;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -82,7 +82,7 @@ class CharacterSetTest extends BillDataValidationBase {
         address.setName("abc\r\ndef");
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(Bill.FIELD_CREDITOR_NAME, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_NAME, "replaced_unsupported_characters");
         assertEquals("abc def", validatedBill.getCreditor().getName());
     }
 
@@ -93,7 +93,7 @@ class CharacterSetTest extends BillDataValidationBase {
         address.setStreet("abc€def©ghi^");
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(Bill.FIELD_CREDITOR_STREET, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_STREET, "replaced_unsupported_characters");
         assertEquals("abc.def.ghi.", validatedBill.getCreditor().getStreet());
     }
 
@@ -104,7 +104,7 @@ class CharacterSetTest extends BillDataValidationBase {
         address.setPostalCode("\uD83D\uDC80"); // surrogate pair (1 code point but 2 UTF-16 words)
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(Bill.FIELD_CREDITOR_POSTAL_CODE, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_POSTAL_CODE, "replaced_unsupported_characters");
         assertEquals(".", validatedBill.getCreditor().getPostalCode());
     }
 
@@ -115,7 +115,7 @@ class CharacterSetTest extends BillDataValidationBase {
         address.setTown("\uD83C\uDDE8\uD83C\uDDED"); // two surrogate pairs
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(Bill.FIELD_CREDITOR_TOWN, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_TOWN, "replaced_unsupported_characters");
         assertEquals("..", validatedBill.getCreditor().getTown());
     }
 
@@ -126,7 +126,7 @@ class CharacterSetTest extends BillDataValidationBase {
         address.setTown("-- \uD83D\uDC68\uD83C\uDFFB --"); // two surrogate pairs
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(Bill.FIELD_CREDITOR_TOWN, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_TOWN, "replaced_unsupported_characters");
         assertEquals("-- .. --", validatedBill.getCreditor().getTown());
     }
 
@@ -139,7 +139,7 @@ class CharacterSetTest extends BillDataValidationBase {
         address.setStreet("ABC" + invalidChar + "QRS");
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(Bill.FIELD_CREDITOR_STREET, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_STREET, "replaced_unsupported_characters");
         assertEquals("ABC.QRS", validatedBill.getCreditor().getStreet());
     }
 }

@@ -7,7 +7,7 @@
 
 package net.codecrete.qrbill.generatortest;
 
-import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.ValidationConstants;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -73,7 +73,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill.setAccount("CH4431999123000889012"); // QR-IBAN
         bill.setReference(null);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_REFERENCE, "mandatory_for_qr_iban");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "mandatory_for_qr_iban");
     }
 
     @Test
@@ -81,7 +81,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setReference("   ");
         validate();
-        assertSingleErrorMessage(Bill.FIELD_REFERENCE, "mandatory_for_qr_iban");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "mandatory_for_qr_iban");
     }
 
     @Test
@@ -89,7 +89,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setReference("ABC");
         validate();
-        assertSingleErrorMessage(Bill.FIELD_REFERENCE, "valid_qr_ref_no");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "valid_qr_ref_no");
     }
 
     @Test
@@ -97,7 +97,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setReference("1234567890");
         validate();
-        assertSingleErrorMessage(Bill.FIELD_REFERENCE, "valid_qr_ref_no");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "valid_qr_ref_no");
     }
 
     @Test
@@ -105,7 +105,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setReference("123ABC7890");
         validate();
-        assertSingleErrorMessage(Bill.FIELD_REFERENCE, "valid_qr_ref_no");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "valid_qr_ref_no");
     }
 
     @Test
@@ -113,7 +113,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample3();
         bill.setReference("RF38302!!3393");
         validate();
-        assertSingleErrorMessage(Bill.FIELD_REFERENCE, "valid_iso11649_creditor_ref");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "valid_iso11649_creditor_ref");
     }
 
     @Test
@@ -121,6 +121,6 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample3();
         bill.setReference("RF00539007547034");
         validate();
-        assertSingleErrorMessage(Bill.FIELD_REFERENCE, "valid_iso11649_creditor_ref");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "valid_iso11649_creditor_ref");
     }
 }

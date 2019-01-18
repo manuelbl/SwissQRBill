@@ -8,7 +8,7 @@
 package net.codecrete.qrbill.generatortest;
 
 import net.codecrete.qrbill.generator.Address;
-import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.ValidationConstants;
 import net.codecrete.qrbill.generator.ValidationMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -73,7 +73,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setName("  ");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_CREDITOR_NAME, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_NAME, "field_is_mandatory");
     }
 
     @Test
@@ -103,7 +103,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setPostalCode("");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_CREDITOR_POSTAL_CODE, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_POSTAL_CODE, "field_is_mandatory");
     }
 
     @Test
@@ -113,7 +113,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setTown(null);
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_CREDITOR_TOWN, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_TOWN, "field_is_mandatory");
     }
 
     @Test
@@ -123,7 +123,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setCountryCode("  ");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_CREDITOR_COUNTRY_CODE, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "field_is_mandatory");
     }
 
     @Test
@@ -133,7 +133,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setCountryCode("Schweiz");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
     }
 
     @Test
@@ -143,7 +143,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setCountryCode("R!");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
     }
 
     @Test
@@ -158,7 +158,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         for (ValidationMessage msg : result.getValidationMessages()) {
             assertEquals(ValidationMessage.Type.ERROR, msg.getType());
             assertEquals("adress_type_conflict", msg.getMessageKey());
-            assertTrue(msg.getField().startsWith(Bill.FIELDROOT_CREDITOR));
+            assertTrue(msg.getField().startsWith(ValidationConstants.FIELDROOT_CREDITOR));
         }
     }
 
@@ -170,7 +170,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         for (ValidationMessage msg : result.getValidationMessages()) {
             assertEquals(ValidationMessage.Type.ERROR, msg.getType());
             assertEquals("field_is_mandatory", msg.getMessageKey());
-            assertTrue(msg.getField().startsWith(Bill.FIELDROOT_CREDITOR));
+            assertTrue(msg.getField().startsWith(ValidationConstants.FIELDROOT_CREDITOR));
         }
     }
 }

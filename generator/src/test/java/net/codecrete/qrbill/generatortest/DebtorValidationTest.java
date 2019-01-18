@@ -8,7 +8,7 @@
 package net.codecrete.qrbill.generatortest;
 
 import net.codecrete.qrbill.generator.Address;
-import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.ValidationConstants;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -67,7 +67,7 @@ class DebtorValidationTest extends BillDataValidationBase {
         address.setName("  ");
         bill.setDebtor(address);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_DEBTOR_NAME, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_DEBTOR_NAME, "field_is_mandatory");
     }
 
     @Test
@@ -77,7 +77,7 @@ class DebtorValidationTest extends BillDataValidationBase {
         address.setTown(null);
         bill.setDebtor(address);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_DEBTOR_TOWN, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_DEBTOR_TOWN, "field_is_mandatory");
     }
 
     @Test

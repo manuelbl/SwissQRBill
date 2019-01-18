@@ -13,6 +13,7 @@ import net.codecrete.qrbill.generator.BillFormat;
 import net.codecrete.qrbill.generator.Language;
 import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.QRBillValidationError;
+import net.codecrete.qrbill.generator.ValidationConstants;
 import net.codecrete.qrbill.generator.ValidationMessage;
 import net.codecrete.qrbill.generator.ValidationResult;
 import org.junit.jupiter.api.DisplayName;
@@ -146,42 +147,42 @@ class DecodedTextTest {
     @Test
     void decodeInvalidFormat1() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText("garbage"));
-        assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_QR_TYPE);
+        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_VALID_DATA_STRUCTURE, ValidationConstants.FIELD_QR_TYPE);
     }
 
     @Test
     void decodeInvalidFormat2a() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class,
                 () -> QRBill.decodeQrCodeText("SPC\r\n0100\r\n\r\n\r\n"));
-        assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_QR_TYPE);
+        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_VALID_DATA_STRUCTURE, ValidationConstants.FIELD_QR_TYPE);
     }
 
     @Test
     void decodeInvalidFormat2b() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
                 "SPC1\r\n0200\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
-        assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_QR_TYPE);
+        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_VALID_DATA_STRUCTURE, ValidationConstants.FIELD_QR_TYPE);
     }
 
     @Test
     void decodeInvalidFormat3() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
                 "SPC1\r\n0200\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
-        assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_QR_TYPE);
+        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_VALID_DATA_STRUCTURE, ValidationConstants.FIELD_QR_TYPE);
     }
 
     @Test
     void decodeInvalidVersion() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
                 "SPC\r\n0101\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
-        assertSingleError(err.getValidationResult(), QRBill.KEY_SUPPORTED_VERSION, Bill.FIELD_VERSION);
+        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_SUPPORTED_VERSION, ValidationConstants.FIELD_VERSION);
     }
 
     @Test
     void decodeInvalidCodingType() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
                 "SPC\r\n0200\r\n0\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
-        assertSingleError(err.getValidationResult(), QRBill.KEY_SUPPORTED_CODING_TYPE, Bill.FIELD_CODING_TYPE);
+        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_SUPPORTED_CODING_TYPE, ValidationConstants.FIELD_CODING_TYPE);
     }
 
     @Test
@@ -189,7 +190,7 @@ class DecodedTextTest {
         String invalidText = SampleQrCodeText.getQrCodeText1(false).replace("3949.75", "1239d49.75");
         QRBillValidationError err = assertThrows(QRBillValidationError.class,
                 () -> QRBill.decodeQrCodeText(invalidText));
-        assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_NUMBER, Bill.FIELD_AMOUNT);
+        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_VALID_NUMBER, ValidationConstants.FIELD_AMOUNT);
     }
 
     @Test
@@ -197,7 +198,7 @@ class DecodedTextTest {
         String invalidText = SampleQrCodeText.getQrCodeText1(false).replace("EPD", "E_P");
         QRBillValidationError err = assertThrows(QRBillValidationError.class,
                 () -> QRBill.decodeQrCodeText(invalidText));
-        assertSingleError(err.getValidationResult(), QRBill.KEY_VALID_DATA_STRUCTURE, Bill.FIELD_TRAILER);
+        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_VALID_DATA_STRUCTURE, ValidationConstants.FIELD_TRAILER);
     }
 
     private void assertSingleError(ValidationResult result, String messageKey, String field) {

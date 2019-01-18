@@ -139,13 +139,13 @@ public class QRCodeText {
     public static Bill decode(String text) {
         String[] lines = splitLines(text);
         if (lines.length < 32 || lines.length > 34)
-            throwSingleValidationError(Bill.FIELD_QR_TYPE, QRBill.KEY_VALID_DATA_STRUCTURE);
+            throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_VALID_DATA_STRUCTURE);
         if (!"SPC".equals(lines[0]))
-            throwSingleValidationError(Bill.FIELD_QR_TYPE, QRBill.KEY_VALID_DATA_STRUCTURE);
+            throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_VALID_DATA_STRUCTURE);
         if (!"0200".equals(lines[1]))
-            throwSingleValidationError(Bill.FIELD_VERSION, QRBill.KEY_SUPPORTED_VERSION);
+            throwSingleValidationError(ValidationConstants.FIELD_VERSION, ValidationConstants.KEY_SUPPORTED_VERSION);
         if (!"1".equals(lines[2]))
-            throwSingleValidationError(Bill.FIELD_CODING_TYPE, QRBill.KEY_SUPPORTED_CODING_TYPE);
+            throwSingleValidationError(ValidationConstants.FIELD_CODING_TYPE, ValidationConstants.KEY_SUPPORTED_CODING_TYPE);
 
         Bill bill = new Bill();
         bill.setVersion(Bill.Version.V2_0);
@@ -160,7 +160,7 @@ public class QRCodeText {
             if (position.getIndex() == lines[18].length())
                 bill.setAmount(amount);
             else
-                throwSingleValidationError(Bill.FIELD_AMOUNT, QRBill.KEY_VALID_NUMBER);
+                throwSingleValidationError(ValidationConstants.FIELD_AMOUNT, ValidationConstants.KEY_VALID_NUMBER);
         } else {
             bill.setAmount(null);
         }
@@ -173,7 +173,7 @@ public class QRCodeText {
         bill.setReference(lines[28]);
         bill.setUnstructuredMessage(lines[29]);
         if (!"EPD".equals(lines[30]))
-            throwSingleValidationError(Bill.FIELD_TRAILER, QRBill.KEY_VALID_DATA_STRUCTURE);
+            throwSingleValidationError(ValidationConstants.FIELD_TRAILER, ValidationConstants.KEY_VALID_DATA_STRUCTURE);
 
         bill.setBillInformation(lines[31]);
 

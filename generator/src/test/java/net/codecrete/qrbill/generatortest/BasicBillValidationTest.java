@@ -8,7 +8,7 @@
 package net.codecrete.qrbill.generatortest;
 
 import net.codecrete.qrbill.generator.AlternativeScheme;
-import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.ValidationConstants;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +37,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setCurrency(null);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_CURRENCY, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CURRENCY, "field_is_mandatory");
     }
 
     @Test
@@ -45,7 +45,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setCurrency("USD");
         validate();
-        assertSingleErrorMessage(Bill.FIELD_CURRENCY, "currency_is_chf_or_eur");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CURRENCY, "currency_is_chf_or_eur");
     }
 
     @Test
@@ -71,7 +71,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setAmount(BigDecimal.valueOf(0));
         validate();
-        assertSingleErrorMessage(Bill.FIELD_AMOUNT, "amount_in_valid_range");
+        assertSingleErrorMessage(ValidationConstants.FIELD_AMOUNT, "amount_in_valid_range");
     }
 
     @Test
@@ -79,7 +79,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setAmount(BigDecimal.valueOf(1000000000.0));
         validate();
-        assertSingleErrorMessage(Bill.FIELD_AMOUNT, "amount_in_valid_range");
+        assertSingleErrorMessage(ValidationConstants.FIELD_AMOUNT, "amount_in_valid_range");
     }
 
     @Test
@@ -114,7 +114,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setAccount(null);
         validate();
-        assertSingleErrorMessage(Bill.FIELD_ACCOUNT, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "field_is_mandatory");
     }
 
     @Test
@@ -122,7 +122,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setAccount("DE68 2012 0700 3100 7555 55");
         validate();
-        assertSingleErrorMessage(Bill.FIELD_ACCOUNT, "account_is_ch_li_iban");
+        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "account_is_ch_li_iban");
     }
 
     @Test
@@ -130,7 +130,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setAccount("CH0031999123000889012");
         validate();
-        assertSingleErrorMessage(Bill.FIELD_ACCOUNT, "account_is_valid_iban");
+        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "account_is_valid_iban");
     }
 
     @Test
@@ -138,7 +138,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setAccount("CH503199912300088333339012");
         validate();
-        assertSingleErrorMessage(Bill.FIELD_ACCOUNT, "account_is_valid_iban");
+        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "account_is_valid_iban");
     }
 
     @Test
@@ -174,7 +174,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setBillInformation("//AA4567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789x");
         validate();
-        assertSingleErrorMessage(Bill.FIELD_BILL_INFORMATION, "field_value_too_long");
+        assertSingleErrorMessage(ValidationConstants.FIELD_BILL_INFORMATION, "field_value_too_long");
     }
 
     @Test
@@ -182,7 +182,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setBillInformation("ABCD");
         validate();
-        assertSingleErrorMessage(Bill.FIELD_BILL_INFORMATION, "bill_info_invalid");
+        assertSingleErrorMessage(ValidationConstants.FIELD_BILL_INFORMATION, "bill_info_invalid");
     }
 
     @Test
@@ -190,7 +190,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setBillInformation("//A");
         validate();
-        assertSingleErrorMessage(Bill.FIELD_BILL_INFORMATION, "bill_info_invalid");
+        assertSingleErrorMessage(ValidationConstants.FIELD_BILL_INFORMATION, "bill_info_invalid");
     }
 
     @Test
@@ -202,7 +202,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
                 new AlternativeScheme("Too Much", "TM/asdfa/asdfa/")
         });
         validate();
-        assertSingleErrorMessage(Bill.FIELD_ALTERNATIVE_SCHEMES, "alt_scheme_max_exceed");
+        assertSingleErrorMessage(ValidationConstants.FIELD_ALTERNATIVE_SCHEMES, "alt_scheme_max_exceed");
     }
 
     @Test
@@ -214,6 +214,6 @@ class BasicBillValidationTest extends BillDataValidationBase {
                 new AlternativeScheme("Xing Yong", "XY;XYService;54321")
         });
         validate();
-        assertSingleErrorMessage(Bill.FIELD_ALTERNATIVE_SCHEMES, "field_value_too_long");
+        assertSingleErrorMessage(ValidationConstants.FIELD_ALTERNATIVE_SCHEMES, "field_value_too_long");
     }
 }
