@@ -91,9 +91,10 @@ class BillLayout {
         labelFontSize = PP_LABEL_PREF_FONT_SIZE;
         textFontSize = PP_TEXT_PREF_FONT_SIZE;
 
+        boolean isTooTight;
         while (true) {
             breakLines(INFO_SECTION_WIDTH);
-            boolean isTooTight = computePaymentPartLeading();
+            isTooTight = computePaymentPartLeading();
             if (!isTooTight || textFontSize == PP_TEXT_MIN_FONT_SIZE)
                 break;
             labelFontSize--;
@@ -106,7 +107,17 @@ class BillLayout {
         labelFontSize = RC_LABEL_PREF_FONT_SIZE;
         textFontSize = RC_TEXT_PREF_FONT_SIZE;
         breakLines(RECEIPT_WIDTH - 2 * MARGIN);
-        computeReceiptLeading();
+        isTooTight = computeReceiptLeading();
+        if (isTooTight) {
+            prepareReducedReceiptText(false);
+            breakLines(RECEIPT_WIDTH - 2 * MARGIN);
+            isTooTight = computeReceiptLeading();
+        }
+        if (isTooTight) {
+            prepareReducedReceiptText(true);
+            breakLines(RECEIPT_WIDTH - 2 * MARGIN);
+            computeReceiptLeading();
+        }
         drawReceipt();
 
         // border
@@ -263,7 +274,7 @@ class BillLayout {
         return computeLeading(height, INFO_SECTION_MAX_HEIGHT, numTextLines, numPaddings);
     }
 
-    private void computeReceiptLeading() {
+    private boolean computeReceiptLeading() {
         // The same line spacing (incl. leading) is used for the smaller label and text lines
         int numTextLines = 0;
         int numPaddings = 1;
@@ -285,7 +296,7 @@ class BillLayout {
 
         height += numTextLines * graphics.getLineHeight(textFontSize);
 
-        computeLeading(height, RECEIPT_MAX_HEIGHT, numTextLines, numPaddings);
+        return computeLeading(height, RECEIPT_MAX_HEIGHT, numTextLines, numPaddings);
     }
 
     private boolean computeLeading(double height, double maxHeight, int numTextLines, int numPaddings) {
@@ -443,6 +454,31 @@ class BillLayout {
             amount = formatAmountForDisplay(bill.getAmount());
     }
 
+    private void prepareReducedReceiptText(boolean reduceBoth) {
+        if (reduceBoth) {
+            String account = Payments.formatIBAN(bill.getAccount());
+            accountPayableTo = account + "\n" + formatPersonForDisplay(createReducedAddress(bill.getCreditor()));
+        }
+
+        if (bill.getDebtor() != null)
+            payableBy = formatPersonForDisplay(createReducedAddress(bill.getDebtor()));
+    }
+
+    private Address createReducedAddress(Address address) {
+        // Address without street / house number
+        Address reducedAddress = new Address();
+        reducedAddress.setName(address.getName());
+        reducedAddress.setCountryCode(address.getCountryCode());
+        if (address.getType() == Address.Type.STRUCTURED) {
+            reducedAddress.setPostalCode(address.getPostalCode());
+            reducedAddress.setTown(address.getTown());
+        } else if (address.getType() == Address.Type.COMBINED_ELEMENTS) {
+            reducedAddress.setAddressLine2(address.getAddressLine2());
+        }
+
+        return reducedAddress;
+    }
+
     // Prepare the text (by breaking it into lines where necessary)
     private void breakLines(double maxWidth) {
         accountPayableToLines = graphics.splitLines(accountPayableTo, maxWidth * MM_TO_PT, textFontSize);
@@ -510,6 +546,10 @@ class BillLayout {
                 sb.append(houseNo);
             }
             sb.append("\n");
+            if (!"CH".equals(address.getCountryCode()) && !"LI".equals(address.getCountryCode())) {
+                sb.append(address.getCountryCode());
+                sb.append(" - ");
+            }
             sb.append(address.getPostalCode());
             sb.append(" ");
             sb.append(address.getTown());
@@ -520,6 +560,10 @@ class BillLayout {
                 sb.append(address.getAddressLine1());
             }
             sb.append("\n");
+            if (!"CH".equals(address.getCountryCode()) && !"LI".equals(address.getCountryCode())) {
+                sb.append(address.getCountryCode());
+                sb.append(" ");
+            }
             sb.append(address.getAddressLine2());
         }
         return sb.toString();
