@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -35,9 +37,11 @@ class PdfCanvasTest {
     @Test
     void pdfSaveAs() throws IOException {
         Bill bill = SampleData.getExample4();
+        Path path = Paths.get("test-qrbill.pdf");
         try (PDFCanvas canvas = new PDFCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT)) {
             QRBill.draw(bill, canvas);
-            canvas.saveAs(Paths.get("test-qrbill.pdf"));
+            canvas.saveAs(path);
         }
+        Files.delete(path);
     }
 }

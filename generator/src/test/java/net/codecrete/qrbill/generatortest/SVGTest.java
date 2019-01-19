@@ -17,6 +17,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -49,10 +52,12 @@ class SVGTest {
     @Test
     void svgSaveAs() throws IOException {
         Bill bill = SampleData.getExample2();
+        Path path = Paths.get("test-qrbill.svg");
         try (SVGCanvas canvas =
                      new SVGCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT, "Helvetica, Arial, Sans")) {
             QRBill.draw(bill, canvas);
-            canvas.saveAs(Paths.get("test-qrbill.svg"));
+            canvas.saveAs(path);
         }
+        Files.delete(path);
     }
 }

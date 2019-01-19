@@ -14,9 +14,9 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.util.Matrix;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -210,8 +210,9 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
             contentStream.close();
             contentStream = null;
         }
-        try (FileOutputStream fos = new FileOutputStream(path.toString())) {
-            document.save(fos);
+
+        try (OutputStream os = Files.newOutputStream(path)) {
+            document.save(os);
         }
     }
 

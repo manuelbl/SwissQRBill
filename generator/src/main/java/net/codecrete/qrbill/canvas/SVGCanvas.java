@@ -7,12 +7,12 @@
 package net.codecrete.qrbill.canvas;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -258,8 +258,8 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
      */
     public void saveAs(Path path) throws IOException {
         close();
-        try (FileOutputStream fos = new FileOutputStream(path.toString())) {
-            buffer.writeTo(fos);
+        try (OutputStream os = Files.newOutputStream(path)) {
+            buffer.writeTo(os);
         }
     }
 

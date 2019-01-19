@@ -26,9 +26,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
 
@@ -211,9 +211,9 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
         graphics.dispose();
         graphics = null;
 
-        try (FileOutputStream fos = new FileOutputStream(path.toString())) {
-            // Instead of ImageIO.write(image, "png", fos)
-            createPNG(image, fos, resolution);
+        try (OutputStream os = Files.newOutputStream(path)) {
+            // Instead of ImageIO.write(image, "png", os)
+            createPNG(image, os, resolution);
         }
     }
 

@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -57,10 +59,12 @@ class PNGCanvasTest {
     @Test
     void pngSaveAs() throws IOException {
         Bill bill = SampleData.getExample6();
+        Path path = Paths.get("test-qrbill.png");
         try (PNGCanvas canvas =
                      new PNGCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT, 144, "Helvetica, Arial, Sans")) {
             QRBill.draw(bill, canvas);
-            canvas.saveAs(Paths.get("test-qrbill.png"));
+            canvas.saveAs(path);
         }
+        Files.delete(path);
     }
 }
