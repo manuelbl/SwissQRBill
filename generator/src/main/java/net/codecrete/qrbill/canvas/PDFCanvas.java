@@ -22,7 +22,7 @@ import java.io.IOException;
  * The PDF generator currently only supports the Helvetica font.
  * </p>
  */
-public class PDFCanvas extends AbstractCanvas {
+public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
 
     private PDDocument document;
     private PDPageContentStream contentStream;
@@ -31,8 +31,13 @@ public class PDFCanvas extends AbstractCanvas {
     private double lastLineWidth = 1;
     private boolean hasSavedGraphicsState = false;
 
-    @Override
-    public void setupPage(double width, double height, String fontFamilyList) throws IOException {
+    /**
+     * Creates a new instance using the specified page size.
+     * @param width page width, in mm
+     * @param height page height, in mm
+     * @throws IOException thrown if the creation fails
+     */
+    public PDFCanvas(double width, double height) throws IOException {
         setupFontMetrics("Helvetica");
         document = new PDDocument();
         document.getDocumentInformation().setTitle("Swiss QR Bill");
@@ -168,7 +173,7 @@ public class PDFCanvas extends AbstractCanvas {
     }
 
     @Override
-    public byte[] getResult() throws IOException {
+    public byte[] toByteArray() throws IOException {
         if (contentStream != null) {
             contentStream.close();
             contentStream = null;

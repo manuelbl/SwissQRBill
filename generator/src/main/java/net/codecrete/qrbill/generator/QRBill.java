@@ -6,6 +6,7 @@
 //
 package net.codecrete.qrbill.generator;
 
+import net.codecrete.qrbill.canvas.ByteArrayResult;
 import net.codecrete.qrbill.canvas.Canvas;
 import net.codecrete.qrbill.canvas.PDFCanvas;
 import net.codecrete.qrbill.canvas.SVGCanvas;
@@ -19,6 +20,37 @@ import java.io.IOException;
  * </p>
  */
 public class QRBill {
+
+    /**
+     * The width of an A4 sheet in portrait orientation, in mm
+     */
+    public static final double A4_PORTRAIT_WIDTH = 210;
+
+    /**
+     * The height of an A4 sheet in portrait orientation, in mm
+     */
+    public static final double A4_PORTRAIT_HEIGHT = 297;
+
+    /**
+     * The width of a QR bill (payment part and receipt), in mm
+     */
+    public static final double QR_BILL_WIDTH = 210;
+
+    /**
+     * The height of a QR bill (payment part and receipt), in mm
+     */
+    public static final double QR_BILL_HEIGHT = 105;
+
+    /**
+     * The width of the QR code, in mm
+     */
+    public static final double QR_CODE_WIDTH = 46;
+
+    /**
+     * The height of the QR code, in mm
+     */
+    public static final double QR_CODE_HEIGHT = 46;
+
 
     private QRBill() {
         // do not instantiate
@@ -44,29 +76,45 @@ public class QRBill {
     }
 
     /**
-     * Generates a QR bill payment part.
+     * Generates a QR bill (payment part and receipt) or QR code as an SVG image or PDF document.
      * <p>
-     * If the bill data does not validate, a {@link QRBillValidationError} is
+     * If the bill data is not valid, a {@link QRBillValidationError} is
      * thrown, which contains the validation result. For details about the
      * validation result, see <a href=
      * "https://github.com/manuelbl/SwissQRBill/wiki/Bill-data-validation">Bill data
      * validation</a>
      * </p>
+     * <p>
+     *     The graphics format is specified with {@code bill.getFormat().setGraphicsFormat(...)}.
+     *     This method only supports the generation of SVG images and PDF files. For other graphics
+     *     formats (in particular PNG), use {@link #draw}
+     * </p>
      *
      * @param bill the bill data
-     * @return the generated QR bill (as a byte array)
+     * @return the generated QR bill (as a byte array encoded in the specified graphics format)
      * @throws QRBillValidationError thrown if the bill data does not validate
+     * @see #draw
      */
     public static byte[] generate(Bill bill) {
-        try (Canvas canvas = createCanvas(bill.getFormat().getGraphicsFormat())) {
-            return validateAndGenerate(bill, canvas);
+        try (Canvas canvas = createCanvas(bill.getFormat())) {
+            validateAndGenerate(bill, canvas);
+            return ((ByteArrayResult)canvas).toByteArray();
         } catch (IOException e) {
             throw new QRBillGenerationException(e);
         }
     }
 
     /**
-     * Generates a QR bill payment part using the specified canvas.
+     * Draws the QR bill (payment part and receipt) or QR code for the specified bill data onto the specified canvas.
+     * <p>
+     * The QR bill or code are drawn at position (0, 0) extending to the top and to the right.
+     * Typically, the position (0, 0) is the bottom left corner of the canvas.
+     * </p>
+     * <p>
+     * This methods ignores the formatting properties {@code bill.getFormat().getFontFamily()}
+     * and {@code bill.getFormat().getGraphicsFormat()}.
+     * They can be set when the canvas instance passed to this method is created.
+     * </p>
      * <p>
      * If the bill data does not validate, a {@link QRBillValidationError} is
      * thrown, which contains the validation result. For details about the
@@ -81,27 +129,28 @@ public class QRBill {
      *
      * @param bill   the bill data
      * @param canvas the canvas to draw to
-     * @return the generated QR bill (as a byte array)
      * @throws QRBillValidationError thrown if the bill data does not validate
      */
-    public static byte[] generate(Bill bill, Canvas canvas) {
-        try (Canvas c = canvas) {
-            return validateAndGenerate(bill, c);
+    public static void draw(Bill bill, Canvas canvas) {
+        try {
+            validateAndGenerate(bill, canvas);
         } catch (IOException e) {
             throw new QRBillGenerationException(e);
         }
     }
 
-    private static byte[] validateAndGenerate(Bill bill, Canvas canvas) throws IOException {
+    private static void validateAndGenerate(Bill bill, Canvas canvas) throws IOException {
         ValidationResult result = Validator.validate(bill);
         Bill cleanedBill = result.getCleanedBill();
         if (result.hasErrors())
             throw new QRBillValidationError(result);
 
         if (bill.getFormat().getOutputSize() == OutputSize.QR_CODE_ONLY) {
-            return generateQRCode(cleanedBill, canvas);
+            QRCode qrCode = new QRCode(cleanedBill);
+            qrCode.draw(canvas, 0, 0);
         } else {
-            return generatePaymentPart(cleanedBill, canvas);
+            BillLayout layout = new BillLayout(cleanedBill, canvas);
+            layout.draw();
         }
     }
 
@@ -151,60 +200,34 @@ public class QRBill {
         return QRCodeText.decode(text);
     }
 
-    /**
-     * Generates the payment part as a byte array
-     *
-     * @param bill   the cleaned bill data
-     * @param canvas the canvas to draw to
-     * @return byte array containing the binary data in the selected format
-     */
-    private static byte[] generatePaymentPart(Bill bill, Canvas canvas) throws IOException {
-
+    private static Canvas createCanvas(BillFormat format) throws IOException {
         double drawingWidth;
         double drawingHeight;
 
         // define page size
-        switch (bill.getFormat().getOutputSize()) {
+        switch (format.getOutputSize()) {
             case QR_BILL_ONLY:
-                drawingWidth = 210;
-                drawingHeight = 105;
+                drawingWidth = QR_BILL_WIDTH;
+                drawingHeight = QR_BILL_HEIGHT;
+                break;
+            case QR_CODE_ONLY:
+                drawingWidth = QR_CODE_WIDTH;
+                drawingHeight = QR_CODE_HEIGHT;
                 break;
             case A4_PORTRAIT_SHEET:
             default:
-                drawingWidth = 210;
-                drawingHeight = 297;
+                drawingWidth = A4_PORTRAIT_WIDTH;
+                drawingHeight = A4_PORTRAIT_HEIGHT;
                 break;
         }
 
-        canvas.setupPage(drawingWidth, drawingHeight, bill.getFormat().getFontFamily());
-        BillLayout layout = new BillLayout(bill, canvas);
-        layout.draw();
-        return canvas.getResult();
-    }
-
-    /**
-     * Generate the QR code only
-     *
-     * @param bill   the bill data
-     * @param canvas the canvas to draw to
-     * @return byte array containing the binary data in the selected format
-     */
-    private static byte[] generateQRCode(Bill bill, Canvas canvas) throws IOException {
-
-        canvas.setupPage(QRCode.SIZE, QRCode.SIZE, bill.getFormat().getFontFamily());
-        QRCode qrCode = new QRCode(bill);
-        qrCode.draw(canvas, 0, 0);
-        return canvas.getResult();
-    }
-
-    private static Canvas createCanvas(GraphicsFormat graphicsFormat) {
         Canvas canvas;
-        switch (graphicsFormat) {
+        switch (format.getGraphicsFormat()) {
             case SVG:
-                canvas = new SVGCanvas();
+                canvas = new SVGCanvas(drawingWidth, drawingHeight, format.getFontFamily());
                 break;
             case PDF:
-                canvas = new PDFCanvas();
+                canvas = new PDFCanvas(drawingWidth, drawingHeight);
                 break;
             default:
                 throw new QRBillGenerationException("Invalid graphics format specified");

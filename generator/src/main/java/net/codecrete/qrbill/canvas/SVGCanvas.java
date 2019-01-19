@@ -18,7 +18,7 @@ import java.util.Locale;
 /**
  * Canvas for generating SVG files.
  */
-public class SVGCanvas extends AbstractCanvas {
+public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
 
     private ByteArrayOutputStream buffer;
     private Writer stream;
@@ -29,14 +29,16 @@ public class SVGCanvas extends AbstractCanvas {
     private int approxPathLength;
 
     /**
-     * Creates a new instance
+     * Creates a new instance of the specified size.
+     * <p>
+     *     For all text, the specified font family list will be used.
+     * </p>
+     * @param width width of image, in mm
+     * @param height height of image, in mm
+     * @param fontFamilyList font family list (comma separated list, CSS syntax)
+     * @throws IOException thrown if the instance cannot be created
      */
-    public SVGCanvas() {
-        // no further initialization needed here
-    }
-
-    @Override
-    public void setupPage(double width, double height, String fontFamilyList) throws IOException {
+    public SVGCanvas(double width, double height, String fontFamilyList) throws IOException {
         setupFontMetrics(fontFamilyList);
 
         buffer = new ByteArrayOutputStream();
@@ -231,7 +233,7 @@ public class SVGCanvas extends AbstractCanvas {
     }
 
     @Override
-    public byte[] getResult() throws IOException {
+    public byte[] toByteArray() throws IOException {
         close();
         return buffer.toByteArray();
     }

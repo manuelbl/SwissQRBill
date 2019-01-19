@@ -10,47 +10,28 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * Common graphics interface for drawing
+ * Commonn interface for all output formats to draw the QR bill.
  * <p>
- * The coordinate system is initialized by {@code setupPage}. It's origin is
- * initially in the bottom left corner of the pages and extends in x-direction
- * to the right and in y-direction to the top.
+ * The coordinate system has its origin in the bottom left corner.
+ * The y-axis extends from the bottom to the top.
  * </p>
  * <p>
- * The font family is specified at initialization and then used for the entire
- * lifecycle.
+ * The graphics model is similar to the one used by PDF, in particular with
+ * regards to the orientation of the y axis, the concept of a current path,
+ * and using the baseline for positioning text.
  * </p>
  * <p>
- * A canvas may only be used to generate a single page. After the result has
- * been retrieved, the instance must not be used anymore.
+ * Instance of this class are expected to use a single font family for
+ * the QR bill (regular and bold font weight).
  * </p>
  */
 public interface Canvas extends Closeable {
 
     /**
-     * Sets up the page
-     * <p>
-     * The page (and graphics context) is not valid until this method has been
-     * called.
-     * </p>
-     * <p>
-     * The font family can be specified as a comma separated list, e.g. "Helvetica,Arial,sans". The first
-     * family will be used to calculate text widths. For formats that support it (e.g. SVG), the entire list
-     * will be used in the generated graphics file. Other format will just use the first one.
-     * </p>
-     *
-     * @param width      width of page (in mm)
-     * @param height     height of page (in mm)
-     * @param fontFamily font family to use
-     * @throws IOException thrown if graphics cannot be generated
-     */
-    void setupPage(double width, double height, String fontFamily) throws IOException;
-
-    /**
      * Sets a translation, rotation and scaling for the subsequent operations
      * <p>
      * Before a new translation is applied, the coordinate system is reset to it's
-     * original state after page setup (see {@code setupPage}).
+     * original state.
      * </p>
      * <p>
      * The transformations are applied in the order translation, rotation, scaling.
@@ -221,15 +202,4 @@ public interface Canvas extends Closeable {
      * @return an array of text lines
      */
     String[] splitLines(String text, double maxLength, int fontSize);
-
-    /**
-     * Returns the generated graphics as a byte array
-     * <p>
-     * After this method was called, the page is no longer valid.
-     * </p>
-     *
-     * @return the byte array
-     * @throws IOException thrown if the graphics cannot be generated
-     */
-    byte[] getResult() throws IOException;
 }

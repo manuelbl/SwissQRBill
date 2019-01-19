@@ -33,7 +33,7 @@ class QRBillErrorsTest {
             Bill bill = SampleData.getExample1();
             FailingCanvas canvas = new FailingCanvas();
             bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
-            QRBill.generate(bill, canvas);
+            QRBill.draw(bill, canvas);
         });
     }
 
@@ -50,9 +50,8 @@ class QRBillErrorsTest {
 
     static class FailingCanvas extends AbstractCanvas {
 
-        @Override
-        public void setupPage(double width, double height, String fontFamilyList) throws IOException {
-            throw new IOException("not implemented");
+        public FailingCanvas() {
+            setupFontMetrics("Arial");
         }
 
         @Override
@@ -102,11 +101,6 @@ class QRBillErrorsTest {
 
         @Override
         public void strokePath(double strokeWidth, int color) throws IOException {
-            throw new IOException("not implemented");
-        }
-
-        @Override
-        public byte[] getResult() throws IOException {
             throw new IOException("not implemented");
         }
 

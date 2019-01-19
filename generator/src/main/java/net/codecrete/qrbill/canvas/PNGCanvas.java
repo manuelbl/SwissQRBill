@@ -37,7 +37,7 @@ import java.util.Iterator;
  * or PDF are of better quality and use far less processing power to generate.
  * </p>
  */
-public class PNGCanvas extends AbstractCanvas {
+public class PNGCanvas extends AbstractCanvas implements  ByteArrayResult {
 
     private final int resolution;
     private final float coordinateScale;
@@ -47,22 +47,24 @@ public class PNGCanvas extends AbstractCanvas {
     private Path2D.Double currentPath;
 
     /**
-     * Creates a new instance
+     * Creates a new instance with the specified image size, resolution and font family.
      * <p>
      * It is recommended to use at least 144 dpi for a readable result.
      * </p>
+     * <p>
+     * The first font family in the list is used.
+     * </p>
      *
+     * @param width image width, in mm
+     * @param height image height, in mm
      * @param resolution resolution of the result (in dpi)
+     * @param fontFamilyList list of font families (comma separated, CSS syntax)
      */
-    public PNGCanvas(int resolution) {
+    public PNGCanvas(double width, double height, int resolution, String fontFamilyList) {
         this.resolution = resolution;
         coordinateScale = (float) (resolution / 25.4);
         fontScale = (float) (resolution / 72.0);
-    }
 
-    @Override
-    public void setupPage(double width, double height, String fontFamilyList) {
-        // setup font metrics
         setupFontMetrics(fontFamilyList);
 
         // create image
@@ -175,7 +177,7 @@ public class PNGCanvas extends AbstractCanvas {
     }
 
     @Override
-    public byte[] getResult() throws IOException {
+    public byte[] toByteArray() throws IOException {
         graphics.dispose();
         graphics = null;
         ByteArrayOutputStream os = new ByteArrayOutputStream();

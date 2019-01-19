@@ -13,6 +13,8 @@ import net.codecrete.qrbill.generator.QRBill;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 /**
  * Unit tests for generating QR bills as PNG
  */
@@ -20,22 +22,22 @@ import org.junit.jupiter.api.Test;
 class PNGCanvasTest {
 
     @Test
-    void pngBillQRBill() {
+    void pngBillQRBill() throws IOException {
         Bill bill = SampleData.getExample1();
-        bill.getFormat().setFontFamily("Arial");
-        PNGCanvas canvas = new PNGCanvas(300);
+        PNGCanvas canvas = new PNGCanvas(QRBill.QR_BILL_WIDTH, QRBill.QR_BILL_HEIGHT, 300, "Arial");
         bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
-        byte[] svg = QRBill.generate(bill, canvas);
-        FileComparison.assertGrayscaleImageContentsEqual(svg, "qrbill_ex1.png");
+        QRBill.draw(bill, canvas);
+        byte[] png = canvas.toByteArray();
+        FileComparison.assertGrayscaleImageContentsEqual(png, "qrbill_ex1.png");
     }
 
     @Test
-    void pngBillA4() {
+    void pngBillA4() throws IOException {
         Bill bill = SampleData.getExample3();
-        bill.getFormat().setFontFamily("Arial,Helvetica");
-        PNGCanvas canvas = new PNGCanvas(144);
+        PNGCanvas canvas = new PNGCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT, 144, "Arial,Helvetica");
         bill.getFormat().setOutputSize(OutputSize.A4_PORTRAIT_SHEET);
-        byte[] svg = QRBill.generate(bill, canvas);
-        FileComparison.assertGrayscaleImageContentsEqual(svg, "a4bill_ex3.png");
+        QRBill.draw(bill, canvas);
+        byte[] png = canvas.toByteArray();
+        FileComparison.assertGrayscaleImageContentsEqual(png, "a4bill_ex3.png");
     }
 }
