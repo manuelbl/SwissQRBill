@@ -1,6 +1,7 @@
 # Project specific
 generator/actual.svg
 generator/actual.pdf
+generator/test-qrbill.*
 
 #Angular
 **/node_modules/

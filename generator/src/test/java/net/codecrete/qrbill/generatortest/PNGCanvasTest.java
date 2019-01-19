@@ -13,12 +13,14 @@ import net.codecrete.qrbill.generator.QRBill;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 /**
  * Unit tests for generating QR bills as PNG
  */
-@DisplayName("Default locale independence")
+@DisplayName("PNG canvas test")
 class PNGCanvasTest {
 
     @Test
@@ -39,5 +41,26 @@ class PNGCanvasTest {
         QRBill.draw(bill, canvas);
         byte[] png = canvas.toByteArray();
         FileComparison.assertGrayscaleImageContentsEqual(png, "a4bill_ex3.png");
+    }
+
+    @Test
+    void pngWriteTo() throws IOException {
+        Bill bill = SampleData.getExample5();
+        try (PNGCanvas canvas =
+                     new PNGCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT, 144, "Helvetica, Arial, Sans")) {
+            QRBill.draw(bill, canvas);
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            canvas.writeTo(os);
+        }
+    }
+
+    @Test
+    void pngSaveAs() throws IOException {
+        Bill bill = SampleData.getExample6();
+        try (PNGCanvas canvas =
+                     new PNGCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT, 144, "Helvetica, Arial, Sans")) {
+            QRBill.draw(bill, canvas);
+            canvas.saveAs(Paths.get("test-qrbill.png"));
+        }
     }
 }

@@ -26,8 +26,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Path;
 import java.util.Iterator;
 
 /**
@@ -37,7 +39,7 @@ import java.util.Iterator;
  * or PDF are of better quality and use far less processing power to generate.
  * </p>
  */
-public class PNGCanvas extends AbstractCanvas implements  ByteArrayResult {
+public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
 
     private final int resolution;
     private final float coordinateScale;
@@ -186,6 +188,35 @@ public class PNGCanvas extends AbstractCanvas implements  ByteArrayResult {
         createPNG(image, os, resolution);
         return os.toByteArray();
     }
+
+    /**
+     * Writes the resulting PNG image to the specified output stream.
+     * @param os the output stream
+     * @throws IOException thrown if the image cannot be written
+     */
+    public void writeTo(OutputStream os) throws IOException {
+        graphics.dispose();
+        graphics = null;
+
+        // Instead of ImageIO.write(image, "png", os)
+        createPNG(image, os, resolution);
+    }
+
+    /**
+     * Saves the resulting PNG image to the specified path.
+     * @param path the path to write to
+     * @throws IOException thrown if the image cannot be written
+     */
+    public void saveAs(Path path) throws IOException {
+        graphics.dispose();
+        graphics = null;
+
+        try (FileOutputStream fos = new FileOutputStream(path.toString())) {
+            // Instead of ImageIO.write(image, "png", fos)
+            createPNG(image, fos, resolution);
+        }
+    }
+
 
     @Override
     public void close() {

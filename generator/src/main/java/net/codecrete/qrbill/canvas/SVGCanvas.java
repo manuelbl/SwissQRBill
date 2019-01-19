@@ -7,10 +7,13 @@
 package net.codecrete.qrbill.canvas;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -236,6 +239,28 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
     public byte[] toByteArray() throws IOException {
         close();
         return buffer.toByteArray();
+    }
+
+    /**
+     * Writes the resulting SVG image to the specified output stream.
+     * @param os the output stream
+     * @throws IOException thrown if the image cannot be written
+     */
+    public void writeTo(OutputStream os) throws IOException {
+        close();
+        buffer.writeTo(os);
+    }
+
+    /**
+     * Saves the resulting SVG image to the specified path.
+     * @param path the path to write to
+     * @throws IOException thrown if the image cannot be written
+     */
+    public void saveAs(Path path) throws IOException {
+        close();
+        try (FileOutputStream fos = new FileOutputStream(path.toString())) {
+            buffer.writeTo(fos);
+        }
     }
 
     private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.UK));

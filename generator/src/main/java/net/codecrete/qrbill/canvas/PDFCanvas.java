@@ -14,7 +14,10 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.util.Matrix;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Path;
 
 /**
  * Canvas for generating PDF files.
@@ -181,6 +184,34 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
         try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
             document.save(os);
             return os.toByteArray();
+        }
+    }
+
+    /**
+     * Writes the resulting PDF document to the specified output stream.
+     * @param os the output stream
+     * @throws IOException thrown if the image cannot be written
+     */
+    public void writeTo(OutputStream os) throws IOException {
+        if (contentStream != null) {
+            contentStream.close();
+            contentStream = null;
+        }
+        document.save(os);
+    }
+
+    /**
+     * Saves the resulting PDF document to the specified path.
+     * @param path the path to write to
+     * @throws IOException thrown if the image cannot be written
+     */
+    public void saveAs(Path path) throws IOException {
+        if (contentStream != null) {
+            contentStream.close();
+            contentStream = null;
+        }
+        try (FileOutputStream fos = new FileOutputStream(path.toString())) {
+            document.save(fos);
         }
     }
 
