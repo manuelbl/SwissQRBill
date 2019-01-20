@@ -2,6 +2,7 @@
 generator/actual.svg
 generator/actual.pdf
 generator/test-qrbill.*
+examples/gradle_example/gradle_example.iml
 
 #Angular
 **/node_modules/

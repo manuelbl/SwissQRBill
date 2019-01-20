@@ -4,6 +4,11 @@
 // Licensed under MIT License
 // https://opensource.org/licenses/MIT
 //
+
+@file:JvmName("Example")
+
+package net.codecrete.qrbill.examples.kotlin
+
 import net.codecrete.qrbill.generator.Address
 import net.codecrete.qrbill.generator.Bill
 import net.codecrete.qrbill.generator.QRBill
