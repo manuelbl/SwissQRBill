@@ -9,13 +9,16 @@ package net.codecrete.qrbill.generatortest;
 
 import net.codecrete.qrbill.generator.AlternativeScheme;
 import net.codecrete.qrbill.generator.ValidationConstants;
+import net.codecrete.qrbill.generator.ValidationMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Various unit tests for the bill data validation
@@ -172,6 +175,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
     @Test
     void tooLongBillInformation() {
         bill = SampleData.getExample1();
+        bill.setUnstructuredMessage(null);
         bill.setBillInformation("//AA4567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789x");
         validate();
         assertSingleErrorMessage(ValidationConstants.FIELD_BILL_INFORMATION, "field_value_too_long");
@@ -191,6 +195,29 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill.setBillInformation("//A");
         validate();
         assertSingleErrorMessage(ValidationConstants.FIELD_BILL_INFORMATION, "bill_info_invalid");
+    }
+
+    @Test
+    void tooLongUnstrMessageBillInfo() {
+        bill = SampleData.getExample6();
+        assertEquals(140, bill.getUnstructuredMessage().length() + bill.getBillInformation().length());
+        bill.setUnstructuredMessage(bill.getUnstructuredMessage() + "A");
+        validate();
+
+        assertTrue(result.hasErrors());
+        assertFalse(result.hasWarnings());
+        assertTrue(result.hasMessages());
+        assertEquals(2, result.getValidationMessages().size());
+
+        ValidationMessage msg = result.getValidationMessages().get(0);
+        assertEquals(ValidationMessage.Type.ERROR, msg.getType());
+        assertEquals(ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE, msg.getField());
+        assertEquals(ValidationConstants.KEY_FIELD_TOO_LONG, msg.getMessageKey());
+
+        msg = result.getValidationMessages().get(1);
+        assertEquals(ValidationMessage.Type.ERROR, msg.getType());
+        assertEquals(ValidationConstants.FIELD_BILL_INFORMATION, msg.getField());
+        assertEquals(ValidationConstants.KEY_FIELD_TOO_LONG, msg.getMessageKey());
     }
 
     @Test

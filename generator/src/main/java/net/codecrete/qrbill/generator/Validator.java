@@ -54,8 +54,7 @@ class Validator {
         validateAmount();
         validateDebtor();
         validateReference();
-        validateUnstructuredMessage();
-        validateBillInformation();
+        validateAdditionalInformation();
         validateAlternativeSchemes();
 
         validationResult.setCleanedBill(billOut);
@@ -157,23 +156,37 @@ class Validator {
         }
     }
 
-    private void validateUnstructuredMessage() {
-        String unstructuredMessage = Strings.trimmed(billIn.getUnstructuredMessage());
-        unstructuredMessage = clippedValue(unstructuredMessage, 140, ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE);
-        billOut.setUnstructuredMessage(unstructuredMessage);
-    }
+    private void validateAdditionalInformation() {
 
-    private void validateBillInformation() {
         String billInformation = Strings.trimmed(billIn.getBillInformation());
-        if (!validateLength(billInformation, 140, ValidationConstants.FIELD_BILL_INFORMATION))
-            return;
-        if (billInformation != null) {
-            if (!billInformation.startsWith("//") || billInformation.length() < 4) {
-                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_BILL_INFORMATION, ValidationConstants.KEY_BILL_INFO_INVALID);
-                return;
+        String unstructuredMessage = Strings.trimmed(billIn.getUnstructuredMessage());
+
+        if (billInformation != null && (!billInformation.startsWith("//") || billInformation.length() < 4)) {
+            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_BILL_INFORMATION, ValidationConstants.KEY_BILL_INFO_INVALID);
+            billInformation = null;
+        }
+
+        if (billInformation == null) {
+            unstructuredMessage = cleanedValue(unstructuredMessage, ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE);
+            unstructuredMessage = clippedValue(unstructuredMessage, 140, ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE);
+            billOut.setUnstructuredMessage(unstructuredMessage);
+
+        } else {
+
+            int len1 = billInformation.length();
+            int len2 = unstructuredMessage != null ? unstructuredMessage.length() : 0;
+            if (len1 + len2 > 140) {
+                if (unstructuredMessage != null)
+                    validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE, ValidationConstants.KEY_FIELD_TOO_LONG);
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_BILL_INFORMATION, ValidationConstants.KEY_FIELD_TOO_LONG);
+
+            } else {
+                billInformation = cleanedValue(billInformation, ValidationConstants.FIELD_BILL_INFORMATION);
+                unstructuredMessage = cleanedValue(unstructuredMessage, ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE);
+                billOut.setUnstructuredMessage(unstructuredMessage);
+                billOut.setBillInformation(billInformation);
             }
         }
-        billOut.setBillInformation(billInformation);
     }
 
     private void validateAlternativeSchemes() {
@@ -378,6 +391,14 @@ class Validator {
         Payments.cleanValue(value, result);
         if (result.replacedUnsupportedChars)
             validationResult.addMessage(Type.WARNING, fieldRoot + subfield, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
+        return result.cleanedString;
+    }
+
+    private String cleanedValue(String value, String fieldName) {
+        CleaningResult result = new CleaningResult();
+        Payments.cleanValue(value, result);
+        if (result.replacedUnsupportedChars)
+            validationResult.addMessage(Type.WARNING, fieldName, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         return result.cleanedString;
     }
 }

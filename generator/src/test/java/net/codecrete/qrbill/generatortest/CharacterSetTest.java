@@ -98,6 +98,24 @@ class CharacterSetTest extends BillDataValidationBase {
     }
 
     @Test
+    void unstructuredMessageReplacement() {
+        bill = SampleData.getExample1();
+        bill.setUnstructuredMessage("Thanks 🙏 Lisa");
+        validate();
+        assertSingleWarningMessage(ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE, "replaced_unsupported_characters");
+        assertEquals("Thanks . Lisa", validatedBill.getUnstructuredMessage());
+    }
+
+    @Test
+    void billInfoReplacement() {
+        bill = SampleData.getExample1();
+        bill.setBillInformation("//AZ/400€/123");
+        validate();
+        assertSingleWarningMessage(ValidationConstants.FIELD_BILL_INFORMATION, "replaced_unsupported_characters");
+        assertEquals("//AZ/400./123", validatedBill.getBillInformation());
+    }
+
+    @Test
     void replacedSurrogatePair() {
         bill = SampleData.getExample1();
         Address address = createValidPerson();
@@ -120,7 +138,7 @@ class CharacterSetTest extends BillDataValidationBase {
     }
 
     @Test
-    void twoReplacedSuggoratePairsWithWhitespace() {
+    void twoReplacedSurrogatePairsWithWhitespace() {
         bill = SampleData.getExample1();
         Address address = createValidPerson();
         address.setTown("-- \uD83D\uDC68\uD83C\uDFFB --"); // two surrogate pairs
