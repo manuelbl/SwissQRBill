@@ -3,7 +3,10 @@
 <svg width="210mm" height="297mm" version="1.1" viewBox="0 0 595.276 841.89" xmlns="http://www.w3.org/2000/svg">
 <g font-family="Helvetica,Arial,&quot;Liberation Sans&quot;" transform="translate(0 841.89)">
 <title>Swiss QR Bill</title>
-<g transform="translate(189.921 -119.055) scale(1.61)">
+<g transform="translate(189.921 -0)">
+<text x="0" y="-274.665" font-size="11" font-weight="bold">Payment part</text>
+</g>
+<g transform="translate(189.921 -123.307) scale(1.61)">
 <path d="M0,-81h7v1h-7zm10,0h1v3h-1zm2,0h2v1h-2zm3,0h1v2h-1zm12,0h2v1h-2zm3,0h3v2h-3z
 m3,0h1v1h-1zm3,0h1v2h-1zm3,0h1v1h-1zm3,0h1v1h-1zm2,0h2v1h-2zm4,0h1v2h-1z
 m3,0h1v1h-1zm3,0h2v1h-2zm3,0h2v1h-2zm3,0h1v1h-1zm3,0h2v2h-2zm6,0h1v2h-1z
@@ -238,58 +241,52 @@ m10,0h1v1h-1zm3,0h1v1h-1zm2,0h1v1h-1zm6,0h1v1h-1zm2,0h1v1h-1zm2,0h1v1h-1z
 m5,0h2v1h-2zm5,0h1v1h-1zm2,0h4v1h-4zm6,0h1v1h-1zm3,0h1v1h-1zm3,0h1v1h-1z
 m4,0h1v1h-1z" fill="#000000"/>
 </g>
-<g transform="translate(189.921 -119.055)">
+<g transform="translate(189.921 -123.307)">
 <path d="M56.693,-73.701h17.008v17.008h-17.008z" fill="#000000"/>
 <path d="M63.543,-70.709h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z" fill="#ffffff"/>
 </g>
 <g transform="translate(189.921 -0)">
-<text x="0" y="-274.665" font-size="11" font-weight="bold">Payment part</text>
-<text x="0" y="-90.709" font-size="6" font-weight="bold">Currency</text>
-<text x="0" y="-81.109" font-size="8">EUR</text>
+<text x="0" y="-100.082" font-size="6" font-weight="bold">Currency</text>
+<text x="0" y="-89.082" font-size="8">EUR</text>
+<text x="42.52" y="-100.082" font-size="6" font-weight="bold">Amount</text>
+<path d="M31.556,-61.466l0,8.129l8.129,0m96.378,0l8.129,0l0,-8.129m0,-25.512l0,-8.129l-8.129,0m-96.378,0l-8.129,0l0,8.129" stroke="#000000" stroke-width="0.75" fill="none"/>
 </g>
-<g transform="translate(232.441 -0)">
-<text x="0" y="-90.709" font-size="6" font-weight="bold">Amount</text>
-<path d="M0.375,-53.493l0,8.129l8.129,0m96.378,0l8.129,0l0,-8.129m0,-25.512l0,-8.129l-8.129,0m-96.378,0l-8.129,0l0,8.129" stroke="#000000" stroke-width="0.75" fill="none"/>
-</g>
-<g transform="translate(351.496 -0)">
+<g transform="translate(334.488 -0)">
 <text x="0" y="-278.665" font-size="6" font-weight="bold">Account / Payable to</text>
-<text x="0" y="-269.065" font-size="8">CH44 3199 9123 0008 8901 2</text>
-<text x="0" y="-259.465" font-size="8">Herrn und Frau Ambikaipagan &amp; Deepshikha</text>
-<text x="0" y="-249.865" font-size="8">Thirugnanasampanthamoorthy</text>
-<text x="0" y="-240.265" font-size="8">c/o Pereira De Carvalho, Conrad-Ferdinand-Meyer-Strasse 317</text>
-<text x="0" y="-230.665" font-size="8">Wohnung 7B</text>
-<text x="0" y="-221.065" font-size="8">9527 Niederhelfenschwil bei Schönholzerswilen im Kanton St.</text>
-<text x="0" y="-211.465" font-size="8">Gallen</text>
-<text x="0" y="-199.465" font-size="6" font-weight="bold">Reference</text>
-<text x="0" y="-189.865" font-size="8">21 00000 00003 13947 14300 09017</text>
-<text x="0" y="-177.865" font-size="6" font-weight="bold">Additional information</text>
-<text x="0" y="-168.265" font-size="8">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</text>
-<text x="0" y="-158.665" font-size="8">//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH1</text>
-<text x="0" y="-149.065" font-size="8">06017086/40/1020/41/3010</text>
-<text x="0" y="-137.065" font-size="6" font-weight="bold">Payable by (name/address)</text>
-<path d="M0.375,-71.502l0,8.129l8.129,0m212.598,0l8.129,0l0,-8.129m0,-53.858l0,-8.129l-8.129,0m-212.598,0l-8.129,0l0,8.129" stroke="#000000" stroke-width="0.75" fill="none"/>
+<text x="0" y="-269.665" font-size="8">CH44 3199 9123 0008 8901 2</text>
+<text x="0" y="-260.665" font-size="8">Herrn und Frau Ambikaipagan &amp; Deepshikha</text>
+<text x="0" y="-251.665" font-size="8">Thirugnanasampanthamoorthy</text>
+<text x="0" y="-242.665" font-size="8">c/o Pereira De Carvalho, Conrad-Ferdinand-Meyer-Strasse 317</text>
+<text x="0" y="-233.665" font-size="8">Wohnung 7B</text>
+<text x="0" y="-224.665" font-size="8">9527 Niederhelfenschwil bei Schönholzerswilen im Kanton St. Gallen</text>
+<text x="0" y="-206.665" font-size="6" font-weight="bold">Reference</text>
+<text x="0" y="-197.665" font-size="8">21 00000 00003 13947 14300 09017</text>
+<text x="0" y="-179.665" font-size="6" font-weight="bold">Additional information</text>
+<text x="0" y="-170.665" font-size="8">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</text>
+<text x="0" y="-161.665" font-size="8">//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH10601</text>
+<text x="0" y="-152.665" font-size="8">7086/40/1020/41/3010</text>
+<text x="0" y="-134.665" font-size="6" font-weight="bold">Payable by (name/address)</text>
+<path d="M0.375,-67.702l0,8.129l8.129,0m167.244,0l8.129,0l0,-8.129m0,-53.858l0,-8.129l-8.129,0m-167.244,0l-8.129,0l0,8.129" stroke="#000000" stroke-width="0.75" fill="none"/>
 </g>
 <g transform="translate(14.173 -0)">
 <text x="0" y="-274.665" font-size="11" font-weight="bold">Receipt</text>
 <text x="0" y="-258.822" font-size="6" font-weight="bold">Account / Payable to</text>
-<text x="0" y="-249.222" font-size="8">CH44 3199 9123 0008 8901 2</text>
-<text x="0" y="-239.622" font-size="8">Herrn und Frau Ambikaipagan &amp;</text>
-<text x="0" y="-230.022" font-size="8">Deepshikha</text>
-<text x="0" y="-220.422" font-size="8">Thirugnanasampanthamoorthy</text>
-<text x="0" y="-210.822" font-size="8">9527 Niederhelfenschwil bei</text>
-<text x="0" y="-201.222" font-size="8">Schönholzerswilen im Kanton St. Gallen</text>
-<text x="0" y="-191.145" font-size="6" font-weight="bold">Reference</text>
-<text x="0" y="-181.545" font-size="8">21 00000 00003 13947 14300 09017</text>
-<text x="0" y="-171.469" font-size="6" font-weight="bold">Payable by (name/address)</text>
-<path d="M0.375,-105.907l0,8.129l8.129,0m130.394,0l8.129,0l0,-8.129m0,-53.858l0,-8.129l-8.129,0m-130.394,0l-8.129,0l0,8.129" stroke="#000000" stroke-width="0.75" fill="none"/>
-<text x="0" y="-90.709" font-size="6" font-weight="bold">Currency</text>
-<text x="0" y="-81.109" font-size="8">EUR</text>
+<text x="0" y="-249.822" font-size="8">CH44 3199 9123 0008 8901 2</text>
+<text x="0" y="-240.822" font-size="8">Herrn und Frau Ambikaipagan &amp;</text>
+<text x="0" y="-231.822" font-size="8">Deepshikha</text>
+<text x="0" y="-222.822" font-size="8">Thirugnanasampanthamoorthy</text>
+<text x="0" y="-213.822" font-size="8">9527 Niederhelfenschwil bei</text>
+<text x="0" y="-204.822" font-size="8">Schönholzerswilen im Kanton St. Gallen</text>
+<text x="0" y="-191.806" font-size="6" font-weight="bold">Reference</text>
+<text x="0" y="-182.806" font-size="8">21 00000 00003 13947 14300 09017</text>
+<text x="0" y="-169.791" font-size="6" font-weight="bold">Payable by (name/address)</text>
+<path d="M0.375,-117.002l0,8.129l8.129,0m130.394,0l8.129,0l0,-8.129m0,-39.685l0,-8.129l-8.129,0m-130.394,0l-8.129,0l0,8.129" stroke="#000000" stroke-width="0.75" fill="none"/>
+<text x="0" y="-100.082" font-size="6" font-weight="bold">Currency</text>
+<text x="0" y="-89.082" font-size="8">EUR</text>
+<text x="34.016" y="-100.082" font-size="6" font-weight="bold">Amount</text>
+<path d="M62.737,-85.039l0,8.129l8.129,0m68.031,0l8.129,0l0,-8.129m0,-11.339l0,-8.129l-8.129,0m-68.031,0l-8.129,0l0,8.129" stroke="#000000" stroke-width="0.75" fill="none"/>
+<text x="97.392" y="-60.397" font-size="6" font-weight="bold">Acceptance point</text>
 </g>
-<g transform="translate(51.024 -0)">
-<text x="0" y="-90.709" font-size="6" font-weight="bold">Amount</text>
-</g>
-<path d="M76.91,-76.535l0,8.129l8.129,0m68.031,0l8.129,0l0,-8.129m0,-11.339l0,-8.129l-8.129,0m-68.031,0l-8.129,0l0,8.129" stroke="#000000" stroke-width="0.75" fill="none"/>
-<text x="111.565" y="-59.528" font-size="6" font-weight="bold">Acceptance point</text>
 <path d="M175.748,-0l0,-274.961m0,-8.504l0,-14.173m-175.748,0l14.173,0m8.504,0l572.598,0" stroke="#000000" stroke-width="0.5" fill="none"/>
 <g transform="translate(172.687 -274.535) scale(0.006)">
 <path d="M131.754,-359.388c-33.041,54.539,-52.384,110.154,-52.384,192.144c0,62.702,15.27,120.654,41.122,167.596l567.598,-926.232c10.25,-16.724,34.279,-23.091,63.969,-5.805c33.06,19.242,71.495,30.268,112.507,30.268
