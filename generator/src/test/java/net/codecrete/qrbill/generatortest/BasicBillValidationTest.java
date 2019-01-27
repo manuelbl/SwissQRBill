@@ -173,6 +173,16 @@ class BasicBillValidationTest extends BillDataValidationBase {
     }
 
     @Test
+    void clippedUnstructuredMessage() {
+        bill = SampleData.getExample4();
+        bill.setUnstructuredMessage("123456789-123456789-123456789-123456789-123456789-123456789-123456789-123456789-123456789-123456789-123456789-123456789-123456789-123456789-A");
+        assertEquals(141, bill.getUnstructuredMessage().length());
+        validate();
+        assertSingleWarningMessage(ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE, ValidationConstants.KEY_FIELD_CLIPPED);
+        assertEquals(140, validatedBill.getUnstructuredMessage().length());
+    }
+
+    @Test
     void tooLongBillInformation() {
         bill = SampleData.getExample1();
         bill.setUnstructuredMessage(null);

@@ -199,20 +199,7 @@ class Validator {
         AlternativeScheme[] schemesOut = null;
         if (billIn.getAlternativeSchemes() != null) {
 
-            int len = billIn.getAlternativeSchemes().length;
-            List<AlternativeScheme> schemeList = new ArrayList<>(len);
-
-            for (AlternativeScheme schemeIn : billIn.getAlternativeSchemes()) {
-
-                AlternativeScheme schemeOut = new AlternativeScheme();
-                schemeOut.setName(Strings.trimmed(schemeIn.getName()));
-                schemeOut.setInstruction(Strings.trimmed(schemeIn.getInstruction()));
-                if (schemeOut.getName() != null || schemeOut.getInstruction() != null) {
-                    if (validateLength(schemeOut.getInstruction(), 100, ValidationConstants.FIELD_ALTERNATIVE_SCHEMES))
-                        schemeList.add(schemeOut);
-                }
-            }
-
+            List<AlternativeScheme> schemeList = createCleanSchemeList();
             if (!schemeList.isEmpty()) {
                 schemesOut = schemeList.toArray(new AlternativeScheme[0]);
 
@@ -223,6 +210,23 @@ class Validator {
             }
         }
         billOut.setAlternativeSchemes(schemesOut);
+    }
+
+    private List<AlternativeScheme> createCleanSchemeList() {
+        int len = billIn.getAlternativeSchemes().length;
+        List<AlternativeScheme> schemeList = new ArrayList<>(len);
+
+        for (AlternativeScheme schemeIn : billIn.getAlternativeSchemes()) {
+
+            AlternativeScheme schemeOut = new AlternativeScheme();
+            schemeOut.setName(Strings.trimmed(schemeIn.getName()));
+            schemeOut.setInstruction(Strings.trimmed(schemeIn.getInstruction()));
+            if ((schemeOut.getName() != null || schemeOut.getInstruction() != null)
+                    && validateLength(schemeOut.getInstruction(), 100, ValidationConstants.FIELD_ALTERNATIVE_SCHEMES)) {
+                schemeList.add(schemeOut);
+            }
+        }
+        return schemeList;
     }
 
     private void validateDebtor() {

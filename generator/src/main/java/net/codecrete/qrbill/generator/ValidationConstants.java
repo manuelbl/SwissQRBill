@@ -228,4 +228,9 @@ public class ValidationConstants {
      * Field name of the debtor's country code
      */
     public static final String FIELD_DEBTOR_COUNTRY_CODE = "debtor.countryCode";
+
+
+    private ValidationConstants() {
+        // do not create instance
+    }
  }
