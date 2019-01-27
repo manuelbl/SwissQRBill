@@ -35,7 +35,7 @@ public class QRBillExample {
 
         // more bill data
         bill.setReference("210000000003139471430009017");
-        bill.setUnstructuredMessage("Abonnment für 2020");
+        bill.setUnstructuredMessage("Abonnement für 2020");
 
         // Set debtor
         Address debtor = new Address();

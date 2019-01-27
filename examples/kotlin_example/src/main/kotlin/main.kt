@@ -33,7 +33,7 @@ fun main(args : Array<String>) {
 
     // more bill data
     bill.reference = "210000000003139471430009017"
-    bill.unstructuredMessage = "Abonnment für 2020"
+    bill.unstructuredMessage = "Abonnement für 2020"
 
     // Set debtor
     val debtor = Address()
