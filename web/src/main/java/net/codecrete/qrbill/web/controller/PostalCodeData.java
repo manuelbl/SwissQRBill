@@ -279,6 +279,8 @@ public class PostalCodeData {
 
     public static class PostalCodeDataException extends RuntimeException {
 
+        private static final long serialVersionUID = -3812824699087699254L;
+
         public PostalCodeDataException(String message) {
             super(message);
         }

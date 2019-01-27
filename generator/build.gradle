@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'net.codecrete.qrbill'
-version = '2.0.0-RC3'
+version = '2.0.1-RC1'
 archivesBaseName = 'qrbill-generator'
 
 sourceCompatibility = 1.8

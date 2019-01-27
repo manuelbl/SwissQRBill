@@ -4,7 +4,7 @@ Open-source Java library to generate Swiss QR bills (jointly developed with the 
 
 Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill). The code for this demonstration (Angular UI and RESTful service) can also be found here. 
 
-**Note: Release 2.0.0-RC3 is available. It implements version 2 of the *Swiss Implementation Guidelines QR-bill* released on November 15, 2019.**
+**Note: Release 2.0.1-RC1 is available. It implements version 2 of the *Swiss Implementation Guidelines QR-bill* released on November 15, 2019 and the *Style guide* released in January 2019.**
 
 ## Introduction
 
@@ -40,12 +40,12 @@ If you are using *Maven*, add the below dependency to your `pom.xml`:
     <dependency>
         <groupId>net.codecrete.qrbill</groupId>
         <artifactId>qrbill-generator</artifactId>
-        <version>2.0.0-RC3</version>
+        <version>[2.0.1)</version>
     </dependency>
 
 If you are using *Gradle*, add the below dependency to your *build.gradle* file:
 
-    compile group: 'net.codecrete.qrbill', name: 'qrbill-generator', version: '2.0+'
+    compile group: 'net.codecrete.qrbill', name: 'qrbill-generator', version: '2.0.1+'
 
 To generate a QR bill, you first fill in the `Bill` data structure and then call `QRBill.generate`:
 
