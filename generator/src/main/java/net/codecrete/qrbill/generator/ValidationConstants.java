@@ -49,7 +49,7 @@ public class ValidationConstants {
     /**
      * Validation message key: Conflicting fields for both structured and combined elements address type have been used
      */
-    public static final String KEY_ADDRESS_TYPE_CONFLICT = "adress_type_conflict";
+    public static final String KEY_ADDRESS_TYPE_CONFLICT = "address_type_conflict";
     /**
      * Validation message key: Country code must consist of two letters
      */
@@ -63,6 +63,10 @@ public class ValidationConstants {
      * Validation message key: Field value exceed the maximum length
      */
     public static final String KEY_FIELD_TOO_LONG = "field_value_too_long";
+    /**
+     * Validation message key: Unstructured message and bill information combined exceed the maximum length
+     */
+    public static final String ADDITIONAL_INFO_TOO_LONG = "additional_info_too_long";
     /**
      * Validation message key: Unsupported characters have been replaced
      */

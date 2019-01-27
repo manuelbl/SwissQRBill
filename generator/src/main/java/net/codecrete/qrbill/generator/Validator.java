@@ -166,23 +166,29 @@ class Validator {
             billInformation = null;
         }
 
+        if (billInformation == null && unstructuredMessage == null)
+            return;
+
         if (billInformation == null) {
             unstructuredMessage = cleanedValue(unstructuredMessage, ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE);
             unstructuredMessage = clippedValue(unstructuredMessage, 140, ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE);
             billOut.setUnstructuredMessage(unstructuredMessage);
 
+        } else if (unstructuredMessage == null) {
+            billInformation = cleanedValue(billInformation, ValidationConstants.FIELD_BILL_INFORMATION);
+            if (validateLength(billInformation, 140, ValidationConstants.FIELD_BILL_INFORMATION))
+                billOut.setBillInformation(billInformation);
+
         } else {
 
-            int len1 = billInformation.length();
-            int len2 = unstructuredMessage != null ? unstructuredMessage.length() : 0;
-            if (len1 + len2 > 140) {
-                if (unstructuredMessage != null)
-                    validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE, ValidationConstants.KEY_FIELD_TOO_LONG);
-                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_BILL_INFORMATION, ValidationConstants.KEY_FIELD_TOO_LONG);
+            billInformation = cleanedValue(billInformation, ValidationConstants.FIELD_BILL_INFORMATION);
+            unstructuredMessage = cleanedValue(unstructuredMessage, ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE);
 
+            int combinedLength = billInformation.length() + unstructuredMessage.length();
+            if (combinedLength > 140) {
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE, ValidationConstants.ADDITIONAL_INFO_TOO_LONG);
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_BILL_INFORMATION, ValidationConstants.ADDITIONAL_INFO_TOO_LONG);
             } else {
-                billInformation = cleanedValue(billInformation, ValidationConstants.FIELD_BILL_INFORMATION);
-                unstructuredMessage = cleanedValue(unstructuredMessage, ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE);
                 billOut.setUnstructuredMessage(unstructuredMessage);
                 billOut.setBillInformation(billInformation);
             }

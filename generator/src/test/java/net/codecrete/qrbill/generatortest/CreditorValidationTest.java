@@ -157,7 +157,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         assertEquals(5, result.getValidationMessages().size());
         for (ValidationMessage msg : result.getValidationMessages()) {
             assertEquals(ValidationMessage.Type.ERROR, msg.getType());
-            assertEquals("adress_type_conflict", msg.getMessageKey());
+            assertEquals("address_type_conflict", msg.getMessageKey());
             assertTrue(msg.getField().startsWith(ValidationConstants.FIELDROOT_CREDITOR));
         }
     }

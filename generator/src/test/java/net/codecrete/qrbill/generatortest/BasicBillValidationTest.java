@@ -212,12 +212,12 @@ class BasicBillValidationTest extends BillDataValidationBase {
         ValidationMessage msg = result.getValidationMessages().get(0);
         assertEquals(ValidationMessage.Type.ERROR, msg.getType());
         assertEquals(ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE, msg.getField());
-        assertEquals(ValidationConstants.KEY_FIELD_TOO_LONG, msg.getMessageKey());
+        assertEquals(ValidationConstants.ADDITIONAL_INFO_TOO_LONG, msg.getMessageKey());
 
         msg = result.getValidationMessages().get(1);
         assertEquals(ValidationMessage.Type.ERROR, msg.getType());
         assertEquals(ValidationConstants.FIELD_BILL_INFORMATION, msg.getField());
-        assertEquals(ValidationConstants.KEY_FIELD_TOO_LONG, msg.getMessageKey());
+        assertEquals(ValidationConstants.ADDITIONAL_INFO_TOO_LONG, msg.getMessageKey());
     }
 
     @Test
