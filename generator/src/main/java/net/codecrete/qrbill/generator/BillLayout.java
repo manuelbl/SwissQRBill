@@ -56,7 +56,9 @@ class BillLayout {
     private double yPos;
 
     private int labelFontSize;
+    private double labelAscender;
     private int textFontSize;
+    private double textAscender;
     private double lineSpacing;
     private double extraSpacing;
 
@@ -123,8 +125,7 @@ class BillLayout {
         // title section
         graphics.setTransformation(RECEIPT_WIDTH + MARGIN, 0, 0, 1, 1);
         yPos = SLIP_HEIGHT - MARGIN - graphics.getAscender(FONT_SIZE_TITLE);
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_PAYMENT_PART, bill.getFormat().getLanguage()), 0,
-                yPos, FONT_SIZE_TITLE, true);
+        graphics.putText(getText(MultilingualText.KEY_PAYMENT_PART), 0, yPos, FONT_SIZE_TITLE, true);
 
         // Swiss QR code section
         qrCode.draw(graphics, RECEIPT_WIDTH + MARGIN, QR_CODE_BOTTOM);
@@ -148,23 +149,23 @@ class BillLayout {
         graphics.setTransformation(RECEIPT_WIDTH + MARGIN, 0, 0, 1, 1);
 
         // currency
-        double y = AMOUNT_SECTION_TOP - graphics.getAscender(labelFontSize);
-        String label = MultilingualText.getText(MultilingualText.KEY_CURRENCY, bill.getFormat().getLanguage());
+        double y = AMOUNT_SECTION_TOP - labelAscender;
+        String label = getText(MultilingualText.KEY_CURRENCY);
         graphics.putText(label, 0, y, labelFontSize, true);
 
         y -= (textFontSize + 3) * PT_TO_MM;
         graphics.putText(bill.getCurrency(), 0, y, textFontSize, false);
 
         // amount
-        y = AMOUNT_SECTION_TOP - graphics.getAscender(labelFontSize);
-        label = MultilingualText.getText(MultilingualText.KEY_AMOUNT, bill.getFormat().getLanguage());
+        y = AMOUNT_SECTION_TOP - labelAscender;
+        label = getText(MultilingualText.KEY_AMOUNT);
         graphics.putText(label, CURRENCY_WIDTH_PP, y, labelFontSize, true);
 
         y -= (textFontSize + 3) * PT_TO_MM;
         if (amount != null) {
             graphics.putText(amount, CURRENCY_WIDTH_PP, y, textFontSize, false);
         } else {
-            y -= -graphics.getAscender(textFontSize) + AMOUNT_BOX_HEIGHT_PP;
+            y -= -textAscender + AMOUNT_BOX_HEIGHT_PP;
             drawCorners(PP_AMOUNT_SECTION_WIDTH + MARGIN - AMOUNT_BOX_WIDTH_PP, y, AMOUNT_BOX_WIDTH_PP, AMOUNT_BOX_HEIGHT_PP);
         }
     }
@@ -172,7 +173,7 @@ class BillLayout {
     private void drawPaymentPartInformationSection() throws IOException {
 
         graphics.setTransformation(SLIP_WIDTH - PP_INFO_SECTION_WIDTH - MARGIN, 0, 0, 1, 1);
-        yPos = SLIP_HEIGHT - MARGIN - graphics.getAscender(labelFontSize);
+        yPos = SLIP_HEIGHT - MARGIN - labelAscender;
 
         // account and creditor
         drawLabelAndTextLines(MultilingualText.KEY_ACCOUNT_PAYABLE_TO, accountPayableToLines);
@@ -190,7 +191,7 @@ class BillLayout {
             drawLabelAndTextLines(MultilingualText.KEY_PAYABLE_BY, payableByLines);
         } else {
             drawLabel(MultilingualText.KEY_PAYABLE_BY_NAME_ADDRESS);
-            yPos -= -graphics.getAscender(textFontSize) + BOX_TOP_PADDING;
+            yPos -= -textAscender + BOX_TOP_PADDING;
             yPos -= DEBTOR_BOX_HEIGHT_PP;
             drawCorners(0, yPos, DEBTOR_BOX_WIDTH_PP, DEBTOR_BOX_HEIGHT_PP);
         }
@@ -225,8 +226,7 @@ class BillLayout {
         // "Receipt" title
         graphics.setTransformation(MARGIN, 0, 0, 1, 1);
         yPos = SLIP_HEIGHT - MARGIN - graphics.getAscender(FONT_SIZE_TITLE);
-        graphics.putText(MultilingualText.getText(MultilingualText.KEY_RECEIPT, bill.getFormat().getLanguage()), 0,
-                yPos, FONT_SIZE_TITLE, true);
+        graphics.putText(getText(MultilingualText.KEY_RECEIPT), 0, yPos, FONT_SIZE_TITLE, true);
 
         // information section
         drawReceiptInformationSection();
@@ -243,7 +243,7 @@ class BillLayout {
         final double TITLE_HEIGHT = 7; // mm
 
         // payable to
-        yPos = SLIP_HEIGHT - MARGIN - TITLE_HEIGHT - graphics.getAscender(labelFontSize);
+        yPos = SLIP_HEIGHT - MARGIN - TITLE_HEIGHT - labelAscender;
         drawLabelAndTextLines(MultilingualText.KEY_ACCOUNT_PAYABLE_TO, accountPayableToLines);
 
         // reference
@@ -255,7 +255,7 @@ class BillLayout {
             drawLabelAndTextLines(MultilingualText.KEY_PAYABLE_BY, payableByLines);
         } else {
             drawLabel(MultilingualText.KEY_PAYABLE_BY_NAME_ADDRESS);
-            yPos -= -graphics.getAscender(textFontSize) + BOX_TOP_PADDING;
+            yPos -= -textAscender + BOX_TOP_PADDING;
             yPos -= DEBTOR_BOX_HEIGHT_RC;
             drawCorners(0, yPos, DEBTOR_BOX_WIDTH_RC, DEBTOR_BOX_HEIGHT_RC);
         }
@@ -268,16 +268,16 @@ class BillLayout {
         final double AMOUNT_BOX_HEIGHT_RC = 10; // mm
 
         // currency
-        double y = AMOUNT_SECTION_TOP - graphics.getAscender(labelFontSize);
-        String label = MultilingualText.getText(MultilingualText.KEY_CURRENCY, bill.getFormat().getLanguage());
+        double y = AMOUNT_SECTION_TOP - labelAscender;
+        String label = getText(MultilingualText.KEY_CURRENCY);
         graphics.putText(label, 0, y, labelFontSize, true);
 
         y -= (textFontSize + 3) * PT_TO_MM;
         graphics.putText(bill.getCurrency(), 0, y, textFontSize, false);
 
         // amount
-        y = AMOUNT_SECTION_TOP - graphics.getAscender(labelFontSize);
-        label = MultilingualText.getText(MultilingualText.KEY_AMOUNT, bill.getFormat().getLanguage());
+        y = AMOUNT_SECTION_TOP - labelAscender;
+        label = getText(MultilingualText.KEY_AMOUNT);
         graphics.putText(label, CURRENCY_WIDTH_RC, y, labelFontSize, true);
 
         if (amount != null) {
@@ -294,8 +294,8 @@ class BillLayout {
 
         final double ACCEPTANCE_POINT_SECTION_TOP = 23; // mm (from bottom)
 
-        String label = MultilingualText.getText(MultilingualText.KEY_ACCEPTANCE_POINT, bill.getFormat().getLanguage());
-        double y = ACCEPTANCE_POINT_SECTION_TOP - graphics.getAscender(labelFontSize);
+        String label = getText(MultilingualText.KEY_ACCEPTANCE_POINT);
+        double y = ACCEPTANCE_POINT_SECTION_TOP - labelAscender;
         double w = graphics.getTextWidth(label, labelFontSize, true);
         graphics.putText(label, RECEIPT_TEXT_WIDTH - w, y, labelFontSize, true);
     }
@@ -365,6 +365,9 @@ class BillLayout {
         lineSpacing = (textFontSize + 1) * PT_TO_MM;
         extraSpacing = (maxHeight - fixedHeight - numTextLines * lineSpacing) / numExtraLines;
         extraSpacing = Math.min(Math.max(extraSpacing, 0), lineSpacing);
+
+        labelAscender = graphics.getAscender(labelFontSize);
+        textAscender = graphics.getAscender(textFontSize);
 
         return extraSpacing / lineSpacing < 0.8;
     }
@@ -446,7 +449,7 @@ class BillLayout {
     // Draws a label at (0, yPos) and advances vertically.
     // yPos is taken as the baseline for the text.
     private void drawLabel(String labelKey) throws IOException {
-        graphics.putText(MultilingualText.getText(labelKey, bill.getFormat().getLanguage()), 0, yPos, labelFontSize, true);
+        graphics.putText(getText(labelKey), 0, yPos, labelFontSize, true);
         yPos -= lineSpacing;
     }
 
@@ -629,5 +632,9 @@ class BillLayout {
 
         String[] lines = graphics.splitLines(text, maxWidth - fontSize * ELLIPSIS_WIDTH, fontSize);
         return lines[0] + "…";
+    }
+
+    private String getText(String textKey) {
+        return MultilingualText.getText(textKey, bill.getFormat().getLanguage());
     }
 }
