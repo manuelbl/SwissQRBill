@@ -10,6 +10,7 @@ import net.codecrete.qrbill.generator.Address;
 import net.codecrete.qrbill.generator.AlternativeScheme;
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.Language;
+import net.codecrete.qrbill.generator.OutputSize;
 import net.codecrete.qrbill.generator.SeparatorType;
 
 import java.math.BigDecimal;
@@ -157,6 +158,30 @@ class SampleData {
         bill.setReference("210000 000 00313 9471430009017");
         bill.setUnstructuredMessage("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed");
         bill.setBillInformation("//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010");
+        return bill;
+    }
+
+    static Bill getExample7() {
+        Bill bill = new Bill();
+        bill.getFormat().setLanguage(Language.DE);
+        bill.getFormat().setOutputSize(OutputSize.A4_PORTRAIT_SHEET);
+        bill.setAccount("CH48 0900 0000 8575 7337 2");
+        Address creditor = new Address();
+        creditor.setName("Omnia Trading AG");
+        creditor.setAddressLine1("Allmendweg 30");
+        creditor.setAddressLine2("4528 Zuchwil");
+        creditor.setCountryCode("CH");
+        bill.setCreditor(creditor);
+        bill.setAmount(BigDecimal.valueOf(175605, 2));
+        bill.setCurrency("CHF");
+        Address debtor = new Address();
+        debtor.setName("Machina Futura AG");
+        debtor.setAddressLine1("Alte Fabrik 3A");
+        debtor.setAddressLine2("8400 Winterthur");
+        debtor.setCountryCode("CH");
+        bill.setDebtor(debtor);
+        bill.createAndSetCreditorReference("2021007834");
+        bill.setUnstructuredMessage("Auftrag 2830188 / Rechnung 2021007834");
         return bill;
     }
 }

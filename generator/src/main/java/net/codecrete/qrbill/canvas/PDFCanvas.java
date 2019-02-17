@@ -27,6 +27,16 @@ import java.nio.file.Path;
  */
 public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
 
+    /**
+     * Add the QR bill on the last page of the PDF document.
+     */
+    public static final int LAST_PAGE = -1;
+
+    /**
+     * Add the QR bill on a new page at the end of the PDF document.
+     */
+    public static final int NEW_PAGE_AT_END = -2;
+
     private PDDocument document;
     private PDPageContentStream contentStream;
     private int lastStrokingColor = 0;
@@ -47,6 +57,36 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
         PDPage page = new PDPage(new PDRectangle((float) (width * MM_TO_PT), (float) (height * MM_TO_PT)));
         document.addPage(page);
         contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.OVERWRITE, true);
+    }
+
+    /**
+     * Creates a new instance for adding the QR bill to an exiting PDF document.
+     * <p>
+     *     The QR bill can either be added to an existing page by specifying the page number
+     *     of an existing page (or {@link #LAST_PAGE}), or it can be added to a new page
+     *     at the end of the document (see {@link #NEW_PAGE_AT_END}).
+     * </p>
+     * <p>
+     *     The created instance assumes that the page for the QR bill has A4 format and
+     *     will add the QR bill at the bottom of the page.
+     * </p>
+     * @param path path to exiting document
+     * @param pageNo the zero-based number of the page the QR bill should be added to
+     * @throws IOException thrown if the creation fails
+     */
+    public PDFCanvas(Path path, int pageNo) throws IOException {
+        setupFontMetrics("Helvetica");
+        document = PDDocument.load(path.toFile());
+        if (pageNo == NEW_PAGE_AT_END) {
+            PDPage page = new PDPage(new PDRectangle((float) (210 * MM_TO_PT), (float) (297 * MM_TO_PT)));
+            document.addPage(page);
+            contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.OVERWRITE, true);
+        } else {
+            if (pageNo == LAST_PAGE)
+                pageNo = document.getNumberOfPages() - 1;
+            PDPage page = document.getPage(pageNo);
+            contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true);
+        }
     }
 
     @Override

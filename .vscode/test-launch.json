@@ -3,7 +3,7 @@
         {
             "name": "generator",
             "projectName": "generator",
-            "workingDirectory": "/Users/bleichenbacher/Documents/Lab/QR-Bill/QRBill",
+            "workingDirectory": "${workspaceFolder}",
             "args": [],
             "vmargs": [],
             "preLaunchTask": ""
@@ -11,7 +11,7 @@
         {
             "name": "web",
             "projectName": "web",
-            "workingDirectory": "/Users/bleichenbacher/Documents/Lab/QR-Bill/QRBill",
+            "workingDirectory": "${workspaceFolder}",
             "args": [],
             "vmargs": [],
             "preLaunchTask": ""
@@ -21,7 +21,7 @@
         {
             "name": "generator",
             "projectName": "generator",
-            "workingDirectory": "/Users/bleichenbacher/Documents/Lab/QR-Bill/QRBill",
+            "workingDirectory": "${workspaceFolder}",
             "args": [],
             "vmargs": [],
             "preLaunchTask": ""
@@ -29,7 +29,7 @@
         {
             "name": "web",
             "projectName": "web",
-            "workingDirectory": "/Users/bleichenbacher/Documents/Lab/QR-Bill/QRBill",
+            "workingDirectory": "${workspaceFolder}",
             "args": [],
             "vmargs": [],
             "preLaunchTask": ""
