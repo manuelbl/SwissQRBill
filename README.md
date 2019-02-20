@@ -4,7 +4,7 @@ Open-source Java library to generate Swiss QR bills (jointly developed with the 
 
 Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill). The code for this demonstration (Angular UI and RESTful service) can also be found here. 
 
-**Note: Release 2.0.1-RC1 is available. It implements version 2 of the *Swiss Implementation Guidelines QR-bill* released on November 15, 2019 and the *Style guide* released in January 2019.**
+**Note: Release 2.0.1 is available. It implements version 2 of the *Swiss Implementation Guidelines QR-bill* released on November 15, 2019 and the *Style guide* released in January 2019.**
 
 ## Introduction
 
@@ -21,6 +21,7 @@ The invoicing party can easily synchronize the received payment with the account
 The Swiss QR bill library:
 
 - generates PDF, SVG and PNG files
+- add QR bill to existing PDF file
 - generates payment slip (105mm by 210mm), A4 sheets or QR code only
 - multilingual: German, French, Italian, English
 - validates the invoice data and provides detailed validation information
@@ -40,7 +41,7 @@ If you are using *Maven*, add the below dependency to your `pom.xml`:
     <dependency>
         <groupId>net.codecrete.qrbill</groupId>
         <artifactId>qrbill-generator</artifactId>
-        <version>[2.0.1-RC1,)</version>
+        <version>[2.0.1,)</version>
     </dependency>
 
 If you are using *Gradle*, add the below dependency to your *build.gradle* file:

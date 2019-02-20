@@ -15,7 +15,7 @@ plugins {
 apply plugin: 'org.openapi.generator'
 
 group = 'net.codecrete.qrbill'
-version = '2.0.1-RC1'
+version = '2.0.1'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
