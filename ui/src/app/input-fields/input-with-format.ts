@@ -34,16 +34,28 @@ import {
 } from '@angular/forms';
 import {
   CanUpdateErrorState,
-  ErrorStateMatcher
+  ErrorStateMatcher,
+  mixinErrorState,
+  CanUpdateErrorStateCtor
 } from '@angular/material/core';
 import { MatFormFieldControl } from '@angular/material/form-field';
-import { _MatInputMixinBase } from '@angular/material/input';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { Platform } from '@angular/cdk/platform';
 import { InputFormatter } from './input-formatter';
 import { Subject } from 'rxjs';
 
 let nextUniqueId = 0;
+
+class MatInputBase {
+  constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
+              public _parentForm: NgForm,
+              public _parentFormGroup: FormGroupDirective,
+              /** @docs-private */
+              public ngControl: NgControl) {}
+}
+
+const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
+    mixinErrorState(MatInputBase);
 
 /**
  * Directive that allows a native input to work inside a `MatFormField` and apply a formatting when input loses focus.
@@ -301,8 +313,8 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase
   }
 
   /** Focuses the input. */
-  focus(): void {
-    this._elementRef.nativeElement.focus();
+  focus(options?: FocusOptions): void {
+    this._elementRef.nativeElement.focus(options);
   }
 
   @HostListener('blur')

@@ -9,7 +9,7 @@ import { Observable, of } from 'rxjs';
 
 const translations: any = {
   app_name: 'Swiss QR Bill',
-  copyright: 'Copyright © 2018 Manuel Bleichenbacher',
+  copyright: 'Copyright © 2019 Manuel Bleichenbacher',
   examples: 'Examples'
 };
 

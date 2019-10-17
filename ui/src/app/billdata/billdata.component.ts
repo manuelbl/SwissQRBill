@@ -170,7 +170,7 @@ export class BillDataComponent implements OnInit {
           if (!errors) {
             errors = {};
           }
-          errors['serverSide'] = msg.message;
+          errors.serverSide = msg.message;
           control.setErrors(errors);
           if (msg.messageKey !== 'field_is_mandatory') {
             // Due to to dependency between 'account' and 'reference',
