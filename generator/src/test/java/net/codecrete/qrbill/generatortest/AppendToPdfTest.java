@@ -24,13 +24,13 @@ import java.nio.file.Paths;
  * Unit test for adding a QR bill to an existing PDF document
  */
 @DisplayName("Append invoice to PDF")
-class AppenddToPdfTest {
+class AppendToPdfTest {
 
     private Path invoicePath;
 
     @BeforeEach
     void init() throws URISyntaxException {
-        invoicePath = Paths.get(AppenddToPdfTest.class.getResource("/invoice.pdf").toURI());
+        invoicePath = Paths.get(AppendToPdfTest.class.getResource("/invoice.pdf").toURI());
     }
 
     @Test
