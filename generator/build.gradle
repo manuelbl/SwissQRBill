@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'net.codecrete.qrbill'
-version = '2.0.1'
+version = '2.1'
 archivesBaseName = 'qrbill-generator'
 
 sourceCompatibility = 1.8
@@ -105,9 +105,9 @@ sonarqube {
 }
 
 dependencies {
-    implementation 'io.nayuki:qrcodegen:[1.4,)'
+    implementation 'io.nayuki:qrcodegen:[1.5,)'
     implementation 'org.apache.pdfbox:pdfbox:[2.0,)'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.3.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.5.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
 }
