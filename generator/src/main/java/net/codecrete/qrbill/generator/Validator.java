@@ -73,7 +73,6 @@ class Validator {
         }
     }
 
-    private static final BigDecimal AMOUNT_MIN = BigDecimal.valueOf(1, 2);
     private static final BigDecimal AMOUNT_MAX = BigDecimal.valueOf(99999999999L, 2);
 
     private void validateAmount() {
@@ -82,7 +81,7 @@ class Validator {
             billOut.setAmount(null);
         } else {
             amount = amount.setScale(2, RoundingMode.HALF_UP); // round to multiple of 0.01
-            if (AMOUNT_MIN.compareTo(amount) > 0 || AMOUNT_MAX.compareTo(amount) < 0) {
+            if (BigDecimal.ZERO.compareTo(amount) > 0 || AMOUNT_MAX.compareTo(amount) < 0) {
                 validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_AMOUNT, ValidationConstants.KEY_AMOUNT_IS_IN_VALID_RANGE);
             } else {
                 billOut.setAmount(amount);

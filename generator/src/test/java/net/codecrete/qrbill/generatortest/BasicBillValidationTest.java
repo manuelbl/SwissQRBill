@@ -72,7 +72,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
     @Test
     void amountTooLow() {
         bill = SampleData.getExample1();
-        bill.setAmount(BigDecimal.valueOf(0));
+        bill.setAmount(BigDecimal.valueOf(-1, 2));
         validate();
         assertSingleErrorMessage(ValidationConstants.FIELD_AMOUNT, "amount_in_valid_range");
     }

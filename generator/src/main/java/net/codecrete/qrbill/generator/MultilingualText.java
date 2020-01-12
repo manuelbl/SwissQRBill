@@ -54,6 +54,10 @@ public class MultilingualText {
      * Text key for "Payable by (name / address)"
      */
     public static final String KEY_PAYABLE_BY_NAME_ADDRESS = "payable_by_name_addr";
+    /**
+     * Text key for "DO NOT USE FOR PAYMENT"
+     */
+    public static final String KEY_DO_NOT_USE_FOR_PAYMENT = "do_not_use_for_payment";
 
 
     private static final String[] languageCodes = { "de", "fr", "it", "en" };
