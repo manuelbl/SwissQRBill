@@ -50,7 +50,7 @@ export class AmountFormatter implements InputFormatter<number> {
   }
 
   formattedValue(rawValue: number): string {
-    if (!rawValue) {
+    if (rawValue === undefined || rawValue === null) {
       return '';
     }
     const n = AmountFormatter.rounded(rawValue);
@@ -58,7 +58,7 @@ export class AmountFormatter implements InputFormatter<number> {
   }
 
   editValue(rawValue: number): string {
-    if (!rawValue) {
+    if (rawValue === undefined || rawValue === null) {
       return '';
     }
     const n = AmountFormatter.rounded(rawValue);

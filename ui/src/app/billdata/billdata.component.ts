@@ -88,7 +88,7 @@ export class BillDataComponent implements OnInit {
           validators: [Validators.required, Validators.pattern('[A-Za-z]{3}')]
         }),
         amount: new FormControl(this.bill.amount, {
-          validators: [Validators.min(0.01), Validators.max(999999999.99)]
+          validators: [Validators.min(0), Validators.max(999999999.99)]
         }),
         reference: new FormControl(this.bill.reference, {
           validators: [Validators.pattern('[A-Za-z0-9 ]{5,40}')]
