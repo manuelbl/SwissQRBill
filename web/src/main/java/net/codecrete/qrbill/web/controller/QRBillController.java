@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.GraphicsFormat;
 import net.codecrete.qrbill.generator.Language;
+import net.codecrete.qrbill.generator.MultilingualText;
 import net.codecrete.qrbill.generator.OutputSize;
 import net.codecrete.qrbill.generator.QRBill;
 import net.codecrete.qrbill.generator.QRBillValidationError;
@@ -36,6 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
@@ -133,6 +135,7 @@ public class QRBillController implements BillApi {
     public ResponseEntity<Resource> generateBill(QrBill qrBill) {
         Bill bill = QrBillDTOConverter.fromDtoQrBill(qrBill);
         setFormatDefaults(bill);
+        updateForAdviceOnly(bill);
         byte[] result = QRBill.generate(bill);
         MediaType contentType = getContentType(bill.getFormat().getGraphicsFormat());
         return ResponseEntity.ok().contentType(contentType).body(new ByteArrayResource(result));
@@ -164,6 +167,7 @@ public class QRBillController implements BillApi {
             bill.getFormat().setOutputSize(getOutputSize(outputSize));
         if (graphicsFormat != null)
             bill.getFormat().setGraphicsFormat(getGraphicsFormat(graphicsFormat));
+        updateForAdviceOnly(bill);
 
         byte[] result = QRBill.generate(bill);
         MediaType contentType = getContentType(bill.getFormat().getGraphicsFormat());
@@ -187,6 +191,14 @@ public class QRBillController implements BillApi {
 
     private static MediaType getContentType(GraphicsFormat graphicsFormat) {
         return graphicsFormat == GraphicsFormat.SVG ? MEDIA_TYPE_SVG : MediaType.APPLICATION_PDF;
+    }
+
+    private void updateForAdviceOnly(Bill bill) {
+        if (bill.getAmount() == null || BigDecimal.ZERO.compareTo(bill.getAmount()) != 0)
+            return;
+
+        bill.setUnstructuredMessage(
+                MultilingualText.getText(MultilingualText.KEY_DO_NOT_USE_FOR_PAYMENT, bill.getFormat().getLanguage()));
     }
 
     // --- ID Generation and decoding
