@@ -113,7 +113,7 @@ class DecodedTextTest {
         assertEquals(bill, bill2);
     }
 
-    private void normalizeSourceBill(Bill bill) {
+    static void normalizeSourceBill(Bill bill) {
         bill.getFormat().setLanguage(Language.DE);
         bill.setAccount(bill.getAccount().replace(" ", ""));
         if (bill.getReference() != null)
@@ -140,7 +140,7 @@ class DecodedTextTest {
         }
     }
 
-    private void normalizeDecodedBill(Bill bill) {
+    static void normalizeDecodedBill(Bill bill) {
         bill.getFormat().setLanguage(Language.DE); // fix language (not contained in text)
     }
 
@@ -201,7 +201,7 @@ class DecodedTextTest {
         assertSingleError(err.getValidationResult(), ValidationConstants.KEY_VALID_DATA_STRUCTURE, ValidationConstants.FIELD_TRAILER);
     }
 
-    private void assertSingleError(ValidationResult result, String messageKey, String field) {
+    static void assertSingleError(ValidationResult result, String messageKey, String field) {
         assertNotNull(result);
         List<ValidationMessage> messages = result.getValidationMessages();
         assertNotNull(messages);

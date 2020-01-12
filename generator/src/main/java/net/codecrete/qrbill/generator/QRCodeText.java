@@ -138,8 +138,11 @@ public class QRCodeText {
      */
     public static Bill decode(String text) {
         String[] lines = splitLines(text);
-        if (lines.length < 32 || lines.length > 34)
-            throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_VALID_DATA_STRUCTURE);
+        if (lines.length < 32 || lines.length > 34) {
+            // A line feed at the end is illegal (cf 4.2.3) but found in practice. Don't be too strict.
+            if (!(lines.length == 35 && lines[34].isEmpty()))
+                throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_VALID_DATA_STRUCTURE);
+        }
         if (!"SPC".equals(lines[0]))
             throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_VALID_DATA_STRUCTURE);
         if (!"0200".equals(lines[1]))
@@ -179,6 +182,9 @@ public class QRCodeText {
 
         AlternativeScheme[] alternativeSchemes = null;
         int numSchemes = lines.length - 32;
+        // skip empty schemes at end (due to invalid line feed at end)
+        if (numSchemes > 0 && lines[32 + numSchemes - 1].isEmpty())
+            numSchemes--;
         if (numSchemes > 0) {
             alternativeSchemes = new AlternativeScheme[numSchemes];
             for (int i = 0; i < numSchemes; i++) {
