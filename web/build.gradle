@@ -1,21 +1,16 @@
-buildscript {
-    dependencies {
-        classpath "org.openapitools:openapi-generator-gradle-plugin:3.3.3"
-    }
-}
-
 plugins {
     id 'org.sonarqube' version '2.6.2'
     id 'java'
-    id 'org.springframework.boot' version '2.1.2.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'org.openapi.generator' version '4.2.2'
     id 'jacoco'
 }
 
 apply plugin: 'org.openapi.generator'
 
 group = 'net.codecrete.qrbill'
-version = '2.0.1'
+version = '2.1.0'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -35,17 +30,18 @@ def openapiSourceDir = new File(openapiOutputDir, 'src/main/java')
 def openapiIgnoreFiles = new File(projectDir, '.openapi-generator-ignore')
 
 openApiGenerate {
-    generatorName = "spring"
+    generatorName = 'spring'
     inputSpec = openapiInput.path
     outputDir = openapiOutputDir.path
-    apiPackage     = "net.codecrete.qrbill.web.api"
-    invokerPackage = "net.codecrete.qrbill.web.config"
-    modelPackage   = "net.codecrete.qrbill.web.model"
+    apiPackage     = 'net.codecrete.qrbill.web.api'
+    invokerPackage = 'net.codecrete.qrbill.web.config'
+    modelPackage   = 'net.codecrete.qrbill.web.model'
     ignoreFileOverride = openapiIgnoreFiles.path
     configOptions = [
-            java8: true,
-            dateLibrary: "java8",
-            configPackage: "net.codecrete.qrbill.web.config"
+            hideGenerationTimestamp: 'true',
+            java8: 'true',
+            dateLibrary: 'java8',
+            configPackage: 'net.codecrete.qrbill.web.config'
     ]
 }
 
@@ -63,13 +59,12 @@ dependencies {
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    implementation 'javax.validation:validation-api'
-    implementation 'javax.xml.bind:jaxb-api:2.3.0'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
-    testImplementation 'com.squareup.okhttp3:okhttp:3.11.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+    testImplementation 'com.squareup.okhttp3:okhttp:4.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
 }
 
 compileJava.dependsOn tasks.openApiGenerate

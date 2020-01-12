@@ -39,8 +39,6 @@ class InvalidRequestTests {
         );
 
         assertEquals(400, response.code());
-        assertEquals("text/plain;charset=UTF-8", response.header("Content-Type"));
-        assertEquals("Unexpected value 'pl'", response.body().string());
     }
 
     @Test
