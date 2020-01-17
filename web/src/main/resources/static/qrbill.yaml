@@ -33,10 +33,15 @@ info:
     characters are used, they are automatically replaced. The validation result contains warnings about
     truncations and replacements.
 
-  version: 2.1.0
+  version: 2.1.1
   license:
     name: "MIT License"
     url: "https://opensource.org/licenses/MIT"
+
+  contact:
+    name: Manuel Bleichenbacher
+    email: manuel.bleichenbacher@gmail.com
+    url: https://github.com/manuelbl/SwissQRBill
 
 servers:
 - url: "https://www.codecrete.net/qrbill-api"
