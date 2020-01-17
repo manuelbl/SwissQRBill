@@ -194,7 +194,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
             int r = (color >> 16) & 0xff;
             int g = (color >> 8) & 0xff;
             int b = (color >> 8) & 0xff;
-            contentStream.setNonStrokingColor(r, g, b);
+            contentStream.setNonStrokingColor(r / 255f, g / 255f, b / 255f);
         }
         contentStream.fill();
     }
@@ -206,7 +206,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
             int r = (color >> 16) & 0xff;
             int g = (color >> 8) & 0xff;
             int b = (color >> 8) & 0xff;
-            contentStream.setStrokingColor(r, g, b);
+            contentStream.setStrokingColor(r / 255f, g / 255f, b / 255f);
         }
         if (strokeWidth != lastLineWidth) {
             lastLineWidth = strokeWidth;

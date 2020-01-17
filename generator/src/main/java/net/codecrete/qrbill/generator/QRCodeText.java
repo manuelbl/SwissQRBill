@@ -138,7 +138,7 @@ public class QRCodeText {
      */
     public static Bill decode(String text) {
         String[] lines = splitLines(text);
-        if (lines.length < 32 || lines.length > 34) {
+        if (lines.length < 31 || lines.length > 34) {
             // A line feed at the end is illegal (cf 4.2.3) but found in practice. Don't be too strict.
             if (!(lines.length == 35 && lines[34].isEmpty()))
                 throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_VALID_DATA_STRUCTURE);
@@ -178,7 +178,7 @@ public class QRCodeText {
         if (!"EPD".equals(lines[30]))
             throwSingleValidationError(ValidationConstants.FIELD_TRAILER, ValidationConstants.KEY_VALID_DATA_STRUCTURE);
 
-        bill.setBillInformation(lines[31]);
+        bill.setBillInformation(lines.length > 31 ? lines[31] : "");
 
         AlternativeScheme[] alternativeSchemes = null;
         int numSchemes = lines.length - 32;

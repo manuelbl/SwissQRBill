@@ -73,7 +73,7 @@ public class ValidationConstants {
     public static final String KEY_REPLACED_UNSUPPORTED_CHARACTERS = "replaced_unsupported_characters";
     /**
      * Validation message key: Valid data structure starts with "SPC" and consists
-     * of 32 to 34 lines of text
+     * of 32 to 34 lines of text (with exceptions)
      */
     public static final String KEY_VALID_DATA_STRUCTURE = "valid_data_structure";
     /**
