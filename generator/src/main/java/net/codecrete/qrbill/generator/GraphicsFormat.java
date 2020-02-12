@@ -17,5 +17,9 @@ public enum GraphicsFormat {
     /**
      * SVG
      */
-    SVG
+    SVG,
+    /**
+     * PNG
+     */
+    PNG
 }

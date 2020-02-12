@@ -22,6 +22,7 @@ public class BillFormat implements Serializable {
     private SeparatorType separatorType = SeparatorType.SOLID_LINE_WITH_SCISSORS;
     private String fontFamily = "Helvetica,Arial,\"Liberation Sans\"";
     private GraphicsFormat graphicsFormat = GraphicsFormat.SVG;
+    private int resolution = 144;
 
     /**
      * Creates a new instance with default values
@@ -41,6 +42,7 @@ public class BillFormat implements Serializable {
         separatorType = format.separatorType;
         fontFamily = format.fontFamily;
         graphicsFormat = format.graphicsFormat;
+        resolution = format.resolution;
     }
 
     /**
@@ -167,6 +169,26 @@ public class BillFormat implements Serializable {
     }
 
     /**
+     * Gets the bill resolution.
+     * 
+     * <p>
+     * Defaults to 144.
+     * </p>
+     */
+    public int getResolution() {
+		return resolution;
+	}
+
+    /**
+     * Set the bill resolution.
+     * 
+     * @param resolution the resolution
+     */
+	public void setResolution(int resolution) {
+		this.resolution = resolution;
+	}
+
+	/**
      * {@inheritDoc}
      */
     @Override
@@ -178,7 +200,8 @@ public class BillFormat implements Serializable {
                 language == that.language &&
                 separatorType == that.separatorType &&
                 Objects.equals(fontFamily, that.fontFamily) &&
-                graphicsFormat == that.graphicsFormat;
+                graphicsFormat == that.graphicsFormat &&
+                resolution == that.resolution;
     }
 
     /**
@@ -201,6 +224,7 @@ public class BillFormat implements Serializable {
                 ", separatorType=" + separatorType +
                 ", fontFamily='" + fontFamily + '\'' +
                 ", graphicsFormat=" + graphicsFormat +
+                ", resolution=" + resolution +
                 '}';
     }
 }
