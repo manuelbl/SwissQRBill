@@ -169,20 +169,22 @@ public class BillFormat implements Serializable {
     }
 
     /**
-     * Gets the bill resolution.
+     * Gets the resolution for pixel graphics formats.
      * 
      * <p>
-     * Defaults to 144.
+     * Defaults to 144 dpi.
      * </p>
+     *
+     * @return graphics resolution, in dpi
      */
     public int getResolution() {
 		return resolution;
 	}
 
     /**
-     * Set the bill resolution.
+     * Sets the resolution for pixel graphics formats.
      * 
-     * @param resolution the resolution
+     * @param resolution graphics resolution, in dpi
      */
 	public void setResolution(int resolution) {
 		this.resolution = resolution;
