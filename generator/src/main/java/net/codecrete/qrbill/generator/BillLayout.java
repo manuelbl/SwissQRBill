@@ -379,12 +379,32 @@ class BillLayout {
         if (separatorType == SeparatorType.NONE)
             return;
 
+        Canvas.LineStyle lineStyle;
+        boolean hasScissors = separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS
+                || separatorType == SeparatorType.DASHED_LINE_WITH_SCISSORS
+                || separatorType == SeparatorType.DOTTED_LINE_WITH_SCISSORS;
+        double lineWidth = separatorType == SeparatorType.SOLID_LINE
+                || separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS ? 0.5 : 0.75;
+
+        switch (separatorType) {
+            case DASHED_LINE:
+            case DASHED_LINE_WITH_SCISSORS:
+                lineStyle = Canvas.LineStyle.Dashed;
+                break;
+            case DOTTED_LINE:
+            case DOTTED_LINE_WITH_SCISSORS:
+                lineStyle = Canvas.LineStyle.Dotted;
+                break;
+            default:
+                lineStyle = Canvas.LineStyle.Solid;
+        }
+
         graphics.setTransformation(0, 0, 0, 1, 1);
 
         // draw vertical separator line between receipt and payment part
         graphics.startPath();
         graphics.moveTo(RECEIPT_WIDTH, 0);
-        if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS) {
+        if (hasScissors) {
             graphics.lineTo(RECEIPT_WIDTH, SLIP_HEIGHT - 8);
             graphics.moveTo(RECEIPT_WIDTH, SLIP_HEIGHT - 5);
         }
@@ -393,16 +413,16 @@ class BillLayout {
         // draw horizontal separator line between bill and rest of A4 sheet
         if (outputSize != OutputSize.QR_BILL_ONLY) {
             graphics.moveTo(0, SLIP_HEIGHT);
-            if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS) {
+            if (hasScissors) {
                 graphics.lineTo(5, SLIP_HEIGHT);
                 graphics.moveTo(8, SLIP_HEIGHT);
             }
             graphics.lineTo(SLIP_WIDTH, SLIP_HEIGHT);
         }
-        graphics.strokePath(0.5, 0);
+        graphics.strokePath(lineWidth, 0, lineStyle);
 
         // draw scissors
-        if (separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS) {
+        if (hasScissors) {
             drawScissors(RECEIPT_WIDTH, SLIP_HEIGHT - 5, 3, 0);
             if (outputSize != OutputSize.QR_BILL_ONLY)
                 drawScissors(5, SLIP_HEIGHT, 3, Math.PI / 2.0);
@@ -553,7 +573,7 @@ class BillLayout {
         graphics.lineTo(x + lwh, y + height - lwh);
         graphics.lineTo(x + lwh, y + height - s);
 
-        graphics.strokePath(CORNER_STROKE_WIDTH, 0);
+        graphics.strokePath(CORNER_STROKE_WIDTH, 0, Canvas.LineStyle.Solid);
     }
 
     private static final DecimalFormat amountDisplayFormat;

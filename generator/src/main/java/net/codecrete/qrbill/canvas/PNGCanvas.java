@@ -171,10 +171,22 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
     }
 
     @Override
-    public void strokePath(double strokeWidth, int color) {
+    public void strokePath(double strokeWidth, int color, LineStyle lineStyle) {
         graphics.setColor(new Color(color));
-        graphics.setStroke(
-                new BasicStroke((float) (strokeWidth * fontScale), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+        BasicStroke stroke;
+        switch (lineStyle) {
+            case Dashed:
+                stroke = new BasicStroke((float) (strokeWidth * fontScale), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
+                        10, new float[] { 4 * (float)strokeWidth * fontScale }, 0);
+                break;
+            case Dotted:
+                stroke = new BasicStroke((float) (strokeWidth * fontScale), BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER,
+                        10, new float[] { 0, 3 * (float)strokeWidth * fontScale }, 0);
+                break;
+            default:
+                stroke = new BasicStroke((float) (strokeWidth * fontScale), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
+        }
+        graphics.setStroke(stroke);
         graphics.draw(currentPath);
     }
 

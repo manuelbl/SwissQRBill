@@ -180,12 +180,19 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
     }
 
     @Override
-    public void strokePath(double strokeWidth, int color) throws IOException {
+    public void strokePath(double strokeWidth, int color, LineStyle lineStyle) throws IOException {
         stream.write("\" stroke=\"#");
         stream.write(formatColor(color));
         if (strokeWidth != 1) {
             stream.write("\" stroke-width=\"");
             stream.write(formatNumber(strokeWidth));
+        }
+        if (lineStyle == LineStyle.Dashed) {
+            stream.write("\" stroke-dasharray=\"");
+            stream.write(formatNumber(strokeWidth * 4));
+        } else if (lineStyle == LineStyle.Dotted) {
+            stream.write("\" stroke-linecap=\"round\" stroke-dasharray=\"0 ");
+            stream.write(formatNumber(strokeWidth * 3));
         }
         stream.write("\" fill=\"none\"/>\n");
         isFirstMoveInPath = true;

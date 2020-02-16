@@ -28,6 +28,18 @@ import java.io.IOException;
 public interface Canvas extends Closeable {
 
     /**
+     * Line style
+     */
+    enum LineStyle {
+        /// Solid line
+        Solid,
+        /// Dashed line (dashes are about 4 times the line width long and apart)
+        Dashed,
+        /// Dotted line (dots are spaced 3 times the line width apart)
+        Dotted
+    }
+
+    /**
      * Sets a translation, rotation and scaling for the subsequent operations
      * <p>
      * Before a new translation is applied, the coordinate system is reset to it's
@@ -150,9 +162,10 @@ public interface Canvas extends Closeable {
      * @param strokeWidth the stroke width (in pt)
      * @param color       the stroke color (expressed similar to HTML, e.g. 0xffffff
      *                    for white)
+     * @param lineStyle the line style
      * @throws IOException thrown if the graphics cannot be generated
      */
-    void strokePath(double strokeWidth, int color) throws IOException;
+    void strokePath(double strokeWidth, int color, LineStyle lineStyle) throws IOException;
 
     /**
      * Distance between baseline and top of highest letter.

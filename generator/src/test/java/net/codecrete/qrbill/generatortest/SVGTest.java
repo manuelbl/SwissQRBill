@@ -12,6 +12,7 @@ import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.GraphicsFormat;
 import net.codecrete.qrbill.generator.OutputSize;
 import net.codecrete.qrbill.generator.QRBill;
+import net.codecrete.qrbill.generator.SeparatorType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

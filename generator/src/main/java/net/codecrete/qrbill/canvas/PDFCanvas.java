@@ -42,6 +42,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
     private int lastStrokingColor = 0;
     private int lastNonStrokingColor = 0;
     private double lastLineWidth = 1;
+    private LineStyle lastLineStyle = LineStyle.Solid;
     private boolean hasSavedGraphicsState = false;
 
     /**
@@ -200,13 +201,29 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
     }
 
     @Override
-    public void strokePath(double strokeWidth, int color) throws IOException {
+    public void strokePath(double strokeWidth, int color, LineStyle lineStyle) throws IOException {
         if (color != lastStrokingColor) {
             lastStrokingColor = color;
             int r = (color >> 16) & 0xff;
             int g = (color >> 8) & 0xff;
             int b = (color >> 8) & 0xff;
             contentStream.setStrokingColor(r / 255f, g / 255f, b / 255f);
+        }
+        if (lineStyle != lastLineStyle || (lineStyle != LineStyle.Solid && strokeWidth != lastLineWidth)) {
+            lastLineStyle = lineStyle;
+            float[] pattern;
+            switch (lineStyle) {
+                case Dashed:
+                    pattern = new float[] { 4 * (float)strokeWidth };
+                    break;
+                case Dotted:
+                    pattern = new float[] { 0, 3 * (float)strokeWidth };
+                    break;
+                default:
+                    pattern = new float[] { };
+            }
+            contentStream.setLineCapStyle(lineStyle == LineStyle.Dotted ? 1 : 0);
+            contentStream.setLineDashPattern(pattern, 0);
         }
         if (strokeWidth != lastLineWidth) {
             lastLineWidth = strokeWidth;

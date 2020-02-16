@@ -21,5 +21,21 @@ public enum SeparatorType {
     /**
      * Solid lines with a scissor symbol are drawn
      */
-    SOLID_LINE_WITH_SCISSORS
+    SOLID_LINE_WITH_SCISSORS,
+    /**
+     * Dashed lines are drawn
+     */
+    DASHED_LINE,
+    /**
+     * Dashed lines with a scissor symbol are drawn
+     */
+    DASHED_LINE_WITH_SCISSORS,
+    /**
+     * Dotted lines are drawn
+     */
+    DOTTED_LINE,
+    /**
+     * Dotted lines with a scissor symbol are drawn
+     */
+    DOTTED_LINE_WITH_SCISSORS,
 }
