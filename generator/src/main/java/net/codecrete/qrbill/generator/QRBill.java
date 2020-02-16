@@ -9,6 +9,7 @@ package net.codecrete.qrbill.generator;
 import net.codecrete.qrbill.canvas.ByteArrayResult;
 import net.codecrete.qrbill.canvas.Canvas;
 import net.codecrete.qrbill.canvas.PDFCanvas;
+import net.codecrete.qrbill.canvas.PNGCanvas;
 import net.codecrete.qrbill.canvas.SVGCanvas;
 
 import java.io.IOException;
@@ -228,6 +229,9 @@ public class QRBill {
                 break;
             case PDF:
                 canvas = new PDFCanvas(drawingWidth, drawingHeight);
+                break;
+            case PNG:
+                canvas = new PNGCanvas(drawingWidth, drawingHeight, format.getResolution(), format.getFontFamily());
                 break;
             default:
                 throw new QRBillGenerationException("Invalid graphics format specified");
