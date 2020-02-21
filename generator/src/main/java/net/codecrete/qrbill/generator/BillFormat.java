@@ -19,7 +19,7 @@ public class BillFormat implements Serializable {
 
     private OutputSize outputSize = OutputSize.QR_BILL_ONLY;
     private Language language = Language.EN;
-    private SeparatorType separatorType = SeparatorType.SOLID_LINE_WITH_SCISSORS;
+    private SeparatorType separatorType = SeparatorType.DASHED_LINE_WITH_SCISSORS;
     private String fontFamily = "Helvetica,Arial,\"Liberation Sans\"";
     private GraphicsFormat graphicsFormat = GraphicsFormat.SVG;
     private int resolution = 144;

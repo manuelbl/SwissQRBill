@@ -174,7 +174,7 @@ class BillTest {
     void testToString() {
         Bill bill = createBill();
         String text = bill.toString();
-        assertEquals("Bill{version=V2_0, amount=100.30, currency='CHF', account='CH12343345345', creditor=Address{type=STRUCTURED, name='Vision Consult GmbH', addressLine1='null', addressLine2='null', street='Hintergasse', houseNo='7b', postalCode='8400', town='Winterthur', countryCode='CH'}, reference='null', debtor=Address{type=STRUCTURED, name='Vision Consult GmbH', addressLine1='null', addressLine2='null', street='Hintergasse', houseNo='7b', postalCode='8400', town='Winterthur', countryCode='CH'}, unstructuredMessage='null', billInformation='null', alternativeSchemes=null, format=BillFormat{outputSize=QR_BILL_ONLY, language=EN, separatorType=SOLID_LINE_WITH_SCISSORS, fontFamily='Helvetica,Arial,\"Liberation Sans\"', graphicsFormat=SVG, resolution=144}}", text);
+        assertEquals("Bill{version=V2_0, amount=100.30, currency='CHF', account='CH12343345345', creditor=Address{type=STRUCTURED, name='Vision Consult GmbH', addressLine1='null', addressLine2='null', street='Hintergasse', houseNo='7b', postalCode='8400', town='Winterthur', countryCode='CH'}, reference='null', debtor=Address{type=STRUCTURED, name='Vision Consult GmbH', addressLine1='null', addressLine2='null', street='Hintergasse', houseNo='7b', postalCode='8400', town='Winterthur', countryCode='CH'}, unstructuredMessage='null', billInformation='null', alternativeSchemes=null, format=BillFormat{outputSize=QR_BILL_ONLY, language=EN, separatorType=DASHED_LINE_WITH_SCISSORS, fontFamily='Helvetica,Arial,\"Liberation Sans\"', graphicsFormat=SVG, resolution=144}}", text);
     }
 
     private Address createAddress() {

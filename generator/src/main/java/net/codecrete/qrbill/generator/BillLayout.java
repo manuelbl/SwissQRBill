@@ -379,24 +379,26 @@ class BillLayout {
         if (separatorType == SeparatorType.NONE)
             return;
 
-        Canvas.LineStyle lineStyle;
         boolean hasScissors = separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS
                 || separatorType == SeparatorType.DASHED_LINE_WITH_SCISSORS
                 || separatorType == SeparatorType.DOTTED_LINE_WITH_SCISSORS;
-        double lineWidth = separatorType == SeparatorType.SOLID_LINE
-                || separatorType == SeparatorType.SOLID_LINE_WITH_SCISSORS ? 0.5 : 0.75;
 
+        Canvas.LineStyle lineStyle;
+        double lineWidth;
         switch (separatorType) {
             case DASHED_LINE:
             case DASHED_LINE_WITH_SCISSORS:
                 lineStyle = Canvas.LineStyle.Dashed;
+                lineWidth = 0.6;
                 break;
             case DOTTED_LINE:
             case DOTTED_LINE_WITH_SCISSORS:
                 lineStyle = Canvas.LineStyle.Dotted;
+                lineWidth = 0.75;
                 break;
             default:
                 lineStyle = Canvas.LineStyle.Solid;
+                lineWidth = 0.5;
         }
 
         graphics.setTransformation(0, 0, 0, 1, 1);

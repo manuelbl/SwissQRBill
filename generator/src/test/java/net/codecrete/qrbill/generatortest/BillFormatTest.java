@@ -26,7 +26,7 @@ class BillFormatTest {
         assertEquals(GraphicsFormat.SVG, format.getGraphicsFormat());
         assertEquals(OutputSize.QR_BILL_ONLY, format.getOutputSize());
         assertEquals("Helvetica,Arial,\"Liberation Sans\"", format.getFontFamily());
-        assertEquals(SeparatorType.SOLID_LINE_WITH_SCISSORS, format.getSeparatorType());
+        assertEquals(SeparatorType.DASHED_LINE_WITH_SCISSORS, format.getSeparatorType());
         assertEquals(144, format.getResolution());
     }
 
@@ -41,7 +41,7 @@ class BillFormatTest {
     void toStringTest() {
         BillFormat format = new BillFormat();
         String text = format.toString();
-        assertEquals("BillFormat{outputSize=QR_BILL_ONLY, language=EN, separatorType=SOLID_LINE_WITH_SCISSORS, fontFamily='Helvetica,Arial,\"Liberation Sans\"', graphicsFormat=SVG, resolution=144}", text);
+        assertEquals("BillFormat{outputSize=QR_BILL_ONLY, language=EN, separatorType=DASHED_LINE_WITH_SCISSORS, fontFamily='Helvetica,Arial,\"Liberation Sans\"', graphicsFormat=SVG, resolution=144}", text);
     }
 
     @Test
