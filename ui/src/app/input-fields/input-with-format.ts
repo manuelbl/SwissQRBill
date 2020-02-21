@@ -10,7 +10,7 @@
  * Copyright Google LLC All Rights Reserved.
  */
 
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { AutofillMonitor } from '@angular/cdk/text-field';
 import {
   OnChanges,
@@ -418,6 +418,14 @@ export class InputWithFormatDirective<T> extends _MatInputMixinBase
       this.focus();
     }
   }
+
+  static ngAcceptInputType_disabled: BooleanInput;
+  static ngAcceptInputType_readonly: BooleanInput;
+  static ngAcceptInputType_required: BooleanInput;
+
+  // Accept `any` to avoid conflicts with other directives on `<input>` that may
+  // accept different types.
+  static ngAcceptInputType_value: any;
 
   writeValue(obj: any): void {
     this.value = obj;
