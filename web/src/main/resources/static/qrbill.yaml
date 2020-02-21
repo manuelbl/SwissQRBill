@@ -258,6 +258,10 @@ components:
           - "none"
           - "solid-line"
           - "solid-line-with-scissors"
+          - "dashed-line"
+          - "dashed-line-with-scissors"
+          - "dotted-line"
+          - "dotted-line-with-scissors"
         fontFamily:
           type: string
           description: "Font family used for text"

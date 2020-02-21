@@ -105,7 +105,7 @@ class BillGenerationTests {
 
     @Test
     void languageFromHeaderIT() {
-        testLanguageFromHeader("it-CH", "Sezione pagamento");
+        testLanguageFromHeader("it-CH", "Sezione di pagamento");
     }
 
     @Test
@@ -115,7 +115,7 @@ class BillGenerationTests {
 
     @Test
     void languageFromHeaderFR() {
-        testLanguageFromHeader("fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5", "Section paiement");
+        testLanguageFromHeader("fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5", "Section de paiement");
     }
 
     @Test
