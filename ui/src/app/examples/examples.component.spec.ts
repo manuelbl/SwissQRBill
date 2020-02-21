@@ -30,7 +30,7 @@ describe('ExamplesComponent', () => {
       ]
     }).compileComponents();
 
-    exampleService = TestBed.get(ExampleService);
+    exampleService = TestBed.inject(ExampleService);
   }));
 
   beforeEach(() => {

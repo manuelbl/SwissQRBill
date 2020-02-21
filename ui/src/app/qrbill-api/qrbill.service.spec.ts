@@ -25,7 +25,7 @@ describe('QrBillService', () => {
       ]
     });
 
-    qrBillService = TestBed.get(QrBillService);
+    qrBillService = TestBed.inject(QrBillService);
   });
 
   it('should be created', inject([QrBillService], (service: QrBillService) => {

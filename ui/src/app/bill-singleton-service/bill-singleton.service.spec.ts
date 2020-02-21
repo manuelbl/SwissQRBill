@@ -18,7 +18,7 @@ describe('BillSingletonService', () => {
       providers: [BillSingletonService, ExampleService]
     });
 
-    singletonService = TestBed.get(BillSingletonService);
+    singletonService = TestBed.inject(BillSingletonService);
   });
 
   it('should be created', () => {

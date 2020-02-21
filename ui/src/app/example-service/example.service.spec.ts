@@ -16,7 +16,7 @@ describe('ExampleService', () => {
       providers: [ExampleService]
     });
 
-    exampleService = TestBed.get(ExampleService);
+    exampleService = TestBed.inject(ExampleService);
   });
 
   it('should be created', () => {
