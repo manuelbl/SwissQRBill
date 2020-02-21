@@ -45,8 +45,12 @@
     },
     "separator_lines": "Trennlinien",
     "separator_type": {
-        "solid_line_with_scissors": "Linien mit Scherensymbol",
-        "solid_line": "Linien",
+        "dashed_line_with_scissors": "Gestrichelte Linie mit Schere",
+        "dashed_line": "Gestrichelte Linie",
+        "dotted_line_with_scissors": "Gepunktete Linie mit Schere",
+        "dotted_line": "Gepunktete Linie",
+        "solid_line_with_scissors": "Durchgehende Linie mit Schere",
+        "solid_line": "Durchgehende Linie",
         "none": "Keine"
     },
     "use_bill": "VERWENDEN",

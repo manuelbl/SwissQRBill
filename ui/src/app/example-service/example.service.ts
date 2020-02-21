@@ -34,7 +34,7 @@ export class ExampleService {
         format: {
           language: 'de',
           outputSize: 'qr-bill-only',
-          separatorType: 'solid-line-with-scissors'
+          separatorType: 'dashed-line-with-scissors'
         }
       },
       // tslint:disable-next-line:max-line-length
@@ -68,7 +68,7 @@ export class ExampleService {
         format: {
           language: 'fr',
           outputSize: 'qr-bill-only',
-          separatorType: 'solid-line-with-scissors'
+          separatorType: 'dashed-line-with-scissors'
         }
       },
       // tslint:disable-next-line:max-line-length
@@ -104,7 +104,7 @@ export class ExampleService {
         format: {
           language: 'de',
           outputSize: 'qr-bill-only',
-          separatorType: 'solid-line-with-scissors'
+          separatorType: 'dashed-line-with-scissors'
         }
       },
       // tslint:disable-next-line:max-line-length
@@ -130,7 +130,7 @@ export class ExampleService {
         format: {
           language: 'it',
           outputSize: 'qr-bill-only',
-          separatorType: 'solid-line-with-scissors'
+          separatorType: 'dashed-line-with-scissors'
         }
       },
       // tslint:disable-next-line:max-line-length
@@ -166,7 +166,7 @@ export class ExampleService {
         format: {
           language: 'en',
           outputSize: 'qr-bill-only',
-          separatorType: 'solid-line-with-scissors'
+          separatorType: 'dashed-line-with-scissors'
         }
       },
       // tslint:disable-next-line:max-line-length
@@ -191,7 +191,7 @@ export class ExampleService {
         format: {
           language: 'fr',
           outputSize: 'qr-bill-only',
-          separatorType: 'solid-line-with-scissors'
+          separatorType: 'dashed-line-with-scissors'
         }
       },
       // tslint:disable-next-line:max-line-length

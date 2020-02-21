@@ -46,8 +46,12 @@
     },
     "separator_lines": "Separator lines",
     "separator_type": {
-        "solid_line_with_scissors": "Lines with scisscors icon",
-        "solid_line": "Lines",
+        "dashed_line_with_scissors": "Dashed line with scissors",
+        "dashed_line": "Dashed line",
+        "dotted_line_with_scissors": "Dotted line with scissors",
+        "dotted_line": "Dotted line",
+        "solid_line_with_scissors": "Solid line with scissors",
+        "solid_line": "Solid line",
         "none": "None"
     },
     "use_bill": "USE",

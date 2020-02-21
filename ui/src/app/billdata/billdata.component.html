@@ -85,6 +85,10 @@
 
           <mat-form-field class="form-field s7">
               <mat-select placeholder="{{ 'separator_lines' | translate}}" formControlName="separatorType" required>
+                <mat-option value="dashed-line-with-scissors"><span translate>separator_type.dashed_line_with_scissors</span></mat-option>
+                <mat-option value="dashed-line"><span translate>separator_type.dashed_line</span></mat-option>
+                <mat-option value="dotted-line-with-scissors"><span translate>separator_type.dotted_line_with_scissors</span></mat-option>
+                <mat-option value="dotted-line"><span translate>separator_type.dotted_line</span></mat-option>
                 <mat-option value="solid-line-with-scissors"><span translate>separator_type.solid_line_with_scissors</span></mat-option>
                 <mat-option value="solid-line"><span translate>separator_type.solid_line</span></mat-option>
                 <mat-option value="none"><span translate>separator_type.none</span></mat-option>
