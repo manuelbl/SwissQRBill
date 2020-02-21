@@ -1,9 +1,9 @@
 plugins {
     id 'org.sonarqube' version '2.6.2'
     id 'java'
-    id 'org.springframework.boot' version '2.2.2.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-    id 'org.openapi.generator' version '4.2.2'
+    id 'org.springframework.boot' version '2.2.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'org.openapi.generator' version '4.2.3'
     id 'jacoco'
 }
 
