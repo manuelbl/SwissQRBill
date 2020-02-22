@@ -158,6 +158,19 @@ public interface Canvas extends Closeable {
 
     /**
      * Strokes the current path and ends it
+     * <p>
+     *     The path is stroked with a solid line.
+     * </p>
+     *
+     * @param strokeWidth the stroke width (in pt)
+     * @param color       the stroke color (expressed similar to HTML, e.g. 0xffffff
+     *                    for white)
+     * @throws IOException thrown if the graphics cannot be generated
+     */
+    void strokePath(double strokeWidth, int color) throws IOException;
+
+    /**
+     * Strokes the current path and ends it
      *
      * @param strokeWidth the stroke width (in pt)
      * @param color       the stroke color (expressed similar to HTML, e.g. 0xffffff
@@ -165,7 +178,9 @@ public interface Canvas extends Closeable {
      * @param lineStyle the line style
      * @throws IOException thrown if the graphics cannot be generated
      */
-    void strokePath(double strokeWidth, int color, LineStyle lineStyle) throws IOException;
+    default void strokePath(double strokeWidth, int color, LineStyle lineStyle) throws IOException {
+        strokePath(strokeWidth, color);
+    }
 
     /**
      * Distance between baseline and top of highest letter.
