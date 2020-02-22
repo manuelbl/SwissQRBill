@@ -90,7 +90,7 @@ public class BillFormat implements Serializable {
     /**
      * Gets the type of separator drawn above and between the payment part and the receipt
      * <p>
-     * Defaults to {@link SeparatorType#SOLID_LINE_WITH_SCISSORS}
+     * Defaults to {@link SeparatorType#DASHED_LINE_WITH_SCISSORS}
      * </p>
      *
      * @return separator type
