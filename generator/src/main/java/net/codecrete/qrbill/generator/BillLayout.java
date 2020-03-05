@@ -120,7 +120,7 @@ class BillLayout {
 
     private void drawPaymentPart() throws IOException {
 
-        final double QR_CODE_BOTTOM = 43.5; // mm
+        final double QR_CODE_BOTTOM = 42; // mm
 
         // title section
         graphics.setTransformation(RECEIPT_WIDTH + MARGIN, 0, 0, 1, 1);

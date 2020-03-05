@@ -6,7 +6,7 @@
 <g transform="translate(189.921 -0)">
 <text x="0" y="-274.665" font-size="11" font-weight="bold">Payment part</text>
 </g>
-<g transform="translate(189.921 -123.307) scale(1.693)">
+<g transform="translate(189.921 -119.055) scale(1.693)">
 <path d="M0,-77h7v1h-7zm9,0h1v3h-1zm1,0h1v1h-1zm2,0h4v1h-4zm6,0h2v2h-2zm3,0h2v1h-2z
 m3,0h1v1h-1zm5,0h3v1h-3zm4,0h6v1h-6zm7,0h4v1h-4zm5,0h1v1h-1zm3,0h4v1h-4z
 m5,0h1v1h-1zm2,0h3v1h-3zm6,0h2v1h-2zm4,0h1v2h-1zm5,0h7v1h-7zm-70,1h1v6h-1z
@@ -219,7 +219,7 @@ m-75,1h5v1h-5zm7,0h1v1h-1zm2,0h3v1h-3zm4,0h1v1h-1zm2,0h1v1h-1zm3,0h1v1h-1z
 m4,0h1v1h-1zm7,0h1v1h-1zm3,0h1v1h-1zm4,0h1v1h-1zm2,0h1v1h-1zm2,0h3v1h-3z
 m6,0h1v1h-1zm4,0h1v1h-1zm6,0h2v1h-2zm8,0h2v1h-2zm4,0h3v1h-3z" fill="#000000"/>
 </g>
-<g transform="translate(189.921 -123.307)">
+<g transform="translate(189.921 -119.055)">
 <path d="M56.693,-73.701h17.008v17.008h-17.008z" fill="#000000"/>
 <path d="M63.543,-70.709h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z" fill="#ffffff"/>
 </g>
