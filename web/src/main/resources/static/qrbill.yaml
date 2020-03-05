@@ -33,7 +33,7 @@ info:
     characters are used, they are automatically replaced. The validation result contains warnings about
     truncations and replacements.
 
-  version: 2.2.0
+  version: 2.2.1
   license:
     name: "MIT License"
     url: "https://opensource.org/licenses/MIT"
