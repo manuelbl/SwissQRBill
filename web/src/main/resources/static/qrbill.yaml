@@ -33,7 +33,7 @@ info:
     characters are used, they are automatically replaced. The validation result contains warnings about
     truncations and replacements.
 
-  version: 2.2.1
+  version: 2.2.2
   license:
     name: "MIT License"
     url: "https://opensource.org/licenses/MIT"
@@ -129,6 +129,7 @@ paths:
           enum:
           - "a4-portrait-sheet"
           - "qr-bill-only"
+          - "qr-bill-with-horizontal-line"
           - "qr-code-only"
       - in: query
         name: graphicsFormat
@@ -250,6 +251,7 @@ components:
           enum:
           - "a4-portrait-sheet"
           - "qr-bill-only"
+          - "qr-bill-with-horizontal-line"
           - "qr-code-only"
         separatorType:
           type: string
