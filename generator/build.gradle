@@ -104,6 +104,10 @@ sonarqube {
     }
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 dependencies {
     implementation 'io.nayuki:qrcodegen:[1.5,)'
     implementation 'org.apache.pdfbox:pdfbox:[2.0,)'

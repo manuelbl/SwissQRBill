@@ -43,8 +43,8 @@ class FileComparison {
     static void assertFileContentsEqual(byte[] actualContent, String expectedFileName) {
 
         try {
-            byte[] expectedContent = loadReferenceFile(expectedFileName);
             String fileExtension = expectedFileName.substring(expectedFileName.lastIndexOf('.'));
+            byte[] expectedContent = loadReferenceFile(expectedFileName, fileExtension.equals(".svg"));
 
             if (fileExtension.equals(".pdf")) {
                 clearPdfID(expectedContent);
@@ -66,7 +66,7 @@ class FileComparison {
     static void assertGrayscaleImageContentsEqual(byte[] actualContent, String expectedFileName) {
 
         try {
-            byte[] expectedContent = loadReferenceFile(expectedFileName);
+            byte[] expectedContent = loadReferenceFile(expectedFileName, false);
             ImageComparison.assertGrayscaleImageContentEquals(expectedContent, actualContent);
 
         } catch (AssertionError e) {
@@ -80,7 +80,7 @@ class FileComparison {
         deleteActualFile(expectedFileName);
     }
 
-    private static byte[] loadReferenceFile(String filename) throws IOException {
+    private static byte[] loadReferenceFile(String filename, boolean doRemoveCR) throws IOException {
         try (InputStream is = FileComparison.class.getResourceAsStream("/" + filename)) {
             if (is == null)
                 throw new FileNotFoundException(filename);
@@ -90,10 +90,23 @@ class FileComparison {
                 int len = is.read(chunk);
                 if (len == -1)
                     break;
+                if (doRemoveCR)
+                    len = removeCR(chunk, len);
                 buffer.write(chunk, 0, len);
             }
             return buffer.toByteArray();
         }
+    }
+
+    private static int removeCR(byte[] data, int len) {
+        int tgt = 0;
+        for (int i = 0; i < len; i++) {
+            if (data[i] != '\r') {
+                data[tgt] = data[i];
+                tgt++;
+            }
+        }
+        return tgt;
     }
 
     private static void saveActualFile(byte[] data, String expectedFileName) {
