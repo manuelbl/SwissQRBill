@@ -43,6 +43,18 @@ public class QRBill {
     public static final double QR_BILL_HEIGHT = 105;
 
     /**
+     * The width of a QR bill with horizontal separator line
+     * (payment part and receipt plus space for line and scissors), in mm
+     */
+    public static final double QR_BILL_WITH_HORI_LINE_WIDTH = 210;
+
+    /**
+     * The height of a QR bill with horizontal separator line
+     * (payment part and receipt plus space for line and scissors), in mm
+     */
+    public static final double QR_BILL_WITH_HORI_LINE_HEIGHT = 110;
+
+    /**
      * The width of the QR code, in mm
      */
     public static final double QR_CODE_WIDTH = 46;
@@ -210,6 +222,10 @@ public class QRBill {
             case QR_BILL_ONLY:
                 drawingWidth = QR_BILL_WIDTH;
                 drawingHeight = QR_BILL_HEIGHT;
+                break;
+            case QR_BILL_WITH_HORIZONTAL_LINE:
+                drawingWidth = QR_BILL_WITH_HORI_LINE_WIDTH;
+                drawingHeight = QR_BILL_WITH_HORI_LINE_HEIGHT;
                 break;
             case QR_CODE_ONLY:
                 drawingWidth = QR_CODE_WIDTH;

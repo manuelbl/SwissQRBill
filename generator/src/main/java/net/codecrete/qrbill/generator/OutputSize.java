@@ -19,6 +19,10 @@ public enum OutputSize {
      */
     QR_BILL_ONLY,
     /**
+     * QR bill with horizontal separator line (about 110 by 210 mm).
+     */
+    QR_BILL_WITH_HORIZONTAL_LINE,
+    /**
      * QR code only (46 by 46 mm).
      */
     QR_CODE_ONLY
