@@ -8,6 +8,7 @@ package net.codecrete.qrbill.generatortest;
 
 import net.codecrete.qrbill.generator.Bill;
 import net.codecrete.qrbill.generator.GraphicsFormat;
+import net.codecrete.qrbill.generator.Language;
 import net.codecrete.qrbill.generator.OutputSize;
 import net.codecrete.qrbill.generator.QRBill;
 import org.junit.jupiter.api.DisplayName;
@@ -65,5 +66,14 @@ class QRBillTest {
         bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
         byte[] svg = QRBill.generate(bill);
         FileComparison.assertFileContentsEqual(svg, "qrbill_ex5.svg");
+    }
+
+    @Test
+    void createQRBillFrench() {
+        Bill bill = SampleData.getExample1();
+        bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
+        bill.getFormat().setLanguage(Language.FR);
+        byte[] svg = QRBill.generate(bill);
+        FileComparison.assertFileContentsEqual(svg, "qrbill_fr.svg");
     }
 }
