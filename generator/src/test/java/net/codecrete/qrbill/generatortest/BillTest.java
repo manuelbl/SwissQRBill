@@ -104,6 +104,7 @@ class BillTest {
         Bill bill = new Bill();
         bill.setReference("RF839DF38202934");
         assertEquals("RF839DF38202934", bill.getReference());
+        assertEquals(Bill.REFERENCE_TYPE_CRED_REF, bill.getReferenceType());
     }
 
     @Test
@@ -111,6 +112,14 @@ class BillTest {
         Bill bill = new Bill();
         bill.createAndSetCreditorReference("ABCD3934803");
         assertEquals("RF93ABCD3934803", bill.getReference());
+        assertEquals(Bill.REFERENCE_TYPE_CRED_REF, bill.getReferenceType());
+    }
+
+    @Test
+    void setReferenceType() {
+        Bill bill = new Bill();
+        bill.setReferenceType(Bill.REFERENCE_TYPE_QR_REF);
+        assertEquals(Bill.REFERENCE_TYPE_QR_REF, bill.getReferenceType());
     }
 
     @Test
@@ -174,7 +183,7 @@ class BillTest {
     void testToString() {
         Bill bill = createBill();
         String text = bill.toString();
-        assertEquals("Bill{version=V2_0, amount=100.30, currency='CHF', account='CH12343345345', creditor=Address{type=STRUCTURED, name='Vision Consult GmbH', addressLine1='null', addressLine2='null', street='Hintergasse', houseNo='7b', postalCode='8400', town='Winterthur', countryCode='CH'}, reference='null', debtor=Address{type=STRUCTURED, name='Vision Consult GmbH', addressLine1='null', addressLine2='null', street='Hintergasse', houseNo='7b', postalCode='8400', town='Winterthur', countryCode='CH'}, unstructuredMessage='null', billInformation='null', alternativeSchemes=null, format=BillFormat{outputSize=QR_BILL_ONLY, language=EN, separatorType=DASHED_LINE_WITH_SCISSORS, fontFamily='Helvetica,Arial,\"Liberation Sans\"', graphicsFormat=SVG, resolution=144}}", text);
+        assertEquals("Bill{version=V2_0, amount=100.30, currency='CHF', account='CH12343345345', creditor=Address{type=STRUCTURED, name='Vision Consult GmbH', addressLine1='null', addressLine2='null', street='Hintergasse', houseNo='7b', postalCode='8400', town='Winterthur', countryCode='CH'}, referenceType='NON', reference='null', debtor=Address{type=STRUCTURED, name='Vision Consult GmbH', addressLine1='null', addressLine2='null', street='Hintergasse', houseNo='7b', postalCode='8400', town='Winterthur', countryCode='CH'}, unstructuredMessage='null', billInformation='null', alternativeSchemes=null, format=BillFormat{outputSize=QR_BILL_ONLY, language=EN, separatorType=DASHED_LINE_WITH_SCISSORS, fontFamily='Helvetica,Arial,\"Liberation Sans\"', graphicsFormat=SVG, resolution=144}}", text);
     }
 
     private Address createAddress() {

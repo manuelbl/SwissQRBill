@@ -18,6 +18,20 @@ public class Bill implements Serializable {
 
     private static final long serialVersionUID = -8104086304378262190L;
 
+
+    /**
+     * Reference type: without reference.
+     */
+    public static final  String REFERENCE_TYPE_NO_REF = "NON";
+    /**
+     * Reference type: QR reference.
+     */
+    public static final  String REFERENCE_TYPE_QR_REF = "QRR";
+    /**
+     * Reference type: creditor reference (ISO 11649)
+     */
+    public static final  String REFERENCE_TYPE_CRED_REF = "SCOR";
+
     /**
      * QR bill version
      */
@@ -33,6 +47,7 @@ public class Bill implements Serializable {
     private String currency = "CHF";
     private String account = null;
     private Address creditor = new Address();
+    private String referenceType = REFERENCE_TYPE_NO_REF;
     private String reference = null;
     private Address debtor = null;
     private String unstructuredMessage = null;
@@ -168,6 +183,56 @@ public class Bill implements Serializable {
     }
 
     /**
+     * Gets the type of payment reference.
+     * <p>
+     * The reference type is automatically set when a payment reference is set.
+     * </p>
+     *
+     * @return one of the constants REFERENCE_TYPE_xxx.
+     *
+     * @see #REFERENCE_TYPE_QR_REF
+     * @see #REFERENCE_TYPE_CRED_REF
+     * @see #REFERENCE_TYPE_NO_REF
+     */
+    public String getReferenceType() {
+        return referenceType;
+    }
+
+    /**
+     * Sets the type of payment reference.
+     * <p>
+     * Usually there is no need to set the reference type as it is
+     * automatically set when a payment reference is set..
+     * </p>
+     * <p>
+     *
+     * @param referenceType one of the constants {@code REFERENCE_TYPE_xx}
+     *
+     * @see #REFERENCE_TYPE_QR_REF
+     * @see #REFERENCE_TYPE_CRED_REF
+     * @see #REFERENCE_TYPE_NO_REF
+     */
+    public void setReferenceType(String referenceType) {
+        this.referenceType = referenceType;
+    }
+
+    /**
+     * Updates the reference type by deriving it from the payment reference.
+     */
+    public void updateReferenceType() {
+        String ref = Strings.trimmed(reference);
+        if (ref != null) {
+            if (ref.startsWith("RF"))
+                referenceType = REFERENCE_TYPE_CRED_REF;
+            else if (ref.length() > 0)
+                referenceType = REFERENCE_TYPE_QR_REF;
+            else
+                referenceType = REFERENCE_TYPE_NO_REF;
+        } else {
+            referenceType = REFERENCE_TYPE_NO_REF;
+        }
+    }
+    /**
      * Gets the payment reference
      *
      * @return the reference
@@ -192,6 +257,7 @@ public class Bill implements Serializable {
      */
     public void setReference(String reference) {
         this.reference = reference;
+        updateReferenceType();
     }
 
     /**
@@ -323,6 +389,7 @@ public class Bill implements Serializable {
                 Objects.equals(currency, bill.currency) &&
                 Objects.equals(account, bill.account) &&
                 Objects.equals(creditor, bill.creditor) &&
+                Objects.equals(referenceType, bill.referenceType) &&
                 Objects.equals(reference, bill.reference) &&
                 Objects.equals(debtor, bill.debtor) &&
                 Objects.equals(unstructuredMessage, bill.unstructuredMessage) &&
@@ -337,7 +404,8 @@ public class Bill implements Serializable {
     @Override
     public int hashCode() {
 
-        int result = Objects.hash(version, amount, currency, account, creditor, reference, debtor, unstructuredMessage, billInformation, format);
+        int result = Objects.hash(version, amount, currency, account, creditor, referenceType, reference,
+                debtor, unstructuredMessage, billInformation, format);
         result = 31 * result + Arrays.hashCode(alternativeSchemes);
         return result;
     }
@@ -353,6 +421,7 @@ public class Bill implements Serializable {
                 ", currency='" + currency + '\'' +
                 ", account='" + account + '\'' +
                 ", creditor=" + creditor +
+                ", referenceType='" + referenceType + '\'' +
                 ", reference='" + reference + '\'' +
                 ", debtor=" + debtor +
                 ", unstructuredMessage='" + unstructuredMessage + '\'' +

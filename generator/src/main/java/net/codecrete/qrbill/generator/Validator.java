@@ -130,6 +130,8 @@ class Validator {
 
         } else {
             billOut.setReference(null);
+            if (isValidAccount && !Bill.REFERENCE_TYPE_NO_REF.equals(billIn.getReferenceType()))
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE_TYPE, ValidationConstants.KEY_VALID_REF_TYPE);
         }
     }
 
@@ -141,10 +143,13 @@ class Validator {
 
         if (cleanedReference.length() < 27)
             cleanedReference = "00000000000000000000000000".substring(0, 27 - cleanedReference.length()) + cleanedReference;
-        if (!Payments.isValidQRReference(cleanedReference))
+        if (!Payments.isValidQRReference(cleanedReference)) {
             validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_VALID_QR_REF_NO);
-        else
+        } else {
             billOut.setReference(cleanedReference);
+            if (!Bill.REFERENCE_TYPE_QR_REF.equals(billIn.getReferenceType()))
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE_TYPE, ValidationConstants.KEY_VALID_REF_TYPE);
+        }
     }
 
     private void validateISOReference(String cleanedReference) {
@@ -152,6 +157,8 @@ class Validator {
             validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_VALID_ISO11649_CREDITOR_REF);
         } else {
             billOut.setReference(cleanedReference);
+            if (!Bill.REFERENCE_TYPE_CRED_REF.equals(billIn.getReferenceType()))
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE_TYPE, ValidationConstants.KEY_VALID_REF_TYPE);
         }
     }
 

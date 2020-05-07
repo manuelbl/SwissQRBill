@@ -113,6 +113,15 @@ class DecodedTextTest {
         assertEquals(bill, bill2);
     }
 
+    @Test
+    void decodeInvalidRefType() {
+        Bill bill = SampleData.getExample3();
+        String qrText = QRBill.encodeQrCodeText(bill);
+        qrText = qrText.replace("SCOR", "XXXX");
+        Bill bill2 = QRBill.decodeQrCodeText(qrText);
+        assertEquals("XXXX", bill2.getReferenceType());
+    }
+
     static void normalizeSourceBill(Bill bill) {
         bill.getFormat().setLanguage(Language.DE);
         bill.setAccount(bill.getAccount().replace(" ", ""));

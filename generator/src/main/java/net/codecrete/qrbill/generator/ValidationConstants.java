@@ -43,6 +43,10 @@ public class ValidationConstants {
      */
     public static final String KEY_MANDATORY_FOR_QR_IBAN = "mandatory_for_qr_iban";
     /**
+     * Validation message key: Reference type must be one of "QRR", "SCOR" and "NON" and match the reference.
+     */
+    public static final String KEY_VALID_REF_TYPE = "valid_ref_type";
+    /**
      * Validation message key: Field is mandatory
      */
     public static final String KEY_FIELD_IS_MANDATORY = "field_is_mandatory";
@@ -156,6 +160,10 @@ public class ValidationConstants {
      * Field name of the account number
      */
     public static final String FIELD_ACCOUNT = "account";
+    /**
+     * Field name of the reference type
+     */
+    public static final String FIELD_REFERENCE_TYPE = "referenceType";
     /**
      * Field name of the reference
      */

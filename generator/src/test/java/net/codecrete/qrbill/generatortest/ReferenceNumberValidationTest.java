@@ -123,4 +123,12 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         validate();
         assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "valid_iso11649_creditor_ref");
     }
+
+    @Test
+    void invalidRefernceType() {
+        bill = SampleData.getExample3();
+        bill.setReferenceType("ABC");
+        validate();
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE_TYPE, "valid_ref_type");
+    }
 }
