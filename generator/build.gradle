@@ -1,9 +1,19 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+    
 plugins {
     id 'org.sonarqube' version '2.6.2'
     id 'java'
     id 'maven-publish'
     id 'signing'
     id 'jacoco'
+}
+
+repositories {
+    mavenCentral()
 }
 
 group = 'net.codecrete.qrbill'
