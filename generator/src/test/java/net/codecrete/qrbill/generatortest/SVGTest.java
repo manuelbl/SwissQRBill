@@ -22,6 +22,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * Unit tests with characters challening for SVG (XML relevant characters)
  */
@@ -41,12 +44,17 @@ class SVGTest {
     @Test
     void svgWriteTo() throws IOException {
         Bill bill = SampleData.getExample1();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
         try (SVGCanvas canvas =
                      new SVGCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT, "Helvetica, Arial, Sans")) {
             QRBill.draw(bill, canvas);
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
             canvas.writeTo(os);
         }
+
+
+        byte[] data = os.toByteArray();
+        assertTrue(data.length > 2000);
+        checkForSvgHeader(data);
     }
 
     @Test
@@ -58,6 +66,19 @@ class SVGTest {
             QRBill.draw(bill, canvas);
             canvas.saveAs(path);
         }
+
+        byte[] data = Files.readAllBytes(path);
+        assertTrue(data.length > 2000);
+        checkForSvgHeader(data);
+
         Files.delete(path);
+    }
+
+    private void checkForSvgHeader(byte[] data) {
+        assertEquals((byte)'<', data[0]);
+        assertEquals((byte)'?', data[1]);
+        assertEquals((byte)'x', data[2]);
+        assertEquals((byte)'m', data[3]);
+        assertEquals((byte)'l', data[4]);
     }
 }

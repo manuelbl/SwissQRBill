@@ -48,7 +48,7 @@ class BillFormatTest {
     void testEqualsTrivial() {
         BillFormat format = new BillFormat();
         assertEquals(format, format);
-        assertNotEquals(format, null);
+        assertNotEquals(null, format);
         assertNotEquals("xxx", format);
     }
 

@@ -18,6 +18,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * Unit tests for generating QR bills as PNG
  */
@@ -27,11 +30,15 @@ class PdfCanvasTest {
     @Test
     void pdfWriteTo() throws IOException {
         Bill bill = SampleData.getExample3();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
         try (PDFCanvas canvas = new PDFCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT)) {
             QRBill.draw(bill, canvas);
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
             canvas.writeTo(os);
         }
+
+        byte[] data = os.toByteArray();
+        assertTrue(data.length > 2000);
+        checkForPdfHeader(data);
     }
 
     @Test
@@ -42,6 +49,19 @@ class PdfCanvasTest {
             QRBill.draw(bill, canvas);
             canvas.saveAs(path);
         }
+
+        byte[] data = Files.readAllBytes(path);
+        assertTrue(data.length > 2000);
+        checkForPdfHeader(data);
+
         Files.delete(path);
+    }
+
+    private void checkForPdfHeader(byte[] data) {
+        assertEquals((byte)'%', data[0]);
+        assertEquals((byte)'P', data[1]);
+        assertEquals((byte)'D', data[2]);
+        assertEquals((byte)'F', data[3]);
+        assertEquals((byte)'-', data[4]);
     }
 }

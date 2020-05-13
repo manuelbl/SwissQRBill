@@ -123,7 +123,7 @@ jacocoTestReport {
     }
 }
 
-test.finalizedBy jacocoTestReport
+project.tasks["sonarqube"].dependsOn "jacocoTestReport"
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'

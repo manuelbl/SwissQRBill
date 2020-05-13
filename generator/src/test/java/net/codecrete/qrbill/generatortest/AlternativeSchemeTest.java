@@ -41,7 +41,7 @@ class AlternativeSchemeTest {
     void testEqualsTrivial() {
         AlternativeScheme scheme = new AlternativeScheme("Paymit", "PM,12341234,1241234");
         assertEquals(scheme, scheme);
-        assertNotEquals(scheme, null);
+        assertNotEquals(null, scheme);
         assertNotEquals("xxx", scheme);
     }
 

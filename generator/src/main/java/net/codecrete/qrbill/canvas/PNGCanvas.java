@@ -41,6 +41,9 @@ import java.util.Iterator;
  */
 public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
 
+    private static final String METADATA_KEY_VALUE = "value";
+    private static final String METADATA_KEY_KEYWORD = "keyword";
+
     private final int resolution;
     private final float coordinateScale;
     private final float fontScale;
@@ -299,10 +302,10 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
         String pixelsPerMMString = Double.toString(pixelsPerMM);
 
         IIOMetadataNode horizontalPixelSize = new IIOMetadataNode("HorizontalPixelSize");
-        horizontalPixelSize.setAttribute("value", pixelsPerMMString);
+        horizontalPixelSize.setAttribute(METADATA_KEY_VALUE, pixelsPerMMString);
 
         IIOMetadataNode verticalPixelSize = new IIOMetadataNode("VerticalPixelSize");
-        verticalPixelSize.setAttribute("value", pixelsPerMMString);
+        verticalPixelSize.setAttribute(METADATA_KEY_VALUE, pixelsPerMMString);
 
         IIOMetadataNode dimension = new IIOMetadataNode("Dimension");
         dimension.appendChild(horizontalPixelSize);
@@ -315,8 +318,8 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
 
     private static void addTextMetadata(IIOMetadata metadata) throws IIOInvalidTreeException {
         IIOMetadataNode textEntry = new IIOMetadataNode("tEXtEntry");
-        textEntry.setAttribute("keyword", "Title");
-        textEntry.setAttribute("value", "Swiss QR Bill");
+        textEntry.setAttribute(METADATA_KEY_KEYWORD, "Title");
+        textEntry.setAttribute(METADATA_KEY_VALUE, "Swiss QR Bill");
         IIOMetadataNode text = new IIOMetadataNode("tEXt");
         text.appendChild(textEntry);
         IIOMetadataNode commentMetadata = new IIOMetadataNode(metadata.getNativeMetadataFormatName());

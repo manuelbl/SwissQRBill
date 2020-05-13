@@ -190,7 +190,7 @@ class AddressTest {
     void testEqualsTrivial() {
         Address address = createCombinedElementAddress();
         assertEquals(address, address);
-        assertNotEquals(address, null);
+        assertNotEquals(null, address);
         assertNotEquals("xxx", address);
     }
 

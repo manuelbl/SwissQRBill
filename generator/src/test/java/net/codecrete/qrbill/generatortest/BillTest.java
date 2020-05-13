@@ -157,7 +157,7 @@ class BillTest {
     void testEqualsTrivial() {
         Bill bill = new Bill();
         assertEquals(bill, bill);
-        assertNotEquals(bill, null);
+        assertNotEquals(null, bill);
         assertNotEquals("xxx", bill);
     }
 
