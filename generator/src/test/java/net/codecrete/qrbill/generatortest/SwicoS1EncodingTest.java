@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DisplayName("Swico S1 Encoding")
 public class SwicoS1EncodingTest {
@@ -96,20 +97,20 @@ public class SwicoS1EncodingTest {
     }
 
     @Test
-    public void encodeMissingData() {
+    public void noValidData_returnsNull() {
         SwicoBillInformation info = new SwicoBillInformation();
-        assertEquals("//S1", info.encodeAsText());
+        assertNull(info.encodeAsText());
 
         info.setVatStartDate(LocalDate.of(2020, 8, 12));
-        assertEquals("//S1", info.encodeAsText());
+        assertNull(info.encodeAsText());
 
         info.setVatStartDate(null);
         info.setVatEndDate(LocalDate.of(2020, 8, 12));
-        assertEquals("//S1", info.encodeAsText());
+        assertNull(info.encodeAsText());
 
         info.setVatRateDetails(new ArrayList<>());
         info.setVatImportTaxes(new ArrayList<>());
         info.setPaymentConditions(new ArrayList<>());
-        assertEquals("//S1", info.encodeAsText());
+        assertNull(info.encodeAsText());
     }
 }

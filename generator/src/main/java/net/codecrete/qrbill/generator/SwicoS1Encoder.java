@@ -81,7 +81,7 @@ class SwicoS1Encoder {
             appendConditionTupleList(sb, billInfo.getPaymentConditions());
         }
 
-        return sb.toString();
+        return sb.length() > 4 ? sb.toString() : null;
     }
 
     private static String escapedText(String text) {
