@@ -12,12 +12,15 @@ import net.codecrete.qrbill.generator.SwicoBillInformation.PaymentCondition;
 import net.codecrete.qrbill.generator.SwicoBillInformation.RateDetail;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -113,4 +116,19 @@ public class SwicoS1EncodingTest {
         info.setPaymentConditions(new ArrayList<>());
         assertNull(info.encodeAsText());
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"en-US", "de-DE", "de-CH", "fr-CH", "en-UK"})
+    public void differentLocales_haveNoEffect(String languageTag) {
+
+        Locale defaultLocale = Locale.getDefault();
+        try {
+            SwicoBillInformation billInfo = SwicoExamples.createExample3();
+            String text = billInfo.encodeAsText();
+            assertEquals(SwicoExamples.EXAMPLE_3_TEXT, text);
+        } finally {
+            Locale.setDefault(defaultLocale);
+        }
+    }
+
 }

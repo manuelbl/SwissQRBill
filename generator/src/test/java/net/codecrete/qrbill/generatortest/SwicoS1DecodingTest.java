@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -49,6 +50,20 @@ public class SwicoS1DecodingTest {
     @Test
     public void nullValue_returnsNull() {
         assertNull(SwicoBillInformation.decodeText(null));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"en-US", "de-DE", "de-CH", "fr-CH", "en-UK"})
+    public void differentLocales_haveNoEffect(String languageTag) {
+
+        Locale defaultLocale = Locale.getDefault();
+        try {
+            Locale.setDefault(Locale.forLanguageTag(languageTag));
+            SwicoBillInformation billInformation = SwicoBillInformation.decodeText(SwicoExamples.EXAMPLE_2_TEXT);
+            assertEquals(SwicoExamples.createExample2(), billInformation);
+        } finally {
+            Locale.setDefault(defaultLocale);
+        }
     }
 
     @ParameterizedTest
