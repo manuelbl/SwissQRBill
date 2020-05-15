@@ -41,21 +41,26 @@ import java.util.Locale;
  */
 public class SwicoS1Decoder {
 
-    private static final int InvoiceNumberTag = 10;
+    private static final int INVOICE_NUMBER_TAG = 10;
 
-    private static final int InvoiceDateTag = 11;
+    private static final int INVOICE_DATE_TAG = 11;
 
-    private static final int CustomerReferenceTag = 20;
+    private static final int CUSTOMER_REFERENCE_TAG = 20;
 
-    private static final int VatNumberTag = 30;
+    private static final int VAT_NUMBER_TAG = 30;
 
-    private static final int VatDateTag = 31;
+    private static final int VAT_DATE_TAG = 31;
 
-    private static final int VatRateDetailsTag = 32;
+    private static final int VAT_RATE_DETAILS_TAG = 32;
 
-    private static final int VatImportTaxesTag = 33;
+    private static final int VAT_IMPORT_TAXES_TAG = 33;
 
-    private static final int PaymentConditionsTag = 40;
+    private static final int PAYMENT_CONDITIONS_TAG = 40;
+
+
+    private SwicoS1Decoder() {
+        // don't instantiate
+    }
 
     /**
      * Decodes the specified text.
@@ -67,12 +72,11 @@ public class SwicoS1Decoder {
      * @return the decoded bill information (or {@code null} if no valid Swico bill information is found)
      */
     static SwicoBillInformation decode(String billInfoText) {
-        if (billInfoText == null || !billInfoText.startsWith("//S1/")) {
+        if (billInfoText == null || !billInfoText.startsWith("//S1/"))
             return null;
-        }
 
         // Split text as slashes
-        String[] parts = Split(billInfoText.substring(5));
+        String[] parts = split(billInfoText.substring(5));
 
         // Create a list of tuples (tag, value)
         List<InfoTuple> tuples = new ArrayList<>();
@@ -88,50 +92,49 @@ public class SwicoS1Decoder {
 
         // Process the tuples and assign them to bill information
         SwicoBillInformation billInformation = new SwicoBillInformation();
-        for (InfoTuple tuple : tuples) {
+        for (InfoTuple tuple : tuples)
             decodeElement(billInformation, tuple.tag, tuple.value);
-        }
 
         return billInformation;
     }
 
     private static void decodeElement(SwicoBillInformation billInformation, int tag, String value) {
-        if (value.length() == 0) {
+        if (value.length() == 0)
             return;
-        }
 
         switch (tag) {
-            case InvoiceNumberTag:
+            case INVOICE_NUMBER_TAG:
                 billInformation.setInvoiceNumber(value);
                 break;
-            case InvoiceDateTag:
+            case INVOICE_DATE_TAG:
                 billInformation.setInvoiceDate(getDateValue(value));
                 break;
-            case CustomerReferenceTag:
+            case CUSTOMER_REFERENCE_TAG:
                 billInformation.setCustomerReference(value);
                 break;
-            case VatNumberTag:
+            case VAT_NUMBER_TAG:
                 billInformation.setVatNumber(value);
                 break;
-            case VatDateTag:
+            case VAT_DATE_TAG:
                 setVatDates(billInformation, value);
                 break;
-            case VatRateDetailsTag:
-                SetVatRateDetails(billInformation, value);
+            case VAT_RATE_DETAILS_TAG:
+                setVatRateDetails(billInformation, value);
                 break;
-            case VatImportTaxesTag:
+            case VAT_IMPORT_TAXES_TAG:
                 billInformation.setVatImportTaxes(parseDetailList(value));
                 break;
-            case PaymentConditionsTag:
+            case PAYMENT_CONDITIONS_TAG:
                 setPaymentConditions(billInformation, value);
                 break;
+            default:
+                // ignore unknown tags
         }
     }
 
     private static void setVatDates(SwicoBillInformation billInformation, String value) {
-        if (value.length() != 6 && value.length() != 12) {
+        if (value.length() != 6 && value.length() != 12)
             return;
-        }
 
         if (value.length() == 6) {
             // Single VAT date
@@ -153,7 +156,7 @@ public class SwicoS1Decoder {
         }
     }
 
-    private static void SetVatRateDetails(SwicoBillInformation billInformation, String value) {
+    private static void setVatRateDetails(SwicoBillInformation billInformation, String value) {
         // Test for single VAT rate vs list of tuples
         if (!value.contains(":") && !value.contains(";")) {
             billInformation.setVatRate(getDecimalValue(value));
@@ -172,20 +175,17 @@ public class SwicoS1Decoder {
         for (String listEntry : tuples) {
             // Split into tuple (discount, days)
             String[] detail = listEntry.split(":");
-            if (detail.length != 2) {
+            if (detail.length != 2)
                 continue;
-            }
 
             BigDecimal discount = getDecimalValue(detail[0]);
             Integer days = getIntValue(detail[1]);
-            if (discount != null && days != null) {
+            if (discount != null && days != null)
                 list.add(new PaymentCondition(discount, days));
-            }
         }
 
-        if (list.size() > 0) {
+        if (!list.isEmpty())
             billInformation.setPaymentConditions(list);
-        }
     }
 
     private static List<RateDetail> parseDetailList(String text) {
@@ -196,17 +196,15 @@ public class SwicoS1Decoder {
         for (String vatEntry : tuples) {
             // Split into tuple (rate, amount)
             String[] vatDetails = vatEntry.split(":");
-            if (vatDetails.length != 2) {
+            if (vatDetails.length != 2)
                 continue;
-            }
 
             BigDecimal vatRate = getDecimalValue(vatDetails[0]);
             BigDecimal vatAmount = getDecimalValue(vatDetails[1]);
-            if (vatRate != null && vatAmount != null) {
+            if (vatRate != null && vatAmount != null)
                 list.add(new RateDetail(vatRate, vatAmount));
-            }
         }
-        return list.size() > 0 ? list : null;
+        return list.isEmpty() ? null : list;
     }
 
     private static final DateTimeFormatter SWICO_DATE_FORMAT
@@ -250,7 +248,7 @@ public class SwicoS1Decoder {
      * @param text the text to split
      * @return array of substrings
      */
-    private static String[] Split(String text) {
+    private static String[] split(String text) {
         // Use placeholders for escaped characters (outside of valid QR bill character set)
         // and undo back slash escaping.
         text = text.replace("\\\\", "☁").replace("\\/", "★");

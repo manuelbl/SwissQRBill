@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -180,7 +181,7 @@ public class SwicoBillInformationTest {
     }
 
     @Test
-    public void getDueDate() {
+    public void dueDate_isValid() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         billInformation.setInvoiceDate(LocalDate.of(2020, 6, 30));
         billInformation.setPaymentConditions(Arrays.asList(
@@ -191,11 +192,34 @@ public class SwicoBillInformationTest {
     }
 
     @Test
+    public void dueDate_isNull() {
+        SwicoBillInformation billInformation = new SwicoBillInformation();
+        assertNull(billInformation.getDueDate());
+
+        billInformation.setInvoiceDate(LocalDate.of(2020, 6, 30));
+        assertNull(billInformation.getDueDate());
+
+        billInformation.setPaymentConditions(new ArrayList<>());
+        assertNull(billInformation.getDueDate());
+
+        billInformation.setInvoiceDate(null);
+        assertNull(billInformation.getDueDate());
+
+        billInformation.setInvoiceDate(LocalDate.of(2020, 6, 30));
+        assertNull(billInformation.getDueDate());
+
+        billInformation.setPaymentConditions(Collections.singletonList(
+                new PaymentCondition(BigDecimal.valueOf(2.0), 10)
+        ));
+        assertNull(billInformation.getDueDate());
+    }
+
+    @Test
     public void testEqualsTrivial() {
         SwicoBillInformation info = new SwicoBillInformation();
         assertEquals(info, info);
 
-        assertNotEquals(info, null);
+        assertNotEquals(null, info);
         assertNotEquals("xxx", info);
     }
 

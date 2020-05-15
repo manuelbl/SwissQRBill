@@ -23,34 +23,39 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @DisplayName("Swico S1 Decoding")
 public class SwicoS1DecodingTest {
     @Test
-    public void example1_FullyDecoded() {
+    public void example1_fullyDecoded() {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(SwicoExamples.EXAMPLE_1_TEXT);
         assertEquals(SwicoExamples.createExample1(), billInformation);
     }
 
     @Test
-    public void example2_FullyDecoded() {
+    public void example2_fullyDecoded() {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(SwicoExamples.EXAMPLE_2_TEXT);
         assertEquals(SwicoExamples.createExample2(), billInformation);
     }
 
     @Test
-    public void example3_FullyDecoded() {
+    public void example3_fullyDecoded() {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(SwicoExamples.EXAMPLE_3_TEXT);
         assertEquals(SwicoExamples.createExample3(), billInformation);
     }
 
     @Test
-    public void example4_FullyDecoded() {
+    public void example4_fullyDecoded() {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(SwicoExamples.EXAMPLE_4_TEXT);
         assertEquals(SwicoExamples.createExample4(), billInformation);
+    }
+
+    @Test
+    public void nullValue_returnsNull() {
+        assertNull(SwicoBillInformation.decodeText(null));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {
             "//S1/10//11//20//30/",
             "//S1/"})
-    public void emptyValues_Decoded(String rawBillInformation) {
+    public void emptyValues_decoded(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         assertEquals(new SwicoBillInformation(), billInformation);
     }
@@ -61,7 +66,7 @@ public class SwicoS1DecodingTest {
             "///S1/10/X.66711",
             "S1/10/X.66711",
             "10/X.66711"})
-    public void InvalidStart_ReturnsNull(String rawBillInformation) {
+    public void invalidStart_returnsNull(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         assertNull(billInformation);
     }
@@ -70,7 +75,7 @@ public class SwicoS1DecodingTest {
     @ValueSource(strings = {
             "//S1/10/X.66711/XX/200",
             "//S1/10/X.66711/10.0/200"})
-    public void invalidTag_IsIgnored(String rawBillInformation) {
+    public void invalidTag_isIgnored(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
         expected.setInvoiceNumber("X.66711");
@@ -82,7 +87,7 @@ public class SwicoS1DecodingTest {
             "//S1/11/190520/10/X.66711/30/123456789",
             "//S1/10/X.66711/30/123456789/11/190520",
             "//S1/11/201010/10/X.66711/11/190520/30/123456789"})
-    public void InvalidTagOrder_IsIgnored(String rawBillInformation) {
+    public void invalidTagOrder_isIgnored(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
         expected.setInvoiceNumber("X.66711");
@@ -98,7 +103,7 @@ public class SwicoS1DecodingTest {
             "//S1/10/X.66711/20/\\/405-1/40/0:30---/405-1",
             "//S1/10/X.66711/20/\\405-1/40/0:30---\\405-1",
             "//S1/10/X.66711/20/405\\\\/40/0:30---405\\"})
-    public void EscapedCharacters_Unescaped(String testData) {
+    public void escapedCharacters_unescaped(String testData) {
         String[] parameters = testData.split("---");
         String rawBillInformation = parameters[0];
         String customerReference = parameters[1];
@@ -113,13 +118,13 @@ public class SwicoS1DecodingTest {
     }
 
     @Test
-    public void BillInformationTruncated1_IsIgnored() {
+    public void billInformationTruncated1_isIgnored() {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText("//S1/10");
         assertEquals(new SwicoBillInformation(), billInformation);
     }
 
     @Test
-    public void BillInformationTruncated2_IsIgnored() {
+    public void billInformationTruncated2_isIgnored() {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText("//S1/10/X.66711/11/190520/20");
         SwicoBillInformation expected = new SwicoBillInformation();
         expected.setInvoiceNumber("X.66711");
@@ -131,7 +136,7 @@ public class SwicoS1DecodingTest {
     @ValueSource(strings = {
             "//S1/10/X.66711/20/T.000-001/29/123",
             "//S1/10/X.66711/12/ABC/20/T.000-001"})
-    public void UnknownTag_IsIgnored(String rawBillInformation) {
+    public void unknownTag_isIgnored(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
         expected.setInvoiceNumber("X.66711");
@@ -145,7 +150,7 @@ public class SwicoS1DecodingTest {
             "//S1/10/10201409/11/19.05.20/20/405.789.Q",
             "//S1/10/10201409/11/1905213/20/405.789.Q",
             "//S1/10/10201409/11/200301 /20/405.789.Q"})
-    public void InvalidInvoiceDate_IsIgnored(String rawBillInformation) {
+    public void invalidInvoiceDate_isIgnored(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
         expected.setInvoiceNumber("10201409");
@@ -158,8 +163,10 @@ public class SwicoS1DecodingTest {
             "//S1/10/10201409/31/190570",
             "//S1/10/10201409/31/1905213",
             "//S1/10/10201409/31/1905211905232",
-            "//S1/10/10201409/31/19052119052 "})
-    public void InvalidVatDates_IsIgnored(String rawBillInformation) {
+            "//S1/10/10201409/31/19052119052 ",
+            "//S1/10/10201409/31/190500190531",
+            "//S1/10/10201409/31/190501190532"})
+    public void invalidVatDates_isIgnored(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
         expected.setInvoiceNumber("10201409");
@@ -170,7 +177,7 @@ public class SwicoS1DecodingTest {
     @ValueSource(strings = {
             "//S1/10/329348709/11/200629/32/AB/40/0:30",
             "//S1/10/329348709/11/200629/32/3.5./40/0:30"})
-    public void InvalidVatRate_IsIgnored(String rawBillInformation) {
+    public void invalidVatRate_isIgnored(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
         expected.setInvoiceNumber("329348709");
@@ -186,7 +193,7 @@ public class SwicoS1DecodingTest {
             "//S1/10/10201409/11/200629/32/8:B/40/0:30",
             "//S1/10/10201409/11/200629/32/8:/40/0:30",
             "//S1/10/10201409/11/200629/32/:200;x:200/40/0:30"})
-    public void InvalidVatRateDetails_AreIgnored_ResultEmpty(String rawBillInformation) {
+    public void invalidVatRateDetails_areIgnored_resultEmpty(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
         expected.setInvoiceNumber("10201409");
@@ -202,7 +209,7 @@ public class SwicoS1DecodingTest {
             "//S1/10/10201409/11/200629/32/;8:500/40/0:30",
             "//S1/10/10201409/11/200629/32/8:500;/40/0:30",
             "//S1/10/10201409/11/200629/32/8:500;x:200/40/0:30"})
-    public void InvalidVatRateDetails_AreIgnored_PartialResult(String rawBillInformation) {
+    public void invalidVatRateDetails_areIgnored_partialResult(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
         expected.setInvoiceNumber("10201409");
@@ -220,7 +227,7 @@ public class SwicoS1DecodingTest {
             "//S1/10/10201409/11/200629/33/1;2/40/0:30",
             "//S1/10/10201409/11/200629/33/8:B/40/0:30",
             "//S1/10/10201409/11/200629/33/8:/40/0:30"})
-    public void InvalidVatImportTaxes_AreIgnored_EmptyResult(String rawBillInformation) {
+    public void invalidVatImportTaxes_areIgnored_emptyResult(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
         expected.setInvoiceNumber("10201409");
@@ -236,7 +243,7 @@ public class SwicoS1DecodingTest {
             "//S1/10/10201409/11/200629/33/;8:24.5/40/0:30",
             "//S1/10/10201409/11/200629/33/8:24.5;/40/0:30",
             "//S1/10/10201409/11/200629/33/8:24.5;x:200/40/0:30"})
-    public void InvalidVatImportTaxes_AreIgnored_PartialResult(String rawBillInformation) {
+    public void invalidVatImportTaxes_areIgnored_partialResult(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
         expected.setInvoiceNumber("10201409");
@@ -255,7 +262,7 @@ public class SwicoS1DecodingTest {
             "//S1/10/10201409/11/200629/40/1:5.0",
             "//S1/10/10201409/11/200629/40/3:B",
             "//S1/10/10201409/11/200629/40/ABC"})
-    public void InvalidPaymentConditions_AreIgnored_EmptyResult(String rawBillInformation) {
+    public void invalidPaymentConditions_areIgnored_emptyResult(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
         expected.setInvoiceNumber("10201409");
@@ -269,7 +276,7 @@ public class SwicoS1DecodingTest {
             "//S1/10/10201409/11/200629/40/;0:30",
             "//S1/10/10201409/11/200629/40/0:30;",
             "//S1/10/10201409/11/200629/40/x:1;2:x;0:30;x:200"})
-    public void InvalidPaymentConditions_AreIgnored_PartialResult(String rawBillInformation) {
+    public void invalidPaymentConditions_areIgnored_partialResult(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
         expected.setInvoiceNumber("10201409");

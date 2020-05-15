@@ -25,35 +25,35 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SwicoS1EncodingTest {
 
     @Test
-    public void EncodeExample1() {
+    public void encodeExample1() {
         SwicoBillInformation billInfo = SwicoExamples.createExample1();
         String text = billInfo.encodeAsText();
         assertEquals(SwicoExamples.EXAMPLE_1_TEXT, text);
     }
 
     @Test
-    public void EncodeExample2() {
+    public void encodeExample2() {
         SwicoBillInformation billInfo = SwicoExamples.createExample2();
         String text = billInfo.encodeAsText();
         assertEquals(SwicoExamples.EXAMPLE_2_TEXT, text);
     }
 
     @Test
-    public void EncodeExample3() {
+    public void encodeExample3() {
         SwicoBillInformation billInfo = SwicoExamples.createExample3();
         String text = billInfo.encodeAsText();
         assertEquals(SwicoExamples.EXAMPLE_3_TEXT, text);
     }
 
     @Test
-    public void EncodeExample4() {
+    public void encodeExample4() {
         SwicoBillInformation billInfo = SwicoExamples.createExample4();
         String text = billInfo.encodeAsText();
         assertEquals(SwicoExamples.EXAMPLE_4_TEXT, text);
     }
 
     @Test
-    public void EncodeTextWithBackslash() {
+    public void encodeTextWithBackslash() {
         SwicoBillInformation info = new SwicoBillInformation();
         info.setInvoiceNumber("X.66711/8824");
         info.setInvoiceDate(LocalDate.of(2020, 7, 12));
@@ -76,7 +76,7 @@ public class SwicoS1EncodingTest {
     }
 
     @Test
-    public void EncodeEmptyList() {
+    public void encodeEmptyList() {
         SwicoBillInformation info = new SwicoBillInformation();
         info.setInvoiceNumber("10201409");
         info.setInvoiceDate(LocalDate.of(2019, 5, 12));
@@ -93,5 +93,23 @@ public class SwicoS1EncodingTest {
         assertEquals(
                 "//S1/10/10201409/11/190512/20/1400.000-53/30/106017086/31/180508/32/7.7/40/2:10;0:30",
                 text);
+    }
+
+    @Test
+    public void encodeMissingData() {
+        SwicoBillInformation info = new SwicoBillInformation();
+        assertEquals("//S1", info.encodeAsText());
+
+        info.setVatStartDate(LocalDate.of(2020, 8, 12));
+        assertEquals("//S1", info.encodeAsText());
+
+        info.setVatStartDate(null);
+        info.setVatEndDate(LocalDate.of(2020, 8, 12));
+        assertEquals("//S1", info.encodeAsText());
+
+        info.setVatRateDetails(new ArrayList<>());
+        info.setVatImportTaxes(new ArrayList<>());
+        info.setPaymentConditions(new ArrayList<>());
+        assertEquals("//S1", info.encodeAsText());
     }
 }

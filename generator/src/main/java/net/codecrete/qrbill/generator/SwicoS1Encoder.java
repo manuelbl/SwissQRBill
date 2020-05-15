@@ -45,18 +45,18 @@ class SwicoS1Encoder {
 
         sb.append("//S1");
 
-        if (billInfo.getInvoiceDate() != null) {
+        if (billInfo.getInvoiceDate() != null)
             sb.append("/10/").append(escapedText(billInfo.getInvoiceNumber()));
-        }
-        if (billInfo.getInvoiceDate() != null) {
+
+        if (billInfo.getInvoiceDate() != null)
             sb.append("/11/").append(s1Date(billInfo.getInvoiceDate()));
-        }
-        if (billInfo.getCustomerReference() != null) {
+
+        if (billInfo.getCustomerReference() != null)
             sb.append("/20/").append(escapedText(billInfo.getCustomerReference()));
-        }
-        if (billInfo.getVatNumber() != null) {
+
+        if (billInfo.getVatNumber() != null)
             sb.append("/30/").append(escapedText(billInfo.getVatNumber()));
-        }
+
         if (billInfo.getVatDate() != null) {
             sb.append("/31/").append(s1Date(billInfo.getVatDate()));
         } else if (billInfo.getVatStartDate() != null && billInfo.getVatEndDate() != null) {
@@ -64,17 +64,19 @@ class SwicoS1Encoder {
                     .append(s1Date(billInfo.getVatStartDate()))
                     .append(s1Date(billInfo.getVatEndDate()));
         }
+
         if (billInfo.getVatRate() != null) {
             sb.append("/32/").append(s1Number(billInfo.getVatRate()));
-        } else if (billInfo.getVatRateDetails() != null && billInfo.getVatRateDetails().size() > 0) {
+        } else if (billInfo.getVatRateDetails() != null && !billInfo.getVatRateDetails().isEmpty()) {
             sb.append("/32/");
             appendRateDetailTupleList(sb, billInfo.getVatRateDetails());
         }
-        if (billInfo.getVatImportTaxes() != null && billInfo.getVatImportTaxes().size() > 0) {
+
+        if (billInfo.getVatImportTaxes() != null && !billInfo.getVatImportTaxes().isEmpty()) {
             sb.append("/33/");
             appendRateDetailTupleList(sb, billInfo.getVatImportTaxes());
         }
-        if (billInfo.getPaymentConditions() != null && billInfo.getPaymentConditions().size() > 0) {
+        if (billInfo.getPaymentConditions() != null && !billInfo.getPaymentConditions().isEmpty()) {
             sb.append("/40/");
             appendConditionTupleList(sb, billInfo.getPaymentConditions());
         }
@@ -103,11 +105,10 @@ class SwicoS1Encoder {
     private static void appendRateDetailTupleList(StringBuilder sb, List<RateDetail> list) {
         boolean isFirst = true;
         for (RateDetail e : list) {
-            if (!isFirst) {
+            if (!isFirst)
                 sb.append(";");
-            } else {
+            else
                 isFirst = false;
-            }
             sb.append(s1Number(e.getRate())).append(":").append(s1Number(e.getAmount()));
         }
     }
@@ -115,11 +116,10 @@ class SwicoS1Encoder {
     private static void appendConditionTupleList(StringBuilder sb, List<PaymentCondition> list) {
         boolean isFirst = true;
         for (PaymentCondition e : list) {
-            if (!isFirst) {
+            if (!isFirst)
                 sb.append(";");
-            } else {
+            else
                 isFirst = false;
-            }
             sb.append(s1Number(e.getDiscount())).append(":").append(e.getDays());
         }
     }
