@@ -123,6 +123,7 @@ public class SwicoS1EncodingTest {
 
         Locale defaultLocale = Locale.getDefault();
         try {
+            Locale.setDefault(Locale.forLanguageTag(languageTag));
             SwicoBillInformation billInfo = SwicoExamples.createExample3();
             String text = billInfo.encodeAsText();
             assertEquals(SwicoExamples.EXAMPLE_3_TEXT, text);
