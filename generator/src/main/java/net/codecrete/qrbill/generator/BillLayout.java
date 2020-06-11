@@ -372,7 +372,7 @@ class BillLayout {
         return extraSpacing / lineSpacing < 0.8;
     }
 
-    private void drawBorder() throws IOException {
+    void drawBorder() throws IOException {
         SeparatorType separatorType = bill.getFormat().getSeparatorType();
         OutputSize outputSize = bill.getFormat().getOutputSize();
 

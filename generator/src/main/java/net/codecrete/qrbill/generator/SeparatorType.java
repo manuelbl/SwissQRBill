@@ -7,7 +7,7 @@
 package net.codecrete.qrbill.generator;
 
 /**
- * Separator type above and betweeen payment part and receipt
+ * Separator type above and between payment part and receipt
  */
 public enum SeparatorType {
     /**

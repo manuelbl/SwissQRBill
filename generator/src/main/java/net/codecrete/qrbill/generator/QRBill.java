@@ -152,6 +152,37 @@ public class QRBill {
         }
     }
 
+    /**
+     * Draws the separator line(s) to the specified canvas.
+     * <p>
+     *     The separator lines are drawn assuming that the QR bill starts at position (0, 0)
+     *     and extends the top and right. So position (0, 0) should be in the bottom left corner.
+     * </p>
+     * <p>
+     *     This method allows to add separator lines to an existing QR bill,
+     *     e.g. on to an archived QR bill document.
+     * </p>
+     *
+     * @param separatorType type of separator lines
+     * @param withHorizontalLine {@code true} if both the horizontal or vertical separator should be drawn,
+     *              {@code false} for the vertical separator only
+     * @param canvas the canvas to draw to
+     */
+    public static void drawSeparators(SeparatorType separatorType, boolean withHorizontalLine, Canvas canvas) {
+        BillFormat format = new BillFormat();
+        format.setSeparatorType(separatorType);
+        format.setOutputSize(withHorizontalLine ? OutputSize.QR_BILL_WITH_HORIZONTAL_LINE : OutputSize.QR_BILL_ONLY);
+        Bill bill = new Bill();
+        bill.setFormat(format);
+
+        BillLayout layout = new BillLayout(bill, canvas);
+        try {
+            layout.drawBorder();
+        } catch (IOException e) {
+            throw new QRBillGenerationException(e);
+        }
+    }
+
     private static void validateAndGenerate(Bill bill, Canvas canvas) throws IOException {
         ValidationResult result = Validator.validate(bill);
         Bill cleanedBill = result.getCleanedBill();
