@@ -4,7 +4,7 @@
 <g font-family="Helvetica,Arial,&quot;Liberation Sans&quot;" transform="translate(0 841.89)">
 <title>Swiss QR Bill</title>
 <g transform="translate(189.921 -0)">
-<text x="0" y="-274.665" font-size="11" font-weight="bold">Section de paiement</text>
+<text x="0" y="-274.665" font-size="11" font-weight="bold">Section paiement</text>
 </g>
 <g transform="translate(189.921 -119.055) scale(2.288)">
 <path d="M0,-57h7v1h-7zm9,0h2v2h-2zm3,0h1v1h-1zm2,0h1v1h-1zm2,0h1v3h-1zm7,0h2v1h-2z
