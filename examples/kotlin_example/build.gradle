@@ -17,7 +17,7 @@ task execute(type: JavaExec) {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    compile "net.codecrete.qrbill:qrbill-generator:2.3.3+"
+    compile "net.codecrete.qrbill:qrbill-generator:2.3.6+"
 }
 
 compileKotlin {
