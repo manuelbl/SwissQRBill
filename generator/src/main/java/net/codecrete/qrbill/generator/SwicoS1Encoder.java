@@ -45,7 +45,7 @@ class SwicoS1Encoder {
 
         sb.append("//S1");
 
-        if (billInfo.getInvoiceDate() != null)
+        if (billInfo.getInvoiceNumber() != null)
             sb.append("/10/").append(escapedText(billInfo.getInvoiceNumber()));
 
         if (billInfo.getInvoiceDate() != null)

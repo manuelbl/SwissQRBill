@@ -80,6 +80,14 @@ public class SwicoS1EncodingTest {
     }
 
     @Test
+    public void encodeInvoiceNoOnly() {
+        SwicoBillInformation info = new SwicoBillInformation();
+        info.setInvoiceNumber("X.66711-8831");
+        String text = info.encodeAsText();
+        assertEquals("//S1/10/X.66711-8831", text);
+    }
+
+    @Test
     public void encodeEmptyList() {
         SwicoBillInformation info = new SwicoBillInformation();
         info.setInvoiceNumber("10201409");
