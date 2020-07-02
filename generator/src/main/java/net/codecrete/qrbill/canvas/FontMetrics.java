@@ -108,7 +108,7 @@ public class FontMetrics {
     }
 
     /**
-     * Distance between baseline and bottom of letter extending the farest below the
+     * Distance between baseline and bottom of letter extending the farthest below the
      * baseline.
      *
      * @param fontSize the font size (in pt)

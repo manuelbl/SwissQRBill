@@ -138,7 +138,7 @@ class FontMetricsTest {
     }
 
     @Test
-    void forcedWorkbreak() {
+    void forcedWordBreak() {
         String[] lines = fontMetrics.splitLines("abcde", 2, 10);
         assertEquals(5, lines.length);
         assertEquals("a", lines[0]);
@@ -149,7 +149,7 @@ class FontMetricsTest {
     }
 
     @Test
-    void forcedWordbreakWithSpaces() {
+    void forcedWordBreakWithSpaces() {
         String[] lines = fontMetrics.splitLines("  abcde  ", 2, 10);
         assertEquals(5, lines.length);
         assertEquals("a", lines[0]);

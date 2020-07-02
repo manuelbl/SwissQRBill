@@ -155,7 +155,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
     }
 
     @Test
-    void emptyUnstructureMessage() {
+    void emptyUnstructuredMessage() {
         bill = SampleData.getExample1();
         bill.setUnstructuredMessage("   ");
         validate();

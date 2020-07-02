@@ -10,7 +10,7 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * Commonn interface for all output formats to draw the QR bill.
+ * Common interface for all output formats to draw the QR bill.
  * <p>
  * The coordinate system has its origin in the bottom left corner.
  * The y-axis extends from the bottom to the top.
@@ -106,7 +106,7 @@ public interface Canvas extends Closeable {
     void moveTo(double x, double y) throws IOException;
 
     /**
-     * Adds a line segment to the open path from the previous point to the speicifed
+     * Adds a line segment to the open path from the previous point to the specified
      * position.
      *
      * @param x x-coordinate of position
@@ -116,7 +116,7 @@ public interface Canvas extends Closeable {
     void lineTo(double x, double y) throws IOException;
 
     /**
-     * Adds a cubic Beziér curve to the open path going from the previous point to the speicifed
+     * Adds a cubic Beziér curve to the open path going from the previous point to the specified
      * position. Two control points control the curve
      *
      * @param x1 x-coordinate of first control point
@@ -191,7 +191,7 @@ public interface Canvas extends Closeable {
     double getAscender(int fontSize);
 
     /**
-     * Distance between baseline and bottom of letter extending the farest below the
+     * Distance between baseline and bottom of letter extending the farthest below the
      * baseline.
      *
      * @param fontSize the font size (in pt)

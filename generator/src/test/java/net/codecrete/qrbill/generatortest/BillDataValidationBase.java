@@ -60,7 +60,7 @@ class BillDataValidationBase {
     }
 
     /**
-     * Asserts thta the validation succeeded with a single warning
+     * Asserts that the validation succeeded with a single warning
      *
      * @param field      the field that triggered the validation warning
      * @param messageKey the message key of the validation warning

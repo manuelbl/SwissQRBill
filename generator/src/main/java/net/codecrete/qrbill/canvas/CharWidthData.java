@@ -862,7 +862,7 @@ class CharWidthData {
     static final char LIBERATION_SANS_NORMAL_DEFAULT_WIDTH = 556;
 
     /**
-     * Character widths for LIberation Sans Normal (range 0x20 to 0x7f)
+     * Character widths for Liberation Sans Normal (range 0x20 to 0x7f)
      */
     static final char[] LIBERATION_SANS_NORMAL_20_7F = {
             278, // 0x20

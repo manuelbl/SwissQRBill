@@ -150,7 +150,7 @@ class AddressTest {
     }
 
     @Test
-    void clearTestStructed() {
+    void clearTestStructured() {
         Address address1 = createStructuredAddress();
         address1.clear();
         assertEquals(Address.Type.UNDETERMINED, address1.getType());

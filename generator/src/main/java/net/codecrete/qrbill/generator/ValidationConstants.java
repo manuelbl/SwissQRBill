@@ -8,7 +8,7 @@
 package net.codecrete.qrbill.generator;
 
 /**
- * Constants for bill valdiation messages: message keys and field names.
+ * Constants for bill validation messages: message keys and field names.
  */
 public class ValidationConstants {
     /**

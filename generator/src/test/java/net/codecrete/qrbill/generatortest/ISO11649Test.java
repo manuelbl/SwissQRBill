@@ -28,7 +28,7 @@ class ISO11649Test {
 
     @Test
     void validWithLowercaseLetters() {
-        assertTrue(Payments.isValidISO11649Reference("RF 44 alll ower case"));
+        assertTrue(Payments.isValidISO11649Reference("RF 44 all lower case"));
     }
 
     @Test

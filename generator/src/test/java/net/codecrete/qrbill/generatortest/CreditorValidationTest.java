@@ -137,7 +137,7 @@ class CreditorValidationTest extends BillDataValidationBase {
     }
 
     @Test
-    void creditorWithInvalidCounturyCode2() {
+    void creditorWithInvalidCountryCode2() {
         bill = SampleData.getExample1();
         Address address = createValidPerson();
         address.setCountryCode("R!");

@@ -88,7 +88,7 @@ public class ValidationResult implements Serializable {
      *
      * @param type       the message type
      * @param field      the name of the affected field
-     * @param messageKey the language-netural message key
+     * @param messageKey the language-neutral message key
      */
     public void addMessage(Type type, String field, String messageKey) {
         ValidationMessage message = new ValidationMessage(type, field, messageKey);
@@ -102,7 +102,7 @@ public class ValidationResult implements Serializable {
      *
      * @param type              the message type
      * @param field             the name of the affected field
-     * @param messageKey        the language-netural message key
+     * @param messageKey        the language-neutral message key
      * @param messageParameters additional message parameters (text) to be inserted
      *                          into the localized message
      */
@@ -116,7 +116,7 @@ public class ValidationResult implements Serializable {
     /**
      * Gets the cleaned bill data
      *
-     * @return the cleand bill data
+     * @return the cleaned bill data
      */
     public Bill getCleanedBill() {
         return cleanedBill;
@@ -125,7 +125,7 @@ public class ValidationResult implements Serializable {
     /**
      * Sets the cleaned bill data
      *
-     * @param cleanedBill the cleand bill data
+     * @param cleanedBill the cleaned bill data
      */
     public void setCleanedBill(Bill cleanedBill) {
         this.cleanedBill = cleanedBill;
