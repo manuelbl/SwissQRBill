@@ -114,6 +114,15 @@ class DecodedTextTest {
     }
 
     @Test
+    void decodeTextB5() {
+        Bill bill = SampleQrCodeText.getBillData5();
+        normalizeSourceBill(bill);
+        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText5(false));
+        normalizeDecodedBill(bill2);
+        assertEquals(bill, bill2);
+    }
+
+    @Test
     void decodeInvalidRefType() {
         Bill bill = SampleData.getExample3();
         String qrText = QRBill.encodeQrCodeText(bill);

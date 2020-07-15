@@ -103,7 +103,7 @@ public class QRCodeText {
     private static final DecimalFormat amountFieldFormat;
 
     static {
-        amountFieldFormat = new DecimalFormat("#0.00");
+        amountFieldFormat = new DecimalFormat("#.00");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
         symbols.setDecimalSeparator('.');
         amountFieldFormat.setDecimalFormatSymbols(symbols);

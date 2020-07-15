@@ -268,6 +268,68 @@ class SampleQrCodeText {
         return bill;
     }
 
+    //@formatter:off
+    private static final String QR_CODE_TEXT_5 = "SPC\n" +
+            "0200\n" +
+            "1\n" +
+            "CH5800791123000889012\n" +
+            "S\n" +
+            "Robert Schneider AG\n" +
+            "Rue du Lac\n" +
+            "1268\n" +
+            "2501\n" +
+            "Biel\n" +
+            "CH\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            ".50\n" +
+            "CHF\n" +
+            "K\n" +
+            "Pia-Maria Rutschmann-Schnyder\n" +
+            "Grosse Marktgasse 28\n" +
+            "9400 Rorschach\n" +
+            "\n" +
+            "\n" +
+            "CH\n" +
+            "SCOR\n" +
+            "RF18539007547034\n" +
+            "\n" +
+            "EPD\n";
+    //@formatter:on
+
+    static String getQrCodeText5(boolean withCRLF) {
+        return handleLinefeed(QR_CODE_TEXT_5, withCRLF);
+    }
+
+    static Bill getBillData5() {
+        Bill bill = new Bill();
+        bill.getFormat().setLanguage(Language.EN);
+        bill.setAccount("CH5800791123000889012");
+        Address creditor = new Address();
+        creditor.setName("Robert Schneider AG");
+        creditor.setStreet("Rue du Lac");
+        creditor.setHouseNo("1268");
+        creditor.setPostalCode("2501");
+        creditor.setTown("Biel");
+        creditor.setCountryCode("CH");
+        bill.setCreditor(creditor);
+        bill.setAmount(BigDecimal.valueOf(50, 2));
+        bill.setCurrency("CHF");
+        Address debtor = new Address();
+        debtor.setName("Pia-Maria Rutschmann-Schnyder");
+        debtor.setAddressLine1("Grosse Marktgasse 28");
+        debtor.setAddressLine2("9400 Rorschach");
+        debtor.setCountryCode("CH");
+        bill.setDebtor(debtor);
+        bill.setReference("RF18539007547034");
+        return bill;
+    }
+
     private static String handleLinefeed(String text, boolean withCRLF) {
         if (withCRLF)
             text = text.replace("\n", "\r\n");

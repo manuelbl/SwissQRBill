@@ -52,6 +52,12 @@ class EncodedTextTest {
 
     @Test
     void createText5() {
+        Bill bill = SampleQrCodeText.getBillData5();
+        assertEquals(SampleQrCodeText.getQrCodeText5(false), QRBill.encodeQrCodeText(bill));
+    }
+
+    @Test
+    void createTextError1() {
         assertThrows(QRBillValidationError.class, () -> {
             Bill bill = SampleData.getExample4();
             bill.setAmount(BigDecimal.valueOf(-1, 2));
@@ -60,7 +66,7 @@ class EncodedTextTest {
     }
 
     @Test
-    void createText6() {
+    void createTextEmptyReference() {
         Bill bill = SampleQrCodeText.getBillData3();
         ValidationResult result = QRBill.validate(bill);
         assertFalse(result.hasErrors());
@@ -68,5 +74,4 @@ class EncodedTextTest {
         bill.setReference("");
         assertEquals(SampleQrCodeText.getQrCodeText3(false), QRCodeText.create(bill));
     }
-
 }
