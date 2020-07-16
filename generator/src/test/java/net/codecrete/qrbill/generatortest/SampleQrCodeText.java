@@ -287,7 +287,7 @@ class SampleQrCodeText {
             "\n" +
             "\n" +
             "\n" +
-            ".50\n" +
+            "0.50\n" +
             "CHF\n" +
             "K\n" +
             "Pia-Maria Rutschmann-Schnyder\n" +
