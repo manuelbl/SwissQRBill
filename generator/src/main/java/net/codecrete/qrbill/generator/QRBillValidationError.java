@@ -25,6 +25,11 @@ public class QRBillValidationError extends RuntimeException {
         this.validationResult = validationResult;
     }
 
+    @Override
+    public String getMessage() {
+        return "QR bill data is invalid: " + validationResult.getDescription();
+    }
+
     /**
      * Gets the validation result with the error messages.
      *
