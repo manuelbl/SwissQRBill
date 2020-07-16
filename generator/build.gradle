@@ -23,6 +23,14 @@ archivesBaseName = 'qrbill-generator'
 sourceCompatibility = 1.8
 
 jar {
+    manifest {
+        attributes(
+            'Implementation-Title': 'Swiss QR Bill Generator',
+            'Implementation-Version': archiveVersion,
+            'Implementation-Vendor': 'Manuel Bleichenbacher'
+        )
+
+    }
 }
 
 test {

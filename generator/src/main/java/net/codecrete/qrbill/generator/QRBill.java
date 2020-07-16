@@ -285,4 +285,13 @@ public class QRBill {
         }
         return canvas;
     }
+
+    /**
+     * Returns this library's version
+     *
+     * @return version in semantic versioning format (major.minor.patch).
+     */
+    public static String getVersion() {
+        return QRBill.class.getPackage().getImplementationVersion();
+    }
 }
