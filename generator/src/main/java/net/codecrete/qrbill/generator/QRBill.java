@@ -291,7 +291,7 @@ public class QRBill {
      *
      * @return version in semantic versioning format (major.minor.patch).
      */
-    public static String getVersion() {
+    public static String getLibraryVersion() {
         return QRBill.class.getPackage().getImplementationVersion();
     }
 }

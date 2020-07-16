@@ -58,6 +58,6 @@ public class QRBillExample {
 
         System.out.println("QR bill saved at " + path.toAbsolutePath());
 
-        System.out.println("Generated with version " + QRBill.getVersion());
+        System.out.println("Generated with version " + QRBill.getLibraryVersion());
     }
 }
