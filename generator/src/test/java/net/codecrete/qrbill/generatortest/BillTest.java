@@ -116,6 +116,14 @@ class BillTest {
     }
 
     @Test
+    void createQRReference() {
+        Bill bill = new Bill();
+        bill.createAndSetQRReference("20187383000000000000721928");
+        assertEquals("201873830000000000007219287", bill.getReference());
+        assertEquals(Bill.REFERENCE_TYPE_QR_REF, bill.getReferenceType());
+    }
+
+    @Test
     void setReferenceType() {
         Bill bill = new Bill();
         bill.setReferenceType(Bill.REFERENCE_TYPE_QR_REF);

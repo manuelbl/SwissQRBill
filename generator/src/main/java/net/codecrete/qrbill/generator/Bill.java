@@ -244,16 +244,22 @@ public class Bill implements Serializable {
     /**
      * Sets the payment reference.
      * <p>
-     * The reference is mandatory for QR IBANs, i.e. IBANs in the range
-     * CHxx30000xxxxxx through CHxx31999xxxxx.
+     *     The reference is mandatory for QR IBANs, i.e. IBANs in the range
+     *     CHxx30000xxxxxx through CHxx31999xxxxx. QR IBANs require a valid QR
+     *     reference (numeric reference corresponding to the ISR reference format).
      * </p>
      * <p>
-     * If specified, the reference must be either a valid QR reference (which
-     * corresponds to the form ISR reference) or a valid creditor reference
-     * according to ISO 11649 ("RFxxxx"). Both may contain spaces for formatting.
+     *     For non-QR IBANs, the reference is optional. If it is provided,
+     *     it must be valid creditor reference according to ISO 11649 ("RFxxxx").
+     * </p>
+     * <p>
+     *     Both types of references may contain spaces for formatting.
      * </p>
      *
      * @param reference the payment reference number
+     *
+     * @see #createAndSetCreditorReference(String)
+     * @see #createAndSetQRReference(String) 
      */
     public void setReference(String reference) {
         this.reference = reference;
@@ -264,15 +270,29 @@ public class Bill implements Serializable {
      * Creates and sets a ISO11649 creditor reference from a raw string by prefixing
      * the String with "RF" and the modulo 97 checksum.
      * <p>
-     * Whitespace is removed from the reference
+     *     Whitespace is removed from the reference
      * </p>
      *
      * @param rawReference The raw string
-     * @throws IllegalArgumentException if {@code rawReference} contains invalid
-     *                                  characters
+     * @throws IllegalArgumentException if {@code rawReference} contains invalid characters
      */
     public void createAndSetCreditorReference(String rawReference) {
         setReference(Payments.createISO11649Reference(rawReference));
+    }
+
+    /**
+     * Creates and sets a QR reference from a raw string by appending the checksum digit
+     * and prepending zeros to make it the correct length.
+     * <p>
+     *     As the QR reference is numeric, the raw string must consist of digits and
+     *     whitespace only. Whitespace is removed from the reference.
+     * </p>
+     *
+     * @param rawReference The raw string
+     * @throws IllegalArgumentException if {@code rawReference} contains invalid characters
+     */
+    public void createAndSetQRReference(String rawReference) {
+        setReference(Payments.createQRReference(rawReference));
     }
 
     /**

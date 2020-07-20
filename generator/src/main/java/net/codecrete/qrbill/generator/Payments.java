@@ -312,17 +312,44 @@ public class Payments {
         if (!isNumeric(reference))
             return false;
 
-        int carry = 0;
         int len = reference.length();
         if (len != 27)
             return false;
 
+        return calculateMod10(reference) == 0;
+    }
+
+    /**
+     * Creates a QR reference from a raw string by appending the checksum digit
+     * and prepending zeros to make it the correct length.
+     * <p>
+     *     Whitespace is removed from the reference
+     * </p>
+     *
+     * @param rawReference The raw string (digits and whitespace only)
+     * @return QR reference
+     * @throws IllegalArgumentException if {@code rawReference} contains invalid
+     *                                  characters
+     */
+    public static String createQRReference(String rawReference) {
+        final String rawRef = Strings.whiteSpaceRemoved(rawReference);
+        if (!isNumeric(rawRef))
+            throw new IllegalArgumentException("Invalid character in reference (digits allowed only)");
+        if (rawRef.length() > 26)
+            throw new IllegalArgumentException("Reference number is too long");
+        int mod10 = calculateMod10(rawRef);
+        return "00000000000000000000000000".substring(0, 26 - rawRef.length()) + rawRef + (char)('0' + mod10);
+
+    }
+
+    private static int calculateMod10(String reference) {
+        int len = reference.length();
+        int carry = 0;
         for (int i = 0; i < len; i++) {
             int digit = reference.charAt(i) - '0';
             carry = MOD_10[(carry + digit) % 10];
         }
-
-        return carry == 0;
+        return (10 - carry) % 10;
     }
 
     /**

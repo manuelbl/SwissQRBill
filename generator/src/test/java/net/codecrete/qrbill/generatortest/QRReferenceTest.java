@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -55,5 +56,35 @@ class QRReferenceTest {
     void formatQRReference() {
         assertEquals("12 34560 00000 00129 11462 90514",
                 Payments.formatQRReferenceNumber("123456000000001291146290514"));
+    }
+
+    @Test
+    void createQRReference() {
+        assertEquals(
+                "000000000000000000001234565",
+                Payments.createQRReference("123456"));
+    }
+
+    @Test
+    void createQRReferenceWithWhitespace() {
+        assertEquals(
+                "000000000000000000001234565",
+                Payments.createQRReference("  12 3456 "));
+    }
+
+    @Test
+    void rawReferenceWithInvalidCharacters() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            Payments.createQRReference("1134a56");
+        });
+        assertEquals("Invalid character in reference (digits allowed only)", ex.getMessage());
+    }
+
+    @Test
+    void rawReferenceTooLong() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            Payments.createQRReference("123456789012345678901234567");
+        });
+        assertEquals("Reference number is too long", ex.getMessage());
     }
 }
