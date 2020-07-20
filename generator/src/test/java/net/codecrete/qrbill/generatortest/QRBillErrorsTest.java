@@ -30,22 +30,22 @@ class QRBillErrorsTest {
 
     @Test
     void throwsRuntimeException() {
+        Bill bill = SampleData.getExample1();
+        FailingCanvas canvas = new FailingCanvas();
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
         assertThrows(QRBillGenerationException.class, () -> {
-            Bill bill = SampleData.getExample1();
-            FailingCanvas canvas = new FailingCanvas();
-            bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
             QRBill.draw(bill, canvas);
         });
     }
 
     @Test
     void throwsValidationError1() {
+        Bill bill = SampleData.getExample1();
+        bill.getCreditor().setName(" ");
+        bill.getCreditor().setHouseNo("abcdefghijklmnopqrstuvwxyz");
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
+        bill.getFormat().setGraphicsFormat(GraphicsFormat.PDF);
         QRBillValidationError error = assertThrows(QRBillValidationError.class, () -> {
-            Bill bill = SampleData.getExample1();
-            bill.getCreditor().setName(" ");
-            bill.getCreditor().setHouseNo("abcdefghijklmnopqrstuvwxyz");
-            bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
-            bill.getFormat().setGraphicsFormat(GraphicsFormat.PDF);
             QRBill.generate(bill);
         });
         assertEquals("QR bill data is invalid: field \"creditor.name\" may not be empty (field_is_mandatory)", error.getMessage());
@@ -53,12 +53,12 @@ class QRBillErrorsTest {
 
     @Test
     void throwsValidationError2() {
+        Bill bill = SampleData.getExample1();
+        bill.setUnstructuredMessage(null);
+        bill.setBillInformation("//" + new String(new char[150]).replace('\0', 'X'));
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
+        bill.getFormat().setGraphicsFormat(GraphicsFormat.PDF);
         QRBillValidationError error = assertThrows(QRBillValidationError.class, () -> {
-            Bill bill = SampleData.getExample1();
-            bill.setUnstructuredMessage(null);
-            bill.setBillInformation("//" + new String(new char[150]).replace('\0', 'X'));
-            bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
-            bill.getFormat().setGraphicsFormat(GraphicsFormat.PDF);
             QRBill.generate(bill);
         });
         assertEquals("QR bill data is invalid: the value for field \"billInformation\" should not exceed a length of 140 characters (field_value_too_long)", error.getMessage());
@@ -66,12 +66,12 @@ class QRBillErrorsTest {
 
     @Test
     void throwsValidationError3() {
+        Bill bill = SampleData.getExample1();
+        bill.setReference("RF1234");
+        bill.setCurrency("XXX");
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
+        bill.getFormat().setGraphicsFormat(GraphicsFormat.PDF);
         QRBillValidationError error = assertThrows(QRBillValidationError.class, () -> {
-            Bill bill = SampleData.getExample1();
-            bill.setReference("RF1234");
-            bill.setCurrency("XXX");
-            bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
-            bill.getFormat().setGraphicsFormat(GraphicsFormat.PDF);
             QRBill.generate(bill);
         });
         assertEquals("QR bill data is invalid: currency should be \"CHF\" or \"EUR\" (currency_is_chf_or_eur); reference is invalid (numeric QR reference required) (valid_qr_ref_no)", error.getMessage());

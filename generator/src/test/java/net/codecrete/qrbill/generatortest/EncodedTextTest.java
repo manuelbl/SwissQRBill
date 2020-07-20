@@ -58,9 +58,9 @@ class EncodedTextTest {
 
     @Test
     void createTextError1() {
+        Bill bill = SampleData.getExample4();
+        bill.setAmount(BigDecimal.valueOf(-1, 2));
         assertThrows(QRBillValidationError.class, () -> {
-            Bill bill = SampleData.getExample4();
-            bill.setAmount(BigDecimal.valueOf(-1, 2));
             QRBill.encodeQrCodeText(bill);
         });
     }

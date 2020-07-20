@@ -86,7 +86,6 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
             if (pageNo == LAST_PAGE)
                 pageNo = document.getNumberOfPages() - 1;
             PDPage page = document.getPage(pageNo);
-            PDRectangle rect = page.getBBox();
             contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true, true);
         }
     }
