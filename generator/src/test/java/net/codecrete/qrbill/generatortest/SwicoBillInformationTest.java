@@ -24,73 +24,73 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DisplayName("SwicoBillInformation class")
-public class SwicoBillInformationTest {
+class SwicoBillInformationTest {
 
     @Test
-    public void setInvoiceNumber() {
+    void setInvoiceNumber() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         billInformation.setInvoiceNumber("ABC");
         assertEquals("ABC", billInformation.getInvoiceNumber());
     }
 
     @Test
-    public void setInvoiceDate() {
+    void setInvoiceDate() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         billInformation.setInvoiceDate(LocalDate.of(2020, 6, 30));
         assertEquals(LocalDate.of(2020, 6, 30), billInformation.getInvoiceDate());
     }
 
     @Test
-    public void setCustomerReference() {
+    void setCustomerReference() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         billInformation.setCustomerReference("1234-ABC");
         assertEquals("1234-ABC", billInformation.getCustomerReference());
     }
 
     @Test
-    public void setVatNumber() {
+    void setVatNumber() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         billInformation.setVatNumber("109030864");
         assertEquals("109030864", billInformation.getVatNumber());
     }
 
     @Test
-    public void setVatDate() {
+    void setVatDate() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         billInformation.setVatDate(LocalDate.of(2020, 3, 1));
         assertEquals(LocalDate.of(2020, 3, 1), billInformation.getVatDate());
     }
 
     @Test
-    public void setVatStartDate() {
+    void setVatStartDate() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         billInformation.setVatStartDate(LocalDate.of(2019, 3, 1));
         assertEquals(LocalDate.of(2019, 3, 1), billInformation.getVatStartDate());
     }
 
     @Test
-    public void setVatEndDate() {
+    void setVatEndDate() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         billInformation.setVatEndDate(LocalDate.of(2020, 2, 29));
         assertEquals(LocalDate.of(2020, 2, 29), billInformation.getVatEndDate());
     }
 
     @Test
-    public void setVatRate() {
+    void setVatRate() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         billInformation.setVatRate(BigDecimal.valueOf(7.7));
         assertEquals(7.7, billInformation.getVatRate().doubleValue());
     }
 
     @Test
-    public void defaultRateDetails() {
+    void defaultRateDetails() {
         RateDetail detail = new RateDetail();
         assertNull(detail.getRate());
         assertNull(detail.getAmount());
     }
 
     @Test
-    public void rateDetailConstructor() {
+    void rateDetailConstructor() {
         RateDetail detail = new RateDetail(
                 BigDecimal.valueOf(7.7),
                 BigDecimal.valueOf(430)
@@ -100,21 +100,21 @@ public class SwicoBillInformationTest {
     }
 
     @Test
-    public void setRateDetailRate() {
+    void setRateDetailRate() {
         RateDetail detail = new RateDetail();
         detail.setRate(BigDecimal.valueOf(25, 1));
         assertEquals(2.5, detail.getRate().doubleValue());
     }
 
     @Test
-    public void setRateDetailAmount() {
+    void setRateDetailAmount() {
         RateDetail detail = new RateDetail();
         detail.setAmount(BigDecimal.valueOf(430, 0));
         assertEquals(430, detail.getAmount().doubleValue());
     }
 
     @Test
-    public void setVatRateDetails() {
+    void setVatRateDetails() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         billInformation.setVatRateDetails(Arrays.asList(
                 new RateDetail(BigDecimal.valueOf(8, 0), BigDecimal.valueOf(1000, 0)),
@@ -126,7 +126,7 @@ public class SwicoBillInformationTest {
     }
 
     @Test
-    public void setVatImportTaxes() {
+    void setVatImportTaxes() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         billInformation.setVatImportTaxes(Arrays.asList(
                 new RateDetail(BigDecimal.valueOf(77, 1), BigDecimal.valueOf(4812, 2)),
@@ -138,14 +138,14 @@ public class SwicoBillInformationTest {
     }
 
     @Test
-    public void defaultPaymentCondition() {
+    void defaultPaymentCondition() {
         PaymentCondition condition = new PaymentCondition();
         assertNull(condition.getDiscount());
         assertEquals(0, condition.getDays());
     }
 
     @Test
-    public void paymentConditionConstructor() {
+    void paymentConditionConstructor() {
         PaymentCondition condition = new PaymentCondition(
                 BigDecimal.valueOf(2.0),
                 10
@@ -155,21 +155,21 @@ public class SwicoBillInformationTest {
     }
 
     @Test
-    public void setPaymentConditionDiscount() {
+    void setPaymentConditionDiscount() {
         PaymentCondition condition = new PaymentCondition();
         condition.setDiscount(BigDecimal.valueOf(25, 1));
         assertEquals(2.5, condition.getDiscount().doubleValue());
     }
 
     @Test
-    public void setPaymentConditionDays() {
+    void setPaymentConditionDays() {
         PaymentCondition condition = new PaymentCondition();
         condition.setDays(60);
         assertEquals(60, condition.getDays());
     }
 
     @Test
-    public void setPaymentConditions() {
+    void setPaymentConditions() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         billInformation.setPaymentConditions(Arrays.asList(
                 new PaymentCondition(BigDecimal.valueOf(2.0), 10),
@@ -181,7 +181,7 @@ public class SwicoBillInformationTest {
     }
 
     @Test
-    public void dueDate_isValid() {
+    void dueDate_isValid() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         billInformation.setInvoiceDate(LocalDate.of(2020, 6, 30));
         billInformation.setPaymentConditions(Arrays.asList(
@@ -192,7 +192,7 @@ public class SwicoBillInformationTest {
     }
 
     @Test
-    public void dueDate_isNull() {
+    void dueDate_isNull() {
         SwicoBillInformation billInformation = new SwicoBillInformation();
         assertNull(billInformation.getDueDate());
 
@@ -215,7 +215,7 @@ public class SwicoBillInformationTest {
     }
 
     @Test
-    public void testEqualsTrivial() {
+    void testEqualsTrivial() {
         SwicoBillInformation info = new SwicoBillInformation();
         assertEquals(info, info);
 
@@ -224,7 +224,7 @@ public class SwicoBillInformationTest {
     }
 
     @Test
-    public void testEquals() {
+    void testEquals() {
         SwicoBillInformation info1 = createBillInformation();
         SwicoBillInformation info2 = createBillInformation();
         assertEquals(info1, info2);
@@ -235,10 +235,18 @@ public class SwicoBillInformationTest {
     }
 
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         SwicoBillInformation info1 = createBillInformation();
         SwicoBillInformation info2 = createBillInformation();
         assertEquals(info1.hashCode(), info2.hashCode());
+    }
+
+    @Test
+    void testToString() {
+        SwicoBillInformation info = SwicoExamples.createExample3();
+        assertEquals(
+                "SwicoBillInformation{invoiceNumber='4031202511', invoiceDate=2018-01-07, customerReference='61257233.4', vatNumber='105493567', vatDate=null, vatStartDate=null, vatEndDate=null, vatRate=null, vatRateDetails=[RateDetail{rate=8, amount=49.82}], vatImportTaxes=[RateDetail{rate=2.5, amount=14.85}], paymentConditions=[PaymentCondition{discount=0, days=30}]}",
+                info.toString());
     }
 
     private SwicoBillInformation createBillInformation() {

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
  * </p>
  */
 @DisplayName("Line styles (dashed and dotted))")
-public class LineStyleTest {
+class LineStyleTest {
 
     @Test
     void svgWithDashedLines() {

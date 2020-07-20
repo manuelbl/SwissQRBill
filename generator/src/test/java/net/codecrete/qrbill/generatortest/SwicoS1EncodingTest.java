@@ -26,38 +26,38 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DisplayName("Swico S1 Encoding")
-public class SwicoS1EncodingTest {
+class SwicoS1EncodingTest {
 
     @Test
-    public void encodeExample1() {
+    void encodeExample1() {
         SwicoBillInformation billInfo = SwicoExamples.createExample1();
         String text = billInfo.encodeAsText();
         assertEquals(SwicoExamples.EXAMPLE_1_TEXT, text);
     }
 
     @Test
-    public void encodeExample2() {
+    void encodeExample2() {
         SwicoBillInformation billInfo = SwicoExamples.createExample2();
         String text = billInfo.encodeAsText();
         assertEquals(SwicoExamples.EXAMPLE_2_TEXT, text);
     }
 
     @Test
-    public void encodeExample3() {
+    void encodeExample3() {
         SwicoBillInformation billInfo = SwicoExamples.createExample3();
         String text = billInfo.encodeAsText();
         assertEquals(SwicoExamples.EXAMPLE_3_TEXT, text);
     }
 
     @Test
-    public void encodeExample4() {
+    void encodeExample4() {
         SwicoBillInformation billInfo = SwicoExamples.createExample4();
         String text = billInfo.encodeAsText();
         assertEquals(SwicoExamples.EXAMPLE_4_TEXT, text);
     }
 
     @Test
-    public void encodeTextWithBackslash() {
+    void encodeTextWithBackslash() {
         SwicoBillInformation info = new SwicoBillInformation();
         info.setInvoiceNumber("X.66711/8824");
         info.setInvoiceDate(LocalDate.of(2020, 7, 12));
@@ -80,7 +80,7 @@ public class SwicoS1EncodingTest {
     }
 
     @Test
-    public void encodeInvoiceNoOnly() {
+    void encodeInvoiceNoOnly() {
         SwicoBillInformation info = new SwicoBillInformation();
         info.setInvoiceNumber("X.66711-8831");
         String text = info.encodeAsText();
@@ -88,7 +88,7 @@ public class SwicoS1EncodingTest {
     }
 
     @Test
-    public void encodeEmptyList() {
+    void encodeEmptyList() {
         SwicoBillInformation info = new SwicoBillInformation();
         info.setInvoiceNumber("10201409");
         info.setInvoiceDate(LocalDate.of(2019, 5, 12));
@@ -108,7 +108,7 @@ public class SwicoS1EncodingTest {
     }
 
     @Test
-    public void noValidData_returnsNull() {
+    void noValidData_returnsNull() {
         SwicoBillInformation info = new SwicoBillInformation();
         assertNull(info.encodeAsText());
 
@@ -127,7 +127,7 @@ public class SwicoS1EncodingTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"en-US", "de-DE", "de-CH", "fr-CH", "en-UK"})
-    public void differentLocales_haveNoEffect(String languageTag) {
+    void differentLocales_haveNoEffect(String languageTag) {
 
         Locale defaultLocale = Locale.getDefault();
         try {

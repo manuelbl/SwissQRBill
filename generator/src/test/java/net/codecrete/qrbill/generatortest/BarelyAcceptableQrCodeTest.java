@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * (illegal with strict interpretation, but found in the wild...)
  */
 @DisplayName("Decoding of embedded QR code text")
-public class BarelyAcceptableQrCodeTest {
+class BarelyAcceptableQrCodeTest {
 
     @Test
     void withoutAlternativeSchemes() {
