@@ -378,6 +378,23 @@ public class SwicoBillInformation {
         return Objects.hash(invoiceNumber, invoiceDate, customerReference, vatNumber, vatDate, vatStartDate, vatEndDate, vatRate, vatRateDetails, vatImportTaxes, paymentConditions);
     }
 
+    @Override
+    public String toString() {
+        return "SwicoBillInformation{" +
+                "invoiceNumber='" + invoiceNumber + '\'' +
+                ", invoiceDate=" + invoiceDate +
+                ", customerReference='" + customerReference + '\'' +
+                ", vatNumber='" + vatNumber + '\'' +
+                ", vatDate=" + vatDate +
+                ", vatStartDate=" + vatStartDate +
+                ", vatEndDate=" + vatEndDate +
+                ", vatRate=" + vatRate +
+                ", vatRateDetails=" + vatRateDetails +
+                ", vatImportTaxes=" + vatImportTaxes +
+                ", paymentConditions=" + paymentConditions +
+                '}';
+    }
+
 
     /**
      * VAT rate detail: a tuple of VAT rate and amount.
@@ -452,6 +469,14 @@ public class SwicoBillInformation {
         @Override
         public int hashCode() {
             return Objects.hash(rate, amount);
+        }
+
+        @Override
+        public String toString() {
+            return "RateDetail{" +
+                    "rate=" + rate +
+                    ", amount=" + amount +
+                    '}';
         }
     }
 
@@ -529,6 +554,14 @@ public class SwicoBillInformation {
         @Override
         public int hashCode() {
             return Objects.hash(discount, days);
+        }
+
+        @Override
+        public String toString() {
+            return "PaymentCondition{" +
+                    "discount=" + discount +
+                    ", days=" + days +
+                    '}';
         }
     }
 }

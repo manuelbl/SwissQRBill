@@ -75,7 +75,7 @@ public class SwicoS1Decoder {
         if (billInfoText == null || !billInfoText.startsWith("//S1/"))
             return null;
 
-        // Split text as slashes
+        // Split text at slashes
         String[] parts = split(billInfoText.substring(5));
 
         // Create a list of tuples (tag, value)
@@ -207,15 +207,34 @@ public class SwicoS1Decoder {
         return list.isEmpty() ? null : list;
     }
 
-    private static final DateTimeFormatter SWICO_DATE_FORMAT
+    private static final DateTimeFormatter SWICO_DATE_FORMAT_SPECIFICATION
             = DateTimeFormatter.ofPattern("yyMMdd", Locale.UK);
+    private static final DateTimeFormatter SWICO_DATE_FORMAT_WILDERNESS_1
+            = DateTimeFormatter.ofPattern("yyMMddHHmmss", Locale.UK);
+    private static final DateTimeFormatter SWICO_DATE_FORMAT_WILDERNESS_2
+            = DateTimeFormatter.ofPattern("yyMMddHHmm", Locale.UK);
 
     private static LocalDate getDateValue(String dateText) {
-        try {
-            return LocalDate.parse(dateText, SWICO_DATE_FORMAT);
-        } catch (DateTimeParseException e) {
-            return null;
+        if (dateText.length() == 6) { // Consistent with specification
+            try {
+                return LocalDate.parse(dateText, SWICO_DATE_FORMAT_SPECIFICATION);
+            } catch (DateTimeParseException e) {
+                // fall through to default
+            }
+        } else if (dateText.length() == 12) { // Not consistent with specifications but seen in production (year, month, day, hour, minute, second)
+            try {
+                return LocalDate.parse(dateText, SWICO_DATE_FORMAT_WILDERNESS_1);
+            } catch (DateTimeParseException e) {
+                // fall through to default
+            }
+        } else if (dateText.length() == 10) {  // Not consistent with specifications but seen in production (year, month, day, hour, minute)
+            try {
+                return LocalDate.parse(dateText, SWICO_DATE_FORMAT_WILDERNESS_2);
+            } catch (DateTimeParseException e) {
+                // fall through to default
+            }
         }
+        return null;
     }
 
     private static Integer getIntValue(String intText) {

@@ -48,6 +48,18 @@ public class SwicoS1DecodingTest {
     }
 
     @Test
+    public void example5_fullyDecoded() {
+        SwicoBillInformation billInformation = SwicoBillInformation.decodeText(SwicoExamples.EXAMPLE_5_TEXT);
+        assertEquals(SwicoExamples.createExample5(), billInformation);
+    }
+
+    @Test
+    public void example6_fullyDecoded() {
+        SwicoBillInformation billInformation = SwicoBillInformation.decodeText(SwicoExamples.EXAMPLE_6_TEXT);
+        assertEquals(SwicoExamples.createExample6(), billInformation);
+    }
+
+    @Test
     public void nullValue_returnsNull() {
         assertNull(SwicoBillInformation.decodeText(null));
     }

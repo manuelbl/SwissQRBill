@@ -95,4 +95,36 @@ public class SwicoExamples {
         );
         return info;
     }
+
+    static final String EXAMPLE_5_TEXT =
+            "//S1/10/79269/11/200714210713/20/66359/30/109532551/32/7.7/40/0:30";
+
+    static SwicoBillInformation createExample5() {
+        SwicoBillInformation info = new SwicoBillInformation();
+        info.setInvoiceNumber("79269");
+        info.setInvoiceDate(LocalDate.of(2020, 7, 14));
+        info.setCustomerReference("66359");
+        info.setVatNumber("109532551");
+        info.setVatRate(BigDecimal.valueOf(7.7));
+        info.setPaymentConditions(Arrays.asList(
+                new PaymentCondition(BigDecimal.ZERO, 30))
+        );
+        return info;
+    }
+
+    static final String EXAMPLE_6_TEXT =
+            "//S1/10/802277/11/2007012107/20/55878/30/109532551/32/7.7/40/0:30";
+
+    static SwicoBillInformation createExample6() {
+        SwicoBillInformation info = new SwicoBillInformation();
+        info.setInvoiceNumber("802277");
+        info.setInvoiceDate(LocalDate.of(2020, 7, 1));
+        info.setCustomerReference("55878");
+        info.setVatNumber("109532551");
+        info.setVatRate(BigDecimal.valueOf(7.7));
+        info.setPaymentConditions(Arrays.asList(
+                new PaymentCondition(BigDecimal.ZERO, 30))
+        );
+        return info;
+    }
 }
