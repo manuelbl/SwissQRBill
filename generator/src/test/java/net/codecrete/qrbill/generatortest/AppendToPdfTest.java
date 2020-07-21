@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -60,6 +61,17 @@ class AppendToPdfTest {
             QRBill.draw(bill, canvas);
             byte[] imageData = canvas.toByteArray();
             FileComparison.assertFileContentsEqual(imageData, "invoice-03.pdf");
+        }
+    }
+
+    @Test
+    void appendNewPageBinary() throws IOException {
+        Bill bill = SampleData.getExample7();
+        byte[] pdfDocument = Files.readAllBytes(invoicePath);
+        try (PDFCanvas canvas = new PDFCanvas(pdfDocument, PDFCanvas.NEW_PAGE_AT_END)) {
+            QRBill.draw(bill, canvas);
+            byte[] imageData = canvas.toByteArray();
+            FileComparison.assertFileContentsEqual(imageData, "invoice-04.pdf");
         }
     }
 }

@@ -78,6 +78,31 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
     public PDFCanvas(Path path, int pageNo) throws IOException {
         setupFontMetrics("Helvetica");
         document = PDDocument.load(path.toFile());
+        preparePage(pageNo);
+    }
+
+    /**
+     * Creates a new instance for adding the QR bill to an exiting PDF document.
+     * <p>
+     *     The QR bill can either be added to an existing page by specifying the page number
+     *     of an existing page (or {@link #LAST_PAGE}), or it can be added to a new page
+     *     at the end of the document (see {@link #NEW_PAGE_AT_END}).
+     * </p>
+     * <p>
+     *     The created instance assumes that the page for the QR bill has A4 format and
+     *     will add the QR bill at the bottom of the page.
+     * </p>
+     * @param pdfDocument binary array contianing PDF document
+     * @param pageNo the zero-based number of the page the QR bill should be added to
+     * @throws IOException thrown if the creation fails
+     */
+    public PDFCanvas(byte[] pdfDocument, int pageNo) throws IOException {
+        setupFontMetrics("Helvetica");
+        document = PDDocument.load(pdfDocument);
+        preparePage(pageNo);
+    }
+
+    private void preparePage(int pageNo) throws IOException {
         if (pageNo == NEW_PAGE_AT_END) {
             PDPage page = new PDPage(new PDRectangle((float) (210 * MM_TO_PT), (float) (297 * MM_TO_PT)));
             document.addPage(page);
