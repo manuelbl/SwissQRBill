@@ -37,6 +37,9 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
      */
     public static final int NEW_PAGE_AT_END = -2;
 
+    private static final String PDF_FONT = "Helvetica";
+
+
     private PDDocument document;
     private PDPageContentStream contentStream;
     private int lastStrokingColor = 0;
@@ -52,7 +55,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
      * @throws IOException thrown if the creation fails
      */
     public PDFCanvas(double width, double height) throws IOException {
-        setupFontMetrics("Helvetica");
+        setupFontMetrics(PDF_FONT);
         document = new PDDocument();
         document.getDocumentInformation().setTitle("Swiss QR Bill");
         PDPage page = new PDPage(new PDRectangle((float) (width * MM_TO_PT), (float) (height * MM_TO_PT)));
@@ -76,7 +79,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
      * @throws IOException thrown if the creation fails
      */
     public PDFCanvas(Path path, int pageNo) throws IOException {
-        setupFontMetrics("Helvetica");
+        setupFontMetrics(PDF_FONT);
         document = PDDocument.load(path.toFile());
         preparePage(pageNo);
     }
@@ -97,7 +100,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
      * @throws IOException thrown if the creation fails
      */
     public PDFCanvas(byte[] pdfDocument, int pageNo) throws IOException {
-        setupFontMetrics("Helvetica");
+        setupFontMetrics(PDF_FONT);
         document = PDDocument.load(pdfDocument);
         preparePage(pageNo);
     }
