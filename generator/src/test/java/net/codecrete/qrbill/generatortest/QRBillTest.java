@@ -60,9 +60,18 @@ class QRBillTest {
     }
 
     @Test
-    void createQRBill5() {
+    void createQRBill5a() {
         Bill bill = SampleData.getExample3();
         bill.getFormat().setOutputSize(OutputSize.QR_BILL_WITH_HORIZONTAL_LINE);
+        bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
+        byte[] svg = QRBill.generate(bill);
+        FileComparison.assertFileContentsEqual(svg, "qrbill_ex5.svg");
+    }
+
+    @Test
+    void createQRBill5b() {
+        Bill bill = SampleData.getExample3();
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_EXTRA_SPACE);
         bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
         byte[] svg = QRBill.generate(bill);
         FileComparison.assertFileContentsEqual(svg, "qrbill_ex5.svg");

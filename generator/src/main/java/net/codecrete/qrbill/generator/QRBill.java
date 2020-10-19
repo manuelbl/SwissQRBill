@@ -24,43 +24,59 @@ public class QRBill {
 
     /**
      * The width of an A4 sheet in portrait orientation, in mm
+     *
+     * @see OutputSize#A4_PORTRAIT_SHEET
      */
     public static final double A4_PORTRAIT_WIDTH = 210;
 
     /**
      * The height of an A4 sheet in portrait orientation, in mm
+     *
+     * @see OutputSize#A4_PORTRAIT_SHEET
      */
     public static final double A4_PORTRAIT_HEIGHT = 297;
 
     /**
      * The width of a QR bill (payment part and receipt), in mm
+     *
+     * @see OutputSize#QR_BILL_ONLY
      */
     public static final double QR_BILL_WIDTH = 210;
 
     /**
      * The height of a QR bill (payment part and receipt), in mm
+     *
+     * @see OutputSize#QR_BILL_ONLY
      */
     public static final double QR_BILL_HEIGHT = 105;
 
     /**
-     * The width of a QR bill with horizontal separator line
+     * The width of the output format with extra space for horizontal separator line
      * (payment part and receipt plus space for line and scissors), in mm
+     *
+     * @see OutputSize#QR_BILL_EXTRA_SPACE
      */
     public static final double QR_BILL_WITH_HORI_LINE_WIDTH = 210;
 
     /**
-     * The height of a QR bill with horizontal separator line
+     * The height of the output format with extra space for horizontal separator line
      * (payment part and receipt plus space for line and scissors), in mm
+     *
+     * @see OutputSize#QR_BILL_EXTRA_SPACE
      */
     public static final double QR_BILL_WITH_HORI_LINE_HEIGHT = 110;
 
     /**
      * The width of the QR code, in mm
+     *
+     * @see OutputSize#QR_CODE_ONLY
      */
     public static final double QR_CODE_WIDTH = 46;
 
     /**
      * The height of the QR code, in mm
+     *
+     * @see OutputSize#QR_CODE_ONLY
      */
     public static final double QR_CODE_HEIGHT = 46;
 
@@ -171,7 +187,7 @@ public class QRBill {
     public static void drawSeparators(SeparatorType separatorType, boolean withHorizontalLine, Canvas canvas) {
         BillFormat format = new BillFormat();
         format.setSeparatorType(separatorType);
-        format.setOutputSize(withHorizontalLine ? OutputSize.QR_BILL_WITH_HORIZONTAL_LINE : OutputSize.QR_BILL_ONLY);
+        format.setOutputSize(withHorizontalLine ? OutputSize.QR_BILL_EXTRA_SPACE : OutputSize.QR_BILL_ONLY);
         Bill bill = new Bill();
         bill.setFormat(format);
 
@@ -254,6 +270,7 @@ public class QRBill {
                 drawingWidth = QR_BILL_WIDTH;
                 drawingHeight = QR_BILL_HEIGHT;
                 break;
+            case QR_BILL_EXTRA_SPACE:
             case QR_BILL_WITH_HORIZONTAL_LINE:
                 drawingWidth = QR_BILL_WITH_HORI_LINE_WIDTH;
                 drawingHeight = QR_BILL_WITH_HORI_LINE_HEIGHT;
