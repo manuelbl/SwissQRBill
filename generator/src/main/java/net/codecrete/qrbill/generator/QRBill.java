@@ -260,6 +260,7 @@ public class QRBill {
         return QRCodeText.decode(text);
     }
 
+    @SuppressWarnings("deprecation")
     private static Canvas createCanvas(BillFormat format) throws IOException {
         double drawingWidth;
         double drawingHeight;

@@ -18,6 +18,8 @@ import net.codecrete.qrbill.generator.ValidationMessage;
 import net.codecrete.qrbill.generator.ValidationResult;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 
@@ -189,24 +191,14 @@ class DecodedTextTest {
         assertSingleError(err.getValidationResult(), ValidationConstants.KEY_VALID_DATA_STRUCTURE, ValidationConstants.FIELD_QR_TYPE);
     }
 
-    @Test
-    void decodeInvalid1Version() {
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
-                "SPC\r\n0101\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
-        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_SUPPORTED_VERSION, ValidationConstants.FIELD_VERSION);
-    }
-
-    @Test
-    void decodeInvalid2Version() {
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
-                "SPC\r\n020\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
-        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_SUPPORTED_VERSION, ValidationConstants.FIELD_VERSION);
-    }
-
-    @Test
-    void decodeInvalid3Version() {
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
-                "SPC\r\n020f\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "SPC\r\n0101\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+            "SPC\r\n020\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+            "SPC\r\n020f\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
+    })
+    void decodeInvalid1Version(String qrCodeText) {
+        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(qrCodeText));
         assertSingleError(err.getValidationResult(), ValidationConstants.KEY_SUPPORTED_VERSION, ValidationConstants.FIELD_VERSION);
     }
 

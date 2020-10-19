@@ -60,6 +60,7 @@ class QRBillTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void createQRBill5a() {
         Bill bill = SampleData.getExample3();
         bill.getFormat().setOutputSize(OutputSize.QR_BILL_WITH_HORIZONTAL_LINE);
