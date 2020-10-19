@@ -12,6 +12,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 
 /**
@@ -114,6 +115,9 @@ public class QRCodeText {
         return amountFieldFormat.format(amount);
     }
 
+    // According to a letter from SIX dated August 5, 2020 only the major number (leading "02") should be checked
+    private static Pattern VALID_VERSION = Pattern.compile("^02[0-9][0-9]$");
+
     /**
      * Decodes the specified text and returns the bill data.
      * <p>
@@ -138,7 +142,7 @@ public class QRCodeText {
         }
         if (!"SPC".equals(lines[0]))
             throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_VALID_DATA_STRUCTURE);
-        if (!"0200".equals(lines[1]))
+        if (!VALID_VERSION.matcher(lines[1]).matches())
             throwSingleValidationError(ValidationConstants.FIELD_VERSION, ValidationConstants.KEY_SUPPORTED_VERSION);
         if (!"1".equals(lines[2]))
             throwSingleValidationError(ValidationConstants.FIELD_CODING_TYPE, ValidationConstants.KEY_SUPPORTED_CODING_TYPE);

@@ -190,10 +190,35 @@ class DecodedTextTest {
     }
 
     @Test
-    void decodeInvalidVersion() {
+    void decodeInvalid1Version() {
         QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
                 "SPC\r\n0101\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
         assertSingleError(err.getValidationResult(), ValidationConstants.KEY_SUPPORTED_VERSION, ValidationConstants.FIELD_VERSION);
+    }
+
+    @Test
+    void decodeInvalid2Version() {
+        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
+                "SPC\r\n020\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
+        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_SUPPORTED_VERSION, ValidationConstants.FIELD_VERSION);
+    }
+
+    @Test
+    void decodeInvalid3Version() {
+        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
+                "SPC\r\n020f\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
+        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_SUPPORTED_VERSION, ValidationConstants.FIELD_VERSION);
+    }
+
+    @Test
+    void decodeIgnoreMinorVersion() {
+        Bill bill = SampleQrCodeText.getBillData1();
+        normalizeSourceBill(bill);
+        String qrCodeText = SampleQrCodeText.getQrCodeText1(false);
+        qrCodeText = qrCodeText.replace("\n0200\n", "\n0201\n");
+        Bill bill2 = QRBill.decodeQrCodeText(qrCodeText);
+        normalizeDecodedBill(bill2);
+        assertEquals(bill, bill2);
     }
 
     @Test
