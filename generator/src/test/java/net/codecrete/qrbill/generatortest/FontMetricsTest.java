@@ -10,6 +10,8 @@ import net.codecrete.qrbill.canvas.FontMetrics;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,46 +28,12 @@ class FontMetricsTest {
         fontMetrics = new FontMetrics("Helvetica");
     }
 
-    @Test
-    void shortOneLiner() {
+    @ParameterizedTest
+    @ValueSource(strings = { "abc", "abcdefghij", "abcdef ghij", " abcdefghij", "abcdefghij ", "" })
+    void invariantTest() {
         String[] lines = fontMetrics.splitLines("abc", 50, 10);
         assertEquals(1, lines.length);
         assertEquals("abc", lines[0]);
-    }
-
-    @Test
-    void oneLiner() {
-        String[] lines = fontMetrics.splitLines("abcdefghij", 50, 10);
-        assertEquals(1, lines.length);
-        assertEquals("abcdefghij", lines[0]);
-    }
-
-    @Test
-    void oneLinerWithTwoWords() {
-        String[] lines = fontMetrics.splitLines("abcdef ghij", 50, 10);
-        assertEquals(1, lines.length);
-        assertEquals("abcdef ghij", lines[0]);
-    }
-
-    @Test
-    void leadingSpaceOneLiner() {
-        String[] lines = fontMetrics.splitLines(" abcdefghij", 50, 10);
-        assertEquals(1, lines.length);
-        assertEquals("abcdefghij", lines[0]);
-    }
-
-    @Test
-    void trailingSpaceOneLiner() {
-        String[] lines = fontMetrics.splitLines("abcdefghij ", 50, 10);
-        assertEquals(1, lines.length);
-        assertEquals("abcdefghij", lines[0]);
-    }
-
-    @Test
-    void emptyLine() {
-        String[] lines = fontMetrics.splitLines("", 50, 10);
-        assertEquals(1, lines.length);
-        assertEquals("", lines[0]);
     }
 
     @Test
