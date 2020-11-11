@@ -80,7 +80,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
      */
     public PDFCanvas(Path path, int pageNo) throws IOException {
         setupFontMetrics(PDF_FONT);
-        document = PDDocument.load(path.toFile());
+        document = PDDocument.load(Files.newInputStream(path));
         preparePage(pageNo);
     }
 
