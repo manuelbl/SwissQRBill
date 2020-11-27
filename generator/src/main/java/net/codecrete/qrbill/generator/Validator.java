@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import static java.util.Locale.getISOCountries;
+
 /**
  * Internal class for validating and cleaning QR bill data.
  */
@@ -24,6 +26,7 @@ class Validator {
     private final Bill billIn;
     private final Bill billOut;
     private final ValidationResult validationResult;
+    private final List<String> isoCountries = Arrays.asList(getISOCountries());
 
     /**
      * Validates the QR bill data and returns the validation messages (if any) and
@@ -253,7 +256,7 @@ class Validator {
         checkMandatoryAddressFields(addressOut, fieldRoot);
 
         if (addressOut.getCountryCode() != null
-                && (addressOut.getCountryCode().length() != 2 || !Payments.isAlphaNumeric(addressOut.getCountryCode())))
+                && (addressOut.getCountryCode().length() != 2 || !isoCountries.contains(addressOut.getCountryCode())))
             validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_COUNTRY_CODE,
                     ValidationConstants.KEY_VALID_COUNTRY_CODE);
 
