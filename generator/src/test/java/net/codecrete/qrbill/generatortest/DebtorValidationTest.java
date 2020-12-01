@@ -99,4 +99,14 @@ class DebtorValidationTest extends BillDataValidationBase {
         validate();
         assertSingleErrorMessage(ValidationConstants.FIELD_DEBTOR_COUNTRY_CODE, "valid_country_code");
     }
+
+    @Test
+    void creditorWithInvalidCountryCode2() {
+        bill = SampleData.getExample1();
+        Address address = createValidPerson();
+        address.setCountryCode("aà");
+        bill.setCreditor(address);
+        validate();
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
+    }
 }
