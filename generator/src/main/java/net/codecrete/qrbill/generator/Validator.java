@@ -253,7 +253,7 @@ class Validator {
         checkMandatoryAddressFields(addressOut, fieldRoot);
 
         if (addressOut.getCountryCode() != null
-                && (addressOut.getCountryCode().length() != 2 || !Payments.isAlphaNumeric(addressOut.getCountryCode())))
+                && (addressOut.getCountryCode().length() != 2 || !Payments.isAlpha(addressOut.getCountryCode())))
             validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_COUNTRY_CODE,
                     ValidationConstants.KEY_VALID_COUNTRY_CODE);
 
