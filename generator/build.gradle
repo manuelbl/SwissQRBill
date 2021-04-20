@@ -17,7 +17,7 @@ repositories {
 }
 
 group = 'net.codecrete.qrbill'
-version = '2.5.0'
+version = '2.5.1'
 archivesBaseName = 'qrbill-generator'
 
 sourceCompatibility = 1.8
@@ -138,8 +138,8 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    implementation 'io.nayuki:qrcodegen:[1.6,)'
-    implementation 'org.apache.pdfbox:pdfbox:[2.0,)'
+    implementation 'io.nayuki:qrcodegen:[1.6.0,2.0)'
+    implementation 'org.apache.pdfbox:pdfbox:[2.0.0,3.0)'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
