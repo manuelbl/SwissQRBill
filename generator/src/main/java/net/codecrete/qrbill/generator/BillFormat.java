@@ -15,6 +15,9 @@ import java.util.Objects;
  */
 public class BillFormat implements Serializable {
 
+    /** Default width for left and right margin, in mm. */
+    public static final double DEFAULT_MARGIN_WIDTH = 5.0;
+
     private static final long serialVersionUID = -2874086922578292745L;
 
     private OutputSize outputSize = OutputSize.QR_BILL_ONLY;
@@ -23,8 +26,8 @@ public class BillFormat implements Serializable {
     private String fontFamily = "Helvetica,Arial,\"Liberation Sans\"";
     private GraphicsFormat graphicsFormat = GraphicsFormat.SVG;
     private int resolution = 144;
-    private int marginLeftOffset = 0;
-    private int marginRigthOffset = 0;
+    private double marginLeft = DEFAULT_MARGIN_WIDTH;
+    private double marginRight = DEFAULT_MARGIN_WIDTH;
 
     /**
      * Creates a new instance with default values
@@ -45,8 +48,8 @@ public class BillFormat implements Serializable {
         fontFamily = format.fontFamily;
         graphicsFormat = format.graphicsFormat;
         resolution = format.resolution;
-        marginLeftOffset = format.marginLeftOffset;
-        marginRigthOffset = format.marginRigthOffset;
+        marginLeft = format.marginLeft;
+        marginRight = format.marginRight;
     }
 
     /**
@@ -195,47 +198,77 @@ public class BillFormat implements Serializable {
 	}
 
     /**
-     * Gets the offset for the left margin.
+     * Gets the left margin width (from edge of paper to start of text).
      *
      * <p>
-     * Defaults to 0
+     * Valid values are between 5mm and 12mm. The default is 5mm.
+     * </p>
+     * <p>
+     * Values other than 5mm are not fully standard compliant as the fields in the receipt on the left-hand side
+     * become narrower. It is especially obvious if <i>Payable by</i> or <i>Amount</i> are not pre-filled
+     * so that the black corners are printed instead of text. Yet values higher than 5mm are more compatible
+     * with typical office and home printers, which are not capable of printing up to the edge of the paper and
+     * require a margin wider than 5mm.
      * </p>
      *
-     * @return width, in mm
+     * @return margin width, in mm
      */
-    public int getMarginLeftOffset() {
-		return marginLeftOffset;
+    public double getMarginLeft() {
+		return marginLeft;
 	}
 
     /**
-     * Sets the offset for the left margin.
+     * Sets the left margin width (from edge of paper to start of text).
      *
-     * @param marginLeftOffset width, in mm
+     * <p>
+     * Valid values are between 5mm and 12mm. The default is 5mm.
+     * </p>
+     * <p>
+     * Values other than 5mm are not fully standard compliant as the fields in the receipt on the left-hand side
+     * become narrower. It is especially obvious if <i>Payable by</i> or <i>Amount</i> are not pre-filled
+     * so that the black corners are printed instead of text. Yet values higher than 5mm are more compatible
+     * with typical office and home printers, which are not capable of printing up to the edge of the paper and
+     * require a margin wider than 5mm.
+     * </p>
+     *
+     * @param marginLeft margin width, in mm
      */
-	public void setMarginLeftOffset(int marginLeftOffset) {
-		this.marginLeftOffset = marginLeftOffset;
+	public void setMarginLeft(double marginLeft) {
+		this.marginLeft = marginLeft;
 	}
 
     /**
-     * Gets the offset for the rigth margin.
+     * Gets the the right margin width (from the end of the text to the edge of the paper).
      *
      * <p>
-     * Defaults to 0
+     * Valid values are between 5mm and 12mm. The default is 5m.
+     * </p>
+     * <p>
+     * Values other than 5mm are not fully standard compliant but are more compatible with typical office and home
+     * printers, which are not capable of printing up to the edge of the paper and require a margin wider than 5mm.
      * </p>
      *
-     * @return width, in mm
+     * @return width width, in mm
      */
-    public int getMarginRigthOffset() {
-        return marginRigthOffset;
+    public double getMarginRight() {
+        return marginRight;
     }
 
     /**
-     * Sets the offset for the rigth margin.
+     * Gets the the right margin width (from the end of the text to the edge of the paper).
      *
-     * @param marginRigthOffset width, in mm
+     * <p>
+     * Valid values are between 5mm and 12mm. The default is 5m.
+     * </p>
+     * <p>
+     * Values other than 5mm are not fully standard compliant but are more compatible with typical office and home
+     * printers, which are not capable of printing up to the edge of the paper and require a margin wider than 5mm.
+     * </p>
+     *
+     * @param marginRight margin width, in mm
      */
-    public void setMarginRigthOffset(int marginRigthOffset) {
-        this.marginRigthOffset = marginRigthOffset;
+    public void setMarginRight(double marginRight) {
+        this.marginRight = marginRight;
     }
 
 	/**
@@ -252,8 +285,8 @@ public class BillFormat implements Serializable {
                 Objects.equals(fontFamily, that.fontFamily) &&
                 graphicsFormat == that.graphicsFormat &&
                 resolution == that.resolution &&
-                marginLeftOffset == that.marginLeftOffset &&
-                marginRigthOffset == that.marginRigthOffset;
+                marginLeft == that.marginLeft &&
+                marginRight == that.marginRight;
     }
 
     /**
@@ -277,8 +310,8 @@ public class BillFormat implements Serializable {
                 ", fontFamily='" + fontFamily + '\'' +
                 ", graphicsFormat=" + graphicsFormat +
                 ", resolution=" + resolution +
-                ", deltaMarginLeft=" + marginLeftOffset +
-                ", deltaMarginRigth=" + marginRigthOffset +
+                ", marginLeft=" + marginLeft +
+                ", marginRight=" + marginRight +
                 '}';
     }
 }
