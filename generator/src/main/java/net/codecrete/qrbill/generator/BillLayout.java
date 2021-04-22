@@ -70,8 +70,8 @@ class BillLayout {
         this.bill = bill;
         this.qrCode = new QRCode(bill);
         this.graphics = graphics;
-        this.marginLeft = Math.min(Math.max(bill.getFormat().getMarginLeft(), 5.0), 10.0);
-        this.marginRight = Math.min(Math.max(bill.getFormat().getMarginRight(), 5.0), 10.0);
+        this.marginLeft = Math.min(Math.max(bill.getFormat().getMarginLeft(), 5.0), 12.0);
+        this.marginRight = Math.min(Math.max(bill.getFormat().getMarginRight(), 5.0), 12.0);
     }
 
     void draw() throws IOException {
@@ -290,7 +290,7 @@ class BillLayout {
             y -= (textFontSize + 3) * PT_TO_MM;
             graphics.putText(amount, CURRENCY_WIDTH_RC, y, textFontSize, false);
         } else {
-            drawCorners(RECEIPT_TEXT_WIDTH - (marginLeft - MARGIN) - AMOUNT_BOX_WIDTH_RC,
+            drawCorners(RECEIPT_TEXT_WIDTH - AMOUNT_BOX_WIDTH_RC,
                     AMOUNT_SECTION_TOP - AMOUNT_BOX_HEIGHT_RC,
                     AMOUNT_BOX_WIDTH_RC - (marginLeft - MARGIN), AMOUNT_BOX_HEIGHT_RC);
         }

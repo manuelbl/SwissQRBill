@@ -28,6 +28,8 @@ class BillFormatTest {
         assertEquals("Helvetica,Arial,\"Liberation Sans\"", format.getFontFamily());
         assertEquals(SeparatorType.DASHED_LINE_WITH_SCISSORS, format.getSeparatorType());
         assertEquals(144, format.getResolution());
+        assertEquals(5.0, format.getMarginLeft());
+        assertEquals(5.0, format.getMarginRight());
     }
 
     @Test
