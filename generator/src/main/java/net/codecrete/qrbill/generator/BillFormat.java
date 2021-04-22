@@ -23,6 +23,8 @@ public class BillFormat implements Serializable {
     private String fontFamily = "Helvetica,Arial,\"Liberation Sans\"";
     private GraphicsFormat graphicsFormat = GraphicsFormat.SVG;
     private int resolution = 144;
+    private int marginLeftOffset = 0;
+    private int marginRigthOffset = 0;
 
     /**
      * Creates a new instance with default values
@@ -43,6 +45,8 @@ public class BillFormat implements Serializable {
         fontFamily = format.fontFamily;
         graphicsFormat = format.graphicsFormat;
         resolution = format.resolution;
+        marginLeftOffset = format.marginLeftOffset;
+        marginRigthOffset = format.marginRigthOffset;
     }
 
     /**
@@ -190,6 +194,50 @@ public class BillFormat implements Serializable {
 		this.resolution = resolution;
 	}
 
+    /**
+     * Gets the offset for the left margin.
+     *
+     * <p>
+     * Defaults to 0
+     * </p>
+     *
+     * @return width, in mm
+     */
+    public int getMarginLeftOffset() {
+		return marginLeftOffset;
+	}
+
+    /**
+     * Sets the offset for the left margin.
+     *
+     * @param marginLeftOffset width, in mm
+     */
+	public void setMarginLeftOffset(int marginLeftOffset) {
+		this.marginLeftOffset = marginLeftOffset;
+	}
+
+    /**
+     * Gets the offset for the rigth margin.
+     *
+     * <p>
+     * Defaults to 0
+     * </p>
+     *
+     * @return width, in mm
+     */
+    public int getMarginRigthOffset() {
+        return marginRigthOffset;
+    }
+
+    /**
+     * Sets the offset for the rigth margin.
+     *
+     * @param marginRigthOffset width, in mm
+     */
+    public void setMarginRigthOffset(int marginRigthOffset) {
+        this.marginRigthOffset = marginRigthOffset;
+    }
+
 	/**
      * {@inheritDoc}
      */
@@ -203,7 +251,9 @@ public class BillFormat implements Serializable {
                 separatorType == that.separatorType &&
                 Objects.equals(fontFamily, that.fontFamily) &&
                 graphicsFormat == that.graphicsFormat &&
-                resolution == that.resolution;
+                resolution == that.resolution &&
+                marginLeftOffset == that.marginLeftOffset &&
+                marginRigthOffset == that.marginRigthOffset;
     }
 
     /**
@@ -227,6 +277,8 @@ public class BillFormat implements Serializable {
                 ", fontFamily='" + fontFamily + '\'' +
                 ", graphicsFormat=" + graphicsFormat +
                 ", resolution=" + resolution +
+                ", deltaMarginLeft=" + marginLeftOffset +
+                ", deltaMarginRigth=" + marginRigthOffset +
                 '}';
     }
 }

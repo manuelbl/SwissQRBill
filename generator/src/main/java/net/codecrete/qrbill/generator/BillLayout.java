@@ -84,7 +84,7 @@ class BillLayout {
 
         boolean isTooTight;
         while (true) {
-            breakLines(PP_INFO_SECTION_WIDTH);
+            breakLines(PP_INFO_SECTION_WIDTH - bill.getFormat().getMarginRigthOffset());
             isTooTight = computePaymentPartSpacing();
             if (!isTooTight || textFontSize == PP_TEXT_MIN_FONT_SIZE)
                 break;
@@ -100,16 +100,17 @@ class BillLayout {
 
         labelFontSize = RC_LABEL_PREF_FONT_SIZE;
         textFontSize = RC_TEXT_PREF_FONT_SIZE;
-        breakLines(RECEIPT_TEXT_WIDTH);
+        double receiptTextWidthAdapted = RECEIPT_TEXT_WIDTH - bill.getFormat().getMarginLeftOffset();
+        breakLines(receiptTextWidthAdapted);
         isTooTight = computeReceiptSpacing();
         if (isTooTight) {
             prepareReducedReceiptText(false);
-            breakLines(RECEIPT_TEXT_WIDTH);
+            breakLines(receiptTextWidthAdapted);
             isTooTight = computeReceiptSpacing();
         }
         if (isTooTight) {
             prepareReducedReceiptText(true);
-            breakLines(RECEIPT_TEXT_WIDTH);
+            breakLines(receiptTextWidthAdapted);
             computeReceiptSpacing();
         }
         drawReceipt();
@@ -224,7 +225,7 @@ class BillLayout {
     private void drawReceipt() throws IOException {
 
         // "Receipt" title
-        graphics.setTransformation(MARGIN, 0, 0, 1, 1);
+        graphics.setTransformation(MARGIN + bill.getFormat().getMarginLeftOffset(), 0, 0, 1, 1);
         yPos = SLIP_HEIGHT - MARGIN - graphics.getAscender(FONT_SIZE_TITLE);
         graphics.putText(getText(MultilingualText.KEY_RECEIPT), 0, yPos, FONT_SIZE_TITLE, true);
 
@@ -284,7 +285,7 @@ class BillLayout {
             y -= (textFontSize + 3) * PT_TO_MM;
             graphics.putText(amount, CURRENCY_WIDTH_RC, y, textFontSize, false);
         } else {
-            drawCorners(RECEIPT_TEXT_WIDTH - AMOUNT_BOX_WIDTH_RC,
+            drawCorners(RECEIPT_TEXT_WIDTH - bill.getFormat().getMarginLeftOffset() - AMOUNT_BOX_WIDTH_RC,
                     AMOUNT_SECTION_TOP - AMOUNT_BOX_HEIGHT_RC,
                     AMOUNT_BOX_WIDTH_RC, AMOUNT_BOX_HEIGHT_RC);
         }
@@ -297,7 +298,7 @@ class BillLayout {
         String label = getText(MultilingualText.KEY_ACCEPTANCE_POINT);
         double y = ACCEPTANCE_POINT_SECTION_TOP - labelAscender;
         double w = graphics.getTextWidth(label, labelFontSize, true);
-        graphics.putText(label, RECEIPT_TEXT_WIDTH - w, y, labelFontSize, true);
+        graphics.putText(label, RECEIPT_TEXT_WIDTH - bill.getFormat().getMarginLeftOffset() - w, y, labelFontSize, true);
     }
 
     private boolean computePaymentPartSpacing() {
