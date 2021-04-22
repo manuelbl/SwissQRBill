@@ -28,7 +28,7 @@ class BillLayout {
     private static final double MARGIN = 5; // mm
     private static final double RECEIPT_WIDTH = 62; // mm
     private static final double RECEIPT_TEXT_WIDTH = 52; // mm
-    private static final double PAYMEMT_PART_WIDTH = 148; // mm
+    private static final double PAYMENT_PART_WIDTH = 148; // mm
     private static final double PP_AMOUNT_SECTION_WIDTH = 46; // mm
     private static final double PP_INFO_SECTION_WIDTH = 87; // mm
     private static final double AMOUNT_SECTION_TOP = 37; // mm (from bottom)
@@ -39,9 +39,12 @@ class BillLayout {
     private static final double DEBTOR_BOX_HEIGHT_RC = 20; // mm
 
 
-    private Bill bill;
-    private QRCode qrCode;
-    private Canvas graphics;
+    private final Bill bill;
+    private final QRCode qrCode;
+    private final Canvas graphics;
+
+    private final double marginLeft;
+    private final double marginRight;
 
     private String accountPayableTo;
     private String reference;
@@ -67,6 +70,8 @@ class BillLayout {
         this.bill = bill;
         this.qrCode = new QRCode(bill);
         this.graphics = graphics;
+        this.marginLeft = Math.min(Math.max(bill.getFormat().getMarginLeft(), 5.0), 12.0);
+        this.marginRight = Math.min(Math.max(bill.getFormat().getMarginRight(), 5.0), 12.0);
     }
 
     void draw() throws IOException {
@@ -84,7 +89,7 @@ class BillLayout {
 
         boolean isTooTight;
         while (true) {
-            breakLines(PP_INFO_SECTION_WIDTH);
+            breakLines(PP_INFO_SECTION_WIDTH - (marginRight - MARGIN));
             isTooTight = computePaymentPartSpacing();
             if (!isTooTight || textFontSize == PP_TEXT_MIN_FONT_SIZE)
                 break;
@@ -100,16 +105,17 @@ class BillLayout {
 
         labelFontSize = RC_LABEL_PREF_FONT_SIZE;
         textFontSize = RC_TEXT_PREF_FONT_SIZE;
-        breakLines(RECEIPT_TEXT_WIDTH);
+        double receiptTextWidthAdapted = RECEIPT_TEXT_WIDTH - (marginLeft - MARGIN);
+        breakLines(receiptTextWidthAdapted);
         isTooTight = computeReceiptSpacing();
         if (isTooTight) {
             prepareReducedReceiptText(false);
-            breakLines(RECEIPT_TEXT_WIDTH);
+            breakLines(receiptTextWidthAdapted);
             isTooTight = computeReceiptSpacing();
         }
         if (isTooTight) {
             prepareReducedReceiptText(true);
-            breakLines(RECEIPT_TEXT_WIDTH);
+            breakLines(receiptTextWidthAdapted);
             computeReceiptSpacing();
         }
         drawReceipt();
@@ -208,7 +214,7 @@ class BillLayout {
 
         graphics.setTransformation(RECEIPT_WIDTH + MARGIN, 0, 0, 1, 1);
         double y = FURTHER_INFORMATION_SECTION_TOP - graphics.getAscender(FONT_SIZE);
-        double maxWidth = PAYMEMT_PART_WIDTH - 2 * MARGIN;
+        double maxWidth = PAYMENT_PART_WIDTH - MARGIN - marginRight;
 
         for (AlternativeScheme scheme : bill.getAlternativeSchemes()) {
             String boldText = String.format("%s: ", scheme.getName());
@@ -224,7 +230,7 @@ class BillLayout {
     private void drawReceipt() throws IOException {
 
         // "Receipt" title
-        graphics.setTransformation(MARGIN, 0, 0, 1, 1);
+        graphics.setTransformation(marginLeft, 0, 0, 1, 1);
         yPos = SLIP_HEIGHT - MARGIN - graphics.getAscender(FONT_SIZE_TITLE);
         graphics.putText(getText(MultilingualText.KEY_RECEIPT), 0, yPos, FONT_SIZE_TITLE, true);
 
@@ -257,7 +263,7 @@ class BillLayout {
             drawLabel(MultilingualText.KEY_PAYABLE_BY_NAME_ADDRESS);
             yPos -= -textAscender + BOX_TOP_PADDING;
             yPos -= DEBTOR_BOX_HEIGHT_RC;
-            drawCorners(0, yPos, DEBTOR_BOX_WIDTH_RC, DEBTOR_BOX_HEIGHT_RC);
+            drawCorners(0, yPos, DEBTOR_BOX_WIDTH_RC - (marginLeft - MARGIN), DEBTOR_BOX_HEIGHT_RC);
         }
     }
 
@@ -286,7 +292,7 @@ class BillLayout {
         } else {
             drawCorners(RECEIPT_TEXT_WIDTH - AMOUNT_BOX_WIDTH_RC,
                     AMOUNT_SECTION_TOP - AMOUNT_BOX_HEIGHT_RC,
-                    AMOUNT_BOX_WIDTH_RC, AMOUNT_BOX_HEIGHT_RC);
+                    AMOUNT_BOX_WIDTH_RC - (marginLeft - MARGIN), AMOUNT_BOX_HEIGHT_RC);
         }
     }
 
@@ -297,7 +303,7 @@ class BillLayout {
         String label = getText(MultilingualText.KEY_ACCEPTANCE_POINT);
         double y = ACCEPTANCE_POINT_SECTION_TOP - labelAscender;
         double w = graphics.getTextWidth(label, labelFontSize, true);
-        graphics.putText(label, RECEIPT_TEXT_WIDTH - w, y, labelFontSize, true);
+        graphics.putText(label, RECEIPT_TEXT_WIDTH - (marginLeft - MARGIN) - w, y, labelFontSize, true);
     }
 
     private boolean computePaymentPartSpacing() {
