@@ -23,12 +23,14 @@ import java.util.Locale;
  */
 public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
 
-    private ByteArrayOutputStream buffer;
+    final private ByteArrayOutputStream buffer;
     private Writer stream;
     private boolean isInGroup;
     private boolean isFirstMoveInPath;
+    private boolean isRectangularPath;
     private double lastPositionX;
     private double lastPositionY;
+    private StringBuilder path;
     private int approxPathLength;
 
     /**
@@ -81,8 +83,9 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
 
     @Override
     public void startPath() throws IOException {
-        stream.write("<path d=\"");
+        path = new StringBuilder();
         isFirstMoveInPath = true;
+        isRectangularPath = true;
         approxPathLength = 0;
     }
 
@@ -90,17 +93,17 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
     public void moveTo(double x, double y) throws IOException {
         y = -y;
         if (isFirstMoveInPath) {
-            stream.write("M");
-            stream.write(formatCoordinate(x));
-            stream.write(",");
-            stream.write(formatCoordinate(y));
+            path.append("M");
+            path.append(formatCoordinate(x));
+            path.append(",");
+            path.append(formatCoordinate(y));
             isFirstMoveInPath = false;
         } else {
             addPathNewlines(16);
-            stream.write("m");
-            stream.write(formatCoordinate(x - lastPositionX));
-            stream.write(",");
-            stream.write(formatCoordinate(y - lastPositionY));
+            path.append("m");
+            path.append(formatCoordinate(x - lastPositionX));
+            path.append(",");
+            path.append(formatCoordinate(y - lastPositionY));
         }
         lastPositionX = x;
         lastPositionY = y;
@@ -111,10 +114,11 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
     public void lineTo(double x, double y) throws IOException {
         y = -y;
         addPathNewlines(16);
-        stream.write("l");
-        stream.write(formatCoordinate(x - lastPositionX));
-        stream.write(",");
-        stream.write(formatCoordinate(y - lastPositionY));
+        path.append("l");
+        path.append(formatCoordinate(x - lastPositionX));
+        path.append(",");
+        path.append(formatCoordinate(y - lastPositionY));
+        isRectangularPath = isRectangularPath && (lastPositionX == x || lastPositionY == y);
         lastPositionX = x;
         lastPositionY = y;
         approxPathLength += 16;
@@ -126,18 +130,19 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
         y2 = -y2;
         y = -y;
         addPathNewlines(48);
-        stream.write("c");
-        stream.write(formatCoordinate(x1 - lastPositionX));
-        stream.write(",");
-        stream.write(formatCoordinate(y1 - lastPositionY));
-        stream.write(",");
-        stream.write(formatCoordinate(x2 - lastPositionX));
-        stream.write(",");
-        stream.write(formatCoordinate(y2 - lastPositionY));
-        stream.write(",");
-        stream.write(formatCoordinate(x - lastPositionX));
-        stream.write(",");
-        stream.write(formatCoordinate(y - lastPositionY));
+        path.append("c");
+        path.append(formatCoordinate(x1 - lastPositionX));
+        path.append(",");
+        path.append(formatCoordinate(y1 - lastPositionY));
+        path.append(",");
+        path.append(formatCoordinate(x2 - lastPositionX));
+        path.append(",");
+        path.append(formatCoordinate(y2 - lastPositionY));
+        path.append(",");
+        path.append(formatCoordinate(x - lastPositionX));
+        path.append(",");
+        path.append(formatCoordinate(y - lastPositionY));
+        isRectangularPath = false;
         lastPositionX = x;
         lastPositionY = y;
         approxPathLength += 48;
@@ -147,35 +152,42 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
     public void addRectangle(double x, double y, double width, double height) throws IOException {
         addPathNewlines(40);
         moveTo(x, y + height);
-        stream.write("h");
-        stream.write(formatCoordinate(width));
-        stream.write("v");
-        stream.write(formatCoordinate(height));
-        stream.write("h");
-        stream.write(formatCoordinate(-width));
-        stream.write("z");
+        path.append("h");
+        path.append(formatCoordinate(width));
+        path.append("v");
+        path.append(formatCoordinate(height));
+        path.append("h");
+        path.append(formatCoordinate(-width));
+        path.append("z");
         approxPathLength += 24;
     }
 
     @Override
     public void closeSubpath() throws IOException {
         addPathNewlines(1);
-        stream.write("z");
+        path.append("z");
         approxPathLength += 1;
     }
 
     private void addPathNewlines(int expectedLength) throws IOException {
         if (approxPathLength + expectedLength > 255) {
-            stream.write("\n");
+            path.append("\n");
             approxPathLength = 0;
         }
     }
 
     @Override
     public void fillPath(int color) throws IOException {
-        stream.write("\" fill=\"#");
+        stream.write("<path fill=\"#");
         stream.write(formatColor(color));
+        // If the path consist of rectangular line segments only, the crispEdges
+        // attribute is added for better rendering on low resolution displays.
+        if (isRectangularPath)
+            stream.write("\" shape-rendering=\"crispEdges");
+        stream.write("\"\nd=\"");
+        stream.append(path);
         stream.write("\"/>\n");
+        path = null;
         isFirstMoveInPath = true;
     }
 
@@ -186,7 +198,7 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
 
     @Override
     public void strokePath(double strokeWidth, int color, LineStyle lineStyle) throws IOException {
-        stream.write("\" stroke=\"#");
+        stream.write("<path stroke=\"#");
         stream.write(formatColor(color));
         if (strokeWidth != 1) {
             stream.write("\" stroke-width=\"");
@@ -199,7 +211,10 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
             stream.write("\" stroke-linecap=\"round\" stroke-dasharray=\"0 ");
             stream.write(formatNumber(strokeWidth * 3));
         }
-        stream.write("\" fill=\"none\"/>\n");
+        stream.write("\" fill=\"none\"\nd=\"");
+        stream.append(path);
+        stream.write("\"/>\n");
+        path = null;
         isFirstMoveInPath = true;
     }
 

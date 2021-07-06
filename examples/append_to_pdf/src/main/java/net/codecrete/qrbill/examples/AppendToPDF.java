@@ -26,7 +26,7 @@ public class AppendToPDF {
         // Setup bill format
         Bill bill = new Bill();
         bill.getFormat().setLanguage(Language.DE);
-        bill.getFormat().setOutputSize(OutputSize.A4_PORTRAIT_SHEET);
+        bill.getFormat().setOutputSize(OutputSize.QR_CODE_ONLY);
 
         // Set account and amount
         bill.setAccount("CH48 0900 0000 8575 7337 2");

@@ -4,7 +4,8 @@
 <g font-family="Helvetica,Arial,&quot;Liberation Sans&quot;" transform="translate(0 130.394)">
 <title>Swiss QR Bill</title>
 <g transform="translate(0 -0) scale(3.18)">
-<path d="M0,-41h7v1h-7zm9,0h2v3h-2zm3,0h3v1h-3zm5,0h3v1h-3zm5,0h6v1h-6zm8,0h3v1h-3z
+<path fill="#000000" shape-rendering="crispEdges"
+d="M0,-41h7v1h-7zm9,0h2v3h-2zm3,0h3v1h-3zm5,0h3v1h-3zm5,0h6v1h-6zm8,0h3v1h-3z
 m4,0h7v1h-7zm-34,1h1v6h-1zm6,0h1v6h-1zm2,0h1v3h-1zm7,0h1v1h-1zm3,0h1v1h-1z
 m3,0h2v1h-2zm3,0h1v2h-1zm5,0h1v2h-1zm5,0h1v6h-1zm6,0h1v6h-1zm-38,1h3v3h-3z
 m9,0h1v1h-1zm5,0h1v3h-1zm3,0h2v3h-2zm4,0h1v3h-1zm3,0h2v3h-2zm4,0h2v1h-2z
@@ -61,9 +62,11 @@ m2,0h1v1h-1zm-30,1h1v1h-1zm5,0h2v1h-2zm12,0h1v4h-1zm3,0h1v3h-1zm9,0h1v1h-1z
 m-30,1h1v1h-1zm3,0h1v1h-1zm2,0h1v2h-1zm2,0h1v1h-1zm5,0h1v1h-1zm7,0h1v2h-1z
 m6,0h1v1h-1zm-19,1h1v1h-1zm3,0h1v2h-1zm2,0h1v2h-1zm2,0h2v1h-2zm4,0h1v1h-1z
 m5,0h1v2h-1zm4,0h1v1h-1zm3,0h1v1h-1zm2,0h1v1h-1zm-39,1h5v1h-5zm7,0h2v1h-2z
-m5,0h1v1h-1zm3,0h1v1h-1zm7,0h1v1h-1zm2,0h1v1h-1zm8,0h2v1h-2zm3,0h1v1h-1z" fill="#000000"/>
+m5,0h1v1h-1zm3,0h1v1h-1zm7,0h1v1h-1zm2,0h1v1h-1zm8,0h2v1h-2zm3,0h1v1h-1z"/>
 </g>
-<path d="M56.693,-73.701h17.008v17.008h-17.008z" fill="#000000"/>
-<path d="M63.543,-70.709h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z" fill="#ffffff"/>
+<path fill="#000000" shape-rendering="crispEdges"
+d="M56.693,-73.701h17.008v17.008h-17.008z"/>
+<path fill="#ffffff" shape-rendering="crispEdges"
+d="M63.543,-70.709h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z"/>
 </g>
 </svg>
