@@ -272,7 +272,6 @@ public class QRBill {
                 drawingHeight = QR_BILL_HEIGHT;
                 break;
             case QR_BILL_EXTRA_SPACE:
-            case QR_BILL_WITH_HORIZONTAL_LINE:
                 drawingWidth = QR_BILL_WITH_HORI_LINE_WIDTH;
                 drawingHeight = QR_BILL_WITH_HORI_LINE_HEIGHT;
                 break;

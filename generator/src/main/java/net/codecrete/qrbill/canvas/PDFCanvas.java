@@ -232,11 +232,6 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
     }
 
     @Override
-    public void strokePath(double strokeWidth, int color) throws IOException {
-        strokePath(strokeWidth, color, LineStyle.Solid);
-    }
-
-    @Override
     public void strokePath(double strokeWidth, int color, LineStyle lineStyle) throws IOException {
         if (color != lastStrokingColor) {
             lastStrokingColor = color;

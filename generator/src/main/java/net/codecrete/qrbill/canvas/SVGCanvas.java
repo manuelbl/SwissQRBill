@@ -193,11 +193,6 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
     }
 
     @Override
-    public void strokePath(double strokeWidth, int color) throws IOException {
-        strokePath(strokeWidth, color, LineStyle.Solid);
-    }
-
-    @Override
     public void strokePath(double strokeWidth, int color, LineStyle lineStyle) throws IOException {
         stream.write("<path stroke=\"#");
         stream.write(formatColor(color));

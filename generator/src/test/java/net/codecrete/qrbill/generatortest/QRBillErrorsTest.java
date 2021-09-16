@@ -121,7 +121,7 @@ class QRBillErrorsTest {
         }
 
         @Override
-        public void strokePath(double strokeWidth, int color) throws IOException {
+        public void strokePath(double strokeWidth, int color, LineStyle lineStyle) throws IOException {
             throw new IOException("not implemented");
         }
 

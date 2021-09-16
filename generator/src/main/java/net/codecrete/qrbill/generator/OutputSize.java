@@ -24,12 +24,6 @@ public enum OutputSize {
      */
     QR_BILL_ONLY,
     /**
-     * QR bill with horizontal separator line (about 110 by 210 mm).
-     *
-     * @deprecated Has been renamed to {@link #QR_BILL_EXTRA_SPACE}.
-     */
-    QR_BILL_WITH_HORIZONTAL_LINE,
-    /**
      * QR code only (46 by 46 mm).
      */
     QR_CODE_ONLY,
