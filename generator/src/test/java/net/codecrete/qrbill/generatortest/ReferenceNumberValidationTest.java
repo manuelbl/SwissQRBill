@@ -149,4 +149,22 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         validate();
         assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE_TYPE, "invalid_ref_type");
     }
+
+    @Test
+    void invalidRefTypeForCredRef_refTypeIsValidErr() {
+        bill = SampleData.getExample3();
+        bill.setReferenceType("QRR");
+        validate();
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE_TYPE, "invalid_ref_type");
+    }
+
+    @Test
+    void invalidRefTypeForQrRef_refTypeIsValidErr() {
+        bill = SampleData.getExample3();
+        bill.setAccount("CH4431999123000889012"); // non QR-IBAN
+        bill.setReference("210000000003139471430009017");
+        bill.setReferenceType("SCOR");
+        validate();
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE_TYPE, "invalid_ref_type");
+    }
 }
