@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -111,7 +112,7 @@ class ValidationResultTest {
         assertEquals(Type.WARNING, messages.get(0).getType());
         assertEquals("jkr", messages.get(0).getField());
         assertEquals("wcw.dw", messages.get(0).getMessageKey());
-        assertTrue(Arrays.equals(new String[] { ")(*$" }, messages.get(0).getMessageParameters()));
+        assertArrayEquals(new String[]{")(*$"}, messages.get(0).getMessageParameters());
     }
 
     @Test

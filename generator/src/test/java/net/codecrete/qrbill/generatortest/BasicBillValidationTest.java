@@ -12,6 +12,8 @@ import net.codecrete.qrbill.generator.ValidationConstants;
 import net.codecrete.qrbill.generator.ValidationMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
 
@@ -112,36 +114,18 @@ class BasicBillValidationTest extends BillDataValidationBase {
         assertEquals("CH4431999123000889012", validatedBill.getAccount());
     }
 
-    @Test
-    void missingAccount() {
+    @ParameterizedTest
+    @CsvSource({
+            ",field_is_missing",
+            "DE68 2012 0700 3100 7555 55,account_is_not_ch_li_iban",
+            "CH0031999123000889012,account_has_invalid_iban",
+            "CH503199912300088333339012,account_has_invalid_iban"
+    })
+    void invalidAccounts(String account, String messageKey) {
         bill = SampleData.getExample1();
-        bill.setAccount(null);
+        bill.setAccount(account);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "field_is_missing");
-    }
-
-    @Test
-    void foreignAccount() {
-        bill = SampleData.getExample1();
-        bill.setAccount("DE68 2012 0700 3100 7555 55");
-        validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "account_is_not_ch_li_iban");
-    }
-
-    @Test
-    void invalidIBAN1() {
-        bill = SampleData.getExample1();
-        bill.setAccount("CH0031999123000889012");
-        validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "account_has_invalid_iban");
-    }
-
-    @Test
-    void invalidIBAN2() {
-        bill = SampleData.getExample1();
-        bill.setAccount("CH503199912300088333339012");
-        validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "account_has_invalid_iban");
+        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, messageKey);
     }
 
     @Test

@@ -12,6 +12,8 @@ import net.codecrete.qrbill.generator.ValidationConstants;
 import net.codecrete.qrbill.generator.ValidationMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -116,54 +118,21 @@ class CreditorValidationTest extends BillDataValidationBase {
         assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_TOWN, "field_is_missing");
     }
 
-    @Test
-    void creditorWithMissingCountryCode() {
+    @ParameterizedTest
+    @CsvSource({
+            "  ,field_is_missing",
+            "Schweiz,invalid_country_code",
+            "R!,invalid_country_code",
+            "00,invalid_country_code",
+            "aà,invalid_country_code"
+    })
+    void creditorWithInvalidCountryCode(String countryCode, String messageKey) {
         bill = SampleData.getExample1();
         Address address = createValidPerson();
-        address.setCountryCode("  ");
+        address.setCountryCode(countryCode);
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "field_is_missing");
-    }
-
-    @Test
-    void creditorWithInvalidCountryCode() {
-        bill = SampleData.getExample1();
-        Address address = createValidPerson();
-        address.setCountryCode("Schweiz");
-        bill.setCreditor(address);
-        validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "invalid_country_code");
-    }
-
-    @Test
-    void creditorWithInvalidCountryCode2() {
-        bill = SampleData.getExample1();
-        Address address = createValidPerson();
-        address.setCountryCode("R!");
-        bill.setCreditor(address);
-        validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "invalid_country_code");
-    }
-
-    @Test
-    void creditorWithInvalidCountryCode3() {
-        bill = SampleData.getExample1();
-        Address address = createValidPerson();
-        address.setCountryCode("00");
-        bill.setCreditor(address);
-        validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "invalid_country_code");
-    }
-
-    @Test
-    void creditorWithInvalidCountryCode4() {
-        bill = SampleData.getExample1();
-        Address address = createValidPerson();
-        address.setCountryCode("aà");
-        bill.setCreditor(address);
-        validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "invalid_country_code");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, messageKey);
     }
 
     @Test

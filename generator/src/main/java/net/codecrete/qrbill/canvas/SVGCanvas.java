@@ -23,7 +23,7 @@ import java.util.Locale;
  */
 public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
 
-    final private ByteArrayOutputStream buffer;
+    private final ByteArrayOutputStream buffer;
     private Writer stream;
     private boolean isInGroup;
     private boolean isFirstMoveInPath;
@@ -169,7 +169,7 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
         approxPathLength += 1;
     }
 
-    private void addPathNewlines(int expectedLength) throws IOException {
+    private void addPathNewlines(int expectedLength) {
         if (approxPathLength + expectedLength > 255) {
             path.append("\n");
             approxPathLength = 0;

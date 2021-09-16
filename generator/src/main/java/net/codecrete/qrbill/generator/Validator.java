@@ -134,10 +134,8 @@ class Validator {
                 validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_CRED_REF_USED_FOR_QR_IBAN);
             }
 
-        } else if (isValidAccount) {
-            if (Bill.REFERENCE_TYPE_QR_REF.equals(billOut.getReferenceType())) {
-                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_QR_REF_USED_FOR_NON_QR_IBAN);
-            }
+        } else if (isValidAccount && Bill.REFERENCE_TYPE_QR_REF.equals(billOut.getReferenceType())) {
+            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_QR_REF_USED_FOR_NON_QR_IBAN);
         }
     }
 

@@ -24,73 +24,73 @@ class A4BillTest {
 
     @Test
     void createA4SVGBill1() {
-        generateAndCompareBill(SampleData.getExample1(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex1.svg");
+        generateAndCompareBill(SampleData.getExample1(), GraphicsFormat.SVG, "a4bill_ex1.svg");
     }
 
     @Test
     void createA4PDFBill1() {
-        generateAndCompareBill(SampleData.getExample1(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex1.pdf");
+        generateAndCompareBill(SampleData.getExample1(), GraphicsFormat.PDF, "a4bill_ex1.pdf");
     }
 
     @Test
     void createA4SVGBill2() {
         Bill bill = SampleData.getExample2();
         bill.getFormat().setFontFamily("Liberation Sans, Arial, Helvetica");
-        generateAndCompareBill(bill, OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex2.svg");
+        generateAndCompareBill(bill, GraphicsFormat.SVG, "a4bill_ex2.svg");
     }
 
     @Test
     void createA4PDFBill2() {
-        generateAndCompareBill(SampleData.getExample2(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex2.pdf");
+        generateAndCompareBill(SampleData.getExample2(), GraphicsFormat.PDF, "a4bill_ex2.pdf");
     }
 
     @Test
     void createA4SVGBill3() {
-        generateAndCompareBill(SampleData.getExample3(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex3.svg");
+        generateAndCompareBill(SampleData.getExample3(), GraphicsFormat.SVG, "a4bill_ex3.svg");
     }
 
     @Test
     void createA4PDFBill3() {
         Bill bill = SampleData.getExample3();
         bill.getFormat().setFontFamily("Arial");
-        generateAndCompareBill(bill, OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex3.pdf");
+        generateAndCompareBill(bill, GraphicsFormat.PDF, "a4bill_ex3.pdf");
     }
 
     @Test
     void createA4SVGBill4() {
         Bill bill = SampleData.getExample4();
         bill.getFormat().setFontFamily("Frutiger");
-        generateAndCompareBill(bill, OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex4.svg");
+        generateAndCompareBill(bill, GraphicsFormat.SVG, "a4bill_ex4.svg");
     }
 
     @Test
     void createA4PDFBill4() {
-        generateAndCompareBill(SampleData.getExample4(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex4.pdf");
+        generateAndCompareBill(SampleData.getExample4(), GraphicsFormat.PDF, "a4bill_ex4.pdf");
     }
 
     @Test
     void createA4SVGBill5() {
-        generateAndCompareBill(SampleData.getExample5(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex5.svg");
+        generateAndCompareBill(SampleData.getExample5(), GraphicsFormat.SVG, "a4bill_ex5.svg");
     }
 
     @Test
     void createA4PDFBill5() {
-        generateAndCompareBill(SampleData.getExample5(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex5.pdf");
+        generateAndCompareBill(SampleData.getExample5(), GraphicsFormat.PDF, "a4bill_ex5.pdf");
     }
 
     @Test
     void createA4SVGBill6() {
-        generateAndCompareBill(SampleData.getExample6(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.SVG, "a4bill_ex6.svg");
+        generateAndCompareBill(SampleData.getExample6(), GraphicsFormat.SVG, "a4bill_ex6.svg");
     }
 
     @Test
     void createA4PDFBill6() {
-        generateAndCompareBill(SampleData.getExample6(), OutputSize.A4_PORTRAIT_SHEET, GraphicsFormat.PDF, "a4bill_ex6.pdf");
+        generateAndCompareBill(SampleData.getExample6(), GraphicsFormat.PDF, "a4bill_ex6.pdf");
     }
 
-    private void generateAndCompareBill(Bill bill, OutputSize outputSize, GraphicsFormat graphicsFormat,
+    private void generateAndCompareBill(Bill bill, GraphicsFormat graphicsFormat,
                                         String expectedFileName) {
-        bill.getFormat().setOutputSize(outputSize);
+        bill.getFormat().setOutputSize(OutputSize.A4_PORTRAIT_SHEET);
         bill.getFormat().setGraphicsFormat(graphicsFormat);
         byte[] imageData = QRBill.generate(bill);
         FileComparison.assertFileContentsEqual(imageData, expectedFileName);

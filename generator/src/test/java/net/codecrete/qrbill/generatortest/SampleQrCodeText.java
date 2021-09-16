@@ -117,8 +117,8 @@ class SampleQrCodeText {
             "XY;XYService;54321";
     //@formatter:on
 
-    static String getQrCodeText2(boolean withCRLF) {
-        return handleLinefeed(QR_CODE_TEXT_2, withCRLF);
+    static String getQrCodeText2() {
+        return handleLinefeed(QR_CODE_TEXT_2, false);
     }
 
     static Bill getBillData2() {
@@ -187,8 +187,8 @@ class SampleQrCodeText {
             "EPD\n";
     //@formatter:on
 
-    static String getQrCodeText3(boolean withCRLF) {
-        return handleLinefeed(QR_CODE_TEXT_3, withCRLF);
+    static String getQrCodeText3() {
+        return handleLinefeed(QR_CODE_TEXT_3, false);
     }
 
     static Bill getBillData3() {
@@ -240,8 +240,8 @@ class SampleQrCodeText {
             "EPD\n";
     //@formatter:on
 
-    static String getQrCodeText4(boolean withCRLF) {
-        return handleLinefeed(QR_CODE_TEXT_4, withCRLF);
+    static String getQrCodeText4() {
+        return handleLinefeed(QR_CODE_TEXT_4, false);
     }
 
     static Bill getBillData4() {
@@ -302,8 +302,8 @@ class SampleQrCodeText {
             "EPD\n";
     //@formatter:on
 
-    static String getQrCodeText5(boolean withCRLF) {
-        return handleLinefeed(QR_CODE_TEXT_5, withCRLF);
+    static String getQrCodeText5() {
+        return handleLinefeed(QR_CODE_TEXT_5, false);
     }
 
     static Bill getBillData5() {

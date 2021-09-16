@@ -74,17 +74,13 @@ class QRReferenceTest {
 
     @Test
     void rawReferenceWithInvalidCharacters() {
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
-            Payments.createQRReference("1134a56");
-        });
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> Payments.createQRReference("1134a56"));
         assertEquals("Invalid character in reference (digits allowed only)", ex.getMessage());
     }
 
     @Test
     void rawReferenceTooLong() {
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
-            Payments.createQRReference("123456789012345678901234567");
-        });
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> Payments.createQRReference("123456789012345678901234567"));
         assertEquals("Reference number is too long", ex.getMessage());
     }
 }

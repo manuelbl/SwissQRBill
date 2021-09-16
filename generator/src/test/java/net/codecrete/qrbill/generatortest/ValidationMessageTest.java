@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -74,6 +75,6 @@ class ValidationMessageTest {
     void setMessageParameters() {
         ValidationMessage msg = new ValidationMessage();
         msg.setMessageParameters(new String[] { "abc", "def", "ghi" });
-        assertTrue(Arrays.equals(new String[] { "abc", "def", "ghi" }, msg.getMessageParameters()));
+        assertArrayEquals(new String[]{"abc", "def", "ghi"}, msg.getMessageParameters());
     }
 }

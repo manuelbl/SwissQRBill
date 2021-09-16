@@ -35,34 +35,32 @@ class EncodedTextTest {
     @Test
     void createText2() {
         Bill bill = SampleQrCodeText.getBillData2();
-        assertEquals(SampleQrCodeText.getQrCodeText2(false), QRBill.encodeQrCodeText(bill));
+        assertEquals(SampleQrCodeText.getQrCodeText2(), QRBill.encodeQrCodeText(bill));
     }
 
     @Test
     void createText3() {
         Bill bill = SampleQrCodeText.getBillData3();
-        assertEquals(SampleQrCodeText.getQrCodeText3(false), QRBill.encodeQrCodeText(bill));
+        assertEquals(SampleQrCodeText.getQrCodeText3(), QRBill.encodeQrCodeText(bill));
     }
 
     @Test
     void createText4() {
         Bill bill = SampleQrCodeText.getBillData4();
-        assertEquals(SampleQrCodeText.getQrCodeText4(false), QRBill.encodeQrCodeText(bill));
+        assertEquals(SampleQrCodeText.getQrCodeText4(), QRBill.encodeQrCodeText(bill));
     }
 
     @Test
     void createText5() {
         Bill bill = SampleQrCodeText.getBillData5();
-        assertEquals(SampleQrCodeText.getQrCodeText5(false), QRBill.encodeQrCodeText(bill));
+        assertEquals(SampleQrCodeText.getQrCodeText5(), QRBill.encodeQrCodeText(bill));
     }
 
     @Test
     void createTextError1() {
         Bill bill = SampleData.getExample4();
         bill.setAmount(BigDecimal.valueOf(-1, 2));
-        assertThrows(QRBillValidationError.class, () -> {
-            QRBill.encodeQrCodeText(bill);
-        });
+        assertThrows(QRBillValidationError.class, () -> QRBill.encodeQrCodeText(bill));
     }
 
     @Test
@@ -72,6 +70,6 @@ class EncodedTextTest {
         assertFalse(result.hasErrors());
         bill = result.getCleanedBill();
         bill.setReference("");
-        assertEquals(SampleQrCodeText.getQrCodeText3(false), QRCodeText.create(bill));
+        assertEquals(SampleQrCodeText.getQrCodeText3(), QRCodeText.create(bill));
     }
 }

@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  */
 public class QRCodeText {
 
-    private Bill bill;
+    private final Bill bill;
     private StringBuilder textBuilder;
 
     private QRCodeText(Bill bill) {
@@ -248,7 +248,7 @@ public class QRCodeText {
         }
 
         // add last line
-        lines.add(text.substring(lastPos, text.length()));
+        lines.add(text.substring(lastPos));
         return lines.toArray(new String[0]);
     }
 

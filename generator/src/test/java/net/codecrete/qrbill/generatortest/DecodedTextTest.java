@@ -92,7 +92,7 @@ class DecodedTextTest {
     void decodeTextB2() {
         Bill bill = SampleQrCodeText.getBillData2();
         normalizeSourceBill(bill);
-        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText2(false));
+        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText2());
         normalizeDecodedBill(bill2);
         assertEquals(bill, bill2);
     }
@@ -101,7 +101,7 @@ class DecodedTextTest {
     void decodeTextB3() {
         Bill bill = SampleQrCodeText.getBillData3();
         normalizeSourceBill(bill);
-        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText3(false));
+        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText3());
         normalizeDecodedBill(bill2);
         assertEquals(bill, bill2);
     }
@@ -110,7 +110,7 @@ class DecodedTextTest {
     void decodeTextB4() {
         Bill bill = SampleQrCodeText.getBillData4();
         normalizeSourceBill(bill);
-        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText4(false));
+        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText4());
         normalizeDecodedBill(bill2);
         assertEquals(bill, bill2);
     }
@@ -119,7 +119,7 @@ class DecodedTextTest {
     void decodeTextB5() {
         Bill bill = SampleQrCodeText.getBillData5();
         normalizeSourceBill(bill);
-        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText5(false));
+        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText5());
         normalizeDecodedBill(bill2);
         assertEquals(bill, bill2);
     }

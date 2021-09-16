@@ -106,7 +106,7 @@ class SwicoExamples {
         info.setCustomerReference("66359");
         info.setVatNumber("109532551");
         info.setVatRate(BigDecimal.valueOf(7.7));
-        info.setPaymentConditions(Arrays.asList(
+        info.setPaymentConditions(Collections.singletonList(
                 new PaymentCondition(BigDecimal.ZERO, 30))
         );
         return info;
@@ -122,7 +122,7 @@ class SwicoExamples {
         info.setCustomerReference("55878");
         info.setVatNumber("109532551");
         info.setVatRate(BigDecimal.valueOf(7.7));
-        info.setPaymentConditions(Arrays.asList(
+        info.setPaymentConditions(Collections.singletonList(
                 new PaymentCondition(BigDecimal.ZERO, 30))
         );
         return info;

@@ -431,15 +431,15 @@ class BillLayout {
 
         // draw scissors
         if (hasScissors) {
-            drawScissors(RECEIPT_WIDTH, SLIP_HEIGHT - 5, 3, 0);
+            drawScissors(RECEIPT_WIDTH, SLIP_HEIGHT - 5, 0);
             if (outputSize != OutputSize.QR_BILL_ONLY)
-                drawScissors(5, SLIP_HEIGHT, 3, Math.PI / 2.0);
+                drawScissors(5, SLIP_HEIGHT, Math.PI / 2.0);
         }
     }
 
-    private void drawScissors(double x, double y, double size, double angle) throws IOException {
-        drawScissorsBlade(x, y, size, angle, false);
-        drawScissorsBlade(x, y, size, angle, true);
+    private void drawScissors(double x, double y, double angle) throws IOException {
+        drawScissorsBlade(x, y, 3, angle, false);
+        drawScissorsBlade(x, y, 3, angle, true);
     }
 
     private void drawScissorsBlade(double x, double y, double size, double angle, boolean mirrored) throws IOException {
