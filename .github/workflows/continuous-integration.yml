@@ -20,10 +20,14 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+        uses: gradle/wrapper-validation-action@v1.0.4
       - name: Build with Gradle
+        env:
+          SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
         working-directory: ./generator
-        run: ./gradlew build
+        run: ./gradlew build -PossrhUsername=nobody -PossrhPassword=removed -Dsonar.organization=manuelbl-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_LOGIN
       - name: SonarQube
+        env:
+          SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
         working-directory: ./generator
-        run: ./gradlew sonarqube
+        run: ./gradlew sonarqube -PossrhUsername=nobody -PossrhPassword=removed -Dsonar.organization=manuelbl-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_LOGIN
