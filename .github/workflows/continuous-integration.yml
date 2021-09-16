@@ -25,7 +25,7 @@ jobs:
         env:
           SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
         working-directory: ./generator
-        run: ./gradlew build -PossrhUsername=nobody -PossrhPassword=removed -Dsonar.organization=manuelbl-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_LOGIN
+        run: ./gradlew jar javadoc -PossrhUsername=nobody -PossrhPassword=removed
       - name: SonarQube
         env:
           SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
