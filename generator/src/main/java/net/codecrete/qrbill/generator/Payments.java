@@ -8,6 +8,7 @@
 package net.codecrete.qrbill.generator;
 
 import java.text.Normalizer;
+import java.util.Locale;
 
 /**
  * Field validations related to Swiss Payment standards
@@ -171,6 +172,24 @@ public class Payments {
             return false;
 
         return hasValidMod97CheckDigits(iban);
+    }
+
+    /**
+     * Indicates if the string is a valid QR-IBAN.
+     * <p>
+     *     QR-IBANs are IBANs with an institution ID in the range 30000 to 31999
+     *     and a country code for Switzerland or Liechtenstein.
+     *     Thus, they must have the format "CH..30...", "CH..31...", "LI..30..." or "LI..31...".
+     * </p>
+     * @param iban account number to check
+     * @return {@code true} for valid QR-IBANs, {@code false} otherwise
+     */
+    public static boolean isQRIBAN(String iban) {
+        iban = Strings.whiteSpaceRemoved(iban).toUpperCase(Locale.US);
+        return isValidIBAN(iban)
+                && (iban.startsWith("CH") || iban.startsWith("LI"))
+                && iban.charAt(4) == '3'
+                && (iban.charAt(5) == '0' || iban.charAt(5) == '1');
     }
 
     /**
@@ -377,7 +396,7 @@ public class Payments {
         return sb.toString();
     }
 
-    private static boolean isNumeric(String value) {
+    static boolean isNumeric(String value) {
         int len = value.length();
         for (int i = 0; i < len; i++) {
             char ch = value.charAt(i);

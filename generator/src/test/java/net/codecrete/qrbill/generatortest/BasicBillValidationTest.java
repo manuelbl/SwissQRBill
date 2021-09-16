@@ -40,7 +40,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setCurrency(null);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CURRENCY, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CURRENCY, "field_is_missing");
     }
 
     @Test
@@ -48,7 +48,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setCurrency("USD");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CURRENCY, "currency_is_chf_or_eur");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CURRENCY, "currency_is_not_chf_or_eur");
     }
 
     @Test
@@ -74,7 +74,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setAmount(BigDecimal.valueOf(-1, 2));
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_AMOUNT, "amount_in_valid_range");
+        assertSingleErrorMessage(ValidationConstants.FIELD_AMOUNT, "amount_is_outside_valid_range");
     }
 
     @Test
@@ -82,7 +82,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setAmount(BigDecimal.valueOf(1000000000.0));
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_AMOUNT, "amount_in_valid_range");
+        assertSingleErrorMessage(ValidationConstants.FIELD_AMOUNT, "amount_is_outside_valid_range");
     }
 
     @Test
@@ -117,7 +117,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setAccount(null);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "field_is_missing");
     }
 
     @Test
@@ -125,7 +125,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setAccount("DE68 2012 0700 3100 7555 55");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "account_is_ch_li_iban");
+        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "account_is_not_ch_li_iban");
     }
 
     @Test
@@ -133,7 +133,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setAccount("CH0031999123000889012");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "account_is_valid_iban");
+        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "account_has_invalid_iban");
     }
 
     @Test
@@ -141,7 +141,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setAccount("CH503199912300088333339012");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "account_is_valid_iban");
+        assertSingleErrorMessage(ValidationConstants.FIELD_ACCOUNT, "account_has_invalid_iban");
     }
 
     @Test
@@ -188,7 +188,7 @@ class BasicBillValidationTest extends BillDataValidationBase {
         bill.setUnstructuredMessage(null);
         bill.setBillInformation("//AA4567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789x");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_BILL_INFORMATION, "field_value_too_long");
+        assertSingleErrorMessage(ValidationConstants.FIELD_BILL_INFORMATION, "field_too_long");
     }
 
     @Test
@@ -222,12 +222,12 @@ class BasicBillValidationTest extends BillDataValidationBase {
         ValidationMessage msg = result.getValidationMessages().get(0);
         assertEquals(ValidationMessage.Type.ERROR, msg.getType());
         assertEquals(ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE, msg.getField());
-        assertEquals(ValidationConstants.ADDITIONAL_INFO_TOO_LONG, msg.getMessageKey());
+        assertEquals(ValidationConstants.KEY_ADDITIONAL_INFO_TOO_LONG, msg.getMessageKey());
 
         msg = result.getValidationMessages().get(1);
         assertEquals(ValidationMessage.Type.ERROR, msg.getType());
         assertEquals(ValidationConstants.FIELD_BILL_INFORMATION, msg.getField());
-        assertEquals(ValidationConstants.ADDITIONAL_INFO_TOO_LONG, msg.getMessageKey());
+        assertEquals(ValidationConstants.KEY_ADDITIONAL_INFO_TOO_LONG, msg.getMessageKey());
     }
 
     @Test
@@ -251,6 +251,6 @@ class BasicBillValidationTest extends BillDataValidationBase {
                 new AlternativeScheme("Xing Yong", "XY;XYService;54321")
         });
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_ALTERNATIVE_SCHEMES, "field_value_too_long");
+        assertSingleErrorMessage(ValidationConstants.FIELD_ALTERNATIVE_SCHEMES, "field_too_long");
     }
 }

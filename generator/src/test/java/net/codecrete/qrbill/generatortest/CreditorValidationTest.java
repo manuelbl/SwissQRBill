@@ -73,7 +73,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setName("  ");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_NAME, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_NAME, "field_is_missing");
     }
 
     @Test
@@ -103,7 +103,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setPostalCode("");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_POSTAL_CODE, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_POSTAL_CODE, "field_is_missing");
     }
 
     @Test
@@ -113,7 +113,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setTown(null);
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_TOWN, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_TOWN, "field_is_missing");
     }
 
     @Test
@@ -123,7 +123,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setCountryCode("  ");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "field_is_mandatory");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "field_is_missing");
     }
 
     @Test
@@ -133,7 +133,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setCountryCode("Schweiz");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "invalid_country_code");
     }
 
     @Test
@@ -143,7 +143,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setCountryCode("R!");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "invalid_country_code");
     }
 
     @Test
@@ -153,7 +153,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setCountryCode("00");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "invalid_country_code");
     }
 
     @Test
@@ -163,7 +163,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setCountryCode("aà");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "valid_country_code");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_COUNTRY_CODE, "invalid_country_code");
     }
 
     @Test
@@ -189,7 +189,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         assertEquals(5, result.getValidationMessages().size());
         for (ValidationMessage msg : result.getValidationMessages()) {
             assertEquals(ValidationMessage.Type.ERROR, msg.getType());
-            assertEquals("field_is_mandatory", msg.getMessageKey());
+            assertEquals("field_is_missing", msg.getMessageKey());
             assertTrue(msg.getField().startsWith(ValidationConstants.FIELDROOT_CREDITOR));
         }
     }

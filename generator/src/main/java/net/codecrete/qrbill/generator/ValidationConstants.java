@@ -12,44 +12,47 @@ package net.codecrete.qrbill.generator;
  */
 public class ValidationConstants {
     /**
-     * Validation message key: currency must be "CHF" or "EUR"
+     * Validation message key: currency should be "CHF" or "EUR"
      */
-    public static final String KEY_CURRENCY_IS_CHF_OR_EUR = "currency_is_chf_or_eur";
+    public static final String KEY_CURRENCY_IS_NOT_CHF_OR_EUR = "currency_is_not_chf_or_eur";
     /**
-     * Validation message key: amount must be between 0.01 and 999999999.99
+     * Validation message key: amount should be between 0.01 and 999999999.99
      */
-    public static final String KEY_AMOUNT_IS_IN_VALID_RANGE = "amount_in_valid_range";
+    public static final String KEY_AMOUNT_IS_OUTSIDE_VALID_RANGE = "amount_is_outside_valid_range";
     /**
-     * Validation message key: IBAN must be from bank in Switzerland or
-     * Liechtenstein
+     * Validation message key: account number should start with "CH" or "LI"
      */
-    public static final String KEY_ACCOUNT_IS_CH_LI_IBAN = "account_is_ch_li_iban";
+    public static final String KEY_ACCOUNT_IS_NOT_CH_LI_IBAN = "account_is_not_ch_li_iban";
     /**
-     * Validation message key: IBAN must have valid format and check digit
+     * Validation message key: IBAN has invalid format and check digit
      */
-    public static final String KEY_ACCOUNT_IS_VALID_IBAN = "account_is_valid_iban";
+    public static final String KEY_ACCOUNT_HAS_INVALID_IBAN = "account_has_invalid_iban";
     /**
-     * Validation message key: Due to regular IBAN (outside QR-IID range) an ISO 11649 references is expected
-     * but it has invalid format or check digit
+     * Validation message key: The reference is invalid. It is neither a valid QR reference nor a valid ISO 11649
+     * reference.
      */
-    public static final String KEY_VALID_ISO11649_CREDITOR_REF = "valid_iso11649_creditor_ref";
+    public static final String KEY_REF_IS_INVALID = "ref_is_invalid";
     /**
-     * Validation message key: Due to QR-IBAN (IBAN in QR-IID range) a QR reference number is expected
-     * but it has invalid format or check digit
+     * Validation message key: QR reference is missing; it is mandatory for payments to a QR-IBAN account.
      */
-    public static final String KEY_VALID_QR_REF_NO = "valid_qr_ref_no";
+    public static final String KEY_QR_REF_IS_MISSING = "qr_ref_is_missing";
     /**
-     * Validation message key: For QR-IBANs (IBAN in QR-IID range) a QR reference is mandatory
+     * Validation message key: For payments to a QR-IBAN account, a QR reference is required. An ISO 11649 reference
+     * may not be used.
      */
-    public static final String KEY_MANDATORY_FOR_QR_IBAN = "mandatory_for_qr_iban";
+    public static final String KEY_CRED_REF_USED_FOR_QR_IBAN = "cred_ref_used_for_qr_iban";
     /**
-     * Validation message key: Reference type must be one of "QRR", "SCOR" and "NON" and match the reference.
+     * Validation message key: A QR reference is only allowed for payments to a QR-IBAN account.
      */
-    public static final String KEY_VALID_REF_TYPE = "valid_ref_type";
+    public static final String KEY_QR_REF_USED_FOR_NON_QR_IBAN = "qr_ref_used_for_non_qr_iban";
     /**
-     * Validation message key: Field is mandatory
+     * Validation message key: Reference type should be one of "QRR", "SCOR" and "NON" and match the reference.
      */
-    public static final String KEY_FIELD_IS_MANDATORY = "field_is_mandatory";
+    public static final String KEY_INVALID_REF_TYPE = "invalid_ref_type";
+    /**
+     * Validation message key: Field must not be empty
+     */
+    public static final String KEY_FIELD_IS_MISSING = "field_is_missing";
     /**
      * Validation message key: Conflicting fields for both structured and combined elements address type have been used
      */
@@ -57,41 +60,40 @@ public class ValidationConstants {
     /**
      * Validation message key: Country code must consist of two letters
      */
-    public static final String KEY_VALID_COUNTRY_CODE = "valid_country_code";
+    public static final String KEY_INVALID_COUNTRY_CODE = "invalid_country_code";
     /**
-     * Validation message key: Field has been clipped to not exceed the maximum
-     * length
+     * Validation message key: Field has been clipped to not exceed the maximum length
      */
     public static final String KEY_FIELD_CLIPPED = "field_clipped";
     /**
      * Validation message key: Field value exceed the maximum length
      */
-    public static final String KEY_FIELD_TOO_LONG = "field_value_too_long";
+    public static final String KEY_FIELD_TOO_LONG = "field_too_long";
     /**
      * Validation message key: Unstructured message and bill information combined exceed the maximum length
      */
-    public static final String ADDITIONAL_INFO_TOO_LONG = "additional_info_too_long";
+    public static final String KEY_ADDITIONAL_INFO_TOO_LONG = "additional_info_too_long";
     /**
      * Validation message key: Unsupported characters have been replaced
      */
     public static final String KEY_REPLACED_UNSUPPORTED_CHARACTERS = "replaced_unsupported_characters";
     /**
-     * Validation message key: Valid data structure starts with "SPC" and consists
+     * Validation message key: Invalid data structure; it must start with "SPC" and consists
      * of 32 to 34 lines of text (with exceptions)
      */
-    public static final String KEY_VALID_DATA_STRUCTURE = "valid_data_structure";
+    public static final String KEY_INVALID_DATA_STRUCTURE = "invalid_data_structure";
     /**
      * Validation message key: Version 02.00 is supported only
      */
-    public static final String KEY_SUPPORTED_VERSION = "supported_version";
+    public static final String KEY_UNSUPPORTED_VERSION = "unsupported_version";
     /**
      * Validation message key: Coding type 1 is supported only
      */
-    public static final String KEY_SUPPORTED_CODING_TYPE = "supported_coding_type";
+    public static final String KEY_UNSUPPORTED_CODING_TYPE = "unsupported_coding_type";
     /**
      * Validation message key: Valid number required (nnnnn.nn)
      */
-    public static final String KEY_VALID_NUMBER = "valid_number";
+    public static final String KEY_INVALID_NUMBER = "invalid_number";
     /**
      * Validation message key: The maximum of 2 alternative schemes has been exceeded
      */

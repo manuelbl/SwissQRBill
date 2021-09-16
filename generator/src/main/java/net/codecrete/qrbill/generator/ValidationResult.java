@@ -151,9 +151,11 @@ public class ValidationResult implements Serializable {
                 sb.append("; ");
 
             String desc = ERROR_MESSAGES.getOrDefault(message.getMessageKey(), "Unknown error");
-            if (message.getMessageKey().equals("field_is_mandatory"))
+            if (message.getMessageKey().equals(ValidationConstants.KEY_FIELD_IS_MISSING)
+                    || message.getMessageKey().equals(ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS))
                 desc = String.format(desc, message.getField());
-            else if (message.getMessageKey().equals("field_value_too_long"))
+            else if (message.getMessageKey().equals(ValidationConstants.KEY_FIELD_TOO_LONG)
+                    || message.getMessageKey().equals(ValidationConstants.KEY_FIELD_CLIPPED))
                 desc = String.format(desc, message.getField(), message.getMessageParameters()[0]);
 
             sb.append(desc);
@@ -169,20 +171,24 @@ public class ValidationResult implements Serializable {
 
     static {
         Map<String, String> errorMessages = new HashMap<>();
-        errorMessages.put("currency_is_chf_or_eur", "currency should be \"CHF\" or \"EUR\"");
-        errorMessages.put("amount_in_valid_range", "amount should be between 0.01 and 999 999 999.99");
-        errorMessages.put("account_is_ch_li_iban", "account number should start with \"CH\" or \"LI\"");
-        errorMessages.put("account_is_valid_iban", "IBAN is invalid (format or checksum)");
-        errorMessages.put("valid_iso11649_creditor_ref", "reference is invalid (reference should be empty or start with \"RF\")");
-        errorMessages.put("valid_qr_ref_no", "reference is invalid (numeric QR reference required)");
-        errorMessages.put("mandatory_for_qr_iban", "reference is needed for a payment to this account (QR-IBAN)");
-        errorMessages.put("field_is_mandatory", "field \"%s\" may not be empty");
-        errorMessages.put("valid_country_code", "country code is invalid; it should consist of two letters");
-        errorMessages.put("address_type_conflict", "fields for either structured address or combined elements address may be filled but not both");
-        errorMessages.put("alt_scheme_max_exceed", "no more than two alternative schemes may be used");
-        errorMessages.put("bill_info_invalid", "structured bill information must start with \"//\"");
-        errorMessages.put("field_value_too_long", "the value for field \"%s\" should not exceed a length of %s characters");
-        errorMessages.put("additional_info_too_long", "the additional information and the structured bill information combined should not exceed 140 characters");
+        errorMessages.put(ValidationConstants.KEY_CURRENCY_IS_NOT_CHF_OR_EUR, "currency should be \"CHF\" or \"EUR\"");
+        errorMessages.put(ValidationConstants.KEY_AMOUNT_IS_OUTSIDE_VALID_RANGE, "amount should be between 0.01 and 999 999 999.99");
+        errorMessages.put(ValidationConstants.KEY_ACCOUNT_IS_NOT_CH_LI_IBAN, "account number should start with \"CH\" or \"LI\"");
+        errorMessages.put(ValidationConstants.KEY_ACCOUNT_HAS_INVALID_IBAN, "account number is not a valid IBAN (invalid format or checksum)");
+        errorMessages.put(ValidationConstants.KEY_REF_IS_INVALID, "reference is invalid; it is neither a valid QR reference nor a valid ISO 11649 reference");
+        errorMessages.put(ValidationConstants.KEY_QR_REF_IS_MISSING, "QR reference is missing; it is mandatory for payments to a QR-IBAN account");
+        errorMessages.put(ValidationConstants.KEY_CRED_REF_USED_FOR_QR_IBAN, "for payments to a QR-IBAN account, a QR reference is required (an ISO 11649 reference may not be used)");
+        errorMessages.put(ValidationConstants.KEY_QR_REF_USED_FOR_NON_QR_IBAN, "a QR reference is only allowed for payments to a QR-IBAN account");
+        errorMessages.put(ValidationConstants.KEY_INVALID_REF_TYPE, "reference type should be one of \"QRR\", \"SCOR\" and \"NON\" and match the reference");
+        errorMessages.put(ValidationConstants.KEY_FIELD_IS_MISSING, "field \"%s\" may not be empty");
+        errorMessages.put(ValidationConstants.KEY_ADDRESS_TYPE_CONFLICT, "fields for either structured address or combined elements address may be filled but not both");
+        errorMessages.put(ValidationConstants.KEY_INVALID_COUNTRY_CODE, "country code is invalid; it should consist of two letters");
+        errorMessages.put(ValidationConstants.KEY_FIELD_CLIPPED, "the value for field \"%s\" has been clipped to not exceed the maximum length of %s characters");
+        errorMessages.put(ValidationConstants.KEY_FIELD_TOO_LONG, "the value for field \"%s\" should not exceed a length of %s characters");
+        errorMessages.put(ValidationConstants.KEY_ADDITIONAL_INFO_TOO_LONG, "the additional information and the structured bill information combined should not exceed 140 characters");
+        errorMessages.put(ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS, "unsupported characters have been replaced in field \"%s\"");
+        errorMessages.put(ValidationConstants.KEY_ALT_SCHEME_MAX_EXCEEDED, "no more than two alternative schemes may be used");
+        errorMessages.put(ValidationConstants.KEY_BILL_INFO_INVALID, "structured bill information must start with \"//\"");
         ERROR_MESSAGES = Collections.unmodifiableMap(errorMessages);
     }
 }
