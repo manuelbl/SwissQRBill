@@ -36,10 +36,11 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
     /**
      * Creates a new instance of the specified size.
      * <p>
-     *     For all text, the specified font family list will be used.
+     * For all text, the specified font family list will be used.
      * </p>
-     * @param width width of image, in mm
-     * @param height height of image, in mm
+     *
+     * @param width          width of image, in mm
+     * @param height         height of image, in mm
      * @param fontFamilyList font family list (comma separated list, CSS syntax)
      * @throws IOException thrown if the instance cannot be created
      */
@@ -270,6 +271,7 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
 
     /**
      * Writes the resulting SVG image to the specified output stream.
+     *
      * @param os the output stream
      * @throws IOException thrown if the image cannot be written
      */
@@ -280,6 +282,7 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
 
     /**
      * Saves the resulting SVG image to the specified path.
+     *
      * @param path the path to write to
      * @throws IOException thrown if the image cannot be written
      */

@@ -286,6 +286,7 @@ public class SwicoS1Decoder {
     static class InfoTuple {
         final int tag;
         final String value;
+
         InfoTuple(int tag, String value) {
             this.tag = tag;
             this.value = value;

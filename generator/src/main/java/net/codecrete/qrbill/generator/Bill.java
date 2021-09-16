@@ -22,15 +22,15 @@ public class Bill implements Serializable {
     /**
      * Reference type: without reference.
      */
-    public static final  String REFERENCE_TYPE_NO_REF = "NON";
+    public static final String REFERENCE_TYPE_NO_REF = "NON";
     /**
      * Reference type: QR reference.
      */
-    public static final  String REFERENCE_TYPE_QR_REF = "QRR";
+    public static final String REFERENCE_TYPE_QR_REF = "QRR";
     /**
      * Reference type: creditor reference (ISO 11649)
      */
-    public static final  String REFERENCE_TYPE_CRED_REF = "SCOR";
+    public static final String REFERENCE_TYPE_CRED_REF = "SCOR";
 
     /**
      * QR bill version
@@ -189,7 +189,6 @@ public class Bill implements Serializable {
      * </p>
      *
      * @return one of the constants REFERENCE_TYPE_xxx.
-     *
      * @see #REFERENCE_TYPE_QR_REF
      * @see #REFERENCE_TYPE_CRED_REF
      * @see #REFERENCE_TYPE_NO_REF
@@ -207,7 +206,6 @@ public class Bill implements Serializable {
      * <p>
      *
      * @param referenceType one of the constants {@code REFERENCE_TYPE_xx}
-     *
      * @see #REFERENCE_TYPE_QR_REF
      * @see #REFERENCE_TYPE_CRED_REF
      * @see #REFERENCE_TYPE_NO_REF
@@ -232,6 +230,7 @@ public class Bill implements Serializable {
             referenceType = REFERENCE_TYPE_NO_REF;
         }
     }
+
     /**
      * Gets the payment reference
      *
@@ -244,22 +243,21 @@ public class Bill implements Serializable {
     /**
      * Sets the payment reference.
      * <p>
-     *     The reference is mandatory for QR IBANs, i.e. IBANs in the range
-     *     CHxx30000xxxxxx through CHxx31999xxxxx. QR IBANs require a valid QR
-     *     reference (numeric reference corresponding to the ISR reference format).
+     * The reference is mandatory for QR IBANs, i.e. IBANs in the range
+     * CHxx30000xxxxxx through CHxx31999xxxxx. QR IBANs require a valid QR
+     * reference (numeric reference corresponding to the ISR reference format).
      * </p>
      * <p>
-     *     For non-QR IBANs, the reference is optional. If it is provided,
-     *     it must be valid creditor reference according to ISO 11649 ("RFxxxx").
+     * For non-QR IBANs, the reference is optional. If it is provided,
+     * it must be valid creditor reference according to ISO 11649 ("RFxxxx").
      * </p>
      * <p>
-     *     Both types of references may contain spaces for formatting.
+     * Both types of references may contain spaces for formatting.
      * </p>
      *
      * @param reference the payment reference number
-     *
      * @see #createAndSetCreditorReference(String)
-     * @see #createAndSetQRReference(String) 
+     * @see #createAndSetQRReference(String)
      */
     public void setReference(String reference) {
         this.reference = reference;
@@ -270,7 +268,7 @@ public class Bill implements Serializable {
      * Creates and sets a ISO11649 creditor reference from a raw string by prefixing
      * the String with "RF" and the modulo 97 checksum.
      * <p>
-     *     Whitespace is removed from the reference
+     * Whitespace is removed from the reference
      * </p>
      *
      * @param rawReference The raw string
@@ -284,8 +282,8 @@ public class Bill implements Serializable {
      * Creates and sets a QR reference from a raw string by appending the checksum digit
      * and prepending zeros to make it the correct length.
      * <p>
-     *     As the QR reference is numeric, the raw string must consist of digits and
-     *     whitespace only. Whitespace is removed from the reference.
+     * As the QR reference is numeric, the raw string must consist of digits and
+     * whitespace only. Whitespace is removed from the reference.
      * </p>
      *
      * @param rawReference The raw string

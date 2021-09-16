@@ -81,13 +81,13 @@ class PNGCanvasTest {
     }
 
     private void checkForPngHeader(byte[] data) {
-        assertEquals((byte)137, data[0]);
-        assertEquals((byte)80, data[1]);
-        assertEquals((byte)78, data[2]);
-        assertEquals((byte)71, data[3]);
-        assertEquals((byte)13, data[4]);
-        assertEquals((byte)10, data[5]);
-        assertEquals((byte)26, data[6]);
-        assertEquals((byte)10, data[7]);
+        assertEquals((byte) 137, data[0]);
+        assertEquals((byte) 80, data[1]);
+        assertEquals((byte) 78, data[2]);
+        assertEquals((byte) 71, data[3]);
+        assertEquals((byte) 13, data[4]);
+        assertEquals((byte) 10, data[5]);
+        assertEquals((byte) 26, data[6]);
+        assertEquals((byte) 10, data[7]);
     }
 }

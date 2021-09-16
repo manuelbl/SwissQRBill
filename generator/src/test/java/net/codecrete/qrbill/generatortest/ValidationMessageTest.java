@@ -11,13 +11,10 @@ import net.codecrete.qrbill.generator.ValidationMessage;
 import net.codecrete.qrbill.generator.ValidationMessage.Type;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ValidationMessageTest {
 
@@ -75,6 +72,6 @@ class ValidationMessageTest {
     void setMessageParameters() {
         ValidationMessage msg = new ValidationMessage();
         msg.setMessageParameters(new String[] { "abc", "def", "ghi" });
-        assertArrayEquals(new String[]{"abc", "def", "ghi"}, msg.getMessageParameters());
+        assertArrayEquals(new String[] { "abc", "def", "ghi" }, msg.getMessageParameters());
     }
 }

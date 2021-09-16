@@ -17,14 +17,15 @@ public enum OutputSize {
     /**
      * QR bill only (about 105 by 210 mm).
      * <p>
-     *     This size is suitable if the QR bill has not horizontal line.
-     *     If the horizontal line is needed and the A4 sheet size is not
-     *     suitable, use {@link #QR_BILL_EXTRA_SPACE} instead.
+     * This size is suitable if the QR bill has not horizontal line.
+     * If the horizontal line is needed and the A4 sheet size is not
+     * suitable, use {@link #QR_BILL_EXTRA_SPACE} instead.
      * </p>
      */
     QR_BILL_ONLY,
     /**
      * QR bill with horizontal separator line (about 110 by 210 mm).
+     *
      * @deprecated Has been renamed to {@link #QR_BILL_EXTRA_SPACE}.
      */
     QR_BILL_WITH_HORIZONTAL_LINE,
@@ -35,8 +36,8 @@ public enum OutputSize {
     /**
      * QR bill only with additional space at the top for the horizontal line (about 110 by 210 mm).
      * <p>
-     *     The extra 5 mm at the top create space for the horizontal line and
-     *     optionally for the scissors.
+     * The extra 5 mm at the top create space for the horizontal line and
+     * optionally for the scissors.
      * </p>
      */
     QR_BILL_EXTRA_SPACE

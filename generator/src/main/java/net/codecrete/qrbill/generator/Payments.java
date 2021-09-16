@@ -177,10 +177,11 @@ public class Payments {
     /**
      * Indicates if the string is a valid QR-IBAN.
      * <p>
-     *     QR-IBANs are IBANs with an institution ID in the range 30000 to 31999
-     *     and a country code for Switzerland or Liechtenstein.
-     *     Thus, they must have the format "CH..30...", "CH..31...", "LI..30..." or "LI..31...".
+     * QR-IBANs are IBANs with an institution ID in the range 30000 to 31999
+     * and a country code for Switzerland or Liechtenstein.
+     * Thus, they must have the format "CH..30...", "CH..31...", "LI..30..." or "LI..31...".
      * </p>
+     *
      * @param iban account number to check
      * @return {@code true} for valid QR-IBANs, {@code false} otherwise
      */
@@ -342,7 +343,7 @@ public class Payments {
      * Creates a QR reference from a raw string by appending the checksum digit
      * and prepending zeros to make it the correct length.
      * <p>
-     *     Whitespace is removed from the reference
+     * Whitespace is removed from the reference
      * </p>
      *
      * @param rawReference The raw string (digits and whitespace only)
@@ -357,7 +358,7 @@ public class Payments {
         if (rawRef.length() > 26)
             throw new IllegalArgumentException("Reference number is too long");
         int mod10 = calculateMod10(rawRef);
-        return "00000000000000000000000000".substring(0, 26 - rawRef.length()) + rawRef + (char)('0' + mod10);
+        return "00000000000000000000000000".substring(0, 26 - rawRef.length()) + rawRef + (char) ('0' + mod10);
 
     }
 
@@ -453,8 +454,6 @@ public class Payments {
             return false;
         if (ch == 0xe3 || ch == 0xe5 || ch == 0xe6)
             return false;
-        if (ch == 0xf0 || ch == 0xf5 || ch == 0xf8)
-            return false;
-        return true;
+        return ch != 0xf0 && ch != 0xf5 && ch != 0xf8;
     }
 }

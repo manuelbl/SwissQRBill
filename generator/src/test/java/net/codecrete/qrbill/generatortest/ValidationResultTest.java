@@ -12,7 +12,6 @@ import net.codecrete.qrbill.generator.ValidationMessage.Type;
 import net.codecrete.qrbill.generator.ValidationResult;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -112,7 +111,7 @@ class ValidationResultTest {
         assertEquals(Type.WARNING, messages.get(0).getType());
         assertEquals("jkr", messages.get(0).getField());
         assertEquals("wcw.dw", messages.get(0).getMessageKey());
-        assertArrayEquals(new String[]{")(*$"}, messages.get(0).getMessageParameters());
+        assertArrayEquals(new String[] { ")(*$" }, messages.get(0).getMessageParameters());
     }
 
     @Test

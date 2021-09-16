@@ -9,7 +9,7 @@ package net.codecrete.qrbill.generator;
 /**
  * Exception thrown if the bill could not be generated.
  * <p>
- *     If the bill data is not valid, a {@link QRBillValidationError} exception is thrown instead.
+ * If the bill data is not valid, a {@link QRBillValidationError} exception is thrown instead.
  * </p>
  */
 public class QRBillGenerationException extends RuntimeException {

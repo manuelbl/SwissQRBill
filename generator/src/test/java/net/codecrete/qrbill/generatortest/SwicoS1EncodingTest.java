@@ -126,7 +126,7 @@ class SwicoS1EncodingTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"en-US", "de-DE", "de-CH", "fr-CH", "en-UK"})
+    @ValueSource(strings = { "en-US", "de-DE", "de-CH", "fr-CH", "en-UK" })
     void differentLocales_haveNoEffect(String languageTag) {
 
         Locale defaultLocale = Locale.getDefault();

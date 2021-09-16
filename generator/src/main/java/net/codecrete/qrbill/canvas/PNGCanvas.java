@@ -17,11 +17,7 @@ import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
@@ -60,9 +56,9 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
      * The first font family in the list is used.
      * </p>
      *
-     * @param width image width, in mm
-     * @param height image height, in mm
-     * @param resolution resolution of the result (in dpi)
+     * @param width          image width, in mm
+     * @param height         image height, in mm
+     * @param resolution     resolution of the result (in dpi)
      * @param fontFamilyList list of font families (comma separated, CSS syntax)
      */
     public PNGCanvas(double width, double height, int resolution, String fontFamilyList) {
@@ -185,11 +181,11 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
         switch (lineStyle) {
             case Dashed:
                 stroke = new BasicStroke((float) (strokeWidth * fontScale), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
-                        10, new float[] { 4 * (float)strokeWidth * fontScale }, 0);
+                        10, new float[] { 4 * (float) strokeWidth * fontScale }, 0);
                 break;
             case Dotted:
                 stroke = new BasicStroke((float) (strokeWidth * fontScale), BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER,
-                        10, new float[] { 0, 3 * (float)strokeWidth * fontScale }, 0);
+                        10, new float[] { 0, 3 * (float) strokeWidth * fontScale }, 0);
                 break;
             default:
                 stroke = new BasicStroke((float) (strokeWidth * fontScale), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
@@ -211,6 +207,7 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
 
     /**
      * Writes the resulting PNG image to the specified output stream.
+     *
      * @param os the output stream
      * @throws IOException thrown if the image cannot be written
      */
@@ -224,6 +221,7 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
 
     /**
      * Saves the resulting PNG image to the specified path.
+     *
      * @param path the path to write to
      * @throws IOException thrown if the image cannot be written
      */

@@ -50,7 +50,8 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
 
     /**
      * Creates a new instance using the specified page size.
-     * @param width page width, in mm
+     *
+     * @param width  page width, in mm
      * @param height page height, in mm
      * @throws IOException thrown if the creation fails
      */
@@ -66,15 +67,16 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
     /**
      * Creates a new instance for adding the QR bill to an exiting PDF document.
      * <p>
-     *     The QR bill can either be added to an existing page by specifying the page number
-     *     of an existing page (or {@link #LAST_PAGE}), or it can be added to a new page
-     *     at the end of the document (see {@link #NEW_PAGE_AT_END}).
+     * The QR bill can either be added to an existing page by specifying the page number
+     * of an existing page (or {@link #LAST_PAGE}), or it can be added to a new page
+     * at the end of the document (see {@link #NEW_PAGE_AT_END}).
      * </p>
      * <p>
-     *     The created instance assumes that the page for the QR bill has A4 format and
-     *     will add the QR bill at the bottom of the page.
+     * The created instance assumes that the page for the QR bill has A4 format and
+     * will add the QR bill at the bottom of the page.
      * </p>
-     * @param path path to exiting document
+     *
+     * @param path   path to exiting document
      * @param pageNo the zero-based number of the page the QR bill should be added to
      * @throws IOException thrown if the creation fails
      */
@@ -87,16 +89,17 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
     /**
      * Creates a new instance for adding the QR bill to an exiting PDF document.
      * <p>
-     *     The QR bill can either be added to an existing page by specifying the page number
-     *     of an existing page (or {@link #LAST_PAGE}), or it can be added to a new page
-     *     at the end of the document (see {@link #NEW_PAGE_AT_END}).
+     * The QR bill can either be added to an existing page by specifying the page number
+     * of an existing page (or {@link #LAST_PAGE}), or it can be added to a new page
+     * at the end of the document (see {@link #NEW_PAGE_AT_END}).
      * </p>
      * <p>
-     *     The created instance assumes that the page for the QR bill has A4 format and
-     *     will add the QR bill at the bottom of the page.
+     * The created instance assumes that the page for the QR bill has A4 format and
+     * will add the QR bill at the bottom of the page.
      * </p>
+     *
      * @param pdfDocument binary array contianing PDF document
-     * @param pageNo the zero-based number of the page the QR bill should be added to
+     * @param pageNo      the zero-based number of the page the QR bill should be added to
      * @throws IOException thrown if the creation fails
      */
     public PDFCanvas(byte[] pdfDocument, int pageNo) throws IOException {
@@ -247,13 +250,13 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
             float[] pattern;
             switch (lineStyle) {
                 case Dashed:
-                    pattern = new float[] { 4 * (float)strokeWidth };
+                    pattern = new float[] { 4 * (float) strokeWidth };
                     break;
                 case Dotted:
-                    pattern = new float[] { 0, 3 * (float)strokeWidth };
+                    pattern = new float[] { 0, 3 * (float) strokeWidth };
                     break;
                 default:
-                    pattern = new float[] { };
+                    pattern = new float[] {};
             }
             contentStream.setLineCapStyle(lineStyle == LineStyle.Dotted ? 1 : 0);
             contentStream.setLineDashPattern(pattern, 0);
@@ -279,6 +282,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
 
     /**
      * Writes the resulting PDF document to the specified output stream.
+     *
      * @param os the output stream
      * @throws IOException thrown if the image cannot be written
      */
@@ -292,6 +296,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
 
     /**
      * Saves the resulting PDF document to the specified path.
+     *
      * @param path the path to write to
      * @throws IOException thrown if the image cannot be written
      */

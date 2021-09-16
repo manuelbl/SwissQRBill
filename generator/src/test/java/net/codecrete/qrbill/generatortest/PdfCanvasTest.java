@@ -58,10 +58,10 @@ class PdfCanvasTest {
     }
 
     private void checkForPdfHeader(byte[] data) {
-        assertEquals((byte)'%', data[0]);
-        assertEquals((byte)'P', data[1]);
-        assertEquals((byte)'D', data[2]);
-        assertEquals((byte)'F', data[3]);
-        assertEquals((byte)'-', data[4]);
+        assertEquals((byte) '%', data[0]);
+        assertEquals((byte) 'P', data[1]);
+        assertEquals((byte) 'D', data[2]);
+        assertEquals((byte) 'F', data[3]);
+        assertEquals((byte) '-', data[4]);
     }
 }

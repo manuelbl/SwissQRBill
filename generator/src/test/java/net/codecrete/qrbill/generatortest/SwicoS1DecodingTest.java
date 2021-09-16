@@ -65,7 +65,7 @@ class SwicoS1DecodingTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"en-US", "de-DE", "de-CH", "fr-CH", "en-UK"})
+    @ValueSource(strings = { "en-US", "de-DE", "de-CH", "fr-CH", "en-UK" })
     void differentLocales_haveNoEffect(String languageTag) {
 
         Locale defaultLocale = Locale.getDefault();
@@ -81,7 +81,7 @@ class SwicoS1DecodingTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "//S1/10//11//20//30/",
-            "//S1/"})
+            "//S1/" })
     void emptyValues_decoded(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         assertEquals(new SwicoBillInformation(), billInformation);
@@ -92,7 +92,7 @@ class SwicoS1DecodingTest {
             "/S1/10/X.66711",
             "///S1/10/X.66711",
             "S1/10/X.66711",
-            "10/X.66711"})
+            "10/X.66711" })
     void invalidStart_returnsNull(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         assertNull(billInformation);
@@ -101,7 +101,7 @@ class SwicoS1DecodingTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "//S1/10/X.66711/XX/200",
-            "//S1/10/X.66711/10.0/200"})
+            "//S1/10/X.66711/10.0/200" })
     void invalidTag_isIgnored(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
@@ -113,7 +113,7 @@ class SwicoS1DecodingTest {
     @ValueSource(strings = {
             "//S1/11/190520/10/X.66711/30/123456789",
             "//S1/10/X.66711/30/123456789/11/190520",
-            "//S1/11/201010/10/X.66711/11/190520/30/123456789"})
+            "//S1/11/201010/10/X.66711/11/190520/30/123456789" })
     void invalidTagOrder_isIgnored(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
@@ -129,7 +129,7 @@ class SwicoS1DecodingTest {
             "//S1/10/X.66711/20/405\\\\1/40/0:30---405\\1",
             "//S1/10/X.66711/20/\\/405-1/40/0:30---/405-1",
             "//S1/10/X.66711/20/\\405-1/40/0:30---\\405-1",
-            "//S1/10/X.66711/20/405\\\\/40/0:30---405\\"})
+            "//S1/10/X.66711/20/405\\\\/40/0:30---405\\" })
     void escapedCharacters_unescaped(String testData) {
         String[] parameters = testData.split("---");
         String rawBillInformation = parameters[0];
@@ -162,7 +162,7 @@ class SwicoS1DecodingTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "//S1/10/X.66711/20/T.000-001/29/123",
-            "//S1/10/X.66711/12/ABC/20/T.000-001"})
+            "//S1/10/X.66711/12/ABC/20/T.000-001" })
     void unknownTag_isIgnored(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
@@ -178,7 +178,7 @@ class SwicoS1DecodingTest {
             "//S1/10/10201409/11/1905213/20/405.789.Q",
             "//S1/10/10201409/11/200301 /20/405.789.Q",
             "//S1/10/10201409/11/200301125977/20/405.789.Q",
-            "//S1/10/10201409/11/2003011288/20/405.789.Q"})
+            "//S1/10/10201409/11/2003011288/20/405.789.Q" })
     void invalidInvoiceDate_isIgnored(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
@@ -194,7 +194,7 @@ class SwicoS1DecodingTest {
             "//S1/10/10201409/31/1905211905232",
             "//S1/10/10201409/31/19052119052 ",
             "//S1/10/10201409/31/190500190531",
-            "//S1/10/10201409/31/190501190532"})
+            "//S1/10/10201409/31/190501190532" })
     void invalidVatDates_isIgnored(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
@@ -205,7 +205,7 @@ class SwicoS1DecodingTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "//S1/10/329348709/11/200629/32/AB/40/0:30",
-            "//S1/10/329348709/11/200629/32/3.5./40/0:30"})
+            "//S1/10/329348709/11/200629/32/3.5./40/0:30" })
     void invalidVatRate_isIgnored(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
@@ -221,7 +221,7 @@ class SwicoS1DecodingTest {
             "//S1/10/10201409/11/200629/32/1;2/40/0:30",
             "//S1/10/10201409/11/200629/32/8:B/40/0:30",
             "//S1/10/10201409/11/200629/32/8:/40/0:30",
-            "//S1/10/10201409/11/200629/32/:200;x:200/40/0:30"})
+            "//S1/10/10201409/11/200629/32/:200;x:200/40/0:30" })
     void invalidVatRateDetails_areIgnored_resultEmpty(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
@@ -237,7 +237,7 @@ class SwicoS1DecodingTest {
             "//S1/10/10201409/11/200629/32/8:500;5/40/0:30",
             "//S1/10/10201409/11/200629/32/;8:500/40/0:30",
             "//S1/10/10201409/11/200629/32/8:500;/40/0:30",
-            "//S1/10/10201409/11/200629/32/8:500;x:200/40/0:30"})
+            "//S1/10/10201409/11/200629/32/8:500;x:200/40/0:30" })
     void invalidVatRateDetails_areIgnored_partialResult(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
@@ -255,7 +255,7 @@ class SwicoS1DecodingTest {
     @ValueSource(strings = {
             "//S1/10/10201409/11/200629/33/1;2/40/0:30",
             "//S1/10/10201409/11/200629/33/8:B/40/0:30",
-            "//S1/10/10201409/11/200629/33/8:/40/0:30"})
+            "//S1/10/10201409/11/200629/33/8:/40/0:30" })
     void invalidVatImportTaxes_areIgnored_emptyResult(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
@@ -271,7 +271,7 @@ class SwicoS1DecodingTest {
             "//S1/10/10201409/11/200629/33/8:24.5;5/40/0:30",
             "//S1/10/10201409/11/200629/33/;8:24.5/40/0:30",
             "//S1/10/10201409/11/200629/33/8:24.5;/40/0:30",
-            "//S1/10/10201409/11/200629/33/8:24.5;x:200/40/0:30"})
+            "//S1/10/10201409/11/200629/33/8:24.5;x:200/40/0:30" })
     void invalidVatImportTaxes_areIgnored_partialResult(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
@@ -290,7 +290,7 @@ class SwicoS1DecodingTest {
             "//S1/10/10201409/11/200629/40/1;60",
             "//S1/10/10201409/11/200629/40/1:5.0",
             "//S1/10/10201409/11/200629/40/3:B",
-            "//S1/10/10201409/11/200629/40/ABC"})
+            "//S1/10/10201409/11/200629/40/ABC" })
     void invalidPaymentConditions_areIgnored_emptyResult(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();
@@ -304,7 +304,7 @@ class SwicoS1DecodingTest {
             "//S1/10/10201409/11/200629/40/0:30;5",
             "//S1/10/10201409/11/200629/40/;0:30",
             "//S1/10/10201409/11/200629/40/0:30;",
-            "//S1/10/10201409/11/200629/40/x:1;2:x;0:30;x:200"})
+            "//S1/10/10201409/11/200629/40/x:1;2:x;0:30;x:200" })
     void invalidPaymentConditions_areIgnored_partialResult(String rawBillInformation) {
         SwicoBillInformation billInformation = SwicoBillInformation.decodeText(rawBillInformation);
         SwicoBillInformation expected = new SwicoBillInformation();

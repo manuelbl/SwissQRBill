@@ -114,9 +114,9 @@ public class QRBill {
      * validation</a>
      * </p>
      * <p>
-     *     The graphics format is specified with {@code bill.getFormat().setGraphicsFormat(...)}.
-     *     This method only supports the generation of SVG images and PDF files. For other graphics
-     *     formats (in particular PNG), use {@link #draw}
+     * The graphics format is specified with {@code bill.getFormat().setGraphicsFormat(...)}.
+     * This method only supports the generation of SVG images and PDF files. For other graphics
+     * formats (in particular PNG), use {@link #draw}
      * </p>
      *
      * @param bill the bill data
@@ -127,7 +127,7 @@ public class QRBill {
     public static byte[] generate(Bill bill) {
         try (Canvas canvas = createCanvas(bill.getFormat())) {
             validateAndGenerate(bill, canvas);
-            return ((ByteArrayResult)canvas).toByteArray();
+            return ((ByteArrayResult) canvas).toByteArray();
         } catch (IOException e) {
             throw new QRBillGenerationException(e);
         }
@@ -171,18 +171,18 @@ public class QRBill {
     /**
      * Draws the separator line(s) to the specified canvas.
      * <p>
-     *     The separator lines are drawn assuming that the QR bill starts at position (0, 0)
-     *     and extends the top and right. So position (0, 0) should be in the bottom left corner.
+     * The separator lines are drawn assuming that the QR bill starts at position (0, 0)
+     * and extends the top and right. So position (0, 0) should be in the bottom left corner.
      * </p>
      * <p>
-     *     This method allows to add separator lines to an existing QR bill,
-     *     e.g. on to an archived QR bill document.
+     * This method allows to add separator lines to an existing QR bill,
+     * e.g. on to an archived QR bill document.
      * </p>
      *
-     * @param separatorType type of separator lines
+     * @param separatorType      type of separator lines
      * @param withHorizontalLine {@code true} if both the horizontal or vertical separator should be drawn,
-     *              {@code false} for the vertical separator only
-     * @param canvas the canvas to draw to
+     *                           {@code false} for the vertical separator only
+     * @param canvas             the canvas to draw to
      */
     public static void drawSeparators(SeparatorType separatorType, boolean withHorizontalLine, Canvas canvas) {
         BillFormat format = new BillFormat();

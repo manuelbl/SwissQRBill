@@ -15,7 +15,9 @@ import java.util.Objects;
  */
 public class BillFormat implements Serializable {
 
-    /** Default width for left and right margin, in mm. */
+    /**
+     * Default width for left and right margin, in mm.
+     */
     public static final double DEFAULT_MARGIN_WIDTH = 5.0;
 
     private static final long serialVersionUID = -2874086922578292745L;
@@ -177,7 +179,7 @@ public class BillFormat implements Serializable {
 
     /**
      * Gets the resolution for pixel graphics formats.
-     * 
+     *
      * <p>
      * Defaults to 144 dpi.
      * </p>
@@ -185,17 +187,17 @@ public class BillFormat implements Serializable {
      * @return graphics resolution, in dpi
      */
     public int getResolution() {
-		return resolution;
-	}
+        return resolution;
+    }
 
     /**
      * Sets the resolution for pixel graphics formats.
-     * 
+     *
      * @param resolution graphics resolution, in dpi
      */
-	public void setResolution(int resolution) {
-		this.resolution = resolution;
-	}
+    public void setResolution(int resolution) {
+        this.resolution = resolution;
+    }
 
     /**
      * Gets the left margin width (from edge of paper to start of text).
@@ -214,8 +216,8 @@ public class BillFormat implements Serializable {
      * @return margin width, in mm
      */
     public double getMarginLeft() {
-		return marginLeft;
-	}
+        return marginLeft;
+    }
 
     /**
      * Sets the left margin width (from edge of paper to start of text).
@@ -233,9 +235,9 @@ public class BillFormat implements Serializable {
      *
      * @param marginLeft margin width, in mm
      */
-	public void setMarginLeft(double marginLeft) {
-		this.marginLeft = marginLeft;
-	}
+    public void setMarginLeft(double marginLeft) {
+        this.marginLeft = marginLeft;
+    }
 
     /**
      * Gets the the right margin width (from the end of the text to the edge of the paper).
@@ -271,7 +273,7 @@ public class BillFormat implements Serializable {
         this.marginRight = marginRight;
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override

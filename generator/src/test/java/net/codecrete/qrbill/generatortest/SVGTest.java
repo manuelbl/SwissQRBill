@@ -74,10 +74,10 @@ class SVGTest {
     }
 
     private void checkForSvgHeader(byte[] data) {
-        assertEquals((byte)'<', data[0]);
-        assertEquals((byte)'?', data[1]);
-        assertEquals((byte)'x', data[2]);
-        assertEquals((byte)'m', data[3]);
-        assertEquals((byte)'l', data[4]);
+        assertEquals((byte) '<', data[0]);
+        assertEquals((byte) '?', data[1]);
+        assertEquals((byte) 'x', data[2]);
+        assertEquals((byte) 'm', data[3]);
+        assertEquals((byte) 'l', data[4]);
     }
 }
