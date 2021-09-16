@@ -118,7 +118,6 @@ signing {
 
 sonarqube {
     properties {
-        property 'sonar.exclusions', 'src/main/java/net/codecrete/io/nayuki/qrcodegen/*.java'
         property 'sonar.projectName', 'Swiss QR Bill Generator (Java)'
     }
 }
