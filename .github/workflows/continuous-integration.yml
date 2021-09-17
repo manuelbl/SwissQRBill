@@ -18,6 +18,18 @@ jobs:
       - name: Build with Gradle
         working-directory: ./generator
         run: ./gradlew build
+      - name: Upload received files from failing tests
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: Received-${{ runner.os }}
+          path: "actual_*"
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: TestResults-${{ runner.os }}
+          path: build/reports/tests/test
       - name: SonarQube
         env:
           SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}

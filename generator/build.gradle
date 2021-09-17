@@ -36,6 +36,10 @@ jar {
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
+    reports {
+        junitXml.required = false
+        html.required = true
+    }               
 }
 
 javadoc {
