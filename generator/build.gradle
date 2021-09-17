@@ -17,7 +17,7 @@ repositories {
 }
 
 group = 'net.codecrete.qrbill'
-version = '3.0.0-alpha'
+version = '3.0.0-SNAPSHOT'
 archivesBaseName = 'qrbill-generator'
 
 sourceCompatibility = 1.8
@@ -35,6 +35,7 @@ jar {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
 
 javadoc {
@@ -57,10 +58,6 @@ task sourcesJar(type: Jar) {
 
 artifacts {
     archives javadocJar, sourcesJar
-}
-
-signing {
-    sign configurations.archives
 }
 
 publishing {
@@ -105,14 +102,15 @@ publishing {
                 basic(BasicAuthentication)
             }
             credentials {
-                username = ossrhUsername
-                password = ossrhPassword
+                username = findProperty('ossrhUsername') ?: 'unknown'
+                password = findProperty('ossrhPassword') ?: 'unknown'
             }
         }
     }
 }
 
 signing {
+    required { gradle.taskGraph.hasTask("publish") }
     sign publishing.publications.mavenJava
 }
 
@@ -123,10 +121,11 @@ sonarqube {
 }
 
 jacocoTestReport {
+    dependsOn test
     reports {
-        xml.enabled true
-        csv.enabled false
-        html.enabled false
+        xml.required = true
+        csv.required = false
+        html.required = false
     }
 }
 

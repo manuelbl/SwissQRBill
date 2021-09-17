@@ -2,12 +2,6 @@ name: Continuous Integration
 
 on: [push, pull_request]
 
-env:
-  Configuration: Release
-  ContinuousIntegrationBuild: true
-  DOTNET_CLI_TELEMETRY_OPTOUT: true
-  DOTNET_NOLOGO: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,12 +16,12 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1.0.4
       - name: Build with Gradle
-        env:
-          SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
         working-directory: ./generator
-        run: ./gradlew jar javadoc -PossrhUsername=nobody -PossrhPassword=removed
+        run: ./gradlew build
       - name: SonarQube
         env:
           SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ./generator
-        run: ./gradlew sonarqube -PossrhUsername=nobody -PossrhPassword=removed -Dsonar.organization=manuelbl-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_LOGIN
+        if: ${{ github.ref == 'refs/heads/v3' }}
+        run: ./gradlew sonarqube -Dsonar.login=$SONAR_LOGIN
