@@ -113,7 +113,7 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
         return fontFamilyList;
     }
 
-    private static final Pattern QUOTED_SPLITTER = Pattern.compile("(?:^|,)(\"(?:[^\"]+)*\"|[^,]*)");
+    private static final Pattern QUOTED_SPLITTER = Pattern.compile("(?:^|,)(\"[^\"]+\"|[^,]*)");
 
     /**
      * Splits a comma separated list into its elements.
