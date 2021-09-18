@@ -15,7 +15,6 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Compares two images pixel by pixel
@@ -63,6 +62,8 @@ class ImageComparison {
                 diff += (long) d * d;
             }
         }
+
+        diff = (long) Math.sqrt(diff);
 
         assertTrue(diff <= maxDiff, "Pixel value difference " + diff);
     }

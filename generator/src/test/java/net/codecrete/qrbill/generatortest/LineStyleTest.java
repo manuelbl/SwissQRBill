@@ -66,7 +66,7 @@ class LineStyleTest {
         bill.getFormat().setGraphicsFormat(graphicsFormat);
         byte[] imageData = QRBill.generate(bill);
         if (graphicsFormat == GraphicsFormat.PNG)
-            FileComparison.assertGrayscaleImageContentsEqual(imageData, expectedFileName, 200000);
+            FileComparison.assertGrayscaleImageContentsEqual(imageData, expectedFileName, 35000);
         else
             FileComparison.assertFileContentsEqual(imageData, expectedFileName);
     }

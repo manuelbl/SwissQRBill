@@ -31,21 +31,21 @@ class PNGCanvasTest {
     @Test
     void pngBillQRBill() throws IOException {
         Bill bill = SampleData.getExample1();
-        PNGCanvas canvas = new PNGCanvas(QRBill.QR_BILL_WIDTH, QRBill.QR_BILL_HEIGHT, 300, "Arial");
+        PNGCanvas canvas = new PNGCanvas(QRBill.QR_BILL_WIDTH, QRBill.QR_BILL_HEIGHT, 300, "\"Liberation Sans\",Arial, Helvetica");
         bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
         QRBill.draw(bill, canvas);
         byte[] png = canvas.toByteArray();
-        FileComparison.assertGrayscaleImageContentsEqual(png, "qrbill_ex1.png", 200000);
+        FileComparison.assertGrayscaleImageContentsEqual(png, "qrbill_ex1.png", 35000);
     }
 
     @Test
     void pngBillA4() throws IOException {
         Bill bill = SampleData.getExample3();
-        PNGCanvas canvas = new PNGCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT, 144, "Arial,Helvetica");
+        PNGCanvas canvas = new PNGCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT, 144, "Arial,\"Liberation Sans\",Helvetica");
         bill.getFormat().setOutputSize(OutputSize.A4_PORTRAIT_SHEET);
         QRBill.draw(bill, canvas);
         byte[] png = canvas.toByteArray();
-        FileComparison.assertGrayscaleImageContentsEqual(png, "a4bill_ex3.png", 200000);
+        FileComparison.assertGrayscaleImageContentsEqual(png, "a4bill_ex3.png", 35000);
     }
 
     @Test
@@ -53,7 +53,7 @@ class PNGCanvasTest {
         Bill bill = SampleData.getExample5();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try (PNGCanvas canvas =
-                     new PNGCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT, 144, "Helvetica, Arial, Sans")) {
+                     new PNGCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT, 144, "Helvetica, Arial, \"Liberation Sans\"")) {
             QRBill.draw(bill, canvas);
             canvas.writeTo(os);
         }
@@ -68,7 +68,7 @@ class PNGCanvasTest {
         Bill bill = SampleData.getExample6();
         Path path = Paths.get("test-qrbill.png");
         try (PNGCanvas canvas =
-                     new PNGCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT, 144, "Helvetica, Arial, Sans")) {
+                     new PNGCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT, 144, "Helvetica, Arial, \"Liberation Sans\"")) {
             QRBill.draw(bill, canvas);
             canvas.saveAs(path);
         }
