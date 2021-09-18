@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Unit tests for generating QR bills as PNG
+ * Unit tests for generating QR bills as PDF
  */
 @DisplayName("PDF canvas test")
 class PdfCanvasTest {

@@ -65,6 +65,9 @@ class LineStyleTest {
         bill.getFormat().setSeparatorType(separatorType);
         bill.getFormat().setGraphicsFormat(graphicsFormat);
         byte[] imageData = QRBill.generate(bill);
-        FileComparison.assertFileContentsEqual(imageData, expectedFileName);
+        if (graphicsFormat == GraphicsFormat.PNG)
+            FileComparison.assertGrayscaleImageContentsEqual(imageData, expectedFileName, 200000);
+        else
+            FileComparison.assertFileContentsEqual(imageData, expectedFileName);
     }
 }

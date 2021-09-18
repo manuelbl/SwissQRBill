@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 class ImageComparison {
 
-    static void assertGrayscaleImageContentEquals(byte[] expectedContent, byte[] actualContent) {
+    static void assertGrayscaleImageContentEquals(byte[] expectedContent, byte[] actualContent, int maxDiff) {
         // quick check based on file content
         if (Arrays.equals(expectedContent, actualContent))
             return;
@@ -60,14 +60,10 @@ class ImageComparison {
         for (int i = 0; i < length; i++) {
             if (expectedPixels[i] != actualPixels[i]) {
                 int d = Math.abs(expectedPixels[i] - actualPixels[i]);
-                if (d >= 70)
-                    assertTrue(d < 70, String.format("singe pixel difference at %d,%d",
-                            i % actualImage.getWidth(), i / actualImage.getWidth()));
-                diff += d;
+                diff += (long) d * d;
             }
         }
 
-        if (diff > 200000)
-            fail(String.format("Pixel value difference too big: %d", diff));
+        assertTrue(diff <= maxDiff, "Pixel value difference " + diff);
     }
 }

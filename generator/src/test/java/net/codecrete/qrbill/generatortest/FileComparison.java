@@ -63,11 +63,11 @@ class FileComparison {
         deleteActualFile(expectedFileName);
     }
 
-    static void assertGrayscaleImageContentsEqual(byte[] actualContent, String expectedFileName) {
+    static void assertGrayscaleImageContentsEqual(byte[] actualContent, String expectedFileName, int maxDiff) {
 
         try {
             byte[] expectedContent = loadReferenceFile(expectedFileName, false);
-            ImageComparison.assertGrayscaleImageContentEquals(expectedContent, actualContent);
+            ImageComparison.assertGrayscaleImageContentEquals(expectedContent, actualContent, maxDiff);
 
         } catch (AssertionError e) {
             saveActualFile(actualContent, expectedFileName);

@@ -35,7 +35,7 @@ class PNGCanvasTest {
         bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
         QRBill.draw(bill, canvas);
         byte[] png = canvas.toByteArray();
-        FileComparison.assertGrayscaleImageContentsEqual(png, "qrbill_ex1.png");
+        FileComparison.assertGrayscaleImageContentsEqual(png, "qrbill_ex1.png", 200000);
     }
 
     @Test
@@ -45,7 +45,7 @@ class PNGCanvasTest {
         bill.getFormat().setOutputSize(OutputSize.A4_PORTRAIT_SHEET);
         QRBill.draw(bill, canvas);
         byte[] png = canvas.toByteArray();
-        FileComparison.assertGrayscaleImageContentsEqual(png, "a4bill_ex3.png");
+        FileComparison.assertGrayscaleImageContentsEqual(png, "a4bill_ex3.png", 200000);
     }
 
     @Test

@@ -95,8 +95,17 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
         setTransformation(0, 0, 0, 1, 1);
     }
 
+    /**
+     * Find the first family that's actually installed.
+     * <p>
+     * If none of the specified font families is installed, the input parameter is returned unchanged.
+     * </p>
+     *
+     * @param fontFamilyList list of font families, separated by commas
+     * @return the font family name of the first installed font
+     */
     private String findFontFamily(String fontFamilyList) {
-        for (String family : splitCommanSeparated(fontFamilyList)) {
+        for (String family : splitCommaSeparated(fontFamilyList)) {
             Font font = new Font(family, Font.PLAIN, 12);
             if (font.getFamily().toLowerCase(Locale.US).contains(family.toLowerCase(Locale.US)))
                 return family;
@@ -104,13 +113,22 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
         return fontFamilyList;
     }
 
-    private static final Pattern QUOTED_SPLITTER = Pattern.compile("(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)");
+    private static final Pattern QUOTED_SPLITTER = Pattern.compile("(?:^|,)(\"(?:[^\"]+)*\"|[^,]*)");
 
-    private static List<String> splitCommanSeparated(String input) {
+    /**
+     * Splits a comma separated list into its elements.
+     * <p>
+     * Elements can be quoted if they contain commas.
+     * </p>
+     *
+     * @param input comma separated string
+     * @return list of strings
+     */
+    private static List<String> splitCommaSeparated(String input) {
         List<String> result = new ArrayList<>();
         Matcher matcher = QUOTED_SPLITTER.matcher(input);
         while (matcher.find()) {
-            String match = matcher.group(1);
+            String match = matcher.group(1).trim();
             if (match.charAt(0) == '"' && match.charAt(match.length() - 1) == '"')
                 match = match.substring(1, match.length() - 1);
             result.add(match);
