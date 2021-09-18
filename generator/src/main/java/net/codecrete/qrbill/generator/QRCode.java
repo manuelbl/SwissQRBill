@@ -54,19 +54,19 @@ class QRCode {
         graphics.setTransformation(offsetX, offsetY, 0, SIZE / modules.length / 25.4 * 72, SIZE / modules.length / 25.4 * 72);
         graphics.startPath();
         drawModulesPath(graphics, modules);
-        graphics.fillPath(0);
+        graphics.fillPath(0, false);
         graphics.setTransformation(offsetX, offsetY, 0, 1, 1);
 
         // Swiss cross
         graphics.startPath();
         graphics.addRectangle(20, 20, 6, 6);
-        graphics.fillPath(0);
+        graphics.fillPath(0, false);
         final double BAR_WIDTH = 7 / 6.0;
         final double BAR_LENGTH = 35 / 9.0;
         graphics.startPath();
         graphics.addRectangle(23 - BAR_WIDTH / 2, 23 - BAR_LENGTH / 2, BAR_WIDTH, BAR_LENGTH);
         graphics.addRectangle(23 - BAR_LENGTH / 2, 23 - BAR_WIDTH / 2, BAR_LENGTH, BAR_WIDTH);
-        graphics.fillPath(0xffffff);
+        graphics.fillPath(0xffffff, false);
     }
 
     private void drawModulesPath(Canvas graphics, boolean[][] modules) throws IOException {

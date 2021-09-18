@@ -27,7 +27,6 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
     private Writer stream;
     private boolean isInGroup;
     private boolean isFirstMoveInPath;
-    private boolean isRectangularPath;
     private double lastPositionX;
     private double lastPositionY;
     private StringBuilder path;
@@ -86,7 +85,6 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
     public void startPath() throws IOException {
         path = new StringBuilder();
         isFirstMoveInPath = true;
-        isRectangularPath = true;
         approxPathLength = 0;
     }
 
@@ -119,7 +117,6 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
         path.append(formatCoordinate(x - lastPositionX));
         path.append(",");
         path.append(formatCoordinate(y - lastPositionY));
-        isRectangularPath = isRectangularPath && (lastPositionX == x || lastPositionY == y);
         lastPositionX = x;
         lastPositionY = y;
         approxPathLength += 16;
@@ -143,7 +140,6 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
         path.append(formatCoordinate(x - lastPositionX));
         path.append(",");
         path.append(formatCoordinate(y - lastPositionY));
-        isRectangularPath = false;
         lastPositionX = x;
         lastPositionY = y;
         approxPathLength += 48;
@@ -178,12 +174,10 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
     }
 
     @Override
-    public void fillPath(int color) throws IOException {
+    public void fillPath(int color, boolean smoothing) throws IOException {
         stream.write("<path fill=\"#");
         stream.write(formatColor(color));
-        // If the path consist of rectangular line segments only, the crispEdges
-        // attribute is added for better rendering on low resolution displays.
-        if (isRectangularPath)
+        if (!smoothing)
             stream.write("\" shape-rendering=\"crispEdges");
         stream.write("\"\nd=\"");
         stream.append(path);
@@ -193,7 +187,7 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
     }
 
     @Override
-    public void strokePath(double strokeWidth, int color, LineStyle lineStyle) throws IOException {
+    public void strokePath(double strokeWidth, int color, LineStyle lineStyle, boolean smoothing) throws IOException {
         stream.write("<path stroke=\"#");
         stream.write(formatColor(color));
         if (strokeWidth != 1) {
@@ -207,6 +201,8 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
             stream.write("\" stroke-linecap=\"round\" stroke-dasharray=\"0 ");
             stream.write(formatNumber(strokeWidth * 3));
         }
+        if (!smoothing)
+            stream.write("\" shape-rendering=\"crispEdges");
         stream.write("\" fill=\"none\"\nd=\"");
         stream.append(path);
         stream.write("\"/>\n");

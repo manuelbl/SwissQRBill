@@ -252,7 +252,7 @@ d="M63.543,-70.709h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z"/>
 <text x="0" y="-100.082" font-size="6" font-weight="bold">Currency</text>
 <text x="0" y="-89.082" font-size="8">EUR</text>
 <text x="42.52" y="-100.082" font-size="6" font-weight="bold">Amount</text>
-<path stroke="#000000" stroke-width="0.75" fill="none"
+<path stroke="#000000" stroke-width="0.75" shape-rendering="crispEdges" fill="none"
 d="M31.556,-61.466l0,8.129l8.129,0m96.378,0l8.129,0l0,-8.129m0,-25.512l0,-8.129l-8.129,0m-96.378,0l-8.129,0l0,8.129"/>
 </g>
 <g transform="translate(334.488 -0)">
@@ -271,7 +271,7 @@ d="M31.556,-61.466l0,8.129l8.129,0m96.378,0l8.129,0l0,-8.129m0,-25.512l0,-8.129l
 <text x="0" y="-152.665" font-size="8">//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106</text>
 <text x="0" y="-143.665" font-size="8">017086/40/1020/41/3010</text>
 <text x="0" y="-125.665" font-size="6" font-weight="bold">Payable by (name/address)</text>
-<path stroke="#000000" stroke-width="0.75" fill="none"
+<path stroke="#000000" stroke-width="0.75" shape-rendering="crispEdges" fill="none"
 d="M0.375,-58.702l0,8.129l8.129,0m167.244,0l8.129,0l0,-8.129m0,-53.858l0,-8.129l-8.129,0m-167.244,0l-8.129,0l0,8.129"/>
 </g>
 <g transform="translate(28.346 -0)">
@@ -287,16 +287,16 @@ d="M0.375,-58.702l0,8.129l8.129,0m167.244,0l8.129,0l0,-8.129m0,-53.858l0,-8.129l
 <text x="0" y="-185.806" font-size="6" font-weight="bold">Reference</text>
 <text x="0" y="-176.806" font-size="8">21 00000 00003 13947 14300 09017</text>
 <text x="0" y="-166.791" font-size="6" font-weight="bold">Payable by (name/address)</text>
-<path stroke="#000000" stroke-width="0.75" fill="none"
+<path stroke="#000000" stroke-width="0.75" shape-rendering="crispEdges" fill="none"
 d="M0.375,-114.002l0,8.129l8.129,0m116.22,0l8.129,0l0,-8.129m0,-39.685l0,-8.129l-8.129,0m-116.22,0l-8.129,0l0,8.129"/>
 <text x="0" y="-100.082" font-size="6" font-weight="bold">Currency</text>
 <text x="0" y="-89.082" font-size="8">EUR</text>
 <text x="34.016" y="-100.082" font-size="6" font-weight="bold">Amount</text>
-<path stroke="#000000" stroke-width="0.75" fill="none"
+<path stroke="#000000" stroke-width="0.75" shape-rendering="crispEdges" fill="none"
 d="M62.737,-85.039l0,8.129l8.129,0m53.858,0l8.129,0l0,-8.129m0,-11.339l0,-8.129l-8.129,0m-53.858,0l-8.129,0l0,8.129"/>
 <text x="83.218" y="-60.397" font-size="6" font-weight="bold">Acceptance point</text>
 </g>
-<path stroke="#000000" stroke-width="0.6" stroke-dasharray="2.4" fill="none"
+<path stroke="#000000" stroke-width="0.6" stroke-dasharray="2.4" shape-rendering="crispEdges" fill="none"
 d="M175.748,-0l0,-274.961m0,-8.504l0,-14.173m-175.748,0l14.173,0m8.504,0l572.598,0"/>
 <g transform="translate(172.687 -274.535) scale(0.006)">
 <path fill="#000000"

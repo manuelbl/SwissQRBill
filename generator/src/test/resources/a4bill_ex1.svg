@@ -274,7 +274,7 @@ d="M63.543,-70.709h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z"/>
 <text x="34.016" y="-89.082" font-size="8">123 949.75</text>
 <text x="97.392" y="-60.397" font-size="6" font-weight="bold">Acceptance point</text>
 </g>
-<path stroke="#000000" stroke-width="0.6" stroke-dasharray="2.4" fill="none"
+<path stroke="#000000" stroke-width="0.6" stroke-dasharray="2.4" shape-rendering="crispEdges" fill="none"
 d="M175.748,-0l0,-274.961m0,-8.504l0,-14.173m-175.748,0l14.173,0m8.504,0l572.598,0"/>
 <g transform="translate(172.687 -274.535) scale(0.006)">
 <path fill="#000000"

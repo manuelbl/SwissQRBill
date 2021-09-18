@@ -427,7 +427,7 @@ class BillLayout {
             }
             graphics.lineTo(SLIP_WIDTH, SLIP_HEIGHT);
         }
-        graphics.strokePath(lineWidth, 0, lineStyle);
+        graphics.strokePath(lineWidth, 0, lineStyle, false);
 
         // draw scissors
         if (hasScissors) {
@@ -471,7 +471,7 @@ class BillLayout {
         graphics.cubicCurveTo(276.714, 349.0, 255.0, 370.714, 255.0, 397.5);
         graphics.cubicCurveTo(255.0, 424.286, 276.714, 446.0, 303.5, 446.0);
         graphics.closeSubpath();
-        graphics.fillPath(0);
+        graphics.fillPath(0, true);
     }
 
     // Draws a label at (0, yPos) and advances vertically.
@@ -581,7 +581,7 @@ class BillLayout {
         graphics.lineTo(x + lwh, y + height - lwh);
         graphics.lineTo(x + lwh, y + height - s);
 
-        graphics.strokePath(CORNER_STROKE_WIDTH, 0, Canvas.LineStyle.Solid);
+        graphics.strokePath(CORNER_STROKE_WIDTH, 0, Canvas.LineStyle.Solid, false);
     }
 
     private static final DecimalFormat amountDisplayFormat;

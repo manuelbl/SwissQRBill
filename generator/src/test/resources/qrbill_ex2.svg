@@ -119,7 +119,7 @@ d="M63.543,-70.709h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z"/>
 <text x="0" y="-98.482" font-size="8" font-weight="bold">Währung</text>
 <text x="0" y="-85.482" font-size="10">CHF</text>
 <text x="42.52" y="-98.482" font-size="8" font-weight="bold">Betrag</text>
-<path stroke="#000000" stroke-width="0.75" fill="none"
+<path stroke="#000000" stroke-width="0.75" shape-rendering="crispEdges" fill="none"
 d="M31.556,-59.466l0,8.129l8.129,0m96.378,0l8.129,0l0,-8.129m0,-25.512l0,-8.129l-8.129,0m-96.378,0l-8.129,0l0,8.129"/>
 </g>
 <g transform="translate(334.488 -0)">
@@ -130,7 +130,7 @@ d="M31.556,-59.466l0,8.129l8.129,0m96.378,0l8.129,0l0,-8.129m0,-25.512l0,-8.129l
 <text x="0" y="-222.065" font-size="8" font-weight="bold">Zusätzliche Informationen</text>
 <text x="0" y="-211.065" font-size="10">Donation to the Winterfest Campaign</text>
 <text x="0" y="-189.065" font-size="8" font-weight="bold">Zahlbar durch (Name/Adresse)</text>
-<path stroke="#000000" stroke-width="0.75" fill="none"
+<path stroke="#000000" stroke-width="0.75" shape-rendering="crispEdges" fill="none"
 d="M0.375,-121.702l0,8.129l8.129,0m167.244,0l8.129,0l0,-8.129m0,-53.858l0,-8.129l-8.129,0m-167.244,0l-8.129,0l0,8.129"/>
 </g>
 <g transform="translate(14.173 -0)">
@@ -140,16 +140,16 @@ d="M0.375,-121.702l0,8.129l8.129,0m167.244,0l8.129,0l0,-8.129m0,-53.858l0,-8.129
 <text x="0" y="-240.822" font-size="8">Salvation Army Foundation Switzerland</text>
 <text x="0" y="-231.822" font-size="8">3000 Berne</text>
 <text x="0" y="-213.822" font-size="6" font-weight="bold">Zahlbar durch (Name/Adresse)</text>
-<path stroke="#000000" stroke-width="0.75" fill="none"
+<path stroke="#000000" stroke-width="0.75" shape-rendering="crispEdges" fill="none"
 d="M0.375,-161.033l0,8.129l8.129,0m130.394,0l8.129,0l0,-8.129m0,-39.685l0,-8.129l-8.129,0m-130.394,0l-8.129,0l0,8.129"/>
 <text x="0" y="-100.082" font-size="6" font-weight="bold">Währung</text>
 <text x="0" y="-89.082" font-size="8">CHF</text>
 <text x="34.016" y="-100.082" font-size="6" font-weight="bold">Betrag</text>
-<path stroke="#000000" stroke-width="0.75" fill="none"
+<path stroke="#000000" stroke-width="0.75" shape-rendering="crispEdges" fill="none"
 d="M62.737,-85.039l0,8.129l8.129,0m68.031,0l8.129,0l0,-8.129m0,-11.339l0,-8.129l-8.129,0m-68.031,0l-8.129,0l0,8.129"/>
 <text x="104.724" y="-60.397" font-size="6" font-weight="bold">Annahmestelle</text>
 </g>
-<path stroke="#000000" stroke-width="0.6" stroke-dasharray="2.4" fill="none"
+<path stroke="#000000" stroke-width="0.6" stroke-dasharray="2.4" shape-rendering="crispEdges" fill="none"
 d="M175.748,-0l0,-274.961m0,-8.504l0,-14.173"/>
 <g transform="translate(172.687 -274.535) scale(0.006)">
 <path fill="#000000"

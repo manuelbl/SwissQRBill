@@ -150,11 +150,11 @@ public interface Canvas extends Closeable {
     /**
      * Fills the current path and ends it
      *
-     * @param color the fill color (expressed similar to HTML, e.g. 0xffffff for
-     *              white)
+     * @param color the fill color (expressed similar to HTML, e.g. 0xffffff for white)
+     * @param smoothing {@code true} for using smoothing techniques such as antialiasing, {@code false} otherwise
      * @throws IOException thrown if the graphics cannot be generated
      */
-    void fillPath(int color) throws IOException;
+    void fillPath(int color, boolean smoothing) throws IOException;
 
     /**
      * Strokes the current path and ends it
@@ -163,9 +163,10 @@ public interface Canvas extends Closeable {
      * @param color       the stroke color (expressed similar to HTML, e.g. 0xffffff
      *                    for white)
      * @param lineStyle   the line style
+     * @param smoothing {@code true} for using smoothing techniques such as antialiasing, {@code false} otherwise
      * @throws IOException thrown if the graphics cannot be generated
      */
-    void strokePath(double strokeWidth, int color, LineStyle lineStyle) throws IOException;
+    void strokePath(double strokeWidth, int color, LineStyle lineStyle, boolean smoothing) throws IOException;
 
     /**
      * Distance between baseline and top of highest letter.

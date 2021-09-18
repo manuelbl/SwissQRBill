@@ -116,12 +116,12 @@ class QRBillErrorsTest {
         }
 
         @Override
-        public void fillPath(int color) throws IOException {
+        public void fillPath(int color, boolean smoothing) throws IOException {
             throw new IOException("not implemented");
         }
 
         @Override
-        public void strokePath(double strokeWidth, int color, LineStyle lineStyle) throws IOException {
+        public void strokePath(double strokeWidth, int color, LineStyle lineStyle, boolean smoothing) throws IOException {
             throw new IOException("not implemented");
         }
 

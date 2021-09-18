@@ -77,7 +77,7 @@ d="M63.543,-70.709h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z"/>
 <text x="0" y="-98.482" font-size="8" font-weight="bold">Valuta</text>
 <text x="0" y="-85.482" font-size="10">CHF</text>
 <text x="42.52" y="-98.482" font-size="8" font-weight="bold">Importo</text>
-<path stroke="#000000" stroke-width="0.75" fill="none"
+<path stroke="#000000" stroke-width="0.75" shape-rendering="crispEdges" fill="none"
 d="M31.556,-59.466l0,8.129l8.129,0m96.378,0l8.129,0l0,-8.129m0,-25.512l0,-8.129l-8.129,0m-96.378,0l-8.129,0l0,8.129"/>
 </g>
 <g transform="translate(334.488 -0)">
@@ -86,7 +86,7 @@ d="M31.556,-59.466l0,8.129l8.129,0m96.378,0l8.129,0l0,-8.129m0,-25.512l0,-8.129l
 <text x="0" y="-255.065" font-size="10">ABC AG</text>
 <text x="0" y="-244.065" font-size="10">3000 Bern</text>
 <text x="0" y="-222.065" font-size="8" font-weight="bold">Pagabile da (nome/indirizzo)</text>
-<path stroke="#000000" stroke-width="0.75" fill="none"
+<path stroke="#000000" stroke-width="0.75" shape-rendering="crispEdges" fill="none"
 d="M0.375,-154.702l0,8.129l8.129,0m167.244,0l8.129,0l0,-8.129m0,-53.858l0,-8.129l-8.129,0m-167.244,0l-8.129,0l0,8.129"/>
 </g>
 <g transform="translate(14.173 -0)">
@@ -96,16 +96,16 @@ d="M0.375,-154.702l0,8.129l8.129,0m167.244,0l8.129,0l0,-8.129m0,-53.858l0,-8.129
 <text x="0" y="-240.822" font-size="8">ABC AG</text>
 <text x="0" y="-231.822" font-size="8">3000 Bern</text>
 <text x="0" y="-213.822" font-size="6" font-weight="bold">Pagabile da (nome/indirizzo)</text>
-<path stroke="#000000" stroke-width="0.75" fill="none"
+<path stroke="#000000" stroke-width="0.75" shape-rendering="crispEdges" fill="none"
 d="M0.375,-161.033l0,8.129l8.129,0m130.394,0l8.129,0l0,-8.129m0,-39.685l0,-8.129l-8.129,0m-130.394,0l-8.129,0l0,8.129"/>
 <text x="0" y="-100.082" font-size="6" font-weight="bold">Valuta</text>
 <text x="0" y="-89.082" font-size="8">CHF</text>
 <text x="34.016" y="-100.082" font-size="6" font-weight="bold">Importo</text>
-<path stroke="#000000" stroke-width="0.75" fill="none"
+<path stroke="#000000" stroke-width="0.75" shape-rendering="crispEdges" fill="none"
 d="M62.737,-85.039l0,8.129l8.129,0m68.031,0l8.129,0l0,-8.129m0,-11.339l0,-8.129l-8.129,0m-68.031,0l-8.129,0l0,8.129"/>
 <text x="86.724" y="-60.397" font-size="6" font-weight="bold">Punto di accettazione</text>
 </g>
-<path stroke="#000000" stroke-width="0.5" fill="none"
+<path stroke="#000000" stroke-width="0.5" shape-rendering="crispEdges" fill="none"
 d="M175.748,-0l0,-297.638m-175.748,0l595.276,0"/>
 </g>
 </svg>

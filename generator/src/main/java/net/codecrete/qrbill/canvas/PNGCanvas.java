@@ -86,8 +86,9 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
         graphics.fillRect(0, 0, w, h);
 
         // enable high quality output
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
@@ -210,13 +211,21 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
     }
 
     @Override
-    public void fillPath(int color) {
+    public void fillPath(int color, boolean smoothing) {
+        if (!smoothing) {
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+            graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+        }
         graphics.setColor(new Color(color));
         graphics.fill(currentPath);
+        if (!smoothing) {
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        }
     }
 
     @Override
-    public void strokePath(double strokeWidth, int color, LineStyle lineStyle) {
+    public void strokePath(double strokeWidth, int color, LineStyle lineStyle, boolean smoothing) {
         graphics.setColor(new Color(color));
         BasicStroke stroke;
         switch (lineStyle) {
@@ -232,7 +241,17 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
                 stroke = new BasicStroke((float) (strokeWidth * fontScale), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
         }
         graphics.setStroke(stroke);
+        if (!smoothing) {
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+            graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+        }
+
         graphics.draw(currentPath);
+
+        if (!smoothing) {
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        }
     }
 
     @Override
