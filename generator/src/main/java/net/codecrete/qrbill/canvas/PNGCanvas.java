@@ -26,7 +26,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Canvas for generating PNG files.
@@ -66,7 +71,7 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
         coordinateScale = (float) (resolution / 25.4);
         fontScale = (float) (resolution / 72.0);
 
-        setupFontMetrics(fontFamilyList);
+        setupFontMetrics(findFontFamily(fontFamilyList));
 
         // create image
         int w = (int) (width * coordinateScale + 0.5);
@@ -88,6 +93,29 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
 
         // initialize transformation
         setTransformation(0, 0, 0, 1, 1);
+    }
+
+    private String findFontFamily(String fontFamilyList) {
+        for (String family : splitCommanSeparated(fontFamilyList)) {
+            Font font = new Font(family, Font.PLAIN, 12);
+            if (font.getFamily().toLowerCase(Locale.US).contains(family.toLowerCase(Locale.US)))
+                return family;
+        }
+        return fontFamilyList;
+    }
+
+    private static final Pattern QUOTED_SPLITTER = Pattern.compile("(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)");
+
+    private static List<String> splitCommanSeparated(String input) {
+        List<String> result = new ArrayList<>();
+        Matcher matcher = QUOTED_SPLITTER.matcher(input);
+        while (matcher.find()) {
+            String match = matcher.group(1);
+            if (match.charAt(0) == '"' && match.charAt(match.length() - 1) == '"')
+                match = match.substring(1, match.length() - 1);
+            result.add(match);
+        }
+        return result;
     }
 
     @Override
