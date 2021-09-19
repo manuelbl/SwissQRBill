@@ -1,2 +1,2 @@
 #!/bin/sh
-gradle clean execute
+./gradlew clean execute

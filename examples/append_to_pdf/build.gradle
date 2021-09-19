@@ -6,11 +6,10 @@ repositories {
 apply plugin: 'java'
 
 task execute(type: JavaExec) {
-    main = 'net.codecrete.qrbill.examples.AppendToPDF'
+    mainClass = 'net.codecrete.qrbill.examples.AppendToPDF'
     classpath = sourceSets.main.runtimeClasspath
 }
 
 dependencies {
-    compile group: 'net.codecrete.qrbill', name: 'qrbill-generator', version: '2.5.3+'
+    implementation 'net.codecrete.qrbill:qrbill-generator:3.+'
 }
-

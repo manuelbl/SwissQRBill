@@ -42,7 +42,7 @@ If you are using *Maven*, add the below dependency to your `pom.xml`:
     <dependency>
         <groupId>net.codecrete.qrbill</groupId>
         <artifactId>qrbill-generator</artifactId>
-        <version>[2.5.3,3.0)</version>
+        <version>[3.0.0-SNAPSHOT,4.0)</version>
     </dependency>
 
 If you are using *Gradle*, add the below dependency to your *build.gradle* file:
