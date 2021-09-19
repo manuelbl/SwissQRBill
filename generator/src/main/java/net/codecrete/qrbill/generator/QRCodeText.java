@@ -138,14 +138,14 @@ public class QRCodeText {
         if (lines.length < 31 || lines.length > 34) {
             // A line feed at the end is illegal (cf 4.2.3) but found in practice. Don't be too strict.
             if (!(lines.length == 35 && lines[34].isEmpty()))
-                throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_INVALID_DATA_STRUCTURE);
+                throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_DATA_STRUCTURE_INVALID);
         }
         if (!"SPC".equals(lines[0]))
-            throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_INVALID_DATA_STRUCTURE);
+            throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_DATA_STRUCTURE_INVALID);
         if (!VALID_VERSION.matcher(lines[1]).matches())
-            throwSingleValidationError(ValidationConstants.FIELD_VERSION, ValidationConstants.KEY_UNSUPPORTED_VERSION);
+            throwSingleValidationError(ValidationConstants.FIELD_VERSION, ValidationConstants.KEY_VERSION_UNSUPPORTED);
         if (!"1".equals(lines[2]))
-            throwSingleValidationError(ValidationConstants.FIELD_CODING_TYPE, ValidationConstants.KEY_UNSUPPORTED_CODING_TYPE);
+            throwSingleValidationError(ValidationConstants.FIELD_CODING_TYPE, ValidationConstants.KEY_CODING_TYPE_UNSUPPORTED);
 
         Bill bill = new Bill();
         bill.setVersion(Bill.Version.V2_0);
@@ -160,7 +160,7 @@ public class QRCodeText {
             if (position.getIndex() == lines[18].length())
                 bill.setAmount(amount);
             else
-                throwSingleValidationError(ValidationConstants.FIELD_AMOUNT, ValidationConstants.KEY_INVALID_NUMBER);
+                throwSingleValidationError(ValidationConstants.FIELD_AMOUNT, ValidationConstants.KEY_NUMBER_INVALID);
         } else {
             bill.setAmount(null);
         }
@@ -175,7 +175,7 @@ public class QRCodeText {
         bill.setReferenceType(lines[27]);
         bill.setUnstructuredMessage(lines[29]);
         if (!"EPD".equals(lines[30]))
-            throwSingleValidationError(ValidationConstants.FIELD_TRAILER, ValidationConstants.KEY_INVALID_DATA_STRUCTURE);
+            throwSingleValidationError(ValidationConstants.FIELD_TRAILER, ValidationConstants.KEY_DATA_STRUCTURE_INVALID);
 
         bill.setBillInformation(lines.length > 31 ? lines[31] : "");
 

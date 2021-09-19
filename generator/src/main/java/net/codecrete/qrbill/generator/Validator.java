@@ -66,7 +66,7 @@ class Validator {
         if (validateMandatory(currency, ValidationConstants.FIELD_CURRENCY)) {
             currency = currency.toUpperCase(Locale.US);
             if (!"CHF".equals(currency) && !"EUR".equals(currency)) {
-                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_CURRENCY, ValidationConstants.KEY_CURRENCY_IS_NOT_CHF_OR_EUR);
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_CURRENCY, ValidationConstants.KEY_CURRENCY_NOT_CHF_OR_EUR);
             } else {
                 billOut.setCurrency(currency);
             }
@@ -82,7 +82,7 @@ class Validator {
         } else {
             amount = amount.setScale(2, RoundingMode.HALF_UP); // round to multiple of 0.01
             if (BigDecimal.ZERO.compareTo(amount) > 0 || AMOUNT_MAX.compareTo(amount) < 0) {
-                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_AMOUNT, ValidationConstants.KEY_AMOUNT_IS_OUTSIDE_VALID_RANGE);
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_AMOUNT, ValidationConstants.KEY_AMOUNT_OUTSIDE_VALID_RANGE);
             } else {
                 billOut.setAmount(amount);
             }
@@ -95,9 +95,9 @@ class Validator {
             account = Strings.whiteSpaceRemoved(account).toUpperCase(Locale.US);
             if (validateIBAN(account)) {
                 if (!account.startsWith("CH") && !account.startsWith("LI")) {
-                    validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_ACCOUNT, ValidationConstants.KEY_ACCOUNT_IS_NOT_CH_LI_IBAN);
+                    validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_ACCOUNT, ValidationConstants.KEY_ACCOUNT_IBAN_NOT_FROM_CH_OR_LI);
                 } else if (account.length() != 21) {
-                    validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_ACCOUNT, ValidationConstants.KEY_ACCOUNT_HAS_INVALID_IBAN);
+                    validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_ACCOUNT, ValidationConstants.KEY_ACCOUNT_IBAN_INVALID);
                 } else {
                     billOut.setAccount(account);
                 }
@@ -129,13 +129,13 @@ class Validator {
 
         if (isQRBillIBAN) {
             if (Bill.REFERENCE_TYPE_NO_REF.equals(billOut.getReferenceType()) && !hasReferenceError) {
-                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_QR_REF_IS_MISSING);
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_QR_REF_MISSING);
             } else if (Bill.REFERENCE_TYPE_CRED_REF.equals(billOut.getReferenceType())) {
-                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_CRED_REF_USED_FOR_QR_IBAN);
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_CRED_REF_INVALID_USE_FOR_QR_IBAN);
             }
 
         } else if (isValidAccount && Bill.REFERENCE_TYPE_QR_REF.equals(billOut.getReferenceType())) {
-            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_QR_REF_USED_FOR_NON_QR_IBAN);
+            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_QR_REF_INVALID_USE_FOR_NON_QR_IBAN);
         }
     }
 
@@ -143,21 +143,21 @@ class Validator {
         if (cleanedReference.length() < 27)
             cleanedReference = "00000000000000000000000000".substring(0, 27 - cleanedReference.length()) + cleanedReference;
         if (!Payments.isValidQRReference(cleanedReference)) {
-            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_REF_IS_INVALID);
+            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_REF_INVALID);
         } else {
             billOut.setReference(cleanedReference);
             if (!Bill.REFERENCE_TYPE_QR_REF.equals(billIn.getReferenceType()))
-                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE_TYPE, ValidationConstants.KEY_INVALID_REF_TYPE);
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE_TYPE, ValidationConstants.KEY_REF_TYPE_INVALID);
         }
     }
 
     private void validateISOReference(String cleanedReference) {
         if (!Payments.isValidISO11649Reference(cleanedReference)) {
-            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_REF_IS_INVALID);
+            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_REF_INVALID);
         } else {
             billOut.setReference(cleanedReference);
             if (!Bill.REFERENCE_TYPE_CRED_REF.equals(billIn.getReferenceType()))
-                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE_TYPE, ValidationConstants.KEY_INVALID_REF_TYPE);
+                validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_REFERENCE_TYPE, ValidationConstants.KEY_REF_TYPE_INVALID);
         }
     }
 
@@ -254,7 +254,7 @@ class Validator {
         if (addressOut.getCountryCode() != null
                 && (addressOut.getCountryCode().length() != 2 || !Payments.isAlpha(addressOut.getCountryCode())))
             validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_COUNTRY_CODE,
-                    ValidationConstants.KEY_INVALID_COUNTRY_CODE);
+                    ValidationConstants.KEY_COUNTRY_CODE_INVALID);
 
         cleanAddressFields(addressOut, fieldRoot);
 
@@ -263,14 +263,14 @@ class Validator {
 
     private void validateEmptyAddress(String fieldRoot, boolean mandatory) {
         if (mandatory) {
-            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_NAME, ValidationConstants.KEY_FIELD_IS_MISSING);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_NAME, ValidationConstants.KEY_FIELD_VALUE_MISSING);
             validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_POSTAL_CODE,
-                    ValidationConstants.KEY_FIELD_IS_MISSING);
+                    ValidationConstants.KEY_FIELD_VALUE_MISSING);
             validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_ADDRESS_LINE_2,
-                    ValidationConstants.KEY_FIELD_IS_MISSING);
-            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_TOWN, ValidationConstants.KEY_FIELD_IS_MISSING);
+                    ValidationConstants.KEY_FIELD_VALUE_MISSING);
+            validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_TOWN, ValidationConstants.KEY_FIELD_VALUE_MISSING);
             validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_COUNTRY_CODE,
-                    ValidationConstants.KEY_FIELD_IS_MISSING);
+                    ValidationConstants.KEY_FIELD_VALUE_MISSING);
         }
     }
 
@@ -319,7 +319,7 @@ class Validator {
 
     private boolean validateIBAN(String iban) {
         if (!Payments.isValidIBAN(iban)) {
-            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_ACCOUNT, ValidationConstants.KEY_ACCOUNT_HAS_INVALID_IBAN);
+            validationResult.addMessage(Type.ERROR, ValidationConstants.FIELD_ACCOUNT, ValidationConstants.KEY_ACCOUNT_IBAN_INVALID);
             return false;
         }
         return true;
@@ -359,7 +359,7 @@ class Validator {
 
     private boolean validateMandatory(String value, String field) {
         if (Strings.isNullOrEmpty(value)) {
-            validationResult.addMessage(Type.ERROR, field, ValidationConstants.KEY_FIELD_IS_MISSING);
+            validationResult.addMessage(Type.ERROR, field, ValidationConstants.KEY_FIELD_VALUE_MISSING);
             return false;
         }
 
@@ -368,12 +368,12 @@ class Validator {
 
     private void validateMandatory(String value, String fieldRoot, String subfield) {
         if (Strings.isNullOrEmpty(value))
-            validationResult.addMessage(Type.ERROR, fieldRoot + subfield, ValidationConstants.KEY_FIELD_IS_MISSING);
+            validationResult.addMessage(Type.ERROR, fieldRoot + subfield, ValidationConstants.KEY_FIELD_VALUE_MISSING);
     }
 
     private boolean validateLength(String value, int maxLength, String field) {
         if (value != null && value.length() > maxLength) {
-            validationResult.addMessage(Type.ERROR, field, ValidationConstants.KEY_FIELD_TOO_LONG,
+            validationResult.addMessage(Type.ERROR, field, ValidationConstants.KEY_FIELD_VALUE_TOO_LONG,
                     new String[] { Integer.toString(maxLength) });
             return false;
         } else {
@@ -383,7 +383,7 @@ class Validator {
 
     private String clippedValue(String value, int maxLength, String field) {
         if (value != null && value.length() > maxLength) {
-            validationResult.addMessage(Type.WARNING, field, ValidationConstants.KEY_FIELD_CLIPPED,
+            validationResult.addMessage(Type.WARNING, field, ValidationConstants.KEY_FIELD_VALUE_CLIPPED,
                     new String[] { Integer.toString(maxLength) });
             return value.substring(0, maxLength);
         }
@@ -393,7 +393,7 @@ class Validator {
 
     private String clippedValue(String value, int maxLength, String fieldRoot, String subfield) {
         if (value != null && value.length() > maxLength) {
-            validationResult.addMessage(Type.WARNING, fieldRoot + subfield, ValidationConstants.KEY_FIELD_CLIPPED,
+            validationResult.addMessage(Type.WARNING, fieldRoot + subfield, ValidationConstants.KEY_FIELD_VALUE_CLIPPED,
                     new String[] { Integer.toString(maxLength) });
             return value.substring(0, maxLength);
         }

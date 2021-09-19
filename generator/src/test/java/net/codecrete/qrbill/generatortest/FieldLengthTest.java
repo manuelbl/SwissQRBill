@@ -39,7 +39,7 @@ class FieldLengthTest extends BillDataValidationBase {
         address.setName("Name5678901234567890123456789012345678901234567890123456789012345678901");
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_NAME, "field_clipped");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_NAME, ValidationConstants.KEY_FIELD_VALUE_CLIPPED);
         assertEquals("Name567890123456789012345678901234567890123456789012345678901234567890",
                 validatedBill.getCreditor().getName());
     }
@@ -63,7 +63,7 @@ class FieldLengthTest extends BillDataValidationBase {
         address.setStreet("Street78901234567890123456789012345678901234567890123456789012345678901");
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_STREET, "field_clipped");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_STREET, ValidationConstants.KEY_FIELD_VALUE_CLIPPED);
         assertEquals("Street7890123456789012345678901234567890123456789012345678901234567890",
                 validatedBill.getCreditor().getStreet());
     }
@@ -86,7 +86,7 @@ class FieldLengthTest extends BillDataValidationBase {
         address.setHouseNo("HouseNo8901234567");
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_HOUSE_NO, "field_clipped");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_HOUSE_NO, ValidationConstants.KEY_FIELD_VALUE_CLIPPED);
         assertEquals("HouseNo890123456", validatedBill.getCreditor().getHouseNo());
     }
 
@@ -108,7 +108,7 @@ class FieldLengthTest extends BillDataValidationBase {
         address.setPostalCode("Postal78901234567");
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_POSTAL_CODE, "field_clipped");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_POSTAL_CODE, ValidationConstants.KEY_FIELD_VALUE_CLIPPED);
         assertEquals("Postal7890123456", validatedBill.getCreditor().getPostalCode());
     }
 
@@ -130,7 +130,7 @@ class FieldLengthTest extends BillDataValidationBase {
         address.setTown("City56789012345678901234567890123456");
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_TOWN, "field_clipped");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_TOWN, ValidationConstants.KEY_FIELD_VALUE_CLIPPED);
         assertEquals("City5678901234567890123456789012345", validatedBill.getCreditor().getTown());
     }
 

@@ -12,47 +12,47 @@ package net.codecrete.qrbill.generator;
  */
 public class ValidationConstants {
     /**
-     * Validation message key: currency should be "CHF" or "EUR"
+     * Validation message key: currency must be "CHF" or "EUR"
      */
-    public static final String KEY_CURRENCY_IS_NOT_CHF_OR_EUR = "currency_is_not_chf_or_eur";
+    public static final String KEY_CURRENCY_NOT_CHF_OR_EUR = "currency_not_chf_or_eur";
     /**
-     * Validation message key: amount should be between 0.01 and 999999999.99
+     * Validation message key: amount must be between 0.01 and 999999999.99
      */
-    public static final String KEY_AMOUNT_IS_OUTSIDE_VALID_RANGE = "amount_is_outside_valid_range";
+    public static final String KEY_AMOUNT_OUTSIDE_VALID_RANGE = "amount_outside_valid_range";
     /**
      * Validation message key: account number should start with "CH" or "LI"
      */
-    public static final String KEY_ACCOUNT_IS_NOT_CH_LI_IBAN = "account_is_not_ch_li_iban";
+    public static final String KEY_ACCOUNT_IBAN_NOT_FROM_CH_OR_LI = "account_iban_not_from_ch_or_li";
     /**
-     * Validation message key: IBAN has invalid format and check digit
+     * Validation message key: IBAN is not valid (incorrect format or check digit)
      */
-    public static final String KEY_ACCOUNT_HAS_INVALID_IBAN = "account_has_invalid_iban";
+    public static final String KEY_ACCOUNT_IBAN_INVALID = "account_iban_invalid";
     /**
      * Validation message key: The reference is invalid. It is neither a valid QR reference nor a valid ISO 11649
      * reference.
      */
-    public static final String KEY_REF_IS_INVALID = "ref_is_invalid";
+    public static final String KEY_REF_INVALID = "ref_invalid";
     /**
      * Validation message key: QR reference is missing; it is mandatory for payments to a QR-IBAN account.
      */
-    public static final String KEY_QR_REF_IS_MISSING = "qr_ref_is_missing";
+    public static final String KEY_QR_REF_MISSING = "qr_ref_missing";
     /**
      * Validation message key: For payments to a QR-IBAN account, a QR reference is required. An ISO 11649 reference
      * may not be used.
      */
-    public static final String KEY_CRED_REF_USED_FOR_QR_IBAN = "cred_ref_used_for_qr_iban";
+    public static final String KEY_CRED_REF_INVALID_USE_FOR_QR_IBAN = "cred_ref_invalid_use_for_qr_iban";
     /**
      * Validation message key: A QR reference is only allowed for payments to a QR-IBAN account.
      */
-    public static final String KEY_QR_REF_USED_FOR_NON_QR_IBAN = "qr_ref_used_for_non_qr_iban";
+    public static final String KEY_QR_REF_INVALID_USE_FOR_NON_QR_IBAN = "qr_ref_invalid_use_for_non_qr_iban";
     /**
      * Validation message key: Reference type should be one of "QRR", "SCOR" and "NON" and match the reference.
      */
-    public static final String KEY_INVALID_REF_TYPE = "invalid_ref_type";
+    public static final String KEY_REF_TYPE_INVALID = "ref_type_invalid";
     /**
      * Validation message key: Field must not be empty
      */
-    public static final String KEY_FIELD_IS_MISSING = "field_is_missing";
+    public static final String KEY_FIELD_VALUE_MISSING = "field_value_missing";
     /**
      * Validation message key: Conflicting fields for both structured and combined elements address type have been used
      */
@@ -60,15 +60,15 @@ public class ValidationConstants {
     /**
      * Validation message key: Country code must consist of two letters
      */
-    public static final String KEY_INVALID_COUNTRY_CODE = "invalid_country_code";
+    public static final String KEY_COUNTRY_CODE_INVALID = "country_code_invalid";
     /**
      * Validation message key: Field has been clipped to not exceed the maximum length
      */
-    public static final String KEY_FIELD_CLIPPED = "field_clipped";
+    public static final String KEY_FIELD_VALUE_CLIPPED = "field_value_clipped";
     /**
      * Validation message key: Field value exceed the maximum length
      */
-    public static final String KEY_FIELD_TOO_LONG = "field_too_long";
+    public static final String KEY_FIELD_VALUE_TOO_LONG = "field_value_too_long";
     /**
      * Validation message key: Unstructured message and bill information combined exceed the maximum length
      */
@@ -81,19 +81,19 @@ public class ValidationConstants {
      * Validation message key: Invalid data structure; it must start with "SPC" and consists
      * of 32 to 34 lines of text (with exceptions)
      */
-    public static final String KEY_INVALID_DATA_STRUCTURE = "invalid_data_structure";
+    public static final String KEY_DATA_STRUCTURE_INVALID = "data_structure_invalid";
     /**
      * Validation message key: Version 02.00 is supported only
      */
-    public static final String KEY_UNSUPPORTED_VERSION = "unsupported_version";
+    public static final String KEY_VERSION_UNSUPPORTED = "version_unsupported";
     /**
      * Validation message key: Coding type 1 is supported only
      */
-    public static final String KEY_UNSUPPORTED_CODING_TYPE = "unsupported_coding_type";
+    public static final String KEY_CODING_TYPE_UNSUPPORTED = "coding_type_unsupported";
     /**
      * Validation message key: Valid number required (nnnnn.nn)
      */
-    public static final String KEY_INVALID_NUMBER = "invalid_number";
+    public static final String KEY_NUMBER_INVALID = "number_invalid";
     /**
      * Validation message key: The maximum of 2 alternative schemes has been exceeded
      */

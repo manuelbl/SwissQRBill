@@ -72,7 +72,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setReference("ABC");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "ref_is_invalid");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_REF_INVALID);
     }
 
     @Test
@@ -80,7 +80,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setReference("1234567890");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "ref_is_invalid");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_REF_INVALID);
     }
 
     @Test
@@ -88,7 +88,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setReference("123ABC7890");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "ref_is_invalid");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_REF_INVALID);
     }
 
     @Test
@@ -96,7 +96,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample3();
         bill.setReference("RF38302!!3393");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "ref_is_invalid");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_REF_INVALID);
     }
 
     @Test
@@ -104,7 +104,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample3();
         bill.setReference("RF00539007547034");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "ref_is_invalid");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_REF_INVALID);
     }
 
     @Test
@@ -113,7 +113,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill.setAccount("CH4431999123000889012"); // QR-IBAN
         bill.setReference(null);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "qr_ref_is_missing");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_QR_REF_MISSING);
     }
 
     @Test
@@ -121,7 +121,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setReference("   ");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "qr_ref_is_missing");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_QR_REF_MISSING);
     }
 
     @Test
@@ -130,7 +130,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill.setAccount("CH4431999123000889012"); // QR-IBAN
         bill.setReference("RF18539007547034");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "cred_ref_used_for_qr_iban");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_CRED_REF_INVALID_USE_FOR_QR_IBAN);
     }
 
     @Test
@@ -139,7 +139,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill.setAccount("CH3709000000304442225"); // non QR-IBAN
         bill.setReference("210000000003139471430009017");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, "qr_ref_used_for_non_qr_iban");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_QR_REF_INVALID_USE_FOR_NON_QR_IBAN);
     }
 
     @Test
@@ -147,7 +147,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample3();
         bill.setReferenceType("ABC");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE_TYPE, "invalid_ref_type");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE_TYPE, ValidationConstants.KEY_REF_TYPE_INVALID);
     }
 
     @Test
@@ -155,7 +155,7 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill = SampleData.getExample3();
         bill.setReferenceType("QRR");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE_TYPE, "invalid_ref_type");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE_TYPE, ValidationConstants.KEY_REF_TYPE_INVALID);
     }
 
     @Test
@@ -165,6 +165,6 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         bill.setReference("210000000003139471430009017");
         bill.setReferenceType("SCOR");
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE_TYPE, "invalid_ref_type");
+        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE_TYPE, ValidationConstants.KEY_REF_TYPE_INVALID);
     }
 }

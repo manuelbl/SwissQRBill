@@ -46,7 +46,7 @@ class BarelyAcceptableQrCodeTest {
         String qrText = QRBill.encodeQrCodeText(bill) + "\n.";
         QRBillValidationError err = assertThrows(QRBillValidationError.class,
                 () -> QRBill.decodeQrCodeText(qrText));
-        DecodedTextTest.assertSingleError(err.getValidationResult(), ValidationConstants.KEY_INVALID_DATA_STRUCTURE, ValidationConstants.FIELD_QR_TYPE);
+        DecodedTextTest.assertSingleError(err.getValidationResult(), ValidationConstants.KEY_DATA_STRUCTURE_INVALID, ValidationConstants.FIELD_QR_TYPE);
     }
 
     @Test
@@ -56,7 +56,7 @@ class BarelyAcceptableQrCodeTest {
         String qrText = QRBill.encodeQrCodeText(bill) + "\n\n";
         QRBillValidationError err = assertThrows(QRBillValidationError.class,
                 () -> QRBill.decodeQrCodeText(qrText));
-        DecodedTextTest.assertSingleError(err.getValidationResult(), ValidationConstants.KEY_INVALID_DATA_STRUCTURE, ValidationConstants.FIELD_QR_TYPE);
+        DecodedTextTest.assertSingleError(err.getValidationResult(), ValidationConstants.KEY_DATA_STRUCTURE_INVALID, ValidationConstants.FIELD_QR_TYPE);
     }
 
     @Test
@@ -82,6 +82,6 @@ class BarelyAcceptableQrCodeTest {
 
         QRBillValidationError err = assertThrows(QRBillValidationError.class,
                 () -> QRBill.decodeQrCodeText(qrText));
-        DecodedTextTest.assertSingleError(err.getValidationResult(), ValidationConstants.KEY_INVALID_DATA_STRUCTURE, ValidationConstants.FIELD_QR_TYPE);
+        DecodedTextTest.assertSingleError(err.getValidationResult(), ValidationConstants.KEY_DATA_STRUCTURE_INVALID, ValidationConstants.FIELD_QR_TYPE);
     }
 }

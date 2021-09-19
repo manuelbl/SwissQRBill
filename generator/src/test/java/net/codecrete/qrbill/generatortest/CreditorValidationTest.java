@@ -75,7 +75,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setName("  ");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_NAME, "field_is_missing");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_NAME, ValidationConstants.KEY_FIELD_VALUE_MISSING);
     }
 
     @Test
@@ -105,7 +105,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setPostalCode("");
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_POSTAL_CODE, "field_is_missing");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_POSTAL_CODE, ValidationConstants.KEY_FIELD_VALUE_MISSING);
     }
 
     @Test
@@ -115,16 +115,16 @@ class CreditorValidationTest extends BillDataValidationBase {
         address.setTown(null);
         bill.setCreditor(address);
         validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_TOWN, "field_is_missing");
+        assertSingleErrorMessage(ValidationConstants.FIELD_CREDITOR_TOWN, ValidationConstants.KEY_FIELD_VALUE_MISSING);
     }
 
     @ParameterizedTest
     @CsvSource({
-            "  ,field_is_missing",
-            "Schweiz,invalid_country_code",
-            "R!,invalid_country_code",
-            "00,invalid_country_code",
-            "aà,invalid_country_code"
+            "  ,field_value_missing",
+            "Schweiz,country_code_invalid",
+            "R!,country_code_invalid",
+            "00,country_code_invalid",
+            "aà,country_code_invalid"
     })
     void creditorWithInvalidCountryCode(String countryCode, String messageKey) {
         bill = SampleData.getExample1();
@@ -146,7 +146,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         assertEquals(5, result.getValidationMessages().size());
         for (ValidationMessage msg : result.getValidationMessages()) {
             assertEquals(ValidationMessage.Type.ERROR, msg.getType());
-            assertEquals("address_type_conflict", msg.getMessageKey());
+            assertEquals(ValidationConstants.KEY_ADDRESS_TYPE_CONFLICT, msg.getMessageKey());
             assertTrue(msg.getField().startsWith(ValidationConstants.FIELDROOT_CREDITOR));
         }
     }
@@ -158,7 +158,7 @@ class CreditorValidationTest extends BillDataValidationBase {
         assertEquals(5, result.getValidationMessages().size());
         for (ValidationMessage msg : result.getValidationMessages()) {
             assertEquals(ValidationMessage.Type.ERROR, msg.getType());
-            assertEquals("field_is_missing", msg.getMessageKey());
+            assertEquals(ValidationConstants.KEY_FIELD_VALUE_MISSING, msg.getMessageKey());
             assertTrue(msg.getField().startsWith(ValidationConstants.FIELDROOT_CREDITOR));
         }
     }

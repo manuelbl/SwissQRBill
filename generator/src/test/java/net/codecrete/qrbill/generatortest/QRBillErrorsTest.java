@@ -44,7 +44,7 @@ class QRBillErrorsTest {
         bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
         bill.getFormat().setGraphicsFormat(GraphicsFormat.PDF);
         QRBillValidationError error = assertThrows(QRBillValidationError.class, () -> QRBill.generate(bill));
-        assertEquals("QR bill data is invalid: field \"creditor.name\" may not be empty (field_is_missing)", error.getMessage());
+        assertEquals("QR bill data is invalid: field \"creditor.name\" may not be empty (field_value_missing)", error.getMessage());
     }
 
     @Test
@@ -55,7 +55,7 @@ class QRBillErrorsTest {
         bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
         bill.getFormat().setGraphicsFormat(GraphicsFormat.PDF);
         QRBillValidationError error = assertThrows(QRBillValidationError.class, () -> QRBill.generate(bill));
-        assertEquals("QR bill data is invalid: the value for field \"billInformation\" should not exceed a length of 140 characters (field_too_long)", error.getMessage());
+        assertEquals("QR bill data is invalid: the value for field \"billInformation\" should not exceed a length of 140 characters (field_value_too_long)", error.getMessage());
     }
 
     @Test
@@ -66,7 +66,7 @@ class QRBillErrorsTest {
         bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
         bill.getFormat().setGraphicsFormat(GraphicsFormat.PDF);
         QRBillValidationError error = assertThrows(QRBillValidationError.class, () -> QRBill.generate(bill));
-        assertEquals("QR bill data is invalid: currency should be \"CHF\" or \"EUR\" (currency_is_not_chf_or_eur); reference is invalid; it is neither a valid QR reference nor a valid ISO 11649 reference (ref_is_invalid)", error.getMessage());
+        assertEquals("QR bill data is invalid: currency should be \"CHF\" or \"EUR\" (currency_not_chf_or_eur); reference is invalid; it is neither a valid QR reference nor a valid ISO 11649 reference (ref_invalid)", error.getMessage());
     }
 
     static class FailingCanvas extends AbstractCanvas {
