@@ -82,7 +82,7 @@ class CharacterSetTest extends BillDataValidationBase {
         address.setName("abc\r\ndef");
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_NAME, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_NAME, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         assertEquals("abc def", validatedBill.getCreditor().getName());
     }
 
@@ -93,7 +93,7 @@ class CharacterSetTest extends BillDataValidationBase {
         address.setStreet("abc€def©ghi^");
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_STREET, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_STREET, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         assertEquals("abc.def.ghi.", validatedBill.getCreditor().getStreet());
     }
 
@@ -102,7 +102,7 @@ class CharacterSetTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setUnstructuredMessage("Thanks 🙏 Lisa");
         validate();
-        assertSingleWarningMessage(ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_UNSTRUCTURED_MESSAGE, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         assertEquals("Thanks . Lisa", validatedBill.getUnstructuredMessage());
     }
 
@@ -111,7 +111,7 @@ class CharacterSetTest extends BillDataValidationBase {
         bill = SampleData.getExample1();
         bill.setBillInformation("//AZ/400€/123");
         validate();
-        assertSingleWarningMessage(ValidationConstants.FIELD_BILL_INFORMATION, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_BILL_INFORMATION, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         assertEquals("//AZ/400./123", validatedBill.getBillInformation());
     }
 
@@ -122,7 +122,7 @@ class CharacterSetTest extends BillDataValidationBase {
         address.setPostalCode("\uD83D\uDC80"); // surrogate pair (1 code point but 2 UTF-16 words)
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_POSTAL_CODE, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_POSTAL_CODE, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         assertEquals(".", validatedBill.getCreditor().getPostalCode());
     }
 
@@ -133,7 +133,7 @@ class CharacterSetTest extends BillDataValidationBase {
         address.setTown("\uD83C\uDDE8\uD83C\uDDED"); // two surrogate pairs
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_TOWN, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_TOWN, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         assertEquals("..", validatedBill.getCreditor().getTown());
     }
 
@@ -144,7 +144,7 @@ class CharacterSetTest extends BillDataValidationBase {
         address.setTown("-- \uD83D\uDC68\uD83C\uDFFB --"); // two surrogate pairs
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_TOWN, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_TOWN, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         assertEquals("-- .. --", validatedBill.getCreditor().getTown());
     }
 
@@ -157,7 +157,7 @@ class CharacterSetTest extends BillDataValidationBase {
         address.setStreet("ABC" + invalidChar + "QRS");
         bill.setCreditor(address);
         validate();
-        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_STREET, "replaced_unsupported_characters");
+        assertSingleWarningMessage(ValidationConstants.FIELD_CREDITOR_STREET, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         assertEquals("ABC.QRS", validatedBill.getCreditor().getStreet());
     }
 }
