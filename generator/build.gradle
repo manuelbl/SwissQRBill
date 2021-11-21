@@ -132,6 +132,8 @@ jacocoTestReport {
 }
 
 project.tasks["sonarqube"].dependsOn "jacocoTestReport"
+project.tasks["publishMavenJavaPublicationToMavenLocal"].dependsOn "signArchives"
+project.tasks["publishMavenJavaPublicationToMavenRepository"].dependsOn "signArchives"
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
