@@ -15,7 +15,7 @@ import net.codecrete.qrbill.generator.QRBill
 import java.nio.file.Files
 import java.nio.file.Paths
 
-fun main(args : Array<String>) {
+fun main() {
 
     // Setup bill
     val bill = Bill()
