@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.5.31'
+    id 'org.jetbrains.kotlin.jvm' version "1.6.0"
 }
 
 group 'net.codecrete.qrbill.examples'
@@ -16,7 +16,7 @@ task execute(type: JavaExec) {
 }
 
 dependencies {
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "net.codecrete.qrbill:qrbill-generator:3.+"
 }
 

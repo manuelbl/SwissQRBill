@@ -140,9 +140,9 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    implementation 'io.nayuki:qrcodegen:[1.6.0,2.0)'
-    implementation 'org.apache.pdfbox:pdfbox:[2.0.0,3.0)'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.0'
+    implementation 'io.nayuki:qrcodegen:[1.6.0,1.999999]'
+    implementation 'org.apache.pdfbox:pdfbox:[2,2.999999]'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
