@@ -204,7 +204,6 @@ public class Bill implements Serializable {
      * Usually there is no need to set the reference type as it is
      * automatically set when a payment reference is set..
      * </p>
-     * <p>
      *
      * @param referenceType one of the constants {@code REFERENCE_TYPE_xx}
      *

@@ -8,6 +8,9 @@ package net.codecrete.qrbill.canvas;
 
 import java.io.IOException;
 
+/**
+ * Interface for returning a result as a byte array.
+ */
 public interface ByteArrayResult {
 
     /**

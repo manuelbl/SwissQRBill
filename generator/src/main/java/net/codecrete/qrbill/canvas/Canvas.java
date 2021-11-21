@@ -31,11 +31,17 @@ public interface Canvas extends Closeable {
      * Line style
      */
     enum LineStyle {
-        /// Solid line
+        /**
+         * Solid line
+         */
         Solid,
-        /// Dashed line (dashes are about 4 times the line width long and apart)
+        /** 
+         * Dashed line (dashes are about 4 times the line width long and apart)
+         */
         Dashed,
-        /// Dotted line (dots are spaced 3 times the line width apart)
+        /**
+         * Dotted line (dots are spaced 3 times the line width apart)
+         */
         Dotted
     }
 

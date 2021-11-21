@@ -28,6 +28,11 @@ public class FontMetrics {
     private final char charDefaultWidth;
     private final FontMetrics boldMetrics;
 
+    /**
+     * Creates a new instance for the first supported font in the specified list.
+     *
+     * @param fontFamilyList list of font families
+     */
     public FontMetrics(String fontFamilyList) {
         this.fontFamilyList = fontFamilyList;
         firstFontFamily = getFirstFontFamily(fontFamilyList);
