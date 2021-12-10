@@ -16,10 +16,20 @@ import java.io.IOException;
  */
 public abstract class AbstractCanvas implements Canvas {
 
+    /**
+     * Factor for converting mm to points (1/72in)
+     */
     protected static final double MM_TO_PT = 72 / 25.4;
 
     FontMetrics fontMetrics;
 
+    /**
+     * Initializes the font metrics information for the specified font.
+     * <p>
+     * The know font in the specified list of fonts is used.
+     * </p>
+     * @param fontFamilyList list of font families
+     */
     protected void setupFontMetrics(String fontFamilyList) {
         fontMetrics = new FontMetrics(fontFamilyList);
     }
