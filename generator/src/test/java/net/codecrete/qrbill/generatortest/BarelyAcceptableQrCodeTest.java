@@ -64,7 +64,6 @@ class BarelyAcceptableQrCodeTest {
         Bill bill = SampleData.getExample2();
         DecodedTextTest.normalizeSourceBill(bill);
         String qrText = QRBill.encodeQrCodeText(bill);
-        qrText = qrText.substring(0, qrText.length() - 1);
         assertTrue(qrText.endsWith("EPD"));
 
         Bill bill2 = QRBill.decodeQrCodeText(qrText);

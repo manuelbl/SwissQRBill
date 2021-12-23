@@ -47,7 +47,7 @@ class SampleQrCodeText {
             "NON\n" +
             "\n" +
             "Bill no. 3139 for gardening work and disposal of waste material\n" +
-            "EPD\n";
+            "EPD";
     //@formatter:on
 
     static String getQrCodeText1(boolean withCRLF) {
@@ -184,7 +184,7 @@ class SampleQrCodeText {
             "NON\n" +
             "\n" +
             "Donnation to the Winterfest campaign\n" +
-            "EPD\n";
+            "EPD";
     //@formatter:on
 
     static String getQrCodeText3() {
@@ -237,7 +237,7 @@ class SampleQrCodeText {
             "SCOR\n" +
             "RF18539007547034\n" +
             "\n" +
-            "EPD\n";
+            "EPD";
     //@formatter:on
 
     static String getQrCodeText4() {
@@ -299,7 +299,7 @@ class SampleQrCodeText {
             "SCOR\n" +
             "RF18539007547034\n" +
             "\n" +
-            "EPD\n";
+            "EPD";
     //@formatter:on
 
     static String getQrCodeText5() {

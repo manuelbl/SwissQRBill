@@ -66,10 +66,12 @@ public class QRCodeText {
         // AddInf
         appendDataField(bill.getUnstructuredMessage()); // Unstrd
         appendDataField("EPD"); // Trailer
-        appendDataField(bill.getBillInformation()); // StrdBkgInf
+        boolean hasAlternativeSchemes = bill.getAlternativeSchemes() != null && bill.getAlternativeSchemes().length > 0;
+        if (hasAlternativeSchemes || bill.getBillInformation() != null)
+            appendDataField(bill.getBillInformation()); // StrdBkgInf
 
         // AltPmtInf
-        if (bill.getAlternativeSchemes() != null && bill.getAlternativeSchemes().length > 0) {
+        if (hasAlternativeSchemes) {
             appendDataField(bill.getAlternativeSchemes()[0].getInstruction()); // AltPmt
             if (bill.getAlternativeSchemes().length > 1)
                 appendDataField(bill.getAlternativeSchemes()[1].getInstruction()); // AltPmt
