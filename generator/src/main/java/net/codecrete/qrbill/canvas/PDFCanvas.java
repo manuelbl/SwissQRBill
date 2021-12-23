@@ -225,7 +225,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
             lastNonStrokingColor = color;
             int r = (color >> 16) & 0xff;
             int g = (color >> 8) & 0xff;
-            int b = (color >> 8) & 0xff;
+            int b = (color >> 0) & 0xff;
             contentStream.setNonStrokingColor(r / 255f, g / 255f, b / 255f);
         }
         contentStream.fill();
@@ -237,7 +237,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
             lastStrokingColor = color;
             int r = (color >> 16) & 0xff;
             int g = (color >> 8) & 0xff;
-            int b = (color >> 8) & 0xff;
+            int b = (color >> 0) & 0xff;
             contentStream.setStrokingColor(r / 255f, g / 255f, b / 255f);
         }
         if (lineStyle != lastLineStyle || (lineStyle != LineStyle.Solid && strokeWidth != lastLineWidth)) {
