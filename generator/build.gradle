@@ -6,7 +6,7 @@ buildscript {
     
 plugins {
     id 'org.sonarqube' version '3.3'
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
     id 'signing'
     id 'jacoco'
@@ -21,6 +21,11 @@ version = '3.0.0-SNAPSHOT'
 archivesBaseName = 'qrbill-generator'
 
 sourceCompatibility = 1.8
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
 
 jar {
     manifest {
@@ -50,16 +55,6 @@ javadoc {
     options.addBooleanOption('html5', true)
 }
 
-task javadocJar(type: Jar) {
-    archiveClassifier = 'javadoc'
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
-}
-
 artifacts {
     archives javadocJar, sourcesJar
 }
@@ -69,8 +64,6 @@ publishing {
         mavenJava(MavenPublication) {
             artifactId = 'qrbill-generator'
             from components.java
-            artifact sourcesJar
-            artifact javadocJar
 
             pom {
                 name = 'Swiss QR Bill'
@@ -114,7 +107,7 @@ publishing {
 }
 
 signing {
-    required { gradle.taskGraph.hasTask("publish") }
+    required { gradle.taskGraph.hasTask("publish") || gradle.taskGraph.hasTask("publishToMavenLocal") }
     sign publishing.publications.mavenJava
 }
 
@@ -134,8 +127,6 @@ jacocoTestReport {
 }
 
 project.tasks["sonarqube"].dependsOn "jacocoTestReport"
-project.tasks["publishMavenJavaPublicationToMavenLocal"].dependsOn "signArchives"
-project.tasks["publishMavenJavaPublicationToMavenRepository"].dependsOn "signArchives"
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
