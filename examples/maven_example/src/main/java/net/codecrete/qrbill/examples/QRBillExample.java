@@ -6,9 +6,7 @@
 //
 package net.codecrete.qrbill.examples;
 
-import net.codecrete.qrbill.generator.Address;
-import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.QRBill;
+import net.codecrete.qrbill.generator.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -44,6 +42,10 @@ public class QRBillExample {
         debtor.setAddressLine2("9400 Rorschach");
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
+
+        BillFormat format = bill.getFormat();
+        format.setGraphicsFormat(GraphicsFormat.SVG);
+        format.setOutputSize(OutputSize.QR_BILL_ONLY);
 
         // Generate QR bill
         byte[] svg = QRBill.generate(bill);

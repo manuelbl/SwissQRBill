@@ -9,9 +9,7 @@
 
 package net.codecrete.qrbill.examples.kotlin
 
-import net.codecrete.qrbill.generator.Address
-import net.codecrete.qrbill.generator.Bill
-import net.codecrete.qrbill.generator.QRBill
+import net.codecrete.qrbill.generator.*
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -42,6 +40,10 @@ fun main() {
     debtor.addressLine2 = "9400 Rorschach"
     debtor.countryCode = "CH"
     bill.debtor = debtor
+
+    val format = bill.format
+    format.graphicsFormat = GraphicsFormat.SVG
+    format.outputSize = OutputSize.QR_BILL_ONLY
 
     // Generate QR bill
     val svg = QRBill.generate(bill)
