@@ -87,6 +87,23 @@ class DecodedTextTest {
         normalizeDecodedBill(bill2);
         assertEquals(bill, bill2);
     }
+    void decodeTextB1c() {
+        Bill bill = SampleQrCodeText.getBillData1();
+        normalizeSourceBill(bill);
+        // QR code text with invalid NL at the end
+        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText1(false) + "\n");
+        normalizeDecodedBill(bill2);
+        assertEquals(bill, bill2);
+    }
+
+    void decodeTextB1d() {
+        Bill bill = SampleQrCodeText.getBillData1();
+        normalizeSourceBill(bill);
+        // QR code text with invalid CRNL at the end
+        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText1(true) + "\r\n");
+        normalizeDecodedBill(bill2);
+        assertEquals(bill, bill2);
+    }
 
     @Test
     void decodeTextB2() {
