@@ -41,9 +41,11 @@ fun main() {
     debtor.countryCode = "CH"
     bill.debtor = debtor
 
+    // Set output format
     val format = bill.format
     format.graphicsFormat = GraphicsFormat.SVG
     format.outputSize = OutputSize.QR_BILL_ONLY
+    format.language = Language.DE
 
     // Generate QR bill
     val svg = QRBill.generate(bill)
@@ -51,5 +53,5 @@ fun main() {
     val path = Paths.get("qrbill.svg")
     Files.write(path, svg)
 
-    println("QR bill saved at ${path.toAbsolutePath()} ")
+    println("QR bill saved at ${path.toAbsolutePath()}")
 }

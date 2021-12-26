@@ -43,9 +43,11 @@ public class QRBillExample {
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
 
+        // Set output format
         BillFormat format = bill.getFormat();
         format.setGraphicsFormat(GraphicsFormat.SVG);
         format.setOutputSize(OutputSize.QR_BILL_ONLY);
+        format.setLanguage(Language.DE);
 
         // Generate QR bill
         byte[] svg = QRBill.generate(bill);

@@ -8,7 +8,9 @@ This library implements version 2.1 of the *Swiss Implementation Guidelines QR-b
 
 ## Introduction
 
-The Swiss QR bill is the new QR code based payment format that will replace the current payment slip starting on 30 June, 2020. The new payment slip will in most cases be sent electronically. But it can still be printed at the bottom of an invoice or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app to initiate the payment. The payment just needs to be confirmed.
+The Swiss QR bill is the new QR code based payment format that started on 30 June, 2020. The old payment slip will no longer be accepted after 30 September 2022.
+
+The new payment slip will be sent electronically in most cases. But it can still be printed at the bottom of an invoice or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app to initiate the payment. The payment just needs to be confirmed.
 
  If the invoicing party adds structured bill information (VAT rates, payment conditions etc.) to the QR bill, the payer can automate booking in accounts payable. The invoicing party can also automate the accounts receivable processing as the payment includes all relevant data including a reference number. The Swiss QR bill is convenient for the payer and payee.
 
@@ -20,8 +22,8 @@ The Swiss QR bill is the new QR code based payment format that will replace the 
 
 The Swiss QR bill library:
 
-- generates PDF, SVG and PNG files
-- adds QR bill to existing PDF file
+- generates QR bills as PDF, SVG and PNG files
+- adds a QR bill to existing PDF file
 - generates payment slip (105mm by 210mm), A4 sheets or QR code only
 - is multilingual: German, French, Italian, English
 - validates the invoice data and provides detailed validation information
@@ -92,6 +94,12 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
             debtor.setCountryCode("CH");
             bill.setDebtor(debtor);
     
+            // Set output format
+            BillFormat format = bill.getFormat();
+            format.setGraphicsFormat(GraphicsFormat.SVG);
+            format.setOutputSize(OutputSize.QR_BILL_ONLY);
+            format.setLanguage(Language.DE);
+
             // Generate QR bill
             byte[] svg = QRBill.generate(bill);
     
