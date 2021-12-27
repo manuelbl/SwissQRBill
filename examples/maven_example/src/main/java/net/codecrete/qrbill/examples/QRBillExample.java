@@ -13,6 +13,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Console application for generating a QR bill.
+ * <p>
+ *     The QR bill is saved as an SVG file in the working directory.
+ *     The path of the working directory is printed to <c>stdout</c>.
+ * </p>
+ */
 public class QRBillExample {
 
     public static void main(String[] args) {
@@ -44,10 +51,11 @@ public class QRBillExample {
         bill.setDebtor(debtor);
 
         // Set output format
-        BillFormat format = bill.getFormat();
+        BillFormat format = new BillFormat();
         format.setGraphicsFormat(GraphicsFormat.SVG);
         format.setOutputSize(OutputSize.QR_BILL_ONLY);
         format.setLanguage(Language.DE);
+        bill.setFormat(format);
 
         // Generate QR bill
         byte[] svg = QRBill.generate(bill);
@@ -61,5 +69,7 @@ public class QRBillExample {
         }
 
         System.out.println("QR bill saved at " + path.toAbsolutePath());
+
+        System.out.println("Generated with version " + QRBill.getLibraryVersion());
     }
 }

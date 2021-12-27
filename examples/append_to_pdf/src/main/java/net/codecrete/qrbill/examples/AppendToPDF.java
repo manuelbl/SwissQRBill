@@ -19,6 +19,13 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Console application for appending QR bill to PDF file.
+ * <p>
+ *     The application uses the <c>invoice.pdf</c> file from the <c>resources</c>
+ *     folder and saves the modified invoice as <c>invoice-1.pdf</c> and <c>invoice-2.pdf</c> respectively.
+ * </p>
+ */
 public class AppendToPDF {
 
     public static void main(String[] args) throws URISyntaxException, IOException {

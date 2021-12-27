@@ -13,6 +13,12 @@ import net.codecrete.qrbill.generator.*
 import java.nio.file.Files
 import java.nio.file.Paths
 
+/**
+ * Console application for generating a QR bill.
+ *
+ * The QR bill is saved as an SVG file in the working directory.
+ * The path of the working directory is printed to <c>stdout</c>.
+ */
 fun main() {
 
     // Setup bill
@@ -42,10 +48,11 @@ fun main() {
     bill.debtor = debtor
 
     // Set output format
-    val format = bill.format
+    val format = BillFormat()
     format.graphicsFormat = GraphicsFormat.SVG
     format.outputSize = OutputSize.QR_BILL_ONLY
     format.language = Language.DE
+    bill.format = format
 
     // Generate QR bill
     val svg = QRBill.generate(bill)
@@ -54,4 +61,5 @@ fun main() {
     Files.write(path, svg)
 
     println("QR bill saved at ${path.toAbsolutePath()}")
+    println("Generated with version ${QRBill.getLibraryVersion()}")
 }
