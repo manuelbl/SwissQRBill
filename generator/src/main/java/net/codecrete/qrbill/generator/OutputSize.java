@@ -7,7 +7,9 @@
 package net.codecrete.qrbill.generator;
 
 /**
- * The output size of the QR bill or QR code
+ * The output size of the QR bill or QR code.
+ *
+ * @see <a href="https://github.com/manuelbl/SwissQRBill/wiki/Output-Sizes">Output Sizes (in Wiki)</a>
  */
 public enum OutputSize {
     /**

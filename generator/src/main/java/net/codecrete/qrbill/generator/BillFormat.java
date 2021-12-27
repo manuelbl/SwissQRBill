@@ -61,6 +61,7 @@ public class BillFormat implements Serializable {
      * </p>
      *
      * @return output size
+     * @see <a href="https://github.com/manuelbl/SwissQRBill/wiki/Output-Sizes">Output Sizes (in Wiki)</a>
      */
     public OutputSize getOutputSize() {
         return outputSize;
@@ -70,6 +71,7 @@ public class BillFormat implements Serializable {
      * Sets the output size for the generated QR bill
      *
      * @param outputSize output size
+     * @see <a href="https://github.com/manuelbl/SwissQRBill/wiki/Output-Sizes">Output Sizes (in Wiki)</a>
      */
     public void setOutputSize(OutputSize outputSize) {
         this.outputSize = outputSize;
