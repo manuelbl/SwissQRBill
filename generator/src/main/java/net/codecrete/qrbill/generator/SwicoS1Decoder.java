@@ -6,15 +6,6 @@
 //
 
 package net.codecrete.qrbill.generator;
-/// <summary>
-/// Decodes structured bill information according to Swico S1 syntax.
-/// <para>
-/// The encoded bill information can be found in a Swiss QR bill in th field <c>StrdBkgInf</c>.
-/// </para>
-/// <para>
-/// Also see http://swiss-qr-invoice.org/downloads/qr-bill-s1-syntax-de.pdf
-/// </para>
-/// </summary>
 
 import net.codecrete.qrbill.generator.SwicoBillInformation.PaymentCondition;
 import net.codecrete.qrbill.generator.SwicoBillInformation.RateDetail;

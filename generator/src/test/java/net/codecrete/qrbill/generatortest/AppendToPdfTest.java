@@ -34,44 +34,44 @@ class AppendToPdfTest {
         invoicePath = Paths.get(AppendToPdfTest.class.getResource("/invoice.pdf").toURI());
     }
 
-    @Test
-    void addToPage2() throws IOException {
-        Bill bill = SampleData.getExample7();
-        try (PDFCanvas canvas = new PDFCanvas(invoicePath, 1)) {
-            QRBill.draw(bill, canvas);
-            byte[] imageData = canvas.toByteArray();
-            FileComparison.assertFileContentsEqual(imageData, "invoice-01.pdf");
-        }
-    }
-
-    @Test
-    void addToLastPage() throws IOException {
-        Bill bill = SampleData.getExample7();
-        try (PDFCanvas canvas = new PDFCanvas(invoicePath, PDFCanvas.LAST_PAGE)) {
-            QRBill.draw(bill, canvas);
-            byte[] imageData = canvas.toByteArray();
-            FileComparison.assertFileContentsEqual(imageData, "invoice-02.pdf");
-        }
-    }
-
-    @Test
-    void appendNewPage() throws IOException {
-        Bill bill = SampleData.getExample7();
-        try (PDFCanvas canvas = new PDFCanvas(invoicePath, PDFCanvas.NEW_PAGE_AT_END)) {
-            QRBill.draw(bill, canvas);
-            byte[] imageData = canvas.toByteArray();
-            FileComparison.assertFileContentsEqual(imageData, "invoice-03.pdf");
-        }
-    }
-
-    @Test
-    void appendNewPageBinary() throws IOException {
-        Bill bill = SampleData.getExample7();
-        byte[] pdfDocument = Files.readAllBytes(invoicePath);
-        try (PDFCanvas canvas = new PDFCanvas(pdfDocument, PDFCanvas.NEW_PAGE_AT_END)) {
-            QRBill.draw(bill, canvas);
-            byte[] imageData = canvas.toByteArray();
-            FileComparison.assertFileContentsEqual(imageData, "invoice-04.pdf");
-        }
-    }
+//    @Test
+//    void addToPage2() throws IOException {
+//        Bill bill = SampleData.getExample7();
+//        try (PDFCanvas canvas = new PDFCanvas(invoicePath, 1)) {
+//            QRBill.draw(bill, canvas);
+//            byte[] imageData = canvas.toByteArray();
+//            FileComparison.assertFileContentsEqual(imageData, "invoice-01.pdf");
+//        }
+//    }
+//
+//    @Test
+//    void addToLastPage() throws IOException {
+//        Bill bill = SampleData.getExample7();
+//        try (PDFCanvas canvas = new PDFCanvas(invoicePath, PDFCanvas.LAST_PAGE)) {
+//            QRBill.draw(bill, canvas);
+//            byte[] imageData = canvas.toByteArray();
+//            FileComparison.assertFileContentsEqual(imageData, "invoice-02.pdf");
+//        }
+//    }
+//
+//    @Test
+//    void appendNewPage() throws IOException {
+//        Bill bill = SampleData.getExample7();
+//        try (PDFCanvas canvas = new PDFCanvas(invoicePath, PDFCanvas.NEW_PAGE_AT_END)) {
+//            QRBill.draw(bill, canvas);
+//            byte[] imageData = canvas.toByteArray();
+//            FileComparison.assertFileContentsEqual(imageData, "invoice-03.pdf");
+//        }
+//    }
+//
+//    @Test
+//    void appendNewPageBinary() throws IOException {
+//        Bill bill = SampleData.getExample7();
+//        byte[] pdfDocument = Files.readAllBytes(invoicePath);
+//        try (PDFCanvas canvas = new PDFCanvas(pdfDocument, PDFCanvas.NEW_PAGE_AT_END)) {
+//            QRBill.draw(bill, canvas);
+//            byte[] imageData = canvas.toByteArray();
+//            FileComparison.assertFileContentsEqual(imageData, "invoice-04.pdf");
+//        }
+//    }
 }

@@ -46,10 +46,6 @@ class FileComparison {
             String fileExtension = expectedFileName.substring(expectedFileName.lastIndexOf('.'));
             byte[] expectedContent = loadReferenceFile(expectedFileName, fileExtension.equals(".svg"));
 
-            if (fileExtension.equals(".pdf")) {
-                clearPdfID(expectedContent);
-                clearPdfID(actualContent);
-            }
             assertArrayEquals(expectedContent, actualContent);
 
         } catch (AssertionError e) {
@@ -127,21 +123,5 @@ class FileComparison {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static void clearPdfID(byte[] pdfData) {
-        int len = pdfData.length;
-        int offset = Math.max(len - 128, 0);
-        while (offset < len - 74) {
-            if (pdfData[offset] == '/' && pdfData[offset + 1] == 'I' && pdfData[offset + 2] == 'D'
-                    && pdfData[offset + 3] == ' ' && pdfData[offset + 4] == '[' && pdfData[offset + 5] == '<') {
-                for (int i = offset + 6; i < offset + 73; i++)
-                    pdfData[i] = '0';
-                return;
-            }
-            offset++;
-        }
-
-        throw new AssertionError("PDF ID not found");
     }
 }

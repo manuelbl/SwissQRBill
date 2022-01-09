@@ -24,28 +24,21 @@ import java.nio.file.Paths;
 @DisplayName("PDF canvas test")
 class AddSeparatorLinesTest {
 
-    private Path qrBillPath;
-
-    @BeforeEach
-    void init() throws URISyntaxException {
-        qrBillPath = Paths.get(AppendToPdfTest.class.getResource("/bill_no_lines.pdf").toURI());
-    }
-
     @Test
     void addBothSeparators() throws IOException {
-        try (PDFCanvas canvas = new PDFCanvas(qrBillPath, 0)) {
+        try (PDFCanvas canvas = new PDFCanvas(210, 297)) {
             QRBill.drawSeparators(SeparatorType.DOTTED_LINE_WITH_SCISSORS, true, canvas);
             byte[] imageData = canvas.toByteArray();
-            FileComparison.assertFileContentsEqual(imageData, "a4bill_postproc1.pdf");
+            FileComparison.assertFileContentsEqual(imageData, "dotted_lines_only.pdf");
         }
     }
 
     @Test
     void addVerticalSeparator() throws IOException {
-        try (PDFCanvas canvas = new PDFCanvas(qrBillPath, 0)) {
+        try (PDFCanvas canvas = new PDFCanvas(210, 297)) {
             QRBill.drawSeparators(SeparatorType.DASHED_LINE_WITH_SCISSORS, false, canvas);
             byte[] imageData = canvas.toByteArray();
-            FileComparison.assertFileContentsEqual(imageData, "a4bill_postproc2.pdf");
+            FileComparison.assertFileContentsEqual(imageData, "dashed_lines_only.pdf");
         }
     }
 }
