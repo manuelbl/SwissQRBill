@@ -61,28 +61,29 @@ public class PdfEncoding {
             String replacement;
             switch (ch) {
                 case '(':
-                    replacement = "\\(";
+                    replacement = "(";
                     break;
                 case ')':
-                    replacement = "\\)";
+                    replacement = ")";
                     break;
                 case '\\':
-                    replacement = "\\\\";
+                    replacement = "\\";
                     break;
                 case '\n':
-                    replacement = "\\n";
+                    replacement = "n";
                     break;
                 case '\r':
-                    replacement = "\\r";
+                    replacement = "r";
                     break;
                 case '\t':
-                    replacement = "\\t";
+                    replacement = "t";
                     break;
                 default:
                     replacement = "000" + Integer.toOctalString(ch);
                     replacement = replacement.substring(replacement.length() - 3);
                     break;
             }
+            writer.write('\\');
             writer.write(replacement);
             lastCopiedPosition = i + 1;
         }
@@ -102,6 +103,9 @@ public class PdfEncoding {
      * @throws IOException thrown if the error occurs during writing
      */
     public static void writeNumber(double val, Writer writer) throws IOException {
-        writer.write(NUMBER_FORMAT.format(val));
+        if (Math.abs(val) < 0.0005)
+            writer.write('0');
+        else
+            writer.write(NUMBER_FORMAT.format(val));
     }
 }

@@ -258,12 +258,8 @@ public class ContentStream implements Writable {
 
     private void writeOperand(double val) {
         try {
-            if (Math.abs(val) < 0.0005) {
-                contentWriter.write("0 ");
-            } else {
-                PdfEncoding.writeNumber(val, contentWriter);
-                contentWriter.write(' ');
-            }
+            PdfEncoding.writeNumber(val, contentWriter);
+            contentWriter.write(' ');
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -322,4 +318,3 @@ public class ContentStream implements Writable {
         writer.write("\r\nendstream\n");
     }
 }
-        
