@@ -25,6 +25,8 @@ public class PdfEncoding {
 
     private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.###", new DecimalFormatSymbols(Locale.UK));
 
+    private PdfEncoding() { }
+
     /**
      * Creates a new writer for the specified output stream.
      * <p>

@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Unit tests for PdfEncoding class
  */
 @DisplayName("PdfEncoder test")
-public class PdfEncodingTest {
+class PdfEncodingTest {
 
     @Test
     void createWriter_hasCorrectEncoding() throws IOException {

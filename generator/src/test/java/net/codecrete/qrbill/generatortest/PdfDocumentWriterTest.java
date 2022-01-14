@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Unit tests for DocumentWriter class
  */
 @DisplayName("PDF DocumentWriter tests")
-public class PdfDocumentWriterTest {
+class PdfDocumentWriterTest {
 
     private static final Charset ENCODING = Charset.forName("Cp1252");
 

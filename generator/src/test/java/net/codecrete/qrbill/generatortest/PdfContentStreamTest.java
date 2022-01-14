@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Unit tests for ContentWriter class
  */
 @DisplayName("PDF ContentWriter tests")
-public class PdfContentStreamTest {
+class PdfContentStreamTest {
 
     private static final Charset ENCODING = Charset.forName("Cp1252");
 
