@@ -9,15 +9,8 @@ package net.codecrete.qrbill.pdf;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
-import java.nio.charset.CoderResult;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+import java.io.Writer;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * PDF document writer.
@@ -30,18 +23,8 @@ import java.util.Locale;
  * </p>
  */
 public class DocumentWriter {
-    private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("0.###", new DecimalFormatSymbols(Locale.UK));
-    private static final Charset ENCODING;
-
-    static {
-        ENCODING = Charset.forName("Cp1252");
-    }
-
-    private final OutputStream outputStream;
-    private final CharsetEncoder encoder;
-    private final ByteBuffer outputBuffer;
-    private int numBytes;
-    private boolean isEncoderFlushed;
+    private final OutputStreamWithPosition outputStream;
+    private final Writer writer;
 
     /**
      * Creates a new document writer writing to the specified output stream.
@@ -49,10 +32,8 @@ public class DocumentWriter {
      * @param os output stream
      */
     public DocumentWriter(OutputStream os) {
-        outputStream = os;
-        encoder = ENCODING.newEncoder();
-        outputBuffer = ByteBuffer.allocate(1024);
-        isEncoderFlushed = true;
+        outputStream = new OutputStreamWithPosition(os);
+        writer = PdfEncoding.createWriter(outputStream);
     }
 
     /**
@@ -76,7 +57,7 @@ public class DocumentWriter {
         } else if (obj instanceof String) {
             writeString((String) obj);
         } else if (obj instanceof Double) {
-            writeNumber((Double) obj);
+            write((Double) obj);
         } else {
             this.write(obj.toString());
         }
@@ -92,9 +73,17 @@ public class DocumentWriter {
      * @throws IOException thrown if error occurs on the output stream
      */
     public void writeString(String str) throws IOException {
-        write("(");
-        writeEscapedString(str);
-        write(")");
+        PdfEncoding.writeText(str, writer);
+    }
+
+    /**
+     * Writes the specified integer number.
+     *
+     * @param num the number
+     * @throws IOException thrown if error occurs on the output stream
+     */
+    public void write(int num) throws IOException {
+        writer.write(Integer.toString(num));
     }
 
     /**
@@ -103,8 +92,8 @@ public class DocumentWriter {
      * @param num the number
      * @throws IOException thrown if error occurs on the output stream
      */
-    public void writeNumber(double num) throws IOException {
-        write(num);
+    public void write(double num) throws IOException {
+        PdfEncoding.writeNumber(num, writer);
     }
 
     /**
@@ -117,12 +106,12 @@ public class DocumentWriter {
      * @throws IOException thrown if error occurs on the output stream
      */
     public void writeList(List<?> list) throws IOException {
-        write("[ ");
+        writer.write("[ ");
         for (Object obj : list) {
             writeObject(obj);
-            write(" ");
+            writer.write(' ');
         }
-        write("]");
+        writer.write(']');
     }
 
     /**
@@ -135,53 +124,12 @@ public class DocumentWriter {
      * @throws IOException thrown if error occurs on the output stream
      */
     public void writeDoubleArray(double[] array) throws IOException {
-        write("[ ");
+        writer.write("[ ");
         for (double d : array) {
             write(d);
-            write(" ");
+            writer.write(' ');
         }
-        write("]");
-    }
-
-    private void writeEscapedString(String text) throws IOException {
-        int length = text.length();
-        int lastCopiedPosition = 0;
-        for (int i = 0; i < length; i++) {
-            char ch = text.charAt(i);
-            if (ch >= ' ' && ch != '(' && ch != ')' && ch != '\\') continue;
-
-            if (i > lastCopiedPosition) write(text, lastCopiedPosition, i);
-
-            String replacement;
-            switch (ch) {
-                case '(':
-                    replacement = "\\(";
-                    break;
-                case ')':
-                    replacement = "\\)";
-                    break;
-                case '\\':
-                    replacement = "\\\\";
-                    break;
-                case '\n':
-                    replacement = "\\n";
-                    break;
-                case '\r':
-                    replacement = "\\r";
-                    break;
-                case '\t':
-                    replacement = "\\t";
-                    break;
-                default:
-                    replacement = "000" + Integer.toOctalString(ch);
-                    replacement = replacement.substring(replacement.length() - 3);
-                    break;
-            }
-            write(replacement);
-            lastCopiedPosition = i + 1;
-        }
-
-        if (length > lastCopiedPosition) write(text, lastCopiedPosition, length);
+        writer.write(']');
     }
 
     /**
@@ -191,42 +139,7 @@ public class DocumentWriter {
      * @throws IOException thrown if error occurs on the output stream
      */
     public void write(String text) throws IOException {
-        encodeText(CharBuffer.wrap(text));
-    }
-
-    /**
-     * Writes the specified range of the text.
-     *
-     * @param text  the text
-     * @param start the start position
-     * @param end   the end position
-     * @throws IOException thrown if error occurs on the output stream
-     */
-    public void write(String text, int start, int end) throws IOException {
-        encodeText(CharBuffer.wrap(text, start, end));
-    }
-
-    /**
-     * Writes the specified integer number.
-     *
-     * @param num the number
-     * @throws IOException thrown if error occurs on the output stream
-     */
-    public void write(int num) throws IOException {
-        String text = Integer.toString(num);
-        write(text);
-    }
-
-    /**
-     * Writes the specified floating-point number.
-     * <p>The number will be formatted with at most 3 fractional digits.</p>
-     *
-     * @param num the number
-     * @throws IOException thrown if error occurs on the output stream
-     */
-    public void write(double num) throws IOException {
-        String text = NUMBER_FORMAT.format(num);
-        write(text);
+        writer.write(text);
     }
 
     /**
@@ -236,9 +149,8 @@ public class DocumentWriter {
      * @throws IOException thrown if error occurs on the output stream
      */
     public void write(byte[] data) throws IOException {
-        flushEncoder();
+        writer.flush();
         outputStream.write(data);
-        numBytes += data.length;
     }
 
     /**
@@ -247,7 +159,7 @@ public class DocumentWriter {
      * @throws IOException thrown if error occurs on the output stream
      */
     public void close() throws IOException {
-        flushEncoder();
+        writer.flush();
         outputStream.close();
     }
 
@@ -262,58 +174,60 @@ public class DocumentWriter {
      * @throws IOException thrown if flushing the buffers fails
      */
     public int position() throws IOException {
-        flushEncoder();
-        return numBytes;
+        writer.flush();
+        return outputStream.position();
     }
 
-    private void encodeText(CharBuffer text) throws IOException {
-        isEncoderFlushed = false;
-        while (text.hasRemaining()) {
-            CoderResult cr = encoder.encode(text, outputBuffer, false);
-            if (cr.isUnderflow()) break;
-            if (cr.isOverflow()) {
-                flushOutputBuffer();
-                continue;
-            }
-            cr.throwException();
+    /**
+     * Output stream tracking the writing position.
+     */
+    private static class OutputStreamWithPosition extends OutputStream {
+
+        private final OutputStream inner;
+        private int numBytes;
+
+        /**
+         * Creates a new instance wrapping the specified output stream
+         *
+         * @param inner the output stream
+         */
+        private OutputStreamWithPosition(OutputStream inner) {
+            this.inner = inner;
         }
 
-        assert !text.hasRemaining();
-    }
-
-    private void flushOutputBuffer() throws IOException {
-        if (outputBuffer.position() == 0) return;
-
-        outputStream.write(outputBuffer.array(), 0, outputBuffer.position());
-        numBytes += outputBuffer.position();
-        outputBuffer.position(0);
-    }
-
-    private void flushEncoder() throws IOException {
-        if (isEncoderFlushed) return;
-
-        while (true) {
-            CoderResult cr = encoder.encode(CharBuffer.wrap(""), outputBuffer, true);
-            if (cr.isUnderflow()) break;
-            if (cr.isOverflow()) {
-                flushOutputBuffer();
-                continue;
-            }
-            cr.throwException();
+        /**
+         * Gets the writing position.
+         * <p>
+         * The writing position is the same as the number
+         * of bytes written to the output stream.
+         * </p>
+         *
+         * @return the position
+         */
+        private int position() {
+            return numBytes;
         }
 
-        while (true) {
-            CoderResult cr = encoder.flush(outputBuffer);
-            if (cr.isUnderflow()) break;
-            if (cr.isOverflow()) {
-                flushOutputBuffer();
-                continue;
-            }
-            cr.throwException();
+        @Override
+        public void write(int b) throws IOException {
+            inner.write(b);
+            numBytes += 1;
         }
 
-        isEncoderFlushed = true;
-        encoder.reset();
-        flushOutputBuffer();
+        @Override
+        public void write(byte[] b, int off, int len) throws IOException {
+            inner.write(b, off, len);
+            numBytes += len;
+        }
+
+        @Override
+        public void flush() throws IOException {
+            inner.flush();
+        }
+
+        @Override
+        public void close() throws IOException {
+            inner.close();
+        }
     }
 }

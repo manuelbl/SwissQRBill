@@ -9,6 +9,7 @@ package net.codecrete.qrbill.pdf;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.zip.DeflaterOutputStream;
 
 /**
@@ -17,7 +18,7 @@ import java.util.zip.DeflaterOutputStream;
 public class ContentStream implements Writable {
 
     private final ByteArrayOutputStream buffer;
-    private final DocumentWriter contentWriter;
+    private final Writer contentWriter;
     private final GeneralDict dict;
     private final ResourceDict resources;
 
@@ -25,7 +26,7 @@ public class ContentStream implements Writable {
         this.resources = resources;
         buffer = new ByteArrayOutputStream();
         DeflaterOutputStream deflateStream = new DeflaterOutputStream(buffer);
-        contentWriter = new DocumentWriter(deflateStream);
+        contentWriter = PdfEncoding.createWriter(deflateStream);
         dict = new GeneralDict();
     }
 
@@ -44,7 +45,7 @@ public class ContentStream implements Writable {
     }
 
     /**
-     * Sets the transfomation matrix.
+     * Sets the transformation matrix.
      *
      * @param matrix The transformation matrix.
      */
@@ -249,7 +250,7 @@ public class ContentStream implements Writable {
     private void writeOperand(int val) {
         try {
             contentWriter.write(Integer.toString(val));
-            contentWriter.write(" ");
+            contentWriter.write(' ');
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -260,8 +261,8 @@ public class ContentStream implements Writable {
             if (Math.abs(val) < 0.0005) {
                 contentWriter.write("0 ");
             } else {
-                contentWriter.write(val);
-                contentWriter.write(" ");
+                PdfEncoding.writeNumber(val, contentWriter);
+                contentWriter.write(' ');
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -270,7 +271,7 @@ public class ContentStream implements Writable {
 
     private void writeOperand(double[] array) {
         try {
-            contentWriter.write("[");
+            contentWriter.write('[');
             for (double val : array)
                 writeOperand(val);
 
@@ -282,9 +283,9 @@ public class ContentStream implements Writable {
 
     private void writeOperand(Name name) {
         try {
-            contentWriter.write("/");
+            contentWriter.write('/');
             contentWriter.write(name.getValue());
-            contentWriter.write(" ");
+            contentWriter.write(' ');
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -292,8 +293,8 @@ public class ContentStream implements Writable {
 
     private void writeTextOperand(String text) {
         try {
-            contentWriter.writeString(text);
-            contentWriter.write(" ");
+            PdfEncoding.writeText(text, contentWriter);
+            contentWriter.write(' ');
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -302,7 +303,7 @@ public class ContentStream implements Writable {
     private void writeOperator(String oper) {
         try {
             contentWriter.write(oper);
-            contentWriter.write("\n");
+            contentWriter.write('\n');
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
