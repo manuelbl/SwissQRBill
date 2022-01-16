@@ -8,7 +8,14 @@ package net.codecrete.qrbill.generatortest;
 
 import net.codecrete.qrbill.canvas.PDFCanvas;
 import net.codecrete.qrbill.generator.Bill;
+import net.codecrete.qrbill.generator.OutputSize;
 import net.codecrete.qrbill.generator.QRBill;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.util.Matrix;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,16 +23,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for generating QR bills as PDF
  */
 @DisplayName("PDF canvas test")
 class PdfCanvasTest {
+
+    private static final float MM_TO_PT = 72 / 25.4f;
 
     @Test
     void pdfWriteTo() throws IOException {
@@ -37,31 +42,82 @@ class PdfCanvasTest {
         }
 
         byte[] data = os.toByteArray();
-        assertTrue(data.length > 2000);
-        checkForPdfHeader(data);
+        compareResult(data, "pdfcanvas-writeto.pdf");
     }
 
     @Test
     void pdfSaveAs() throws IOException {
         Bill bill = SampleData.getExample4();
-        Path path = Paths.get("test-qrbill.pdf");
+        Path path = Files.createTempFile("pdfcanvas-", ".pdf");
         try (PDFCanvas canvas = new PDFCanvas(QRBill.A4_PORTRAIT_WIDTH, QRBill.A4_PORTRAIT_HEIGHT)) {
             QRBill.draw(bill, canvas);
             canvas.saveAs(path);
         }
 
-        byte[] data = Files.readAllBytes(path);
-        assertTrue(data.length > 2000);
-        checkForPdfHeader(data);
-
-        Files.delete(path);
+        compareResult(path, "pdfcanvas-saveas.pdf");
     }
 
-    private void checkForPdfHeader(byte[] data) {
-        assertEquals((byte) '%', data[0]);
-        assertEquals((byte) 'P', data[1]);
-        assertEquals((byte) 'D', data[2]);
-        assertEquals((byte) 'F', data[3]);
-        assertEquals((byte) '-', data[4]);
+    @Test
+    void addPageToOpenPdfDocument() throws IOException {
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage(new PDRectangle(210 * MM_TO_PT, 297 * MM_TO_PT));
+        document.addPage(page);
+        try (PDPageContentStream stream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.OVERWRITE, true)) {
+            stream.setFont(PDType1Font.HELVETICA_BOLD, 18);
+            stream.beginText();
+            stream.newLineAtOffset(20 * MM_TO_PT, 220 * MM_TO_PT);
+            stream.showText("Swiss QR Bill");
+            stream.endText();
+        }
+
+        Bill bill = SampleData.getExample1();
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_EXTRA_SPACE);
+        try (PDFCanvas canvas = new PDFCanvas(document, PDFCanvas.NEW_PAGE_AT_END)) {
+            QRBill.draw(bill, canvas);
+        }
+
+        Path path = Files.createTempFile("pdfcanvas-", ".pdf");
+        document.save(path.toFile());
+        compareResult(path, "pdfcanvas-opendoc.pdf");
+    }
+
+    @Test
+    void addPageToOpenContentStream() throws IOException {
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage(new PDRectangle(210 * MM_TO_PT, 297 * MM_TO_PT));
+        document.addPage(page);
+        try (PDPageContentStream stream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.OVERWRITE, true)) {
+            // offset from bottom
+            stream.saveGraphicsState();
+            stream.transform(Matrix.getTranslateInstance(0, 20 * MM_TO_PT));
+
+            Bill bill = SampleData.getExample1();
+            bill.getFormat().setOutputSize(OutputSize.QR_BILL_EXTRA_SPACE);
+            try (PDFCanvas canvas = new PDFCanvas(stream)) {
+                QRBill.draw(bill, canvas);
+            }
+
+            stream.restoreGraphicsState();
+
+            stream.setFont(PDType1Font.HELVETICA_BOLD, 18);
+            stream.beginText();
+            stream.newLineAtOffset(20 * MM_TO_PT, 220 * MM_TO_PT);
+            stream.showText("Swiss QR Bill");
+            stream.endText();
+        }
+
+        Path path = Files.createTempFile("pdfcanvas-", ".pdf");
+        document.save(path.toFile());
+        compareResult(path, "pdfcanvas-openstream.pdf");
+    }
+
+    private void compareResult(byte[] imageData, String expectedFileName) {
+        FileComparison.assertFileContentsEqual(imageData, expectedFileName);
+    }
+
+    private void compareResult(Path filename, String expectedFileName) throws IOException {
+        byte[] imageData = Files.readAllBytes(filename);
+        compareResult(imageData, expectedFileName);
+        Files.delete(filename);
     }
 }
