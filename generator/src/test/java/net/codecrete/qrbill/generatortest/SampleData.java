@@ -122,7 +122,7 @@ class SampleData {
 
     static Bill getExample5() {
         Bill bill = new Bill();
-        bill.getFormat().setLanguage(Language.EN);
+        bill.getFormat().setLanguage(Language.RM);
         bill.setAccount("CH44 3199 9123 0008  89012");
         Address creditor = new Address();
         creditor.setName("Herrn und Frau Ambikaipagan & Deepshikha Thirugnanasampanthamoorthy");

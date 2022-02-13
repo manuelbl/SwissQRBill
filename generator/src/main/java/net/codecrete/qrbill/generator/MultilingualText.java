@@ -60,9 +60,9 @@ public class MultilingualText {
     public static final String KEY_DO_NOT_USE_FOR_PAYMENT = "do_not_use_for_payment";
 
 
-    private static final String[] languageCodes = { "de", "fr", "it", "en" };
+    private static final String[] languageCodes = { "de", "fr", "it", "rm", "en" };
 
-    private static final ResourceBundle[] messageBundles = new ResourceBundle[4];
+    private static final ResourceBundle[] messageBundles = new ResourceBundle[5];
 
 
     private MultilingualText() {
@@ -102,8 +102,11 @@ public class MultilingualText {
             case IT:
                 index = 2;
                 break;
-            default:
+            case RM:
                 index = 3;
+                break;
+            default:
+                index = 4;
         }
 
         return index;
