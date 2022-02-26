@@ -25,7 +25,7 @@ The Swiss QR bill library:
 - generates QR bills as PDF, SVG and PNG files
 - adds a QR bill to existing PDF file
 - generates payment slip (105mm by 210mm), A4 sheets or QR code only
-- is multilingual: German, French, Italian, English
+- is multilingual: German, French, Italian, English, Romansh
 - validates the invoice data and provides detailed validation information
 - adds or retrieves structured bill information (according to Swico S1)
 - parses the invoice data embedded in the QR code
