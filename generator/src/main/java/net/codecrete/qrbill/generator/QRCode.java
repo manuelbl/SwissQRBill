@@ -64,8 +64,54 @@ class QRCode {
         final double BAR_WIDTH = 7 / 6.0;
         final double BAR_LENGTH = 35 / 9.0;
         graphics.startPath();
-        graphics.addRectangle(23 - BAR_WIDTH / 2, 23 - BAR_LENGTH / 2, BAR_WIDTH, BAR_LENGTH);
-        graphics.addRectangle(23 - BAR_LENGTH / 2, 23 - BAR_WIDTH / 2, BAR_LENGTH, BAR_WIDTH);
+        //       A----B
+        //       |    |
+        //       |    |
+        // K-----L    C-----D
+        // |                |
+        // |                |
+        // J-----I    F-----E
+        //       |    |
+        //       |    |
+        //       H----G
+
+        // Center is (23;23)
+        // Start in A
+        graphics.moveTo(23 - BAR_WIDTH / 2, 23 - BAR_LENGTH / 2);
+
+        // Line to B
+        graphics.lineTo(23 + BAR_WIDTH / 2, 23 - BAR_LENGTH / 2);
+
+        // Line to C
+        graphics.lineTo(23 + BAR_WIDTH / 2, 23 - BAR_WIDTH / 2);
+
+        // Line to D
+        graphics.lineTo(23 + BAR_LENGTH / 2, 23 - BAR_WIDTH / 2);
+
+        // Line to E
+        graphics.lineTo(23 + BAR_LENGTH / 2, 23 + BAR_WIDTH / 2);
+
+        // Line to F
+        graphics.lineTo(23 + BAR_WIDTH / 2, 23 + BAR_WIDTH / 2);
+
+        // Line to G
+        graphics.lineTo(23 + BAR_WIDTH / 2, 23 + BAR_LENGTH / 2);
+
+        // Line to H
+        graphics.lineTo(23 - BAR_WIDTH / 2, 23 + BAR_LENGTH / 2);
+
+        // Line to I
+        graphics.lineTo(23 - BAR_WIDTH / 2, 23 + BAR_WIDTH / 2);
+
+        // Line to J
+        graphics.lineTo(23 - BAR_LENGTH / 2, 23 + BAR_WIDTH / 2);
+
+        // Line to K
+        graphics.lineTo(23 - BAR_LENGTH / 2, 23 - BAR_WIDTH / 2);
+
+        // Line to K
+        graphics.lineTo(23 - BAR_WIDTH / 2, 23 - BAR_WIDTH / 2);
+
         graphics.fillPath(0xffffff, false);
     }
 

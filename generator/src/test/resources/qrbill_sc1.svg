@@ -202,7 +202,7 @@ m3,0h1v1h-1zm12,0h2v1h-2zm3,0h1v1h-1zm9,0h1v1h-1zm6,0h2v1h-2zm5,0h2v1h-2z"/>
 <path fill="#000000" shape-rendering="crispEdges"
 d="M56.693,-73.701h17.008v17.008h-17.008z"/>
 <path fill="#ffffff" shape-rendering="crispEdges"
-d="M63.543,-70.709h3.307v11.024h-3.307zm-3.858,3.858h11.024v3.307h-11.024z"/>
+d="M63.543,-59.685l3.307,0l0,-3.858l3.858,0l0,-3.307l-3.858,0l0,-3.858l-3.307,0l0,3.858l-3.858,0l0,3.307l3.858,0"/>
 </g>
 <g transform="translate(189.921 -0)">
 <text x="0" y="-98.482" font-size="8" font-weight="bold">Currency</text>
