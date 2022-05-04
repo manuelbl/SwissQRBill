@@ -614,7 +614,7 @@ class BillLayout {
                 sb.append(houseNo);
             }
             sb.append("\n");
-            if (!"CH".equals(address.getCountryCode()) && !"LI".equals(address.getCountryCode())) {
+            if (!"CH".equals(address.getCountryCode())) {
                 sb.append(address.getCountryCode());
                 sb.append(" - ");
             }
@@ -628,9 +628,9 @@ class BillLayout {
                 sb.append(address.getAddressLine1());
             }
             sb.append("\n");
-            if (!"CH".equals(address.getCountryCode()) && !"LI".equals(address.getCountryCode())) {
+            if (!"CH".equals(address.getCountryCode())) {
                 sb.append(address.getCountryCode());
-                sb.append(" ");
+                sb.append(" - ");
             }
             sb.append(address.getAddressLine2());
         }
