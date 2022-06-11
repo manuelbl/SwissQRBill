@@ -181,30 +181,15 @@ class DecodedTextTest {
         bill.getFormat().setLanguage(Language.DE); // fix language (not contained in text)
     }
 
-    @Test
-    void decodeInvalidFormat1() {
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText("garbage"));
-        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_DATA_STRUCTURE_INVALID, ValidationConstants.FIELD_QR_TYPE);
-    }
-
-    @Test
-    void decodeInvalidFormat2a() {
-        QRBillValidationError err = assertThrows(QRBillValidationError.class,
-                () -> QRBill.decodeQrCodeText("SPC\r\n0100\r\n\r\n\r\n"));
-        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_DATA_STRUCTURE_INVALID, ValidationConstants.FIELD_QR_TYPE);
-    }
-
-    @Test
-    void decodeInvalidFormat2b() {
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
-                "SPC1\r\n0200\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
-        assertSingleError(err.getValidationResult(), ValidationConstants.KEY_DATA_STRUCTURE_INVALID, ValidationConstants.FIELD_QR_TYPE);
-    }
-
-    @Test
-    void decodeInvalidFormat3() {
-        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(
-                "SPC1\r\n0200\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"));
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "garbage",
+            "SPC\r\n0100\r\n\r\n\r\n",
+            "SPC1\r\n0200\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+            "SPC1\r\n0200\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
+    })
+    void invalidTest_keyDataStructureInvalidError(String qrText) {
+        QRBillValidationError err = assertThrows(QRBillValidationError.class, () -> QRBill.decodeQrCodeText(qrText));
         assertSingleError(err.getValidationResult(), ValidationConstants.KEY_DATA_STRUCTURE_INVALID, ValidationConstants.FIELD_QR_TYPE);
     }
 

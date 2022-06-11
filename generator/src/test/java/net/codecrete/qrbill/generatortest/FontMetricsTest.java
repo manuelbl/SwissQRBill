@@ -36,25 +36,12 @@ class FontMetricsTest {
         assertEquals("abc", lines[0]);
     }
 
-    @Test
-    void singleSpace() {
-        String[] lines = fontMetrics.splitLines(" ", 50, 10);
+    @ParameterizedTest
+    @ValueSource(strings = { " ", "                           ", "éà£$\uD83D\uDE03"})
+    void input_hasSingleLine(String input) {
+        String[] lines = fontMetrics.splitLines(input, 50, 10);
         assertEquals(1, lines.length);
-        assertEquals("", lines[0]);
-    }
-
-    @Test
-    void manySpaces() {
-        String[] lines = fontMetrics.splitLines("                           ", 50, 10);
-        assertEquals(1, lines.length);
-        assertEquals("", lines[0]);
-    }
-
-    @Test
-    void outsideASCIIRange() {
-        String[] lines = fontMetrics.splitLines("éà£$\uD83D\uDE03", 50, 10);
-        assertEquals(1, lines.length);
-        assertEquals("éà£$\uD83D\uDE03", lines[0]);
+        assertEquals(input.trim(), lines[0]);
     }
 
     @Test

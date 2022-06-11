@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -49,7 +50,8 @@ class PdfCanvasIllegalStateTest {
         bill.getFormat().setOutputSize(OutputSize.QR_BILL_EXTRA_SPACE);
         try (PDFCanvas canvas = new PDFCanvas(document, PDFCanvas.NEW_PAGE_AT_END)) {
             QRBill.draw(bill, canvas);
-            assertThrows(IllegalStateException.class, () -> canvas.saveAs(Paths.get("some.pdf")));
+            Path path = Paths.get("some.pdf");
+            assertThrows(IllegalStateException.class, () -> canvas.saveAs(path));
         }
     }
 
@@ -63,7 +65,8 @@ class PdfCanvasIllegalStateTest {
             bill.getFormat().setOutputSize(OutputSize.QR_BILL_EXTRA_SPACE);
             try (PDFCanvas canvas = new PDFCanvas(stream)) {
                 QRBill.draw(bill, canvas);
-                assertThrows(IllegalStateException.class, () -> canvas.writeTo(new ByteArrayOutputStream()));
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                assertThrows(IllegalStateException.class, () -> canvas.writeTo(os));
             }
         }
     }
