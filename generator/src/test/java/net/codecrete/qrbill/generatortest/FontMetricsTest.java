@@ -126,4 +126,10 @@ class FontMetricsTest {
         assertEquals("d", lines[3]);
         assertEquals("e", lines[4]);
     }
+
+    @Test
+    void newlines_hasWidth0() {
+        assertEquals(0, fontMetrics.getTextWidth("\n", 10, false));
+        assertEquals(0, fontMetrics.getTextWidth("\r", 10, false));
+    }
 }

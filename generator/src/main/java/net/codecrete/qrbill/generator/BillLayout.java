@@ -501,7 +501,7 @@ class BillLayout {
     // Prepare the formatted text
     private void prepareText() {
         String account = Payments.formatIBAN(bill.getAccount());
-        accountPayableTo = account + "\n" + formatPersonForDisplay(bill.getCreditor());
+        accountPayableTo = account + "\n" + formatAddressForDisplay(bill.getCreditor(), isCreditorWithCountryCode());
 
         reference = formatReferenceNumber(bill.getReference());
 
@@ -516,7 +516,7 @@ class BillLayout {
             additionalInfo = info;
 
         if (bill.getDebtor() != null)
-            payableBy = formatPersonForDisplay(bill.getDebtor());
+            payableBy = formatAddressForDisplay(bill.getDebtor(), isDebtorWithCountryCode());
 
         if (bill.getAmount() != null)
             amount = formatAmountForDisplay(bill.getAmount());
@@ -525,11 +525,12 @@ class BillLayout {
     private void prepareReducedReceiptText(boolean reduceBoth) {
         if (reduceBoth) {
             String account = Payments.formatIBAN(bill.getAccount());
-            accountPayableTo = account + "\n" + formatPersonForDisplay(createReducedAddress(bill.getCreditor()));
+            accountPayableTo = account + "\n"
+                    + formatAddressForDisplay(createReducedAddress(bill.getCreditor()), isCreditorWithCountryCode());
         }
 
         if (bill.getDebtor() != null)
-            payableBy = formatPersonForDisplay(createReducedAddress(bill.getDebtor()));
+            payableBy = formatAddressForDisplay(createReducedAddress(bill.getDebtor()), isDebtorWithCountryCode());
     }
 
     private Address createReducedAddress(Address address) {
@@ -598,7 +599,7 @@ class BillLayout {
         return amountDisplayFormat.format(amount);
     }
 
-    private static String formatPersonForDisplay(Address address) {
+    private static String formatAddressForDisplay(Address address, boolean withCountryCode) {
         StringBuilder sb = new StringBuilder();
         sb.append(address.getName());
 
@@ -614,9 +615,9 @@ class BillLayout {
                 sb.append(houseNo);
             }
             sb.append("\n");
-            if (!"CH".equals(address.getCountryCode())) {
+            if (withCountryCode) {
                 sb.append(address.getCountryCode());
-                sb.append(" - ");
+                sb.append(" – ");
             }
             sb.append(address.getPostalCode());
             sb.append(" ");
@@ -628,9 +629,9 @@ class BillLayout {
                 sb.append(address.getAddressLine1());
             }
             sb.append("\n");
-            if (!"CH".equals(address.getCountryCode())) {
+            if (withCountryCode) {
                 sb.append(address.getCountryCode());
-                sb.append(" - ");
+                sb.append(" – ");
             }
             sb.append(address.getAddressLine2());
         }
@@ -664,5 +665,19 @@ class BillLayout {
 
     private String getText(String textKey) {
         return MultilingualText.getText(textKey, bill.getFormat().getLanguage());
+    }
+
+
+    private boolean isCreditorWithCountryCode() {
+        // The creditor country code is even shown for a Swiss address if the debtor lives abroad
+        return isForeignAddress(bill.getCreditor()) || isForeignAddress(bill.getDebtor());
+    }
+
+    private boolean isDebtorWithCountryCode() {
+        return isForeignAddress(bill.getDebtor());
+    }
+
+    private static boolean isForeignAddress(Address address) {
+        return address != null && !"CH".equals(address.getCountryCode());
     }
 }

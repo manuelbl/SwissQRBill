@@ -26,6 +26,7 @@ public class FontMetrics {
     private final char[] charWidthx20x7F;
     private final char[] charWidthxA0xFF;
     private final char charDefaultWidth;
+    private final char charNDashWidth;
     private final FontMetrics boldMetrics;
 
     /**
@@ -41,46 +42,56 @@ public class FontMetrics {
         final char[] boldCharWidthx20x7F;
         final char[] boldCharWidthxA0xFF;
         final char boldCharDefaultWidth;
+        final char boldCharNDashWidth;
 
         if (family.contains("arial")) {
             charWidthx20x7F = CharWidthData.ARIAL_NORMAL_20_7F;
             charWidthxA0xFF = CharWidthData.ARIAL_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.ARIAL_NORMAL_DEFAULT_WIDTH;
+            charNDashWidth = CharWidthData.ARIAL_NORMAL_NDASH_WIDTH;
             boldCharWidthx20x7F = CharWidthData.ARIAL_BOLD_20_7F;
             boldCharWidthxA0xFF = CharWidthData.ARIAL_BOLD_A0_FF;
             boldCharDefaultWidth = CharWidthData.ARIAL_BOLD_DEFAULT_WIDTH;
+            boldCharNDashWidth = CharWidthData.ARIAL_BOLD_NDASH_WIDTH;
         } else if (family.contains("liberation") && family.contains("sans")) {
             charWidthx20x7F = CharWidthData.LIBERATION_SANS_NORMAL_20_7F;
             charWidthxA0xFF = CharWidthData.LIBERATION_SANS_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.LIBERATION_SANS_NORMAL_DEFAULT_WIDTH;
+            charNDashWidth = CharWidthData.LIBERATION_SANS_NORMAL_NDASH_WIDTH;
             boldCharWidthx20x7F = CharWidthData.LIBERATION_SANS_BOLD_20_7F;
             boldCharWidthxA0xFF = CharWidthData.LIBERATION_SANS_BOLD_A0_FF;
             boldCharDefaultWidth = CharWidthData.LIBERATION_SANS_BOLD_DEFAULT_WIDTH;
+            boldCharNDashWidth = CharWidthData.LIBERATION_SANS_BOLD_NDASH_WIDTH;
         } else if (family.contains("frutiger")) {
             charWidthx20x7F = CharWidthData.FRUTIGER_NORMAL_20_7F;
             charWidthxA0xFF = CharWidthData.FRUTIGER_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.FRUTIGER_NORMAL_DEFAULT_WIDTH;
+            charNDashWidth = CharWidthData.FRUTIGER_NORMAL_NDASH_WIDTH;
             boldCharWidthx20x7F = CharWidthData.FRUTIGER_BOLD_20_7F;
             boldCharWidthxA0xFF = CharWidthData.FRUTIGER_BOLD_A0_FF;
             boldCharDefaultWidth = CharWidthData.FRUTIGER_BOLD_DEFAULT_WIDTH;
+            boldCharNDashWidth = CharWidthData.FRUTIGER_BOLD_NDASH_WIDTH;
         } else {
             charWidthx20x7F = CharWidthData.HELVETICA_NORMAL_20_7F;
             charWidthxA0xFF = CharWidthData.HELVETICA_NORMAL_A0_FF;
             charDefaultWidth = CharWidthData.HELVETICA_NORMAL_DEFAULT_WIDTH;
+            charNDashWidth = CharWidthData.HELVETICA_NORMAL_NDASH_WIDTH;
             boldCharWidthx20x7F = CharWidthData.HELVETICA_BOLD_20_7F;
             boldCharWidthxA0xFF = CharWidthData.HELVETICA_BOLD_A0_FF;
             boldCharDefaultWidth = CharWidthData.HELVETICA_BOLD_DEFAULT_WIDTH;
+            boldCharNDashWidth = CharWidthData.HELVETICA_BOLD_NDASH_WIDTH;
         }
 
-        boldMetrics = new FontMetrics(boldCharWidthx20x7F, boldCharWidthxA0xFF, boldCharDefaultWidth);
+        boldMetrics = new FontMetrics(boldCharWidthx20x7F, boldCharWidthxA0xFF, boldCharDefaultWidth, boldCharNDashWidth);
     }
 
-    private FontMetrics(char[] charWidthx20x7F, char[] charWidthxA0xFF, char charDefaultWidth) {
+    private FontMetrics(char[] charWidthx20x7F, char[] charWidthxA0xFF, char charDefaultWidth, char charNDashWidth) {
         fontFamilyList = null;
         firstFontFamily = null;
         this.charWidthx20x7F = charWidthx20x7F;
         this.charWidthxA0xFF = charWidthxA0xFF;
         this.charDefaultWidth = charDefaultWidth;
+        this.charNDashWidth = charNDashWidth;
         this.boldMetrics = null;
     }
 
@@ -292,8 +303,10 @@ public class FontMetrics {
             width = charWidthx20x7F[ch - 0x20];
         else if (ch >= 0xa0 && ch <= 0xff) {
             width = charWidthxA0xFF[ch - 0xa0];
+        } else if (ch == 0x2013) {
+            width = charNDashWidth;
         }
-        if (width == 0)
+        if (width == 0 && ch != '\n' && ch != '\r')
             width = charDefaultWidth;
         return width;
     }
