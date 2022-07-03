@@ -6,19 +6,15 @@
 //
 package net.codecrete.qrbill.generatortest;
 
-import net.codecrete.qrbill.generator.Bill;
-import net.codecrete.qrbill.generator.QRBill;
-import net.codecrete.qrbill.generator.QRBillValidationError;
-import net.codecrete.qrbill.generator.QRCodeText;
-import net.codecrete.qrbill.generator.ValidationResult;
+import net.codecrete.qrbill.generator.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for encoding the embedded QR code text
@@ -26,34 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisplayName("Encoding of embedded QR code text")
 class EncodedTextTest {
 
-    @Test
-    void createText1() {
-        Bill bill = SampleQrCodeText.getBillData1();
-        assertEquals(SampleQrCodeText.getQrCodeText1(false), QRBill.encodeQrCodeText(bill));
-    }
-
-    @Test
-    void createText2() {
-        Bill bill = SampleQrCodeText.getBillData2();
-        assertEquals(SampleQrCodeText.getQrCodeText2(), QRBill.encodeQrCodeText(bill));
-    }
-
-    @Test
-    void createText3() {
-        Bill bill = SampleQrCodeText.getBillData3();
-        assertEquals(SampleQrCodeText.getQrCodeText3(), QRBill.encodeQrCodeText(bill));
-    }
-
-    @Test
-    void createText4() {
-        Bill bill = SampleQrCodeText.getBillData4();
-        assertEquals(SampleQrCodeText.getQrCodeText4(), QRBill.encodeQrCodeText(bill));
-    }
-
-    @Test
-    void createText5() {
-        Bill bill = SampleQrCodeText.getBillData5();
-        assertEquals(SampleQrCodeText.getQrCodeText5(), QRBill.encodeQrCodeText(bill));
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3, 4, 5})
+    void createText(int sample) {
+        Bill bill = SampleQrCodeText.getBillData(sample);
+        assertEquals(SampleQrCodeText.getQrCodeText(sample), QRBill.encodeQrCodeText(bill));
     }
 
     @Test
@@ -70,6 +43,6 @@ class EncodedTextTest {
         assertFalse(result.hasErrors());
         bill = result.getCleanedBill();
         bill.setReference("");
-        assertEquals(SampleQrCodeText.getQrCodeText3(), QRCodeText.create(bill));
+        assertEquals(SampleQrCodeText.getQrCodeText(3), QRCodeText.create(bill));
     }
 }

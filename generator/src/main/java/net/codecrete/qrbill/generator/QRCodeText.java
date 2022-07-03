@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParsePosition;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -235,23 +234,10 @@ public class QRCodeText {
         return address;
     }
 
-    private static String[] splitLines(String text) {
-        ArrayList<String> lines = new ArrayList<>(32);
-        int lastPos = 0;
-        while (true) {
-            int pos = text.indexOf('\n', lastPos);
-            if (pos < 0)
-                break;
-            int pos2 = pos;
-            if (pos2 > lastPos && text.charAt(pos2 - 1) == '\r')
-                pos2--;
-            lines.add(text.substring(lastPos, pos2));
-            lastPos = pos + 1;
-        }
+    private static final Pattern NEWLINE_PATTERN = Pattern.compile("\r?\n|\r");
 
-        // add last line
-        lines.add(text.substring(lastPos));
-        return lines.toArray(new String[0]);
+    private static String[] splitLines(String text) {
+        return NEWLINE_PATTERN.split(text, -1);
     }
 
     private static void throwSingleValidationError(String field, String messageKey) {

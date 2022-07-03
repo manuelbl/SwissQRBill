@@ -19,9 +19,12 @@ import net.codecrete.qrbill.generator.ValidationResult;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -70,73 +73,12 @@ class DecodedTextTest {
         assertEquals(bill, bill2);
     }
 
-    @Test
-    void decodeTextB1a() {
-        Bill bill = SampleQrCodeText.getBillData1();
+    @ParameterizedTest
+    @MethodSource("provideNewLineCombinations")
+    void decodeTextNewline(int sample, String newLine, boolean extraNewLine) {
+        Bill bill = SampleQrCodeText.getBillData(sample);
         normalizeSourceBill(bill);
-        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText1(false));
-        normalizeDecodedBill(bill2);
-        assertEquals(bill, bill2);
-    }
-
-    @Test
-    void decodeTextB1b() {
-        Bill bill = SampleQrCodeText.getBillData1();
-        normalizeSourceBill(bill);
-        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText1(true));
-        normalizeDecodedBill(bill2);
-        assertEquals(bill, bill2);
-    }
-    void decodeTextB1c() {
-        Bill bill = SampleQrCodeText.getBillData1();
-        normalizeSourceBill(bill);
-        // QR code text with invalid NL at the end
-        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText1(false) + "\n");
-        normalizeDecodedBill(bill2);
-        assertEquals(bill, bill2);
-    }
-
-    void decodeTextB1d() {
-        Bill bill = SampleQrCodeText.getBillData1();
-        normalizeSourceBill(bill);
-        // QR code text with invalid CRNL at the end
-        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText1(true) + "\r\n");
-        normalizeDecodedBill(bill2);
-        assertEquals(bill, bill2);
-    }
-
-    @Test
-    void decodeTextB2() {
-        Bill bill = SampleQrCodeText.getBillData2();
-        normalizeSourceBill(bill);
-        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText2());
-        normalizeDecodedBill(bill2);
-        assertEquals(bill, bill2);
-    }
-
-    @Test
-    void decodeTextB3() {
-        Bill bill = SampleQrCodeText.getBillData3();
-        normalizeSourceBill(bill);
-        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText3());
-        normalizeDecodedBill(bill2);
-        assertEquals(bill, bill2);
-    }
-
-    @Test
-    void decodeTextB4() {
-        Bill bill = SampleQrCodeText.getBillData4();
-        normalizeSourceBill(bill);
-        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText4());
-        normalizeDecodedBill(bill2);
-        assertEquals(bill, bill2);
-    }
-
-    @Test
-    void decodeTextB5() {
-        Bill bill = SampleQrCodeText.getBillData5();
-        normalizeSourceBill(bill);
-        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText5());
+        Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText(sample, newLine) + (extraNewLine ? newLine : ""));
         normalizeDecodedBill(bill2);
         assertEquals(bill, bill2);
     }
@@ -208,7 +150,7 @@ class DecodedTextTest {
     void decodeIgnoreMinorVersion() {
         Bill bill = SampleQrCodeText.getBillData1();
         normalizeSourceBill(bill);
-        String qrCodeText = SampleQrCodeText.getQrCodeText1(false);
+        String qrCodeText = SampleQrCodeText.getQrCodeText(1);
         qrCodeText = qrCodeText.replace("\n0200\n", "\n0201\n");
         Bill bill2 = QRBill.decodeQrCodeText(qrCodeText);
         normalizeDecodedBill(bill2);
@@ -224,7 +166,7 @@ class DecodedTextTest {
 
     @Test
     void decodeInvalidNumber() {
-        String invalidText = SampleQrCodeText.getQrCodeText1(false).replace("3949.75", "1239d49.75");
+        String invalidText = SampleQrCodeText.getQrCodeText(1).replace("3949.75", "1239d49.75");
         QRBillValidationError err = assertThrows(QRBillValidationError.class,
                 () -> QRBill.decodeQrCodeText(invalidText));
         assertSingleError(err.getValidationResult(), ValidationConstants.KEY_NUMBER_INVALID, ValidationConstants.FIELD_AMOUNT);
@@ -232,7 +174,7 @@ class DecodedTextTest {
 
     @Test
     void decodeMissingEPD() {
-        String invalidText = SampleQrCodeText.getQrCodeText1(false).replace("EPD", "E_P");
+        String invalidText = SampleQrCodeText.getQrCodeText(1).replace("EPD", "E_P");
         QRBillValidationError err = assertThrows(QRBillValidationError.class,
                 () -> QRBill.decodeQrCodeText(invalidText));
         assertSingleError(err.getValidationResult(), ValidationConstants.KEY_DATA_STRUCTURE_INVALID, ValidationConstants.FIELD_TRAILER);
@@ -247,4 +189,17 @@ class DecodedTextTest {
         assertEquals(messageKey, messages.get(0).getMessageKey());
         assertEquals(field, messages.get(0).getField());
     }
+
+    private static Stream<Arguments> provideNewLineCombinations() {
+        Stream.Builder<Arguments> builder = Stream.builder();
+        String[] newLines = new String[] { "\n", "\r\n", "\r" };
+        for (int sample = 1; sample <= 5; sample++) {
+            for (String newLine : newLines) {
+                builder.add(Arguments.of(sample, newLine, false));
+                builder.add(Arguments.of(sample, newLine, true));
+            }
+        }
+        return builder.build();
+    }
+
 }
