@@ -114,7 +114,7 @@ public class FontMetrics {
     }
 
     /**
-     * Distance between baseline and top of highest letter.
+     * Distance between baseline and top of the highest letter.
      *
      * @param fontSize the font size (in pt)
      * @return the distance (in mm)

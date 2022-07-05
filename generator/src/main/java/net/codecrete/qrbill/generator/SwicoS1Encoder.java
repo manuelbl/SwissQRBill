@@ -25,7 +25,7 @@ import java.util.Locale;
  * in the field {@code StrdBkgInfo}.
  * </p>
  * <p>
- * Also see http://swiss-qr-invoice.org/downloads/qr-bill-s1-syntax-de.pdf.
+ * Also see <a href="http://swiss-qr-invoice.org/downloads/qr-bill-s1-syntax-de.pdf">Syntaxdefinition S1</a>.
  * </p>
  */
 class SwicoS1Encoder {

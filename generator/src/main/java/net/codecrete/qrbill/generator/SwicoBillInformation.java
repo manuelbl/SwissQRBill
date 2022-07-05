@@ -15,9 +15,9 @@ import java.util.Objects;
 /**
  * Bill information (according to Swico S1) for automated processing of invoices.
  * <p>
- * Swico S1 (see http://swiss-qr-invoice.org/downloads/qr-bill-s1-syntax-de.pdf) is one of the
- * supported standards for adding structured billing information to a QR bill
- * (in the field StrdBkgInf).
+ * Swico S1 (see <a href="http://swiss-qr-invoice.org/downloads/qr-bill-s1-syntax-de.pdf">Syntaxdefinition S1</a>)
+ * is one of the supported standards for adding structured billing information to a QR bill
+ * (in the field <code>StrdBkgInf</code>).
  * </p>
  * <p>
  * All properties of this bean are optional.

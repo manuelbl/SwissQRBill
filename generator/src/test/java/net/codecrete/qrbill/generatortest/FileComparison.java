@@ -19,7 +19,7 @@ import java.nio.file.StandardOpenOption;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
- * Compares a generated file with an reference file.
+ * Compares a generated file with a reference file.
  */
 class FileComparison {
 

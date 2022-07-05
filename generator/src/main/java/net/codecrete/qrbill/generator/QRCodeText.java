@@ -116,7 +116,7 @@ public class QRCodeText {
         return amountFieldFormat.format(amount);
     }
 
-    // According to a letter from SIX dated August 5, 2020 only the major number (leading "02") should be checked
+    // According to a letter from SIX dated August 5, 2020, only the major number (leading "02") should be checked
     private static final Pattern VALID_VERSION = Pattern.compile("^02\\d\\d$");
 
     /**

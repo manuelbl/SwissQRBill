@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Various unit tests for character set validations and replacements
  */
-@DisplayName("Character set validation and replacment")
+@DisplayName("Character set validation and replacement")
 class CharacterSetTest extends BillDataValidationBase {
     private static final String TEXT_WITHOUT_COMBINING_ACCENTS = "àáâäçèéêëìíîïñòóôöùúûüýßÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÑ";
     private static final String TEXT_WITH_COMBINING_ACCENTS = "àáâäçèéêëìíîïñòóôöùúûüýßÀÁÂÄÇÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜÑ";

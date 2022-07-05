@@ -306,7 +306,7 @@ public class PNGCanvas extends AbstractCanvas implements ByteArrayResult {
     }
 
     /**
-     * Saves image as PDF and stores meta data to indicate the resolution.
+     * Saves image as PDF and stores metadata to indicate the resolution.
      */
     private static void createPNG(BufferedImage image, OutputStream os, int resolution) throws IOException {
 

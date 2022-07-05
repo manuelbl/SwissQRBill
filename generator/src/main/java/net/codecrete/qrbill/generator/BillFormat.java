@@ -242,7 +242,7 @@ public class BillFormat implements Serializable {
     }
 
     /**
-     * Gets the the right margin width (from the end of the text to the edge of the paper).
+     * Gets the right margin width (from the end of the text to the edge of the paper).
      *
      * <p>
      * Valid values are between 5mm and 12mm. The default is 5m.
@@ -252,14 +252,14 @@ public class BillFormat implements Serializable {
      * printers, which are not capable of printing up to the edge of the paper and require a margin wider than 5mm.
      * </p>
      *
-     * @return width width, in mm
+     * @return width, in mm
      */
     public double getMarginRight() {
         return marginRight;
     }
 
     /**
-     * Gets the the right margin width (from the end of the text to the edge of the paper).
+     * Gets the right margin width (from the end of the text to the edge of the paper).
      *
      * <p>
      * Valid values are between 5mm and 12mm. The default is 5m.

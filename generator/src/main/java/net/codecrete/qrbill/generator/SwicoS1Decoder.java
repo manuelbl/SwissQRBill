@@ -36,7 +36,7 @@ import java.util.Locale;
  * The encoded bill information can be found in a Swiss QR bill in th field {@code StrdBkgInf}.
  * </p>
  * <p>
- * Also see http://swiss-qr-invoice.org/downloads/qr-bill-s1-syntax-de.pdf
+ * Also see <a href="http://swiss-qr-invoice.org/downloads/qr-bill-s1-syntax-de.pdf">Syntaxdefinition S1</a>
  * </p>
  */
 public class SwicoS1Decoder {
@@ -268,8 +268,8 @@ public class SwicoS1Decoder {
      * @return array of substrings
      */
     private static String[] split(String text) {
-        // Use placeholders for escaped characters (outside of valid QR bill character set)
-        // and undo back slash escaping.
+        // Use placeholders for escaped characters (outside valid QR bill character set)
+        // and undo backslash escaping.
         text = text.replace("\\\\", "☁").replace("\\/", "★");
 
         // Split
