@@ -13,6 +13,7 @@ public class QRBillValidationError extends RuntimeException {
 
     private static final long serialVersionUID = -959460901342010774L;
 
+    /** Validation result */
     private final ValidationResult validationResult;
 
     /**

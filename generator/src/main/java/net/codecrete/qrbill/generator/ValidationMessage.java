@@ -36,9 +36,13 @@ public class ValidationMessage implements Serializable {
         ERROR
     }
 
+    /** Message type */
     private Type type;
+    /** Affected data field */
     private String field;
+    /** Message key */
     private String messageKey;
+    /** Message parameters for placeholders */
     private String[] messageParameters;
 
     /**

@@ -45,14 +45,23 @@ public class Address implements Serializable {
 
     private static final long serialVersionUID = -8833174154173397772L;
 
+    /** Address type */
     private Type type = Type.UNDETERMINED;
+    /** Name of person or company */
     private String name;
+    /** Address line 1 */
     private String addressLine1;
+    /** Address line 2 */
     private String addressLine2;
+    /** Street */
     private String street;
+    /** House or building number */
     private String houseNo;
+    /** Postal code */
     private String postalCode;
+    /** Town */
     private String town;
+    /** ISO country code */
     private String countryCode;
 
     /**

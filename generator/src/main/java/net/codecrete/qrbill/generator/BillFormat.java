@@ -22,13 +22,21 @@ public class BillFormat implements Serializable {
 
     private static final long serialVersionUID = -2874086922578292745L;
 
+    /** Output size */
     private OutputSize outputSize = OutputSize.QR_BILL_ONLY;
+    /** Language */
     private Language language = Language.EN;
+    /** Separator type */
     private SeparatorType separatorType = SeparatorType.DASHED_LINE_WITH_SCISSORS;
+    /** Font family */
     private String fontFamily = "Helvetica,Arial,\"Liberation Sans\"";
+    /** Graphics format */
     private GraphicsFormat graphicsFormat = GraphicsFormat.SVG;
+    /** Resolution, in dpi */
     private int resolution = 144;
+    /** Left margin, in mm */
     private double marginLeft = DEFAULT_MARGIN_WIDTH;
+    /** Right margin, in mm */
     private double marginRight = DEFAULT_MARGIN_WIDTH;
 
     /**

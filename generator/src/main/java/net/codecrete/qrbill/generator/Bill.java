@@ -42,17 +42,29 @@ public class Bill implements Serializable {
         V2_0
     }
 
+    /** Version of QR bill standard */
     private Version version = Version.V2_0;
+    /** Payment amount */
     private BigDecimal amount = null;
+    /** Payment currency (ISO code) */
     private String currency = "CHF";
+    /** Creditor's account number */
     private String account = null;
+    /** Creditor address */
     private Address creditor = new Address();
+    /** Payment reference type */
     private String referenceType = REFERENCE_TYPE_NO_REF;
+    /** Payment reference (number) */
     private String reference = null;
+    /** Debtor address */
     private Address debtor = null;
+    /** Unstructured message */
     private String unstructuredMessage = null;
+    /** Structured bill information */
     private String billInformation = null;
+    /** Alternative schemes */
     private AlternativeScheme[] alternativeSchemes = null;
+    /** Bill format */
     private BillFormat format = new BillFormat();
 
     /**

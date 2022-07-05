@@ -17,7 +17,9 @@ public class AlternativeScheme implements Serializable {
 
     private static final long serialVersionUID = -8304082204378228870L;
 
+    /** Scheme name */
     private String name;
+    /** Payment instruction */
     private String instruction;
 
     /**

@@ -23,7 +23,9 @@ public class ValidationResult implements Serializable {
     private static final long serialVersionUID = -791181851684443602L;
     private static final List<ValidationMessage> EMPTY_LIST = Collections.emptyList();
 
+    /** Validation messages */
     private List<ValidationMessage> validationMessages;
+    /** Cleaned bill data */
     private Bill cleanedBill;
 
     /**
