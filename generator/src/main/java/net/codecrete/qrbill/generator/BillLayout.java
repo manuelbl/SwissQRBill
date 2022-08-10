@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import java.util.StringJoiner;
 
 /**
  * Layouting and drawing of QR bill payment slip
@@ -38,6 +39,7 @@ class BillLayout {
     private static final double DEBTOR_BOX_WIDTH_RC = 52; // mm
     private static final double DEBTOR_BOX_HEIGHT_RC = 20; // mm
 
+	private static final String ADDRESS_NAME_DISPLAY_LINE_BREAK = ","; // display a new line on the payment slip
 
     private final Bill bill;
     private final QRCode qrCode;
@@ -601,7 +603,16 @@ class BillLayout {
 
     private static String formatAddressForDisplay(Address address, boolean withCountryCode) {
         StringBuilder sb = new StringBuilder();
-        sb.append(address.getName());
+
+		if (address.getName().contains(ADDRESS_NAME_DISPLAY_LINE_BREAK)) {
+			StringJoiner multilineDisplayName = new StringJoiner("\n");
+			for (String namePart : address.getName().split(ADDRESS_NAME_DISPLAY_LINE_BREAK)) {
+				multilineDisplayName.add(namePart);
+			}
+			sb.append(multilineDisplayName);
+		} else {
+			sb.append(address.getName());
+		}
 
         if (address.getType() == Address.Type.STRUCTURED) {
             String street = address.getStreet();
