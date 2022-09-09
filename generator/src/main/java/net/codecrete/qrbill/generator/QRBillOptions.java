@@ -7,11 +7,17 @@ package net.codecrete.qrbill.generator;
  */
 public class QRBillOptions {
 
+	/**
+	 * Default local country code for determining if an {@link Address} is local or foreign.
+	 */
+	public static final String DEFAULT_LOCAL_COUNTRY_CODE = "CH";
 
 	private final String addressNameDisplayLineBreakOn;
+	private final String localCountryCode;
 
-	private QRBillOptions(String addressNameDisplayLineBreakOn) {
+	private QRBillOptions(String addressNameDisplayLineBreakOn, String localCountryCode) {
 		this.addressNameDisplayLineBreakOn = addressNameDisplayLineBreakOn;
+		this.localCountryCode = localCountryCode;
 	}
 
 
@@ -32,6 +38,15 @@ public class QRBillOptions {
 	}
 
 	/**
+	 * Local country code used to determine foreign addresses
+	 *
+	 * @return local country code
+	 */
+	public String getLocalCountryCode() {
+		return localCountryCode;
+	}
+
+	/**
 	 * @return whether the AddressNameDisplayLineBreakOn is enabled or not
 	 */
 	public boolean hasAddressNameDisplayLineBreakOn() {
@@ -44,6 +59,7 @@ public class QRBillOptions {
 	 */
 	public static class QRBillOptionsBuilder {
 		private String addressNameDisplayLineBreakOn = null;
+		private String localCountryCode = DEFAULT_LOCAL_COUNTRY_CODE;
 
 		QRBillOptionsBuilder() {
 		}
@@ -60,10 +76,23 @@ public class QRBillOptions {
 		}
 
 		/**
+		 * Specify the local country code used to determine if the addresses are foreign or local
+		 * <p>
+		 * Default is {@link QRBillOptions#DEFAULT_LOCAL_COUNTRY_CODE}
+		 *
+		 * @param localCountryCode the local <a href="https://en.wikipedia.org/wiki/ISO_3166-2">ISO 3166-2</a> country code
+		 * @return builder instance
+		 */
+		public QRBillOptionsBuilder localCountryCode(String localCountryCode) {
+			this.localCountryCode = localCountryCode;
+			return this;
+		}
+
+		/**
 		 * @return configured {@link QRBillOptions}
 		 */
 		public QRBillOptions build() {
-			return new QRBillOptions(addressNameDisplayLineBreakOn);
+			return new QRBillOptions(addressNameDisplayLineBreakOn, localCountryCode);
 		}
 	}
 }

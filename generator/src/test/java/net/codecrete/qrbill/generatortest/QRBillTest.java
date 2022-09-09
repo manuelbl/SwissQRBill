@@ -94,6 +94,49 @@ class QRBillTest {
         FileComparison.assertFileContentsEqual(svg, "qrbill_ex7.svg");
     }
 
+    @Test
+    void createQRBill8() {
+        Bill bill = SampleData.getExample8();
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
+        bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
+
+        QRBillOptions options = QRBillOptions.builder()
+                .addressNameDisplayLineBreakOn(",")
+                .localCountryCode("LI")
+                .build();
+
+        byte[] svg = QRBill.generate(bill, options);
+        FileComparison.assertFileContentsEqual(svg, "qrbill_ex8.svg");
+    }
+
+    @Test
+    void createQRBill9() {
+        Bill bill = SampleData.getExample9();
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
+        bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
+
+        QRBillOptions options = QRBillOptions.builder()
+                .localCountryCode("LI")
+                .build();
+
+        byte[] svg = QRBill.generate(bill, options);
+        FileComparison.assertFileContentsEqual(svg, "qrbill_ex9.svg");
+    }
+
+    @Test
+    void createQRBill10() {
+        Bill bill = SampleData.getExample3();
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_EXTRA_SPACE);
+        bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
+
+        QRBillOptions options = QRBillOptions.builder()
+                .localCountryCode("CH")
+                .build();
+
+        byte[] svg = QRBill.generate(bill, options);
+        FileComparison.assertFileContentsEqual(svg, "qrbill_ex5.svg");
+    }
+
 
     @Test
     void createQRBillFrench() {

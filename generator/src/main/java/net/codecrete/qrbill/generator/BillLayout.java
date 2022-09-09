@@ -689,7 +689,7 @@ class BillLayout {
 		return isForeignAddress(bill.getDebtor());
 	}
 
-	private static boolean isForeignAddress(Address address) {
-		return address != null && !"CH".equals(address.getCountryCode());
+	private boolean isForeignAddress(Address address) {
+		return address != null && !this.options.getLocalCountryCode().equals(address.getCountryCode());
 	}
 }

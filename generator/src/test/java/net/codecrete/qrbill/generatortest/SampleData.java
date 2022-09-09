@@ -211,4 +211,31 @@ class SampleData {
 		bill.setUnstructuredMessage(null);
 		return bill;
 	}
+
+	static Bill getExample9() {
+		Bill bill = new Bill();
+		bill.getFormat().setLanguage(Language.DE);
+		bill.setAccount("CH74 0070 0110 0061 1600 2");
+		Address creditor = new Address();
+		creditor.setName("Robert Schneider AG");
+		creditor.setStreet("Rue du Lac");
+		creditor.setHouseNo("1268/2/22");
+		creditor.setPostalCode("9490");
+		creditor.setTown("Vadzu");
+		creditor.setCountryCode("LI");
+		bill.setCreditor(creditor);
+		bill.setAmount(BigDecimal.valueOf(19995, 2));
+		bill.setCurrency("CHF");
+		Address debtor = new Address();
+		debtor.setName("Machina Futura AG");
+		debtor.setStreet("Grosse Marktgasse");
+		debtor.setHouseNo("28");
+		debtor.setPostalCode("9490");
+		debtor.setTown("Vadzu");
+		debtor.setCountryCode("LI");
+		bill.setDebtor(debtor);
+		bill.setReference("RF18539007547034");
+		bill.setUnstructuredMessage(null);
+		return bill;
+	}
 }
