@@ -11,6 +11,8 @@ import net.codecrete.qrbill.generator.GraphicsFormat;
 import net.codecrete.qrbill.generator.Language;
 import net.codecrete.qrbill.generator.OutputSize;
 import net.codecrete.qrbill.generator.QRBill;
+import net.codecrete.qrbill.generator.QRBillOptions;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -67,6 +69,31 @@ class QRBillTest {
         byte[] svg = QRBill.generate(bill);
         FileComparison.assertFileContentsEqual(svg, "qrbill_ex5.svg");
     }
+
+    @Test
+    void createQRBill6() {
+        Bill bill = SampleData.getExample8();
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
+        bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
+
+        QRBillOptions options = QRBillOptions.builder()
+                .addressNameDisplayLineBreakOn(",")
+                .build();
+
+        byte[] svg = QRBill.generate(bill, options);
+        FileComparison.assertFileContentsEqual(svg, "qrbill_ex6.svg");
+    }
+
+    @Test
+    void createQRBill7() {
+        Bill bill = SampleData.getExample8();
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
+        bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
+
+        byte[] svg = QRBill.generate(bill);
+        FileComparison.assertFileContentsEqual(svg, "qrbill_ex7.svg");
+    }
+
 
     @Test
     void createQRBillFrench() {
