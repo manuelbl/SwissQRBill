@@ -1,5 +1,7 @@
 # Swiss QR Bill for Java
 
+[![javadoc](https://javadoc.io/badge2/net.codecrete.qrbill/qrbill-generator/javadoc.svg)](https://javadoc.io/doc/net.codecrete.qrbill/qrbill-generator)
+
 Open-source Java library to generate and decode Swiss QR bills (jointly developed with the [.NET version](https://github.com/manuelbl/SwissQRBill.NET)).
 
 Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill). The code for this demonstration (Angular UI and RESTful service) can be found on [GitHub](https://github.com/manuelbl/SwissQRBillDemo) as well. 
@@ -117,7 +119,14 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
 
 ## API Documention
 
-See Javadoc [API Documentation](https://www.codecrete.net/qrbill-javadoc/).
+[Javadoc API documentation](https://javadoc.io/doc/net.codecrete.qrbill/qrbill-generator):
+
+- [QRBill](https://javadoc.io/doc/net.codecrete.qrbill/qrbill-generator/latest/net/codecrete/qrbill/generator/QRBill.html) class – generates Swiss QR bill
+- [Bill](https://javadoc.io/doc/net.codecrete.qrbill/qrbill-generator/latest/net/codecrete/qrbill/generator/Bill.html) class – holds bill data
+- [Address](https://javadoc.io/doc/net.codecrete.qrbill/qrbill-generator/latest/net/codecrete/qrbill/generator/Address.html) class – holds address data
+- [BillFormat](https://javadoc.io/doc/net.codecrete.qrbill/qrbill-generator/latest/net/codecrete/qrbill/generator/BillFormat.html) class – controls QR bill formatting
+- and many more
+
 
 ## More information
 
