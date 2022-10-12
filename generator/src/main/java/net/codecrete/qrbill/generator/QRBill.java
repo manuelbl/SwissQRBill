@@ -80,6 +80,19 @@ public class QRBill {
      */
     public static final double QR_CODE_HEIGHT = 46;
 
+    /**
+     * The width of the QR code with quiet zone, in mm
+     *
+     * @see OutputSize#QR_CODE_WITH_QUIET_ZONE
+     */
+    public static final double QR_CODE_WITH_QUIET_ZONE_WIDTH = 56;
+
+    /**
+     * The height of the QR code with quiet zone, in mm
+     *
+     * @see OutputSize#QR_CODE_WITH_QUIET_ZONE
+     */
+    public static final double QR_CODE_WITH_QUIET_ZONE_HEIGHT = 56;
 
     private QRBill() {
         // do not instantiate
@@ -208,6 +221,14 @@ public class QRBill {
         if (bill.getFormat().getOutputSize() == OutputSize.QR_CODE_ONLY) {
             QRCode qrCode = new QRCode(cleanedBill);
             qrCode.draw(canvas, 0, 0);
+
+        } else if (bill.getFormat().getOutputSize() == OutputSize.QR_CODE_WITH_QUIET_ZONE) {
+                QRCode qrCode = new QRCode(cleanedBill);
+                canvas.startPath();
+                canvas.addRectangle(0, 0, QR_CODE_WITH_QUIET_ZONE_WIDTH, QR_CODE_WITH_QUIET_ZONE_HEIGHT);
+                canvas.fillPath(0xffffff, false);
+                qrCode.draw(canvas, 5, 5);
+
         } else {
             BillLayout layout = new BillLayout(cleanedBill, canvas);
             layout.draw();
@@ -277,6 +298,10 @@ public class QRBill {
             case QR_CODE_ONLY:
                 drawingWidth = QR_CODE_WIDTH;
                 drawingHeight = QR_CODE_HEIGHT;
+                break;
+            case QR_CODE_WITH_QUIET_ZONE:
+                drawingWidth = QR_CODE_WITH_QUIET_ZONE_WIDTH;
+                drawingHeight = QR_CODE_WITH_QUIET_ZONE_HEIGHT;
                 break;
             case A4_PORTRAIT_SHEET:
             default:

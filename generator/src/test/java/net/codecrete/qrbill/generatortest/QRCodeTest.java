@@ -54,4 +54,13 @@ class QRCodeTest {
         byte[] svg = QRBill.generate(bill);
         FileComparison.assertFileContentsEqual(svg, "qrcode_ex4.svg");
     }
+
+    @Test
+    void qrCodeWithQuietZone() {
+        Bill bill = SampleData.getExample3();
+        bill.getFormat().setOutputSize(OutputSize.QR_CODE_WITH_QUIET_ZONE);
+        bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
+        byte[] svg = QRBill.generate(bill);
+        FileComparison.assertFileContentsEqual(svg, "qrcode_quiet_zone.svg");
+    }
 }

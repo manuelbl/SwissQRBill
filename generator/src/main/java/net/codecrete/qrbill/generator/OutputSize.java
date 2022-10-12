@@ -36,5 +36,13 @@ public enum OutputSize {
      * optionally for the scissors.
      * </p>
      */
-    QR_BILL_EXTRA_SPACE
+    QR_BILL_EXTRA_SPACE,
+
+    /**
+     * QR code only with 5mm of white space on all sides (56 by 56 mm).
+     * <p>
+     * This format applies a white background (as opposed to a transparent one).
+     * </p>
+     */
+    QR_CODE_WITH_QUIET_ZONE
 }
