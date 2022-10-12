@@ -76,4 +76,13 @@ class QRBillTest {
         byte[] svg = QRBill.generate(bill);
         FileComparison.assertFileContentsEqual(svg, "qrbill_fr.svg");
     }
+
+    @Test
+    void qrBillSentFromLI_correctAddress() {
+        Bill bill = SampleData.getExample1();
+        bill.getFormat().setLocalCountryCode("LI");
+        bill.getFormat().setGraphicsFormat(GraphicsFormat.SVG);
+        byte[] svg = QRBill.generate(bill);
+        FileComparison.assertFileContentsEqual(svg, "qrbill_li.svg");
+    }
 }

@@ -670,14 +670,14 @@ class BillLayout {
 
     private boolean isCreditorWithCountryCode() {
         // The creditor country code is even shown for a Swiss address if the debtor lives abroad
-        return isForeignAddress(bill.getCreditor()) || isForeignAddress(bill.getDebtor());
+        return isForeignAddress(bill.getCreditor(), bill.getFormat()) || isForeignAddress(bill.getDebtor(), bill.getFormat());
     }
 
     private boolean isDebtorWithCountryCode() {
-        return isForeignAddress(bill.getDebtor());
+        return isForeignAddress(bill.getDebtor(), bill.getFormat());
     }
 
-    private static boolean isForeignAddress(Address address) {
-        return address != null && !"CH".equals(address.getCountryCode());
+    private static boolean isForeignAddress(Address address, BillFormat format) {
+        return address != null && !format.getLocalCountryCode().equals(address.getCountryCode());
     }
 }

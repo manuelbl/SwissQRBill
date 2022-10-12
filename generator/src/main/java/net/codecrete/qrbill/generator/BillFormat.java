@@ -38,6 +38,8 @@ public class BillFormat implements Serializable {
     private double marginLeft = DEFAULT_MARGIN_WIDTH;
     /** Right margin, in mm */
     private double marginRight = DEFAULT_MARGIN_WIDTH;
+    /** ISO country code of local country */
+    private String localCountryCode = "CH";
 
     /**
      * Creates a new instance with default values
@@ -60,6 +62,7 @@ public class BillFormat implements Serializable {
         resolution = format.resolution;
         marginLeft = format.marginLeft;
         marginRight = format.marginRight;
+        localCountryCode = format.localCountryCode;
     }
 
     /**
@@ -284,6 +287,36 @@ public class BillFormat implements Serializable {
     }
 
     /**
+     * Gets the local country code.
+     * <p>
+     * For postal addresses of this country, the country code is omitted. For all other
+     * countries, the country is prepended to the postal code and town.
+     * </p>
+     * <p>
+     * Defaults to "CH".
+     * </p>
+     * @return country code (ISO 3166, two uppercase letters).
+     */
+    public String getLocalCountryCode() {
+        return localCountryCode;
+    }
+
+    /**
+     * Sets the local country code.
+     * <p>
+     * For postal addresses of this country, the country code is omitted. For all other
+     * countries, the country is prepended to the postal code and town.
+     * </p>
+     * <p>
+     * Defaults to "CH".
+     * </p>
+     * @param localCountryCode country code (ISO 3166, two uppercase letters).
+     */
+    public void setLocalCountryCode(String localCountryCode) {
+        this.localCountryCode = localCountryCode;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -298,7 +331,8 @@ public class BillFormat implements Serializable {
                 graphicsFormat == that.graphicsFormat &&
                 resolution == that.resolution &&
                 marginLeft == that.marginLeft &&
-                marginRight == that.marginRight;
+                marginRight == that.marginRight &&
+                Objects.equals(localCountryCode, that.localCountryCode);
     }
 
     /**
@@ -307,7 +341,8 @@ public class BillFormat implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(outputSize, language, separatorType, fontFamily, graphicsFormat);
+        return Objects.hash(outputSize, language, separatorType, fontFamily, graphicsFormat, resolution, marginLeft,
+                marginLeft, localCountryCode);
     }
 
     /**
@@ -324,6 +359,7 @@ public class BillFormat implements Serializable {
                 ", resolution=" + resolution +
                 ", marginLeft=" + marginLeft +
                 ", marginRight=" + marginRight +
+                ", localCountryCode='" + localCountryCode + '\'' +
                 '}';
     }
 }
