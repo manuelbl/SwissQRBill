@@ -41,35 +41,7 @@ public class Strings {
      * @return resulting string with all whitespace removed
      */
     public static String whiteSpaceRemoved(String value) {
-        StringBuilder sb = null;
-        int len = value.length();
-        int lastCopied = 0;
-        for (int i = 0; i < len; i++) {
-            char ch = value.charAt(i);
-            if (ch <= ' ') {
-                if (i > lastCopied) {
-                    if (sb == null)
-                        sb = new StringBuilder();
-                    sb.append(value, lastCopied, i);
-                }
-                lastCopied = i + 1;
-            }
-        }
-
-        if (sb == null) {
-            if (lastCopied == 0)
-                return value;
-
-            if (lastCopied == len)
-                return "";
-
-            return value.substring(lastCopied, len);
-        }
-
-        if (lastCopied < len)
-            sb.append(value, lastCopied, len);
-
-        return sb.toString();
+        return value.replaceAll(" ", "");
     }
 
     /**
