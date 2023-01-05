@@ -41,7 +41,7 @@ public class Strings {
      * @return resulting string with all whitespace removed
      */
     public static String whiteSpaceRemoved(String value) {
-        return value.replaceAll(" ", "");
+        return value.replace(" ", "");
     }
 
     /**
