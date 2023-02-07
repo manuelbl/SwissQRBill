@@ -585,18 +585,17 @@ class BillLayout {
         graphics.strokePath(CORNER_STROKE_WIDTH, 0, Canvas.LineStyle.Solid, false);
     }
 
-    private static final DecimalFormat amountDisplayFormat;
-
-    static {
-        amountDisplayFormat = new DecimalFormat("###,##0.00");
+    private static final ThreadLocal<DecimalFormat> AMOUNT_DISPLAY_FORMAT = ThreadLocal.withInitial(() -> {
+        DecimalFormat format = new DecimalFormat("###,##0.00");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
         symbols.setDecimalSeparator('.');
         symbols.setGroupingSeparator(' ');
-        amountDisplayFormat.setDecimalFormatSymbols(symbols);
-    }
+        format.setDecimalFormatSymbols(symbols);
+        return format;
+    });
 
     private static String formatAmountForDisplay(BigDecimal amount) {
-        return amountDisplayFormat.format(amount);
+        return AMOUNT_DISPLAY_FORMAT.get().format(amount);
     }
 
     private static String formatAddressForDisplay(Address address, boolean withCountryCode) {

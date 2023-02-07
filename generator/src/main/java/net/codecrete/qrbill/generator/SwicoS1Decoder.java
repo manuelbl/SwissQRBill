@@ -245,16 +245,15 @@ public class SwicoS1Decoder {
         }
     }
 
-    private static final DecimalFormat SWICO_NUMBER_FORMAT;
-
-    static {
-        SWICO_NUMBER_FORMAT = new DecimalFormat("0.###", new DecimalFormatSymbols(Locale.UK));
-        SWICO_NUMBER_FORMAT.setParseBigDecimal(true);
-    }
+    private static final ThreadLocal<DecimalFormat> SWICO_NUMBER_FORMAT = ThreadLocal.withInitial(() -> {
+        DecimalFormat format = new DecimalFormat("0.###", new DecimalFormatSymbols(Locale.UK));
+        format.setParseBigDecimal(true);
+        return format;
+    });
 
     private static BigDecimal getDecimalValue(String decimalText) {
         ParsePosition position = new ParsePosition(0);
-        BigDecimal decimal = (BigDecimal) SWICO_NUMBER_FORMAT.parse(decimalText, position);
+        BigDecimal decimal = (BigDecimal) SWICO_NUMBER_FORMAT.get().parse(decimalText, position);
         return (position.getIndex() == decimalText.length()) ? decimal : null;
     }
 

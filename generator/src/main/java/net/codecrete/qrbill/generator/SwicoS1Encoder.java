@@ -95,11 +95,11 @@ class SwicoS1Encoder {
         return date.format(SWICO_DATE_FORMAT);
     }
 
-    private static final DecimalFormat SWICO_NUMBER_FORMAT
-            = new DecimalFormat("0.###", new DecimalFormatSymbols(Locale.UK));
+    private static final ThreadLocal<DecimalFormat> SWICO_NUMBER_FORMAT
+            = ThreadLocal.withInitial(() -> new DecimalFormat("0.###", new DecimalFormatSymbols(Locale.UK)));
 
     private static String s1Number(BigDecimal num) {
-        return SWICO_NUMBER_FORMAT.format(num);
+        return SWICO_NUMBER_FORMAT.get().format(num);
     }
 
     private static void appendRateDetailTupleList(StringBuilder sb, List<RateDetail> list) {
