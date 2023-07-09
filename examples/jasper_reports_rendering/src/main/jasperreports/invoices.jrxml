@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="20" bottomMargin="0" uuid="885f25a8-d4fd-44f8-91cf-3b50c646aecb">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="SampleData"/>
+    <queryString language="csv">
+        <![CDATA[]]>
+    </queryString>
+    <field name="InvoiceNumber" class="java.lang.Integer"/>
+    <field name="QrBillImage" class="net.sf.jasperreports.renderers.Renderable"/>
+    <group name="InvoiceNumber" isStartNewPage="true">
+        <groupExpression><![CDATA[$F{InvoiceNumber}]]></groupExpression>
+    </group>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band splitType="Stretch"/>
+    </title>
+    <pageHeader>
+        <band height="35" splitType="Stretch"/>
+    </pageHeader>
+    <columnHeader>
+        <band splitType="Stretch"/>
+    </columnHeader>
+    <detail>
+        <band height="70" splitType="Stretch">
+            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+            <textField>
+                <reportElement x="20" y="20" width="200" height="40" uuid="c20eef92-09ea-4b24-a7ef-62f8c6e7b5c3"/>
+                <textElement>
+                    <font fontName="Liberation Sans" size="20"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Invoice " + $F{InvoiceNumber}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band height="312" splitType="Prevent">
+            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+            <image evaluationTime="Group" evaluationGroup="InvoiceNumber">
+                <reportElement x="0" y="0" width="595" height="312" uuid="e3fd7a53-f7e9-4556-9d01-a648f4df0c24">
+                    <property name="com.jaspersoft.studio.unit.x" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.y" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <imageExpression><![CDATA[$F{QrBillImage}]]></imageExpression>
+            </image>
+        </band>
+    </pageFooter>
+</jasperReport>

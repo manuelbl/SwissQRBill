@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<fontFamilies>
+
+    <fontFamily name="LiberationSans">
+        <normal>
+            <ttf>fonts/LiberationSans-Regular.ttf</ttf>
+            <pdf>Helvetica</pdf>
+        </normal>
+        <bold>
+            <ttf>fonts/LiberationSans-Bold.ttf</ttf>
+            <pdf>Helvetica-Bold</pdf>
+        </bold>
+        <pdfEncoding>Cp1252</pdfEncoding>
+        <pdfEmbedded>false</pdfEmbedded>
+    </fontFamily>
+
+</fontFamilies>
