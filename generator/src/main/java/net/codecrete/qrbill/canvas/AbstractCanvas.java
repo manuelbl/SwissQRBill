@@ -21,12 +21,12 @@ public abstract class AbstractCanvas implements Canvas {
      */
     protected static final double MM_TO_PT = 72 / 25.4;
 
-    FontMetrics fontMetrics;
+    protected FontMetrics fontMetrics;
 
     /**
      * Initializes the font metrics information for the specified font.
      * <p>
-     * The know font in the specified list of fonts is used.
+     * The first font in the specified list of fonts is used.
      * </p>
      * @param fontFamilyList list of font families
      */
