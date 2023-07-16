@@ -21,6 +21,12 @@ public abstract class AbstractCanvas implements Canvas {
      */
     protected static final double MM_TO_PT = 72 / 25.4;
 
+    /**
+     * Font metrics information.
+     * <p>
+     * Available once {@link #setupFontMetrics(String)} has been called.
+     * </p>
+     */
     protected FontMetrics fontMetrics;
 
     /**
