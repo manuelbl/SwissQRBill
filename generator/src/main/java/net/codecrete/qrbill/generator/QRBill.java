@@ -6,11 +6,7 @@
 //
 package net.codecrete.qrbill.generator;
 
-import net.codecrete.qrbill.canvas.ByteArrayResult;
-import net.codecrete.qrbill.canvas.Canvas;
-import net.codecrete.qrbill.canvas.PDFCanvas;
-import net.codecrete.qrbill.canvas.PNGCanvas;
-import net.codecrete.qrbill.canvas.SVGCanvas;
+import net.codecrete.qrbill.canvas.*;
 
 import java.io.IOException;
 

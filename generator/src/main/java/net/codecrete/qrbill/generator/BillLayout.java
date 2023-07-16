@@ -10,10 +10,6 @@ import net.codecrete.qrbill.canvas.Canvas;
 
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
 
 /**
  * Layouting and drawing of QR bill payment slip
@@ -43,6 +39,8 @@ class BillLayout {
     private final QRCode qrCode;
     private final Canvas graphics;
 
+    private final BillTextFormatter formatter;
+
     private final double additionalLeftMargin;
     private final double additionalRightMargin;
 
@@ -70,6 +68,7 @@ class BillLayout {
         this.bill = bill;
         this.qrCode = new QRCode(bill);
         this.graphics = graphics;
+        this.formatter = new BillTextFormatter(bill, true);
         this.additionalLeftMargin = Math.min(Math.max(bill.getFormat().getMarginLeft(), 5.0), 12.0) - MARGIN;
         this.additionalRightMargin = Math.min(Math.max(bill.getFormat().getMarginRight(), 5.0), 12.0) - MARGIN;
     }
@@ -500,52 +499,18 @@ class BillLayout {
 
     // Prepare the formatted text
     private void prepareText() {
-        String account = Payments.formatIBAN(bill.getAccount());
-        accountPayableTo = account + "\n" + formatAddressForDisplay(bill.getCreditor(), isCreditorWithCountryCode());
-
-        reference = formatReferenceNumber(bill.getReference());
-
-        String info = bill.getUnstructuredMessage();
-        if (bill.getBillInformation() != null) {
-            if (info == null)
-                info = bill.getBillInformation();
-            else
-                info = info + "\n" + bill.getBillInformation();
-        }
-        if (info != null)
-            additionalInfo = info;
-
-        if (bill.getDebtor() != null)
-            payableBy = formatAddressForDisplay(bill.getDebtor(), isDebtorWithCountryCode());
-
-        if (bill.getAmount() != null)
-            amount = formatAmountForDisplay(bill.getAmount());
+        accountPayableTo = formatter.getPayableTo();
+        reference = formatter.getReference();
+        additionalInfo = formatter.getAdditionalInformation();
+        payableBy = formatter.getPayableBy();
+        amount = formatter.getAmount();
     }
 
     private void prepareReducedReceiptText(boolean reduceBoth) {
-        if (reduceBoth) {
-            String account = Payments.formatIBAN(bill.getAccount());
-            accountPayableTo = account + "\n"
-                    + formatAddressForDisplay(createReducedAddress(bill.getCreditor()), isCreditorWithCountryCode());
-        }
+        if (reduceBoth)
+            accountPayableTo = formatter.getPayableToReduced();
 
-        if (bill.getDebtor() != null)
-            payableBy = formatAddressForDisplay(createReducedAddress(bill.getDebtor()), isDebtorWithCountryCode());
-    }
-
-    private Address createReducedAddress(Address address) {
-        // Address without street / house number
-        Address reducedAddress = new Address();
-        reducedAddress.setName(address.getName());
-        reducedAddress.setCountryCode(address.getCountryCode());
-        if (address.getType() == Address.Type.STRUCTURED) {
-            reducedAddress.setPostalCode(address.getPostalCode());
-            reducedAddress.setTown(address.getTown());
-        } else if (address.getType() == Address.Type.COMBINED_ELEMENTS) {
-            reducedAddress.setAddressLine2(address.getAddressLine2());
-        }
-
-        return reducedAddress;
+        payableBy = formatter.getPayableByReduced();
     }
 
     // Prepare the text (by breaking it into lines where necessary)
@@ -585,72 +550,6 @@ class BillLayout {
         graphics.strokePath(CORNER_STROKE_WIDTH, 0, Canvas.LineStyle.Solid, false);
     }
 
-    private static final ThreadLocal<DecimalFormat> AMOUNT_DISPLAY_FORMAT = ThreadLocal.withInitial(() -> {
-        DecimalFormat format = new DecimalFormat("###,##0.00");
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-        symbols.setDecimalSeparator('.');
-        symbols.setGroupingSeparator(' ');
-        format.setDecimalFormatSymbols(symbols);
-        return format;
-    });
-
-    private static String formatAmountForDisplay(BigDecimal amount) {
-        return AMOUNT_DISPLAY_FORMAT.get().format(amount);
-    }
-
-    private static String formatAddressForDisplay(Address address, boolean withCountryCode) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(address.getName());
-
-        if (address.getType() == Address.Type.STRUCTURED) {
-            String street = address.getStreet();
-            if (street != null) {
-                sb.append("\n");
-                sb.append(street);
-            }
-            String houseNo = address.getHouseNo();
-            if (houseNo != null) {
-                sb.append(street != null ? " " : "\n");
-                sb.append(houseNo);
-            }
-            sb.append("\n");
-            if (withCountryCode) {
-                sb.append(address.getCountryCode());
-                sb.append(" – ");
-            }
-            sb.append(address.getPostalCode());
-            sb.append(" ");
-            sb.append(address.getTown());
-
-        } else if (address.getType() == Address.Type.COMBINED_ELEMENTS) {
-            if (address.getAddressLine1() != null) {
-                sb.append("\n");
-                sb.append(address.getAddressLine1());
-            }
-            sb.append("\n");
-            if (withCountryCode) {
-                sb.append(address.getCountryCode());
-                sb.append(" – ");
-            }
-            sb.append(address.getAddressLine2());
-        }
-        return sb.toString();
-    }
-
-    private static String formatReferenceNumber(String refNo) {
-        if (refNo == null)
-            return null;
-        refNo = refNo.trim();
-        int len = refNo.length();
-        if (len == 0)
-            return null;
-        if (refNo.startsWith("RF"))
-            // same format as IBAN
-            return Payments.formatIBAN(refNo);
-
-        return Payments.formatQRReferenceNumber(refNo);
-    }
-
     private String truncateText(String text, double maxWidth, int fontSize) {
 
         final double ELLIPSIS_WIDTH = 0.3528; // mm * font size
@@ -664,19 +563,5 @@ class BillLayout {
 
     private String getText(String textKey) {
         return MultilingualText.getText(textKey, bill.getFormat().getLanguage());
-    }
-
-
-    private boolean isCreditorWithCountryCode() {
-        // The creditor country code is even shown for a Swiss address if the debtor lives abroad
-        return isForeignAddress(bill.getCreditor(), bill.getFormat()) || isForeignAddress(bill.getDebtor(), bill.getFormat());
-    }
-
-    private boolean isDebtorWithCountryCode() {
-        return isForeignAddress(bill.getDebtor(), bill.getFormat());
-    }
-
-    private static boolean isForeignAddress(Address address, BillFormat format) {
-        return address != null && !format.getLocalCountryCode().equals(address.getCountryCode());
     }
 }
