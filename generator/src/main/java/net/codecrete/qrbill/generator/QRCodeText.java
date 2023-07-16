@@ -102,17 +102,17 @@ public class QRCodeText {
         textBuilder.append('\n').append(value);
     }
 
-    private static final ThreadLocal<DecimalFormat> AMOUNT_FIELD_FORMAT = ThreadLocal.withInitial(() -> {
+    private static DecimalFormat createAmountFormatter() {
         DecimalFormat format = new DecimalFormat("0.00");
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
         symbols.setDecimalSeparator('.');
         format.setDecimalFormatSymbols(symbols);
         format.setParseBigDecimal(true);
         return format;
-    });
+    }
 
     private static String formatAmountForCode(BigDecimal amount) {
-        return AMOUNT_FIELD_FORMAT.get().format(amount);
+        return createAmountFormatter().format(amount);
     }
 
     // According to a letter from SIX dated August 5, 2020, only the major number (leading "02") should be checked
@@ -156,7 +156,7 @@ public class QRCodeText {
 
         if (lines[18].length() > 0) {
             ParsePosition position = new ParsePosition(0);
-            BigDecimal amount = (BigDecimal) AMOUNT_FIELD_FORMAT.get().parse(lines[18], position);
+            BigDecimal amount = (BigDecimal) createAmountFormatter().parse(lines[18], position);
             if (position.getIndex() == lines[18].length())
                 bill.setAmount(amount);
             else

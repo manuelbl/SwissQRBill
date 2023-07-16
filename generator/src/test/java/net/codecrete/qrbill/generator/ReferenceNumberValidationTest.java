@@ -10,6 +10,8 @@ package net.codecrete.qrbill.generator;
 import net.codecrete.qrbill.testhelper.SampleData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -67,26 +69,11 @@ class ReferenceNumberValidationTest extends BillDataValidationBase {
         assertNull(validatedBill.getReference());
     }
 
-    @Test
-    void invalidRef_refIsValidErr() {
+    @ParameterizedTest
+    @ValueSource(strings = {"ABC", "1234567890", "123ABC7890"})
+    void invalidRef_refIsValidErr(String invalidReference) {
         bill = SampleData.getExample1();
-        bill.setReference("ABC");
-        validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_REF_INVALID);
-    }
-
-    @Test
-    void invalidNumericRef_refIsValidErr() {
-        bill = SampleData.getExample1();
-        bill.setReference("1234567890");
-        validate();
-        assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_REF_INVALID);
-    }
-
-    @Test
-    void invalidAlphaNumericRef_refIsValidErr() {
-        bill = SampleData.getExample1();
-        bill.setReference("123ABC7890");
+        bill.setReference(invalidReference);
         validate();
         assertSingleErrorMessage(ValidationConstants.FIELD_REFERENCE, ValidationConstants.KEY_REF_INVALID);
     }

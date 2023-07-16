@@ -15,15 +15,6 @@ import java.util.Locale;
  */
 public class BillTextFormatter {
 
-    private static final ThreadLocal<DecimalFormat> AMOUNT_DISPLAY_FORMAT = ThreadLocal.withInitial(() -> {
-        DecimalFormat format = new DecimalFormat("###,##0.00");
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-        symbols.setDecimalSeparator('.');
-        symbols.setGroupingSeparator(' ');
-        format.setDecimalFormatSymbols(symbols);
-        return format;
-    });
-
     private final Bill bill;
 
     /**
@@ -168,7 +159,7 @@ public class BillTextFormatter {
     }
 
     private static String formatAmountForDisplay(BigDecimal amount) {
-        return AMOUNT_DISPLAY_FORMAT.get().format(amount);
+        return createAmountFormatter().format(amount);
     }
 
     private static String formatAddressForDisplay(Address address, boolean withCountryCode) {
@@ -251,4 +242,14 @@ public class BillTextFormatter {
 
         return reducedAddress;
     }
+
+    private static DecimalFormat createAmountFormatter() {
+        DecimalFormat format = new DecimalFormat("###,##0.00");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        symbols.setDecimalSeparator('.');
+        symbols.setGroupingSeparator(' ');
+        format.setDecimalFormatSymbols(symbols);
+        return format;
+    }
+
 }

@@ -27,6 +27,9 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
     private double lastPositionY;
     private StringBuilder path;
     private int approxPathLength;
+    private final DecimalFormat numberFormat = new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.UK));
+
+    private final DecimalFormat angleFormat = new DecimalFormat("#.#####", new DecimalFormatSymbols(Locale.UK));
 
     /**
      * Creates a new instance of the specified size.
@@ -235,7 +238,7 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
             stream.write(formatCoordinate(-translateY));
             if (rotate != 0) {
                 stream.write(") rotate(");
-                stream.write(ANGLE_FORMAT.get().format(-rotate / Math.PI * 180));
+                stream.write(angleFormat.format(-rotate / Math.PI * 180));
             }
             if (scaleX != 1 || scaleY != 1) {
                 stream.write(") scale(");
@@ -280,18 +283,12 @@ public class SVGCanvas extends AbstractCanvas implements ByteArrayResult {
         }
     }
 
-    private static final ThreadLocal<DecimalFormat> NUMBER_FORMAT
-            = ThreadLocal.withInitial(() -> new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.UK)));
-
-    private static final ThreadLocal<DecimalFormat> ANGLE_FORMAT
-            = ThreadLocal.withInitial(() -> new DecimalFormat("#.#####", new DecimalFormatSymbols(Locale.UK)));
-
-    private static String formatNumber(double value) {
-        return NUMBER_FORMAT.get().format(value);
+    private String formatNumber(double value) {
+        return numberFormat.format(value);
     }
 
-    private static String formatCoordinate(double value) {
-        return NUMBER_FORMAT.get().format(value * MM_TO_PT);
+    private String formatCoordinate(double value) {
+        return numberFormat.format(value * MM_TO_PT);
     }
 
     private static String formatColor(int color) {

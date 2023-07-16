@@ -6,15 +6,6 @@
 //
 
 package net.codecrete.qrbill.generator;
-/// <summary>
-/// Decodes structured bill information according to Swico S1 syntax.
-/// <para>
-/// The encoded bill information can be found in a Swiss QR bill in th field <c>StrdBkgInf</c>.
-/// </para>
-/// <para>
-/// Also see http://swiss-qr-invoice.org/downloads/qr-bill-s1-syntax-de.pdf
-/// </para>
-/// </summary>
 
 import net.codecrete.qrbill.generator.SwicoBillInformation.PaymentCondition;
 import net.codecrete.qrbill.generator.SwicoBillInformation.RateDetail;
@@ -22,6 +13,7 @@ import net.codecrete.qrbill.generator.SwicoBillInformation.RateDetail;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -58,8 +50,10 @@ public class SwicoS1Decoder {
     private static final int PAYMENT_CONDITIONS_TAG = 40;
 
 
+    private NumberFormat numberFormat;
+
+
     private SwicoS1Decoder() {
-        // don't instantiate
     }
 
     /**
@@ -72,6 +66,10 @@ public class SwicoS1Decoder {
      * @return the decoded bill information (or {@code null} if no valid Swico bill information is found)
      */
     static SwicoBillInformation decode(String billInfoText) {
+        return new SwicoS1Decoder().decodeIt(billInfoText);
+    }
+
+    private SwicoBillInformation decodeIt(String billInfoText) {
         if (billInfoText == null || !billInfoText.startsWith("//S1/"))
             return null;
 
@@ -98,7 +96,7 @@ public class SwicoS1Decoder {
         return billInformation;
     }
 
-    private static void decodeElement(SwicoBillInformation billInformation, int tag, String value) {
+    private void decodeElement(SwicoBillInformation billInformation, int tag, String value) {
         if (value.length() == 0)
             return;
 
@@ -156,7 +154,7 @@ public class SwicoS1Decoder {
         }
     }
 
-    private static void setVatRateDetails(SwicoBillInformation billInformation, String value) {
+    private void setVatRateDetails(SwicoBillInformation billInformation, String value) {
         // Test for single VAT rate vs list of tuples
         if (!value.contains(":") && !value.contains(";")) {
             billInformation.setVatRate(getDecimalValue(value));
@@ -167,7 +165,7 @@ public class SwicoS1Decoder {
         }
     }
 
-    private static void setPaymentConditions(SwicoBillInformation billInformation, String value) {
+    private void setPaymentConditions(SwicoBillInformation billInformation, String value) {
         // Split into tuples
         String[] tuples = value.split(";");
 
@@ -188,7 +186,7 @@ public class SwicoS1Decoder {
             billInformation.setPaymentConditions(list);
     }
 
-    private static List<RateDetail> parseDetailList(String text) {
+    private List<RateDetail> parseDetailList(String text) {
         // Split into tuples
         String[] tuples = text.split(";");
 
@@ -245,15 +243,15 @@ public class SwicoS1Decoder {
         }
     }
 
-    private static final ThreadLocal<DecimalFormat> SWICO_NUMBER_FORMAT = ThreadLocal.withInitial(() -> {
-        DecimalFormat format = new DecimalFormat("0.###", new DecimalFormatSymbols(Locale.UK));
-        format.setParseBigDecimal(true);
-        return format;
-    });
+    private BigDecimal getDecimalValue(String decimalText) {
+        if (numberFormat == null) {
+            DecimalFormat format = new DecimalFormat("0.###", new DecimalFormatSymbols(Locale.UK));
+            format.setParseBigDecimal(true);
+            numberFormat = format;
+        }
 
-    private static BigDecimal getDecimalValue(String decimalText) {
         ParsePosition position = new ParsePosition(0);
-        BigDecimal decimal = (BigDecimal) SWICO_NUMBER_FORMAT.get().parse(decimalText, position);
+        BigDecimal decimal = (BigDecimal) numberFormat.parse(decimalText, position);
         return (position.getIndex() == decimalText.length()) ? decimal : null;
     }
 

@@ -30,8 +30,9 @@ import java.util.Locale;
  */
 class SwicoS1Encoder {
 
+    private DecimalFormat numberFormat;
+
     private SwicoS1Encoder() {
-        // may not instantiate
     }
 
     /**
@@ -41,6 +42,10 @@ class SwicoS1Encoder {
      * @return encoded bill information text
      */
     static String encode(SwicoBillInformation billInfo) {
+        return new SwicoS1Encoder().encodeIt(billInfo);
+    }
+
+    private String encodeIt(SwicoBillInformation billInfo) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("//S1");
@@ -88,21 +93,17 @@ class SwicoS1Encoder {
         return text.replace("\\", "\\\\").replace("/", "\\/");
     }
 
-    private static final DateTimeFormatter SWICO_DATE_FORMAT
-            = DateTimeFormatter.ofPattern("yyMMdd", Locale.UK);
-
     private static String s1Date(LocalDate date) {
-        return date.format(SWICO_DATE_FORMAT);
+        return date.format(DATE_FORMAT);
     }
 
-    private static final ThreadLocal<DecimalFormat> SWICO_NUMBER_FORMAT
-            = ThreadLocal.withInitial(() -> new DecimalFormat("0.###", new DecimalFormatSymbols(Locale.UK)));
-
-    private static String s1Number(BigDecimal num) {
-        return SWICO_NUMBER_FORMAT.get().format(num);
+    private String s1Number(BigDecimal num) {
+        if (numberFormat == null)
+            numberFormat = new DecimalFormat("0.###", new DecimalFormatSymbols(Locale.UK));
+        return numberFormat.format(num);
     }
 
-    private static void appendRateDetailTupleList(StringBuilder sb, List<RateDetail> list) {
+    private void appendRateDetailTupleList(StringBuilder sb, List<RateDetail> list) {
         boolean isFirst = true;
         for (RateDetail e : list) {
             if (!isFirst)
@@ -113,7 +114,7 @@ class SwicoS1Encoder {
         }
     }
 
-    private static void appendConditionTupleList(StringBuilder sb, List<PaymentCondition> list) {
+    private void appendConditionTupleList(StringBuilder sb, List<PaymentCondition> list) {
         boolean isFirst = true;
         for (PaymentCondition e : list) {
             if (!isFirst)
@@ -123,4 +124,6 @@ class SwicoS1Encoder {
             sb.append(s1Number(e.getDiscount())).append(":").append(e.getDays());
         }
     }
+
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyMMdd", Locale.UK);
 }
