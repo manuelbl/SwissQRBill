@@ -17,6 +17,7 @@ import org.apache.pdfbox.util.Matrix;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -48,7 +49,6 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
     private int lastNonStrokingColor = 0;
     private double lastLineWidth = 1;
     private LineStyle lastLineStyle = LineStyle.Solid;
-    private boolean hasSavedGraphicsState = false;
 
     /**
      * Creates a new instance using the specified page size.
@@ -75,6 +75,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
         document.addPage(page);
         contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.OVERWRITE, true);
         isContentStreamOwned = true;
+        initGraphicsState();
     }
 
     /**
@@ -104,6 +105,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
         document = PDDocument.load(Files.newInputStream(path));
         preparePage(document, pageNo);
         isContentStreamOwned = true;
+        initGraphicsState();
     }
 
     /**
@@ -133,6 +135,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
         document = PDDocument.load(pdfDocument);
         preparePage(document, pageNo);
         isContentStreamOwned = true;
+        initGraphicsState();
     }
 
     /**
@@ -163,6 +166,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
         setupFontMetrics(PDF_FONT);
         preparePage(pdfDocument, pageNo);
         isContentStreamOwned = true;
+        initGraphicsState();
     }
 
     /**
@@ -186,6 +190,12 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
         setupFontMetrics(PDF_FONT);
         this.contentStream = contentStream;
         isContentStreamOwned = false;
+        try {
+            initGraphicsState();
+        } catch (IOException e) {
+            // should add throws IOException to constructor in next major release
+            throw new UncheckedIOException(e);
+        }
     }
 
     private void preparePage(PDDocument doc, int pageNo) throws IOException {
@@ -200,20 +210,36 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
         }
     }
 
+    private void initGraphicsState() throws IOException {
+        if (!isContentStreamOwned) {
+            // save initial graphics state to restore it after drawing
+            // (not needed if the content stream is owned as it will be closed)
+            contentStream.saveGraphicsState();
+
+            // set default graphics state
+            contentStream.setStrokingColor(0.0f, 0.0f, 0.0f);
+            contentStream.setNonStrokingColor(0.0f, 0.0f, 0.0f);
+            contentStream.setLineWidth(1);
+            contentStream.setLineJoinStyle(0);
+            contentStream.setLineCapStyle(0);
+            contentStream.setLineDashPattern(new float[0], 0);
+            contentStream.setMiterLimit(10);
+        }
+
+        contentStream.saveGraphicsState();
+    }
+
     @Override
     public void setTransformation(double translateX, double translateY, double rotate, double scaleX, double scaleY) throws IOException {
         translateX *= MM_TO_PT;
         translateY *= MM_TO_PT;
 
-        if (hasSavedGraphicsState) {
-            contentStream.restoreGraphicsState();
-            lastStrokingColor = 0;
-            lastNonStrokingColor = 0;
-            lastLineWidth = 1;
-        }
+        contentStream.restoreGraphicsState();
+        lastStrokingColor = 0;
+        lastNonStrokingColor = 0;
+        lastLineWidth = 1;
 
         contentStream.saveGraphicsState();
-        hasSavedGraphicsState = true;
         Matrix matrix = new Matrix();
         matrix.translate((float) translateX, (float) translateY);
         if (rotate != 0) matrix.rotate(rotate);
@@ -416,9 +442,14 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
 
     private void closeContentStream() throws IOException {
         if (contentStream != null) {
+            contentStream.restoreGraphicsState();
+
             if (isContentStreamOwned) {
                 contentStream.close();
-            } else if (hasSavedGraphicsState) {
+            } else {
+                // restore to default state
+                contentStream.restoreGraphicsState();
+                // restore to state before creating this instance
                 contentStream.restoreGraphicsState();
             }
             contentStream = null;
