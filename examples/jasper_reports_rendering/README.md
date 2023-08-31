@@ -36,7 +36,7 @@ $ mvn clean package exec:java
 [INFO] Scanning for projects...
 [INFO] 
 [INFO] -----------< net.codecrete.qrbill:jasper-reports-rendering >------------
-[INFO] Building Jasper Reports Rendering 3.1.0
+[INFO] Building Jasper Reports Rendering 3.1.1
 [INFO]   from pom.xml
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
@@ -65,7 +65,7 @@ $ mvn clean package exec:java
 [INFO] No tests to run.
 [INFO] 
 [INFO] --- jar:3.0.2:jar (default-jar) @ jasper-reports-rendering ---
-[INFO] Building jar: /Users/me/Documents/SwissQRBill/examples/jasper_reports_rendering/target/jasper-reports-rendering-3.1.0.jar
+[INFO] Building jar: /Users/me/Documents/SwissQRBill/examples/jasper_reports_rendering/target/jasper-reports-rendering-3.1.1.jar
 [INFO] 
 [INFO] --- exec:3.0.0:java (default-cli) @ jasper-reports-rendering ---
 119077 bytes written to invoices.pdf.

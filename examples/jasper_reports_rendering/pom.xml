@@ -6,7 +6,7 @@
 
   <groupId>net.codecrete.qrbill</groupId>
   <artifactId>jasper-reports-rendering</artifactId>
-  <version>3.1.0</version>
+  <version>3.1.1</version>
 
   <name>Jasper Reports Rendering</name>
   <description>Demo application using Jasper Reports to generate QR bills.</description>
@@ -32,7 +32,7 @@
     <dependency>
       <groupId>net.codecrete.qrbill</groupId>
       <artifactId>qrbill-generator</artifactId>
-      <version>3.1.0</version>
+      <version>3.1.1</version>
     </dependency>
   </dependencies>
 
