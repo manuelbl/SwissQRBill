@@ -14,12 +14,13 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.util.Matrix;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UncheckedIOException;
+import java.io.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.function.Function;
 
 /**
  * Canvas for generating PDF files.
@@ -41,6 +42,11 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
 
     private static final String PDF_FONT = "Helvetica";
 
+    private static PDType1Font regularFont;
+    private static PDType1Font boldFont;
+    private static Function<Path, PDDocument> createDocumentFromPath;
+    private static Function<byte[], PDDocument> createDocumentFromBytes;
+
 
     private PDDocument document;
     private PDPageContentStream contentStream;
@@ -49,6 +55,10 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
     private int lastNonStrokingColor = 0;
     private double lastLineWidth = 1;
     private LineStyle lastLineStyle = LineStyle.Solid;
+
+    static {
+        initPdfBox();
+    }
 
     /**
      * Creates a new instance using the specified page size.
@@ -102,7 +112,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
      */
     public PDFCanvas(Path path, int pageNo) throws IOException {
         setupFontMetrics(PDF_FONT);
-        document = PDDocument.load(Files.newInputStream(path));
+        document = createDocumentFromPath.apply(path);
         preparePage(document, pageNo);
         isContentStreamOwned = true;
         initGraphicsState();
@@ -132,7 +142,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
      */
     public PDFCanvas(byte[] pdfDocument, int pageNo) throws IOException {
         setupFontMetrics(PDF_FONT);
-        document = PDDocument.load(pdfDocument);
+        document = createDocumentFromBytes.apply(pdfDocument);
         preparePage(document, pageNo);
         isContentStreamOwned = true;
         initGraphicsState();
@@ -229,6 +239,99 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
         contentStream.saveGraphicsState();
     }
 
+    private static void initPdfBox() {
+        // use reflection to load PDFBox elements differing between 2.0 and 3.0
+
+        // try PDFBox 3.0 first, then PDFBox 2.0
+        String pdfBox3ErrorMessage = loadPdfBox3Functions();
+        String pdfBox2ErrorMessage = null;
+        if (pdfBox3ErrorMessage != null)
+            pdfBox2ErrorMessage = loadPdfBox2Fonts();
+
+        if (pdfBox3ErrorMessage != null && pdfBox2ErrorMessage != null) {
+            throw new IllegalStateException(String.format("Unable to load PDFBox 3.0 or 2.0: %s, %s",
+                    pdfBox2ErrorMessage, pdfBox3ErrorMessage));
+        }
+    }
+
+    @SuppressWarnings({"java:S1872", "java:S1192", "JavaReflectionMemberAccess"})
+    private static String loadPdfBox3Functions() {
+        try {
+            Class<?> standard14FontsClass = Class.forName("org.apache.pdfbox.pdmodel.font.Standard14Fonts");
+            Class<?> fontNameClass = null;
+            for (Class<?> innerClass : standard14FontsClass.getDeclaredClasses()) {
+                if ("FontName".equals(innerClass.getSimpleName())) {
+                    fontNameClass = innerClass;
+                    break;
+                }
+            }
+            if (fontNameClass == null)
+                return "org.apache.pdfbox.pdmodel.font.Standard14Fonts$FontName not found";
+
+            Constructor<?> pdType1FontClassConstructor = PDType1Font.class.getConstructor(fontNameClass);
+            PDType1Font helveticaFont = null;
+            PDType1Font helveticaBoldFont = null;
+            for (Object enumValue : fontNameClass.getEnumConstants()) {
+                if ("Helvetica".equals(enumValue.toString())) {
+                    helveticaFont = (PDType1Font) pdType1FontClassConstructor.newInstance(enumValue);
+                } else if ("Helvetica-Bold".equals(enumValue.toString())) {
+                    helveticaBoldFont = (PDType1Font) pdType1FontClassConstructor.newInstance(enumValue);
+                }
+            }
+
+            if (helveticaFont == null)
+                return "org.apache.pdfbox.pdmodel.font.Standard14Fonts$FontName.HELVETICA not found";
+            if (helveticaBoldFont == null)
+                return "org.apache.pdfbox.pdmodel.font.Standard14Fonts$FontName.HELVETICA_BOLD not found";
+
+            Class<?> loaderClass = Class.forName("org.apache.pdfbox.Loader");
+            Method loadPdfFromFile = loaderClass.getMethod("loadPDF", File.class);
+            Method loadPdfFromBytes = loaderClass.getMethod("loadPDF", byte[].class);
+
+            regularFont = helveticaFont;
+            boldFont = helveticaBoldFont;
+            setupDocumentCreationLambdas(loadPdfFromFile, loadPdfFromBytes);
+            return null;
+
+        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
+            return e.getMessage();
+        }
+    }
+
+    private static synchronized String loadPdfBox2Fonts() {
+        try {
+            regularFont = (PDType1Font) PDType1Font.class.getField("HELVETICA").get(null);
+            boldFont = (PDType1Font) PDType1Font.class.getField("HELVETICA_BOLD").get(null);
+
+            Method loadPdfFromFile = PDDocument.class.getMethod("load", File.class);
+            Method loadPdfFromBytes = PDDocument.class.getMethod("load", byte[].class);
+            setupDocumentCreationLambdas(loadPdfFromFile, loadPdfFromBytes);
+            return null;
+
+        } catch (NoSuchMethodException | IllegalAccessException | NoSuchFieldException e) {
+            return e.getMessage();
+        }
+    }
+
+    private static void setupDocumentCreationLambdas(Method loadPdfFromFile, Method loadPdfFromBytes) {
+        createDocumentFromPath = path -> {
+            try {
+                return (PDDocument) loadPdfFromFile.invoke(null, path.toFile());
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new IllegalStateException("Failed to invoke org.apache.pdfbox.Loader.loadPDF(java.io.File)", e);
+            }
+        };
+        createDocumentFromBytes = bytes -> {
+            try {
+                //noinspection PrimitiveArrayArgumentToVarargsMethod
+                return (PDDocument) loadPdfFromBytes.invoke(null, bytes);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new IllegalStateException("Failed to invoke org.apache.pdfbox.Loader.loadPDF(byte[])", e);
+            }
+        };
+    }
+
     @Override
     public void setTransformation(double translateX, double translateY, double rotate, double scaleX, double scaleY) throws IOException {
         translateX *= MM_TO_PT;
@@ -251,7 +354,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
     public void putText(String text, double x, double y, int fontSize, boolean isBold) throws IOException {
         x *= MM_TO_PT;
         y *= MM_TO_PT;
-        contentStream.setFont(isBold ? PDType1Font.HELVETICA_BOLD : PDType1Font.HELVETICA, fontSize);
+        contentStream.setFont(isBold ? boldFont : regularFont, fontSize);
         contentStream.beginText();
         contentStream.newLineAtOffset((float) x, (float) y);
         contentStream.showText(text);
@@ -263,7 +366,7 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
         x *= MM_TO_PT;
         y *= MM_TO_PT;
         float lineHeight = (float) ((fontMetrics.getLineHeight(fontSize) + leading) * MM_TO_PT);
-        contentStream.setFont(PDType1Font.HELVETICA, fontSize);
+        contentStream.setFont(regularFont, fontSize);
         contentStream.beginText();
         contentStream.newLineAtOffset((float) x, (float) y);
         boolean isFirstLine = true;

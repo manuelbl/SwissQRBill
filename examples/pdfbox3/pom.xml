@@ -8,7 +8,7 @@
     <artifactId>maven-example</artifactId>
     <packaging>jar</packaging>
     <version>3.2.0</version>
-    <name>QR Bill Maven Example</name>
+    <name>Example using PDFBox 3.0</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,7 +18,12 @@
         <dependency>
             <groupId>net.codecrete.qrbill</groupId>
             <artifactId>qrbill-generator</artifactId>
-            <version>[3.0.0,3.999999]</version>
+            <version>[3.2.0,3.999999]</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>3.0.0</version>
         </dependency>
     </dependencies>
 

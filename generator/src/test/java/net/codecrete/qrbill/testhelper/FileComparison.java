@@ -126,16 +126,15 @@ public class FileComparison {
     }
 
     private static void clearPdfID(byte[] pdfData) {
-        int len = pdfData.length;
-        int offset = Math.max(len - 128, 0);
-        while (offset < len - 74) {
+        int offset = pdfData.length - 74;
+        while (offset > 0) {
             if (pdfData[offset] == '/' && pdfData[offset + 1] == 'I' && pdfData[offset + 2] == 'D'
                     && pdfData[offset + 3] == ' ' && pdfData[offset + 4] == '[' && pdfData[offset + 5] == '<') {
                 for (int i = offset + 6; i < offset + 73; i++)
                     pdfData[i] = '0';
                 return;
             }
-            offset++;
+            offset--;
         }
 
         throw new AssertionError("PDF ID not found");

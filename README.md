@@ -10,7 +10,7 @@ This library implements version 2.1 of the *Swiss Implementation Guidelines QR-b
 
 ## Introduction
 
-The Swiss QR bill is the new QR code based payment format that started on 30 June, 2020. The old payment slip will no longer be accepted after 30 September 2022.
+The Swiss QR bill is the new QR code based payment format that started on 30 June, 2020. The old payment slip is no longer accepted.
 
 The new payment slip will be sent electronically in most cases. But it can still be printed at the bottom of an invoice or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app to initiate the payment. The payment just needs to be confirmed.
 
@@ -131,6 +131,25 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
 ## More information
 
 More information can be found in the [Wiki](https://github.com/manuelbl/SwissQRBill/wiki). It's the joint Wiki for the .NET and the Java version.
+
+## PDF generation with Apache PDFBox
+
+For generating QR bills as PDF, [Apache PDFBox](https://pdfbox.apache.org/) is used. This library is built and tested with version 2 of PDFBox. While this is still the most popular version in use, version 3.0 has been released. It is a major version and includes breaking changes.
+
+This library is compatible with both versions. It uses reflection to deal with incompatible differences.
+
+If you want to use version 3 instead of the default version 2, you need to add the following explicit dependency to your project (for Maven):
+
+```xml
+<dependency>
+    <groupId>org.apache.pdfbox</groupId>
+    <artifactId>pdfbox</artifactId>
+    <version>3.0.0</version>
+</dependency>
+```
+
+
+Also see the [PDFBox 3.0 example](https://github.com/manuelbl/SwissQRBill/examples/pdfbox3).
 
 ## QR Code
 
