@@ -6,9 +6,11 @@
 //
 package net.codecrete.qrbill.examples;
 
+import net.codecrete.qrbill.canvas.PDFCanvas;
 import net.codecrete.qrbill.generator.*;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,7 +24,7 @@ import java.nio.file.Paths;
  */
 public class QRBillExample {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, URISyntaxException {
 
         // Setup bill
         Bill bill = new Bill();
@@ -57,18 +59,30 @@ public class QRBillExample {
         format.setLanguage(Language.DE);
         bill.setFormat(format);
 
-        // Generate QR bill
+        // Generate new PDF with QR bill
         byte[] svg = QRBill.generate(bill);
+        Path path0 = Paths.get("invoice-0.pdf");
+        Files.write(path0, svg);
+        System.out.println("QR bill saved at " + path0.toAbsolutePath());
 
-        // Save QR bill
-        Path path = Paths.get("qrbill.pdf");
-        try {
-            Files.write(path, svg);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        // Load existing PDF
+        Path invoiceWithoutQRBill = Paths.get(QRBillExample.class.getResource("/invoice.pdf").toURI());
+
+        // Add QR bill to last page
+        try (PDFCanvas canvas = new PDFCanvas(invoiceWithoutQRBill, PDFCanvas.LAST_PAGE)) {
+            QRBill.draw(bill, canvas);
+            Path path = Paths.get("invoice-1.pdf");
+            canvas.saveAs(path);
+            System.out.println("Invoice 1 saved at " + path.toAbsolutePath());
         }
 
-        System.out.println("QR bill saved at " + path.toAbsolutePath());
+        // Append QR bill to a new page
+        try (PDFCanvas canvas = new PDFCanvas(invoiceWithoutQRBill, PDFCanvas.NEW_PAGE_AT_END)) {
+            QRBill.draw(bill, canvas);
+            Path path = Paths.get("invoice-2.pdf");
+            canvas.saveAs(path);
+            System.out.println("Invoice 2 saved at " + path.toAbsolutePath());
+        }
 
         System.out.println("Generated with version " + QRBill.getLibraryVersion());
     }
