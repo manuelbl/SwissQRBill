@@ -403,7 +403,7 @@ class Validator {
 
     private String cleanedValue(String value, String fieldRoot, String subfield) {
         CleaningResult result = new CleaningResult();
-        Payments.cleanValue(value, result);
+        Payments.cleanText(value, true, result);
         if (result.replacedUnsupportedChars)
             validationResult.addMessage(Type.WARNING, fieldRoot + subfield, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         return result.cleanedString;
@@ -411,7 +411,7 @@ class Validator {
 
     private String cleanedValue(String value, String fieldName) {
         CleaningResult result = new CleaningResult();
-        Payments.cleanValue(value, result);
+        Payments.cleanText(value, true, result);
         if (result.replacedUnsupportedChars)
             validationResult.addMessage(Type.WARNING, fieldName, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         return result.cleanedString;

@@ -29,7 +29,7 @@ public class Strings {
         if (value == null)
             return null;
         value = value.trim();
-        if (value.length() == 0)
+        if (value.isEmpty())
             return null;
         return value;
     }
@@ -37,7 +37,7 @@ public class Strings {
     /**
      * Returns string without white space
      *
-     * @param value string to process (non null)
+     * @param value string to process (non-null)
      * @return resulting string with all whitespace removed
      */
     public static String whiteSpaceRemoved(String value) {
@@ -54,6 +54,38 @@ public class Strings {
      * @return boolean indicating if string is null or empty
      */
     public static boolean isNullOrEmpty(String value) {
-        return value == null || value.trim().length() == 0;
+        return value == null || value.trim().isEmpty();
+    }
+
+    /**
+     * Returns a string without leading and trailing spaces and with all
+     * consecutive space characters replaced by a single space.
+     * <p>
+     * Whitespace other than space characters are not cleaned.
+     * </p>
+     *
+     * @param value string to clean (non-null)
+     * @return cleaned string
+     */
+    public static String spacesCleaned(String value) {
+        value = value.trim();
+
+        int len = value.length();
+        boolean inWhitespace = false;
+        StringBuilder sb = null;
+
+        for (int i = 0; i < len; i += 1) {
+            char ch = value.charAt(i);
+            if (ch == ' ' && inWhitespace && sb == null) {
+                sb = new StringBuilder(value.length());
+                sb.append(value, 0, i);
+            } else if (ch != ' ' || !inWhitespace) {
+                inWhitespace = ch == ' ';
+                if (sb != null)
+                    sb.append(ch);
+            }
+        }
+
+        return sb != null ? sb.toString() : value;
     }
 }
