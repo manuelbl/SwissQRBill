@@ -20,10 +20,13 @@ import java.util.regex.Pattern;
 public class QRCodeText {
 
     private final Bill bill;
-    private StringBuilder textBuilder;
+    private final StringBuilder textBuilder;
+    private final String dataSeparator;
 
     private QRCodeText(Bill bill) {
         this.bill = bill;
+        textBuilder = new StringBuilder();
+        dataSeparator = bill.getFormat().getQrDataSeparator() == QrDataSeparator.CR_LF ? "\r\n" : "\n";
     }
 
     /**
@@ -39,17 +42,15 @@ public class QRCodeText {
     }
 
     private String createText() {
-        textBuilder = new StringBuilder();
-
         // Header
-        textBuilder.append("SPC\n"); // QRType
-        textBuilder.append("0200\n"); // Version
-        textBuilder.append("1"); // Coding
+        textBuilder.append("SPC"); // QRType
+        appendDataField("0200"); // Version
+        appendDataField("1"); // Coding
 
         // CdtrInf
         appendDataField(bill.getAccount()); // IBAN
         appendPerson(bill.getCreditor()); // Cdtr
-        textBuilder.append("\n\n\n\n\n\n\n"); // UltmtCdtr
+        appendPerson(null); // UltmtCdtr
 
         // CcyAmt
         appendDataField(bill.getAmount() == null ? "" : formatAmountForCode(bill.getAmount())); // Amt
@@ -91,7 +92,8 @@ public class QRCodeText {
             appendDataField(address.getTown()); // TwnNm
             appendDataField(address.getCountryCode()); // Ctry
         } else {
-            textBuilder.append("\n\n\n\n\n\n\n");
+            for (int i = 0; i < 7; i++)
+                appendDataField(null);
         }
     }
 
@@ -99,7 +101,7 @@ public class QRCodeText {
         if (value == null)
             value = "";
 
-        textBuilder.append('\n').append(value);
+        textBuilder.append(dataSeparator).append(value);
     }
 
     private static DecimalFormat createAmountFormatter() {
@@ -135,26 +137,17 @@ public class QRCodeText {
      */
     public static Bill decode(String text) {
         String[] lines = splitLines(text);
-        if (lines.length < 31 || lines.length > 34) {
-            // A line feed at the end is illegal (cf 4.2.3) but found in practice. Don't be too strict.
-            if (!(lines.length == 35 && lines[34].isEmpty()))
-                throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_DATA_STRUCTURE_INVALID);
-        }
-        if (!"SPC".equals(lines[0]))
-            throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_DATA_STRUCTURE_INVALID);
-        if (!VALID_VERSION.matcher(lines[1]).matches())
-            throwSingleValidationError(ValidationConstants.FIELD_VERSION, ValidationConstants.KEY_VERSION_UNSUPPORTED);
-        if (!"1".equals(lines[2]))
-            throwSingleValidationError(ValidationConstants.FIELD_CODING_TYPE, ValidationConstants.KEY_CODING_TYPE_UNSUPPORTED);
+        validateHeader(lines);
 
         Bill bill = new Bill();
         bill.setVersion(Bill.Version.V2_0);
+        bill.getFormat().setQrDataSeparator(text.contains("\r\n") ? QrDataSeparator.CR_LF : QrDataSeparator.LF);
 
         bill.setAccount(lines[3]);
 
         bill.setCreditor(decodeAddress(lines, 4, false));
 
-        if (lines[18].length() > 0) {
+        if (!lines[18].isEmpty()) {
             ParsePosition position = new ParsePosition(0);
             BigDecimal amount = (BigDecimal) createAmountFormatter().parse(lines[18], position);
             if (position.getIndex() == lines[18].length())
@@ -179,6 +172,26 @@ public class QRCodeText {
 
         bill.setBillInformation(lines.length > 31 ? lines[31] : "");
 
+        decodeAlternativeSchemes(lines, bill);
+
+        return bill;
+    }
+
+    private static void validateHeader(String[] lines) {
+        if (lines.length < 31 || lines.length > 34) {
+            // A line feed at the end is illegal (cf 4.2.3) but found in practice. Don't be too strict.
+            if (!(lines.length == 35 && lines[34].isEmpty()))
+                throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_DATA_STRUCTURE_INVALID);
+        }
+        if (!"SPC".equals(lines[0]))
+            throwSingleValidationError(ValidationConstants.FIELD_QR_TYPE, ValidationConstants.KEY_DATA_STRUCTURE_INVALID);
+        if (!VALID_VERSION.matcher(lines[1]).matches())
+            throwSingleValidationError(ValidationConstants.FIELD_VERSION, ValidationConstants.KEY_VERSION_UNSUPPORTED);
+        if (!"1".equals(lines[2]))
+            throwSingleValidationError(ValidationConstants.FIELD_CODING_TYPE, ValidationConstants.KEY_CODING_TYPE_UNSUPPORTED);
+    }
+
+    private static void decodeAlternativeSchemes(String[] lines, Bill bill) {
         AlternativeScheme[] alternativeSchemes = null;
         int numSchemes = lines.length - 32;
         // skip empty schemes at end (due to invalid line feed at end)
@@ -193,8 +206,6 @@ public class QRCodeText {
             }
         }
         bill.setAlternativeSchemes(alternativeSchemes);
-
-        return bill;
     }
 
     /**
@@ -207,10 +218,10 @@ public class QRCodeText {
      */
     private static Address decodeAddress(String[] lines, int startLine, boolean isOptional) {
 
-        boolean isEmpty = lines[startLine].length() == 0 && lines[startLine + 1].length() == 0
-                && lines[startLine + 2].length() == 0 && lines[startLine + 3].length() == 0
-                && lines[startLine + 4].length() == 0 && lines[startLine + 5].length() == 0
-                && lines[startLine + 6].length() == 0;
+        boolean isEmpty = lines[startLine].isEmpty() && lines[startLine + 1].isEmpty()
+                && lines[startLine + 2].isEmpty() && lines[startLine + 3].isEmpty()
+                && lines[startLine + 4].isEmpty() && lines[startLine + 5].isEmpty()
+                && lines[startLine + 6].isEmpty();
 
         if (isEmpty && isOptional)
             return null;
@@ -225,9 +236,9 @@ public class QRCodeText {
             address.setAddressLine1(lines[startLine + 2]);
             address.setAddressLine2(lines[startLine + 3]);
         }
-        if (lines[startLine + 4].length() > 0)
+        if (!lines[startLine + 4].isEmpty())
             address.setPostalCode(lines[startLine + 4]);
-        if (lines[startLine + 5].length() > 0)
+        if (!lines[startLine + 5].isEmpty())
             address.setTown(lines[startLine + 5]);
         address.setCountryCode(lines[startLine + 6]);
         return address;

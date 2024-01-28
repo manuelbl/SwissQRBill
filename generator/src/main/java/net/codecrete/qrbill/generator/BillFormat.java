@@ -41,6 +41,9 @@ public class BillFormat implements Serializable {
     /** ISO country code of local country */
     private String localCountryCode = "CH";
 
+    /** Data separator for QR code data */
+    private QrDataSeparator qrDataSeparator = QrDataSeparator.LF;
+
     /**
      * Creates a new instance with default values
      */
@@ -317,6 +320,30 @@ public class BillFormat implements Serializable {
     }
 
     /**
+     * Gets the line separator for the QR code data fields.
+     * <p>
+     * The default is {@link QrDataSeparator#LF}. There is no need to change it except
+     * for improving compatibility with a non-compliant software processing the QR code data.
+     * </p>
+     * @return the line separator for the QR code data fields.
+     */
+    public QrDataSeparator getQrDataSeparator() {
+        return qrDataSeparator;
+    }
+
+    /**
+     * Sets the line separator for the QR code data fields.
+     * <p>
+     * The default is {@link QrDataSeparator#LF}. There is no need to change it except
+     * for improving compatibility with a non-compliant software processing the QR code data.
+     * </p>
+     * @param qrDataSeparator  the line separator for the QR code data fields.
+     */
+    public void setQrDataSeparator(QrDataSeparator qrDataSeparator) {
+        this.qrDataSeparator = qrDataSeparator;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -332,7 +359,8 @@ public class BillFormat implements Serializable {
                 resolution == that.resolution &&
                 marginLeft == that.marginLeft &&
                 marginRight == that.marginRight &&
-                Objects.equals(localCountryCode, that.localCountryCode);
+                Objects.equals(localCountryCode, that.localCountryCode) &&
+                qrDataSeparator == that.qrDataSeparator;
     }
 
     /**
@@ -340,9 +368,8 @@ public class BillFormat implements Serializable {
      */
     @Override
     public int hashCode() {
-
         return Objects.hash(outputSize, language, separatorType, fontFamily, graphicsFormat, resolution, marginLeft,
-                marginLeft, localCountryCode);
+                marginLeft, localCountryCode, qrDataSeparator);
     }
 
     /**
@@ -360,6 +387,7 @@ public class BillFormat implements Serializable {
                 ", marginLeft=" + marginLeft +
                 ", marginRight=" + marginRight +
                 ", localCountryCode='" + localCountryCode + '\'' +
+                ", qrDataSeparator=" + qrDataSeparator +
                 '}';
     }
 }

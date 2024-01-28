@@ -66,7 +66,9 @@ class DecodedTextTest {
     @ParameterizedTest
     @MethodSource("provideNewLineCombinations")
     void decodeTextNewline(int sample, String newLine, boolean extraNewLine) {
+        QrDataSeparator separator = newLine.equals("\r\n") ? QrDataSeparator.CR_LF : QrDataSeparator.LF;
         Bill bill = SampleQrCodeText.getBillData(sample);
+        bill.getFormat().setQrDataSeparator(separator);
         normalizeSourceBill(bill);
         Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText(sample, newLine) + (extraNewLine ? newLine : ""));
         normalizeDecodedBill(bill2);

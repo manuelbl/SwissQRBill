@@ -38,7 +38,7 @@ class BillFormatTest {
     void toStringTest() {
         BillFormat format = new BillFormat();
         String text = format.toString();
-        assertEquals("BillFormat{outputSize=QR_BILL_ONLY, language=EN, separatorType=DASHED_LINE_WITH_SCISSORS, fontFamily='Helvetica,Arial,\"Liberation Sans\"', graphicsFormat=SVG, resolution=144, marginLeft=5.0, marginRight=5.0, localCountryCode='CH'}", text);
+        assertEquals("BillFormat{outputSize=QR_BILL_ONLY, language=EN, separatorType=DASHED_LINE_WITH_SCISSORS, fontFamily='Helvetica,Arial,\"Liberation Sans\"', graphicsFormat=SVG, resolution=144, marginLeft=5.0, marginRight=5.0, localCountryCode='CH', qrDataSeparator=LF}", text);
     }
 
     @Test

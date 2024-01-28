@@ -10,9 +10,11 @@ import net.codecrete.qrbill.testhelper.SampleData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,9 +25,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class EncodedTextTest {
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3, 4, 5})
-    void createText(int sample) {
+    @MethodSource("provideNewLineSampleCombinations")
+    void createText(int sample, QrDataSeparator separator) {
         Bill bill = SampleQrCodeText.getBillData(sample);
+        bill.getFormat().setQrDataSeparator(separator);
         assertEquals(SampleQrCodeText.getQrCodeText(sample), QRBill.encodeQrCodeText(bill));
     }
 
@@ -44,5 +47,14 @@ class EncodedTextTest {
         bill = result.getCleanedBill();
         bill.setReference("");
         assertEquals(SampleQrCodeText.getQrCodeText(3), QRCodeText.create(bill));
+    }
+
+    private static Stream<Arguments> provideNewLineSampleCombinations() {
+        Stream.Builder<Arguments> builder = Stream.builder();
+        for (int sample = 1; sample <= 5; sample++) {
+            builder.add(Arguments.of(sample, QrDataSeparator.LF));
+            builder.add(Arguments.of(sample, QrDataSeparator.CR_LF));
+        }
+        return builder.build();
     }
 }
