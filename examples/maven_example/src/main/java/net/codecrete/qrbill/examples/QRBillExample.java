@@ -24,44 +24,52 @@ public class QRBillExample {
 
     public static void main(String[] args) {
 
+        double payable_amount = Double.parseDouble(args[0]);
+        String reference_no = args[1];
+        String additional_information = args[2];
+
+        String debtor_name = args[3];
+        String debtor_addr = args[4];
+        String debtor_plz = args[5];
+
         // Setup bill
         Bill bill = new Bill();
-        bill.setAccount("CH4431999123000889012");
-        bill.setAmountFromDouble(199.95);
+        bill.setAccount("CH1234");
+        bill.setAmountFromDouble(payable_amount);
         bill.setCurrency("CHF");
 
         // Set creditor
         Address creditor = new Address();
-        creditor.setName("Robert Schneider AG");
-        creditor.setAddressLine1("Rue du Lac 1268/2/22");
-        creditor.setAddressLine2("2501 Biel");
+        creditor.setName("Basketballverein");
+        creditor.setAddressLine1("Bahnhofstrasse");
+        creditor.setAddressLine2("Zürich");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
 
         // more bill data
-        bill.setReference("210000000003139471430009017");
-        bill.setUnstructuredMessage("Abonnement für 2020");
+        bill.setReference(reference_no);
+        bill.setUnstructuredMessage(additional_information);
 
         // Set debtor
         Address debtor = new Address();
-        debtor.setName("Pia-Maria Rutschmann-Schnyder");
-        debtor.setAddressLine1("Grosse Marktgasse 28");
-        debtor.setAddressLine2("9400 Rorschach");
+        debtor.setName(debtor_name);
+        debtor.setAddressLine1(debtor_addr);
+        debtor.setAddressLine2(debtor_plz);
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
 
         // Set output format
         BillFormat format = new BillFormat();
-        format.setGraphicsFormat(GraphicsFormat.SVG);
-        format.setOutputSize(OutputSize.QR_BILL_ONLY);
-        format.setLanguage(Language.DE);
+        format.setGraphicsFormat(GraphicsFormat.PDF);
+        format.setOutputSize(OutputSize.A4_PORTRAIT_SHEET);
+        format.setLanguage(Language.EN);
         bill.setFormat(format);
 
         // Generate QR bill
         byte[] svg = QRBill.generate(bill);
 
         // Save QR bill
-        Path path = Paths.get("qrbill.svg");
+        Path path = Paths.get("qrbill.pdf");
         try {
             Files.write(path, svg);
         } catch (IOException e) {
