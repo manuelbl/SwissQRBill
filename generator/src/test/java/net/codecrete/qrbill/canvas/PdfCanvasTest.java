@@ -84,6 +84,19 @@ class PdfCanvasTest {
     }
 
     @Test
+    void coloredLines() throws IOException {
+        Path path = Files.createTempFile("pdfcanvas-", ".pdf");
+        try (PDFCanvas canvas = new PDFCanvas(100, 100)) {
+            canvas.moveTo(10, 10);
+            canvas.lineTo(90, 90);
+            canvas.strokePath(2, 0xFF00FF, Canvas.LineStyle.Dashed, true);
+            canvas.saveAs(path);
+        }
+
+        compareResult(path, "pdfcanvas-colored-line.pdf");
+    }
+
+    @Test
     void addPageToOpenContentStream() throws IOException {
         PDDocument document = new PDDocument();
         PDPage page = new PDPage(new PDRectangle(210 * MM_TO_PT, 297 * MM_TO_PT));

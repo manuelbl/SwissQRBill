@@ -35,7 +35,6 @@ jar {
             'Implementation-Version': archiveVersion,
             'Implementation-Vendor': 'Manuel Bleichenbacher'
         )
-
     }
 }
 
@@ -45,6 +44,10 @@ javadoc {
 
     title = "QR Bill Generator ${version}"
     options.addBooleanOption('html5', true)
+}
+
+test {
+    useJUnitPlatform()
 }
 
 artifacts {
@@ -112,8 +115,11 @@ sonar {
 }
 
 jacocoTestReport {
+    dependsOn test
     reports {
         xml.required = true
+        html.required = false
+        csv.required = false
     }
 }
 
