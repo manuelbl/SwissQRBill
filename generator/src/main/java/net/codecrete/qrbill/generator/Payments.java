@@ -7,11 +7,7 @@
 
 package net.codecrete.qrbill.generator;
 
-import java.text.Normalizer;
-import java.util.Arrays;
 import java.util.Locale;
-
-import static java.lang.Character.UnicodeBlock.COMBINING_DIACRITICAL_MARKS;
 
 /**
  * Field validations related to Swiss Payment standards
@@ -23,12 +19,11 @@ public class Payments {
     }
 
     /**
-     * Returns a cleaned text valid for the Swiss Payment Standards 2018.
+     * Returns a cleaned text valid according to the specified character set.
      * <p>
-     * Unsupported characters (according to Swiss Payment Standards 2018, ch. 2.4.1 and appendix D) are
-     * replaced with supported characters, either with the same character without accent (e.g. A instead of Ă),
-     * with characters of similar meaning (e.g. TM instead of ™, ij instead of ĳ), with a space
-     * (for unsupported whitespace characters) or with a dot.
+     * Unsupported characters are replaced with supported characters, either with the same character without accent
+     * (e.g. A instead of Ă), with characters of similar meaning (e.g. TM instead of ™, ij instead of ĳ),
+     * with a space (for unsupported whitespace characters) or with a dot.
      * </p>
      * <p>
      * Some valid letters can be represented either with a single Unicode code point or with two code points,
@@ -41,21 +36,19 @@ public class Payments {
      * </p>
      *
      * @param text string to clean
+     * @param characterSet character set specifying valid characters
      * @return valid text for Swiss payments
      */
-    public static String cleanedText(String text) {
-        CleaningResult result = new CleaningResult();
-        cleanText(text, false, result);
-        return result.cleanedString;
+    static String cleanedText(String text, SPSCharacterSet characterSet) {
+        return StringCleanup.cleanedText(text, characterSet);
     }
 
     /**
-     * Returns a cleaned and trimmed text valid for the Swiss Payment Standards 2018.
+     * Returns a cleaned and trimmed text valid according to the specified character set.
      * <p>
-     * Unsupported characters (according to Swiss Payment Standards 2018, ch. 2.4.1 and appendix D) are
-     * replaced with supported characters, either with the same character without accent (e.g. A instead of Ă),
-     * with characters of similar meaning (e.g. TM instead of ™, ij instead of ĳ), with a space
-     * (for unsupported whitespace characters) or with a dot.
+     * Unsupported characters are replaced with supported characters, either with the same character without accent
+     * (e.g. A instead of Ă), with characters of similar meaning (e.g. TM instead of ™, ij instead of ĳ),
+     * with a space (for unsupported whitespace characters) or with a dot.
      * </p>
      * <p>
      * Leading and trailing whitespace is removed. Multiple consecutive spaces are replaced with a single whitespace.
@@ -71,207 +64,25 @@ public class Payments {
      * </p>
      *
      * @param text string to clean
+     * @param characterSet character set specifying valid characters
      * @return valid text for Swiss payments
      */
-    public static String cleanedAndTrimmedText(String text) {
-        CleaningResult result = new CleaningResult();
-        cleanText(text, true, result);
-        return result.cleanedString;
+    static String cleanedAndTrimmedText(String text, SPSCharacterSet characterSet) {
+        return StringCleanup.cleanedAndTrimmedText(text, characterSet);
     }
 
     /**
-     * Indicates if the text consists only of characters allowed in Swiss payments.
-     * <p>
-     * The valid character set is defined in Swiss Payment Standards 2018, ch. 2.4.1 and appendix D
-     * </p>
+     * Indicates if the text consists only of characters allowed in the specified character set.
      * <p>
      * This method does not attempt to deal with accents and umlauts built from two code points. It will
      * return {@code false} if the text contains such characters.
      * </p>
-     * @param text text to check
+     * @param text text to check, possibly {@code null}
+     * @param characterSet character set specifying valid characters
      * @return {@code true} if the text is valid, {@code false} otherwise
      */
-    public static boolean isValidText(String text) {
-        int len = text.length();
-        for (int i = 0; i < len; i++) {
-            if (!isValidCharacter(text.charAt(i)))
-                return false;
-        }
-        return true;
-    }
-
-    /**
-     * Returns if the character is a valid for a Swiss payment.
-     * <p>
-     * Valid characters are defined in Swiss Payment Standards 2022,
-     * Customer Credit Transfer Initiation (pain.001), ch. 3.1 and appendix C.
-     * </p>
-     *
-     * @param ch character to test
-     * @return {@code true} if it is valid, {@code false} otherwise
-     */
-    @SuppressWarnings({"java:S1126", "RedundantIfStatement"})
-    public static boolean isValidCharacter(char ch) {
-        // Basic Latin
-        if (ch >= 0x0020 && ch <= 0x007E)
-            return true;
-
-        // Latin-1 Supplement and Latin Extended-A
-        if (ch >= 0x00A0 && ch <= 0x017F)
-            return true;
-
-        // Additional characters
-        if (ch >= 0x0218 && ch <= 0x021B)
-            return true;
-
-        if (ch == 0x20AC)
-            return true;
-
-        return false;
-    }
-
-    /**
-     * Returns if the code point is a valid for a Swiss payment.
-     * <p>
-     * Valid characters are defined in Swiss Payment Standards 2022,
-     * Customer Credit Transfer Initiation (pain.001), ch. 3.1 and appendix C.
-     * </p>
-     *
-     * @param codePoint code point to test
-     * @return {@code true} if it is valid, {@code false} otherwise
-     */
-    public static boolean isValidCodePoint(int codePoint) {
-        return codePoint <= 0xFFFF && isValidCharacter((char) codePoint);
-    }
-
-    static void cleanText(String text, boolean trimWhitespace, CleaningResult result) {
-        result.cleanedString = null;
-        result.replacedUnsupportedChars = false;
-
-        if (text == null)
-            return;
-
-        // step 1: quick test for valid text
-        boolean isValidString = isValidText(text);
-
-        if (!isValidString) {
-            // step 2: normalize string (to deal with accents built from two code points) and test again
-            if (!Normalizer.isNormalized(text, Normalizer.Form.NFC)) {
-                text = Normalizer.normalize(text, Normalizer.Form.NFC);
-                isValidString = isValidText(text);
-            }
-
-            // step 3: replace invalid characters
-            if (!isValidString) {
-                text = replaceInvalidCharacters(text);
-                result.replacedUnsupportedChars = true;
-            }
-        }
-
-        if (trimWhitespace)
-            text = Strings.spacesCleaned(text);
-        if (text.isEmpty())
-            text = null;
-
-        result.cleanedString = text;
-    }
-
-    private static String replaceInvalidCharacters(String text) {
-        StringBuilder sb = new StringBuilder();
-        int len = text.length();
-        int offset = 0;
-        boolean inFallback = false;
-        while (offset < len) {
-            final int codePoint = text.codePointAt(offset);
-
-            if (isValidCodePoint(codePoint)) {
-                // valid code point
-                sb.append((char) codePoint);
-                inFallback = false;
-            } else if (replaceCodePoint(codePoint, sb)) {
-                // good replacement
-                inFallback = false;
-            } else if (!inFallback) {
-                // no replacement found and not consecutive fallback
-                sb.append('.');
-                inFallback = true;
-            }
-
-            offset += Character.charCount(codePoint);
-        }
-        return sb.toString();
-    }
-
-    // sorted by code point (BMP only, no surrogates)
-    private static final char[] ACCENTED_CHARS =
-            "ƠơƯưǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǞǟǠǡǢǣǦǧǨǩǪǫǬǭǰǴǵǸǹǺǻǼǽǾǿȀȁȂȃȄȅȆȇȈȉȊȋȌȍȎȏȐȑȒȓȔȕȖȗȞȟȦȧȨȩȪȫȬȭȮȯȰȱȲȳ΅ḀḁḂḃḄḅḆḇḈḉḊḋḌḍḎḏḐḑḒḓḔḕḖḗḘḙḚḛḜḝḞḟḠḡḢḣḤḥḦḧḨḩḪḫḬḭḮḯḰḱḲḳḴḵḶḷḸḹḺḻḼḽḾḿṀṁṂṃṄṅṆṇṈṉṊṋṌṍṎṏṐṑṒṓṔṕṖṗṘṙṚṛṜṝṞṟṠṡṢṣṤṥṦṧṨṩṪṫṬṭṮṯṰṱṲṳṴṵṶṷṸṹṺṻṼṽṾṿẀẁẂẃẄẅẆẇẈẉẊẋẌẍẎẏẐẑẒẓẔẕẖẗẘẙẛẠạẢảẤấẦầẨẩẪẫẬậẮắẰằẲẳẴẵẶặẸẹẺẻẼẽẾếỀềỂểỄễỆệỈỉỊịỌọỎỏỐốỒồỔổỖỗỘộỚớỜờỞởỠỡỢợỤụỦủỨứỪừỬửỮữỰựỲỳỴỵỶỷỸỹ῁῭΅Å≠≮≯"
-                    .toCharArray();
-
-    private static final char[] REPLACEMENT_CHARS =
-            "OoUuAaIiOoUuUuUuUuUuAaAaÆæGgKkOoOojGgNnAaÆæØøAaAaEeEeIiIiOoOoRrRrUuUuHhAaEeOoOoOoOoYy¨AaBbBbBbCcDdDdDdDdDdEeEeEeEeEeFfGgHhHhHhHhHhIiIiKkKkKkLlLlLlLlMmMmMmNnNnNnNnOoOoOoOoPpPpRrRrRrRrSsSsSsSsSsTtTtTtTtUuUuUuUuUuVvVvWwWwWwWwWwXxXxYyZzZzZzhtwyſAaAaAaAaAaAaAaAaAaAaAaAaEeEeEeEeEeEeEeEeIiIiOoOoOoOoOoOoOoOoOoOoOoOoUuUuUuUuUuUuUuYyYyYyYy¨¨¨A=<>"
-                    .toCharArray();
-
-    private static boolean replaceCodePoint(int codePoint, StringBuilder sb) {
-        // whitespace is replaced with a space
-        if (Character.isWhitespace(codePoint)) {
-            sb.append(' ');
-            return true;
-        }
-
-        // check if code point is a valid character without accent (precomputed case)
-        if (codePoint <= 0xFFFF) {
-            int pos = Arrays.binarySearch(ACCENTED_CHARS, (char) codePoint);
-            if (pos >= 0) {
-                sb.append(REPLACEMENT_CHARS[pos]);
-                return true;
-            }
-        }
-
-        // check if code point is a valid character with accent (using canonical decomposition)
-        String codePointString = new String(new int[] { codePoint }, 0, 1);
-        String decomposed1 = Normalizer.normalize(codePointString, Normalizer.Form.NFD);
-        int firstCodePoint = decomposed1.codePointAt(0);
-        if (decomposed1.length() > 1 && isValidCodePoint(firstCodePoint)) {
-            int secondCodePoint = decomposed1.codePointAt(1);
-            if (Character.UnicodeBlock.of(secondCodePoint) != COMBINING_DIACRITICAL_MARKS) {
-                sb.append((char) firstCodePoint);
-                return true;
-            }
-        }
-
-        // check if compatibility decomposition results in valid substring
-        String decomposed2 = decomposedString(codePointString);
-        if (decomposed2 != null) {
-            sb.append(decomposed2);
-            return true;
-        }
-
-        // no good replacement
-        return false;
-    }
-
-    private static String decomposedString(String codePointString) {
-        String decomposedString = Normalizer.normalize(codePointString, Normalizer.Form.NFKD);
-        int len = decomposedString.length();
-        for (int i = 0; i < len; i += 1) {
-            if (!isValidCharacter(decomposedString.charAt(i)))
-                return null;
-        }
-        return decomposedString;
-    }
-
-    /**
-     * Result of cleaning a string value
-     */
-    static class CleaningResult {
-        /**
-         * Cleaned string
-         */
-        String cleanedString;
-        /**
-         * Flag indicating that unsupported characters have been replaced
-         */
-        boolean replacedUnsupportedChars;
+    public static boolean isValidText(String text, SPSCharacterSet characterSet) {
+        return StringCleanup.isValidText(text, characterSet);
     }
 
     /**

@@ -5,11 +5,11 @@ buildscript {
 }
     
 plugins {
-    id 'org.sonarqube' version '4.4.1.3373'
+    id 'jacoco'
+    id 'org.sonarqube' version '5.0.0.4638'
     id 'java-library'
     id 'maven-publish'
     id 'signing'
-    id 'jacoco'
 }
 
 repositories {
@@ -17,12 +17,13 @@ repositories {
 }
 
 group = 'net.codecrete.qrbill'
-version = '3.2.0-SNAPSHOT'
+version = '3.3.0-SNAPSHOT'
 archivesBaseName = 'qrbill-generator'
 
-sourceCompatibility = 1.8
-
 java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
     withJavadocJar()
     withSourcesJar()
 }
@@ -36,13 +37,6 @@ jar {
         )
 
     }
-}
-
-test {
-    useJUnitPlatform()
-    finalizedBy jacocoTestReport
-    reports.junitXml.required = false
-    reports.html.required = true
 }
 
 javadoc {
@@ -112,26 +106,21 @@ signing {
 sonar {
     properties {
         property 'sonar.projectName', 'Swiss QR Bill Generator (Java)'
+        property 'sonar.organization', 'manuelbl-github'
+        property 'sonar.host', 'https://sonarcloud.io'
     }
 }
 
 jacocoTestReport {
-    dependsOn test
-    reports.xml.required = true
-    reports.csv.required = false
-    reports.html.required = false
-}
-
-project.tasks["sonarqube"].dependsOn "jacocoTestReport"
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+    reports {
+        xml.required = true
+    }
 }
 
 dependencies {
-    api 'org.apache.pdfbox:pdfbox:2.0.29'
+    api 'org.apache.pdfbox:pdfbox:3.0.2'
     implementation 'io.nayuki:qrcodegen:1.8.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.9.3'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
 }

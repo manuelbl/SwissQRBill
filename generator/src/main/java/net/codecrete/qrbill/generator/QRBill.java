@@ -261,7 +261,7 @@ public class QRBill {
      * Decodes the text embedded in the QR code and fills it into a {@link Bill}
      * data structure.
      * <p>
-     * A subset of the validations related to embedded QR code text is run. It the
+     * A subset of the validations related to embedded QR code text is run. If the
      * validation fails, a {@link QRBillValidationError} is thrown, which contains
      * the validation result. See the error messages marked with a dagger in
      * <a href=
@@ -312,7 +312,10 @@ public class QRBill {
                 canvas = new SVGCanvas(drawingWidth, drawingHeight, format.getFontFamily());
                 break;
             case PDF:
-                canvas = new PDFCanvas(drawingWidth, drawingHeight);
+                canvas = new PDFCanvas(drawingWidth, drawingHeight,
+                        format.getCharacterSet() != SPSCharacterSet.LATIN_1_SUBSET
+                                ? PDFFontSettings.embeddedLiberationSans()
+                                : PDFFontSettings.standardHelvetica());
                 break;
             case PNG:
                 canvas = new PNGCanvas(drawingWidth, drawingHeight, format.getResolution(), format.getFontFamily());
@@ -321,14 +324,5 @@ public class QRBill {
                 throw new QRBillGenerationException("Invalid graphics format specified");
         }
         return canvas;
-    }
-
-    /**
-     * Returns this library's version
-     *
-     * @return version in semantic versioning format (major.minor.patch).
-     */
-    public static String getLibraryVersion() {
-        return QRBill.class.getPackage().getImplementationVersion();
     }
 }

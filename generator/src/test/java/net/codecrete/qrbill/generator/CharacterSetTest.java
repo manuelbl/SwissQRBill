@@ -40,6 +40,32 @@ class CharacterSetTest extends BillDataValidationBase {
     }
 
     @Test
+    void unstructuredMessageReplacementLatin1Subset() {
+        bill = SampleData.getExample8();
+        validate();
+
+        assertFalse(result.hasErrors());
+        assertTrue(result.hasWarnings());
+        assertTrue(result.hasMessages());
+        assertEquals(3, result.getValidationMessages().size());
+        for (ValidationMessage message : result.getValidationMessages()) {
+            assertEquals(ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS, message.getMessageKey());
+        }
+
+        assertEquals("Facture 48390, E10 de réduction", validatedBill.getUnstructuredMessage());
+        assertEquals("Bugra Çavdarli", validatedBill.getCreditor().getName());
+        assertEquals("L'OEil de Boeuf", validatedBill.getDebtor().getName());
+    }
+
+    @Test
+    void unstructuredMessageReplacementExtendedLatin() {
+        bill = SampleData.getExample8();
+        bill.getFormat().setCharacterSet(SPSCharacterSet.EXTENDED_LATIN);
+        validate();
+        assertNoMessages();
+    }
+
+    @Test
     void billInfoReplacement() {
         bill = SampleData.getExample1();
         bill.setBillInformation("//abc \uD83D\uDE00 def");

@@ -65,6 +65,13 @@ public class Address implements Serializable {
     private String countryCode;
 
     /**
+     * Creates an empty address.
+     */
+    public Address() {
+        // default constructor, for JavaDoc documentation
+    }
+
+    /**
      * Gets the address type.
      * <p>
      * The address type is automatically set by either setting street / house number

@@ -38,6 +38,13 @@ public class SwicoBillInformation {
     private List<PaymentCondition> paymentConditions;
 
     /**
+     * Creates a new instance with {@code null} values.
+     */
+    public SwicoBillInformation() {
+        // default constructor, for JavaDoc documentation
+    }
+
+    /**
      * Gets the invoice number.
      *
      * @return the invoice number

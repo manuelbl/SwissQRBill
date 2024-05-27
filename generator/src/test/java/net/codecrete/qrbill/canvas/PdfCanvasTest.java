@@ -16,6 +16,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.apache.pdfbox.util.Matrix;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,7 +65,7 @@ class PdfCanvasTest {
         PDPage page = new PDPage(new PDRectangle(210 * MM_TO_PT, 297 * MM_TO_PT));
         document.addPage(page);
         try (PDPageContentStream stream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.OVERWRITE, true)) {
-            stream.setFont(PDType1Font.HELVETICA_BOLD, 18);
+            stream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 18);
             stream.beginText();
             stream.newLineAtOffset(20 * MM_TO_PT, 220 * MM_TO_PT);
             stream.showText("Swiss QR Bill");
@@ -100,7 +101,7 @@ class PdfCanvasTest {
 
             stream.restoreGraphicsState();
 
-            stream.setFont(PDType1Font.HELVETICA_BOLD, 18);
+            stream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 18);
             stream.beginText();
             stream.newLineAtOffset(20 * MM_TO_PT, 220 * MM_TO_PT);
             stream.showText("Swiss QR Bill");

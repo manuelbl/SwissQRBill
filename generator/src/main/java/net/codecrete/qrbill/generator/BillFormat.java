@@ -44,6 +44,9 @@ public class BillFormat implements Serializable {
     /** Data separator for QR code data */
     private QrDataSeparator qrDataSeparator = QrDataSeparator.LF;
 
+    /** Character set used for the QR bill data */
+    private SPSCharacterSet characterSet = SPSCharacterSet.LATIN_1_SUBSET;
+
     /**
      * Creates a new instance with default values
      */
@@ -66,6 +69,8 @@ public class BillFormat implements Serializable {
         marginLeft = format.marginLeft;
         marginRight = format.marginRight;
         localCountryCode = format.localCountryCode;
+        qrDataSeparator = format.qrDataSeparator;
+        characterSet = format.characterSet;
     }
 
     /**
@@ -344,6 +349,38 @@ public class BillFormat implements Serializable {
     }
 
     /**
+     * Gets the character set used for the QR bill data.
+     * <p>
+     * Defaults to {@link SPSCharacterSet#LATIN_1_SUBSET}.
+     * </p>
+     * <p>
+     * Until November 21, 2025, {@link SPSCharacterSet#LATIN_1_SUBSET} is the only value that will generate
+     * QR bills accepted by all banks. This will change by November 21, 2025. A release after that date
+     * wil change the default to {@link SPSCharacterSet#EXTENDED_LATIN}.
+     * </p>
+     * @return the character set used for the QR bill data.
+     */
+    public SPSCharacterSet getCharacterSet() {
+        return characterSet;
+    }
+
+    /**
+     * Sets the character set used for the QR bill data.
+     * <p>
+     * Defaults to {@link SPSCharacterSet#LATIN_1_SUBSET}.
+     * </p>
+     * <p>
+     * Until November 21, 2025, {@link SPSCharacterSet#LATIN_1_SUBSET} is the only value that will generate
+     * QR bills accepted by all banks. This will change by November 21, 2025. A release after that date
+     * wil change the default to {@link SPSCharacterSet#EXTENDED_LATIN}.
+     * </p>
+     * @param characterSet  the character set used for the QR bill data.
+     */
+    public void setCharacterSet(SPSCharacterSet characterSet) {
+        this.characterSet = characterSet;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -360,7 +397,8 @@ public class BillFormat implements Serializable {
                 marginLeft == that.marginLeft &&
                 marginRight == that.marginRight &&
                 Objects.equals(localCountryCode, that.localCountryCode) &&
-                qrDataSeparator == that.qrDataSeparator;
+                qrDataSeparator == that.qrDataSeparator &&
+                characterSet == that.characterSet;
     }
 
     /**
@@ -369,7 +407,7 @@ public class BillFormat implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(outputSize, language, separatorType, fontFamily, graphicsFormat, resolution, marginLeft,
-                marginLeft, localCountryCode, qrDataSeparator);
+                marginLeft, localCountryCode, qrDataSeparator, characterSet);
     }
 
     /**
@@ -388,6 +426,7 @@ public class BillFormat implements Serializable {
                 ", marginRight=" + marginRight +
                 ", localCountryCode='" + localCountryCode + '\'' +
                 ", qrDataSeparator=" + qrDataSeparator +
+                ", characterSet=" + characterSet +
                 '}';
     }
 }

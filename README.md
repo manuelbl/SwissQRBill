@@ -4,15 +4,13 @@
 
 Open-source Java library to generate and decode Swiss QR bills (jointly developed with the [.NET version](https://github.com/manuelbl/SwissQRBill.NET)).
 
-Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill). The code for this demonstration (Angular UI and RESTful service) can be found on [GitHub](https://github.com/manuelbl/SwissQRBillDemo) as well. 
+Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill). The code for this demonstration (Rect UI and RESTful service) can be found on [GitHub](https://github.com/manuelbl/SwissQRBillDemo) as well. 
 
-This library implements version 2.1 of the *Swiss Implementation Guidelines QR-bill* valid since September 30, 2019, the *Style guide* released in January 2019 and *Swico Syntax Definition (S1)* from November 11, 2018.
+This library implements version 2.2 and 2.3 of the *Swiss Implementation Guidelines QR-bill* from November 20, 2023, and *Swico Syntax Definition (S1)* from November 23, 2018.
 
 ## Introduction
 
-The Swiss QR bill is the new QR code based payment format that started on 30 June, 2020. The old payment slip is no longer accepted.
-
-The new payment slip will be sent electronically in most cases. But it can still be printed at the bottom of an invoice or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app to initiate the payment. The payment just needs to be confirmed.
+The Swiss QR bill is the QR code based payment format that started on 30 June, 2020. The payment slip is sent electronically in most cases. But it can still be printed at the bottom of an invoice or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app to initiate the payment. The payment just needs to be confirmed.
 
  If the invoicing party adds structured bill information (VAT rates, payment conditions etc.) to the QR bill, the payer can automate booking in accounts payable. The invoicing party can also automate the accounts receivable processing as the payment includes all relevant data including a reference number. The Swiss QR bill is convenient for the payer and payee.
 
@@ -46,12 +44,12 @@ If you are using *Maven*, add the below dependency to your `pom.xml`:
     <dependency>
         <groupId>net.codecrete.qrbill</groupId>
         <artifactId>qrbill-generator</artifactId>
-        <version>[3.0.0,3.999999]</version>
+        <version>[3.3.0,3.999999]</version>
     </dependency>
 
 If you are using *Gradle*, add the below dependency to your *build.gradle* file:
 
-    compile group: 'net.codecrete.qrbill', name: 'qrbill-generator', version: '3.0.0+'
+    compile group: 'net.codecrete.qrbill', name: 'qrbill-generator', version: '3.3.0+'
 
 To generate a QR bill, you first fill in the `Bill` data structure and then call `QRBill.generate`:
 
@@ -117,6 +115,9 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
         }
     }
 
+More code examples can be found in the [examples](examples) directory.
+
+
 ## API Documention
 
 [Javadoc API documentation](https://javadoc.io/doc/net.codecrete.qrbill/qrbill-generator):
@@ -132,24 +133,15 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
 
 More information can be found in the [Wiki](https://github.com/manuelbl/SwissQRBill/wiki). It's the joint Wiki for the .NET and the Java version.
 
-## PDF generation with Apache PDFBox
+## Font license
 
-For generating QR bills as PDF, [Apache PDFBox](https://pdfbox.apache.org/) is used. This library is built and tested with version 2 of PDFBox. While this is still the most popular version in use, version 3.0 has been released. It is a major version and includes breaking changes.
+Starting on November 21, 2025, QR bills may use an extended character set (*Extended Latin* instead of a subset of Latin-1). This library is ready for it. The extended character set can be enabled by setting the `characterSet` property of `BillFormat` to `EXTENDED_LATIN`. The current default is `LATIN_1_SUBSET`.
 
-This library is compatible with both versions. It uses reflection to deal with incompatible differences.
+If the extended character set is used, it is no longer possible to use the PDF standard font *Helvectica* for the text as it is restricted to the smaller *WinANSI* character set. This library will automatically switch to the *Liberation Sans* font and embed the font subset actually used. SVG and PNG ouput can continue to use other fonts.
 
-If you want to use version 3 instead of the default version 2, you need to add the following explicit dependency to your project (for Maven):
-
-```xml
-<dependency>
-    <groupId>org.apache.pdfbox</groupId>
-    <artifactId>pdfbox</artifactId>
-    <version>3.0.0</version>
-</dependency>
-```
+The [*Liberation Sans*](https://github.com/liberationfonts/liberation-fonts) font is included in the library. It is made available free of charge by Goolge and Red Hat under the [SIL Open Font License, Version 1.1](https://github.com/liberationfonts/liberation-fonts/blob/main/LICENSE). You will likely need to add their copyright and license information to your product. See the [license](https://github.com/liberationfonts/liberation-fonts/blob/main/LICENSE) for details.
 
 
-Also see the [PDFBox 3.0 example](https://github.com/manuelbl/SwissQRBill/examples/pdfbox3).
 
 ## QR Code
 

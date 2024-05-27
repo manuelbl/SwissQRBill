@@ -30,6 +30,12 @@ public abstract class AbstractCanvas implements Canvas {
     protected FontMetrics fontMetrics;
 
     /**
+     * Creates a new instance.
+     */
+    protected AbstractCanvas() {
+    }
+
+    /**
      * Initializes the font metrics information for the specified font.
      * <p>
      * The first font in the specified list of fonts is used.

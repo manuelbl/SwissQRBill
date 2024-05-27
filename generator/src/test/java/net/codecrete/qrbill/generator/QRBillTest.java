@@ -11,6 +11,8 @@ import net.codecrete.qrbill.testhelper.SampleData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * Unit tests for generation of A6 bills (PDF and SVG)
  * <p>

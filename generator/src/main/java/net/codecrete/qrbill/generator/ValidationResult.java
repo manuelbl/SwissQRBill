@@ -25,6 +25,13 @@ public class ValidationResult implements Serializable {
     private Bill cleanedBill;
 
     /**
+     * Creates a new validation result instance
+     */
+    public ValidationResult() {
+        // default constructor, for JavaDoc documentation
+    }
+
+    /**
      * Gets the list of validation messages
      *
      * @return the validation messages

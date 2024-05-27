@@ -25,6 +25,8 @@ class BillFormatTest {
         assertEquals(144, format.getResolution());
         assertEquals(5.0, format.getMarginLeft());
         assertEquals(5.0, format.getMarginRight());
+        assertEquals(QrDataSeparator.LF, format.getQrDataSeparator());
+        assertEquals(SPSCharacterSet.LATIN_1_SUBSET, format.getCharacterSet());
     }
 
     @Test
@@ -32,13 +34,15 @@ class BillFormatTest {
         BillFormat format1 = new BillFormat();
         BillFormat format2 = new BillFormat();
         assertEquals(format1.hashCode(), format2.hashCode());
+        format1.setCharacterSet(SPSCharacterSet.FULL_UNICODE);
+        assertNotEquals(format1.hashCode(), format2.hashCode());
     }
 
     @Test
     void toStringTest() {
         BillFormat format = new BillFormat();
         String text = format.toString();
-        assertEquals("BillFormat{outputSize=QR_BILL_ONLY, language=EN, separatorType=DASHED_LINE_WITH_SCISSORS, fontFamily='Helvetica,Arial,\"Liberation Sans\"', graphicsFormat=SVG, resolution=144, marginLeft=5.0, marginRight=5.0, localCountryCode='CH', qrDataSeparator=LF}", text);
+        assertEquals("BillFormat{outputSize=QR_BILL_ONLY, language=EN, separatorType=DASHED_LINE_WITH_SCISSORS, fontFamily='Helvetica,Arial,\"Liberation Sans\"', graphicsFormat=SVG, resolution=144, marginLeft=5.0, marginRight=5.0, localCountryCode='CH', qrDataSeparator=LF, characterSet=LATIN_1_SUBSET}", text);
     }
 
     @Test

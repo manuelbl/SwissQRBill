@@ -86,6 +86,18 @@ class A4BillTest {
         generateAndCompareBill(SampleData.getExample6(), GraphicsFormat.PDF, "a4bill_ex6.pdf");
     }
 
+    @Test
+    void createA4PDFBill8a() {
+        generateAndCompareBill(SampleData.getExample8(), GraphicsFormat.PDF, "a4bill_ex8a.pdf");
+    }
+
+    @Test
+    void createA4PDFBill8b() {
+        Bill bill = SampleData.getExample8();
+        bill.getFormat().setCharacterSet(SPSCharacterSet.EXTENDED_LATIN);
+        generateAndCompareBill(bill, GraphicsFormat.PDF, "a4bill_ex8b.pdf");
+    }
+
     private void generateAndCompareBill(Bill bill, GraphicsFormat graphicsFormat,
                                         String expectedFileName) {
         bill.getFormat().setOutputSize(OutputSize.A4_PORTRAIT_SHEET);

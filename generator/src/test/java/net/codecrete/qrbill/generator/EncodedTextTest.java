@@ -29,7 +29,10 @@ class EncodedTextTest {
     void createText(int sample, QrDataSeparator separator) {
         Bill bill = SampleQrCodeText.getBillData(sample);
         bill.getFormat().setQrDataSeparator(separator);
-        assertEquals(SampleQrCodeText.getQrCodeText(sample), QRBill.encodeQrCodeText(bill));
+        assertEquals(
+                SampleQrCodeText.getQrCodeText(sample, separator == QrDataSeparator.CR_LF ? "\r\n" : "\n"),
+                QRBill.encodeQrCodeText(bill)
+        );
     }
 
     @Test

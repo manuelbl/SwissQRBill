@@ -179,4 +179,31 @@ public class SampleData {
         bill.setUnstructuredMessage("Auftrag 2830188 / Rechnung 2021007834");
         return bill;
     }
+
+    public static Bill getExample8() {
+        Bill bill = new Bill();
+        bill.getFormat().setLanguage(Language.FR);
+        bill.setAccount("CH14 8914 4587 8681 9314 7");
+        Address creditor = new Address();
+        creditor.setName("Buğra Çavdarli");
+        creditor.setStreet("Rue du Lièvre");
+        creditor.setHouseNo("13");
+        creditor.setPostalCode("1219");
+        creditor.setTown("Aïre");
+        creditor.setCountryCode("CH");
+        bill.setCreditor(creditor);
+        bill.setAmount(BigDecimal.valueOf(17900, 2));
+        bill.setCurrency("CHF");
+        Address debtor = new Address();
+        debtor.setName("L'Œil de Bœuf");
+        debtor.setStreet("Route d'Outre Vièze");
+        debtor.setHouseNo("44");
+        debtor.setPostalCode("1871");
+        debtor.setTown("Choëx");
+        debtor.setCountryCode("CH");
+        bill.setDebtor(debtor);
+        bill.setReference("RF35RF23452352345");
+        bill.setUnstructuredMessage("Facture 48390, €10 de réduction");
+        return bill;
+    }
 }

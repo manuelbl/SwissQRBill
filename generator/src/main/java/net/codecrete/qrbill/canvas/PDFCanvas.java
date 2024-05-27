@@ -7,20 +7,20 @@
 package net.codecrete.qrbill.canvas;
 
 import net.codecrete.qrbill.generator.Bill;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 import org.apache.pdfbox.util.Matrix;
 
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.function.Function;
 
 /**
  * Canvas for generating PDF files.
@@ -40,25 +40,15 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
      */
     public static final int NEW_PAGE_AT_END = -2;
 
-    private static final String PDF_FONT = "Helvetica";
-
-    private static PDType1Font regularFont;
-    private static PDType1Font boldFont;
-    private static Function<Path, PDDocument> createDocumentFromPath;
-    private static Function<byte[], PDDocument> createDocumentFromBytes;
-
-
     private PDDocument document;
+    private PDFont regularFont;
+    private PDFont boldFont;
     private PDPageContentStream contentStream;
     private final boolean isContentStreamOwned;
     private int lastStrokingColor = 0;
     private int lastNonStrokingColor = 0;
     private double lastLineWidth = 1;
     private LineStyle lastLineStyle = LineStyle.Solid;
-
-    static {
-        initPdfBox();
-    }
 
     /**
      * Creates a new instance using the specified page size.
@@ -72,15 +62,44 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
      * the QR bill to this canvas. It will be drawn at the origin of the page,
      * i.e. the bottom left corner of the bill will be in the bottom left corner of the page.
      * </p>
+     * <p>
+     * For text, the PDF standard font Helvetica will be used. It does not need to be embedded into
+     * the file and is available on all PDF viewers. But it is restricted to the WinANSI character set.
+     * </p>
      *
      * @param width  page width, in mm
      * @param height page height, in mm
      * @throws IOException thrown if the creation fails
      */
     public PDFCanvas(double width, double height) throws IOException {
-        setupFontMetrics(PDF_FONT);
+        this(width, height, PDFFontSettings.standardHelvetica());
+    }
+
+    /**
+     * Creates a new instance using the specified page size and font.
+     * <p>
+     * A new PDF file with a single page will be created.
+     * It can later be retrieved as a byte array (see {@link #toByteArray()})
+     * or written to an output stream (see {@link #writeTo(OutputStream)}).
+     * </p>
+     * <p>
+     * Call {@link net.codecrete.qrbill.generator.QRBill#draw(Bill, Canvas)} to draw
+     * the QR bill to this canvas. It will be drawn at the origin of the page,
+     * i.e. the bottom left corner of the bill will be in the bottom left corner of the page.
+     * </p>
+     * <p>
+     * Font settings specify what font to use and whether to embed the font in the PDF file.
+     * </p>
+     *
+     * @param width  page width, in mm
+     * @param height page height, in mm
+     * @param fontSettings font settings
+     * @throws IOException thrown if the creation fails
+     */
+    public PDFCanvas(double width, double height, PDFFontSettings fontSettings) throws IOException {
         document = new PDDocument();
         document.getDocumentInformation().setTitle("Swiss QR Bill");
+        configureFonts(document, fontSettings);
         PDPage page = new PDPage(new PDRectangle((float) (width * MM_TO_PT), (float) (height * MM_TO_PT)));
         document.addPage(page);
         contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.OVERWRITE, true);
@@ -105,14 +124,48 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
      * The new PDF file can later be retrieved as a byte array (see {@link #toByteArray()})
      * or written to an output stream (see {@link #writeTo(OutputStream)}).
      * </p>
+     * <p>
+     * For text, the PDF standard font Helvetica will be used. It does not need to be embedded into
+     * the file and is available on all PDF viewers. But it is restricted to the WinANSI character set.
+     * </p>
      *
      * @param path   path to existing PDF document
      * @param pageNo the zero-based number of the page the QR bill should be added to
      * @throws IOException thrown if the creation fails
      */
     public PDFCanvas(Path path, int pageNo) throws IOException {
-        setupFontMetrics(PDF_FONT);
-        document = createDocumentFromPath.apply(path);
+        this(path, pageNo, PDFFontSettings.standardHelvetica());
+    }
+
+    /**
+     * Creates a new instance for adding the QR bill to an existing PDF document.
+     * <p>
+     * The QR bill can either be added to an existing page by specifying the page number
+     * of an existing page (or {@link #LAST_PAGE}), or it can be added to a new page
+     * at the end of the document (see {@link #NEW_PAGE_AT_END}). If a new page is added,
+     * it will have A4 portrait format.
+     * </p>
+     * <p>
+     * Call {@link net.codecrete.qrbill.generator.QRBill#draw(Bill, Canvas)} to draw
+     * the QR bill to this canvas. It will be drawn at the origin of the page,
+     * i.e. the bottom left corner of the bill will be in the bottom left corner of the page.
+     * </p>
+     * <p>
+     * The new PDF file can later be retrieved as a byte array (see {@link #toByteArray()})
+     * or written to an output stream (see {@link #writeTo(OutputStream)}).
+     * </p>
+     * <p>
+     * Font settings specify what font to use and whether to embed the font in the PDF file.
+     * </p>
+     *
+     * @param path   path to existing PDF document
+     * @param pageNo the zero-based number of the page the QR bill should be added to
+     * @param fontSettings font settings
+     * @throws IOException thrown if the creation fails
+     */
+    public PDFCanvas(Path path, int pageNo, PDFFontSettings fontSettings) throws IOException {
+        document = Loader.loadPDF(path.toFile());
+        configureFonts(document, fontSettings);
         preparePage(document, pageNo);
         isContentStreamOwned = true;
         initGraphicsState();
@@ -135,14 +188,48 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
      * The new PDF file can later be retrieved as a byte array (see {@link #toByteArray()})
      * or written to an output stream (see {@link #writeTo(OutputStream)}).
      * </p>
+     * <p>
+     * For text, the PDF standard font Helvetica will be used. It does not need to be embedded into
+     * the file and is available on all PDF viewers. But it is restricted to the WinANSI character set.
+     * </p>
      *
      * @param pdfDocument binary array containing PDF document
      * @param pageNo      the zero-based number of the page the QR bill should be added to
      * @throws IOException thrown if the creation fails
      */
     public PDFCanvas(byte[] pdfDocument, int pageNo) throws IOException {
-        setupFontMetrics(PDF_FONT);
-        document = createDocumentFromBytes.apply(pdfDocument);
+        this(pdfDocument, pageNo, PDFFontSettings.standardHelvetica());
+    }
+
+    /**
+     * Creates a new instance for adding the QR bill to an existing PDF document.
+     * <p>
+     * The QR bill can either be added to an existing page by specifying the page number
+     * of an existing page (or {@link #LAST_PAGE}), or it can be added to a new page
+     * at the end of the document (see {@link #NEW_PAGE_AT_END}). If a new page is added,
+     * it will have A4 portrait format.
+     * </p>
+     * <p>
+     * Call {@link net.codecrete.qrbill.generator.QRBill#draw(Bill, Canvas)} to draw
+     * the QR bill to this canvas. It will be drawn at the origin of the page,
+     * i.e. the bottom left corner of the bill will be in the bottom left corner of the page.
+     * </p>
+     * <p>
+     * The new PDF file can later be retrieved as a byte array (see {@link #toByteArray()})
+     * or written to an output stream (see {@link #writeTo(OutputStream)}).
+     * </p>
+     * <p>
+     * Font settings specify what font to use and whether to embed the font in the PDF file.
+     * </p>
+     *
+     * @param pdfDocument binary array containing PDF document
+     * @param pageNo      the zero-based number of the page the QR bill should be added to
+     * @param fontSettings font settings
+     * @throws IOException thrown if the creation fails
+     */
+    public PDFCanvas(byte[] pdfDocument, int pageNo, PDFFontSettings fontSettings) throws IOException {
+        document = Loader.loadPDF(pdfDocument);
+        configureFonts(document, fontSettings);
         preparePage(document, pageNo);
         isContentStreamOwned = true;
         initGraphicsState();
@@ -167,13 +254,49 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
      * be closed (see {@link #close()}). The instance methods {@link #toByteArray()}
      * and {@link #writeTo(OutputStream)} may not be used and will throw an exception.
      * </p>
+     * <p>
+     * For text, the PDF standard font Helvetica will be used. It does not need to be embedded into
+     * the file and is available on all PDF viewers. But it is restricted to the WinANSI character set.
+     * </p>
      *
      * @param pdfDocument PDF document
      * @param pageNo      the zero-based number of the page the QR bill should be added to
      * @throws IOException thrown if the creation fails
      */
     public PDFCanvas(PDDocument pdfDocument, int pageNo) throws IOException {
-        setupFontMetrics(PDF_FONT);
+        this(pdfDocument, pageNo, PDFFontSettings.standardHelvetica());
+    }
+
+    /**
+     * Creates a new instance for adding the QR bill to the specified PDF document.
+     * <p>
+     * The QR bill can either be added to an existing page by specifying the page number
+     * of an existing page (or {@link #LAST_PAGE}), or it can be added to a new page
+     * at the end of the document (see {@link #NEW_PAGE_AT_END}). If a new page is added,
+     * it will have A4 portrait format.
+     * </p>
+     * <p>
+     * Call {@link net.codecrete.qrbill.generator.QRBill#draw(Bill, Canvas)} to draw
+     * the QR bill to this canvas. It will be drawn at the origin of the page,
+     * i.e. the bottom left corner of the bill will be in the bottom left corner of the page.
+     * </p>
+     * <p>
+     * The PDF document must have been opened with the appropriate PDFBox method,
+     * and it must be saved with a PDFBox method. Before saving it, this instance must
+     * be closed (see {@link #close()}). The instance methods {@link #toByteArray()}
+     * and {@link #writeTo(OutputStream)} may not be used and will throw an exception.
+     * </p>
+     * <p>
+     * Font settings specify what font to use and whether to embed the font in the PDF file.
+     * </p>
+     *
+     * @param pdfDocument PDF document
+     * @param pageNo      the zero-based number of the page the QR bill should be added to
+     * @param fontSettings font settings
+     * @throws IOException thrown if the creation fails
+     */
+    public PDFCanvas(PDDocument pdfDocument, int pageNo, PDFFontSettings fontSettings) throws IOException {
+        configureFonts(pdfDocument, fontSettings);
         preparePage(pdfDocument, pageNo);
         isContentStreamOwned = true;
         initGraphicsState();
@@ -193,18 +316,42 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
      * (see {@link #close()}). Closing it will also reset the graphics state to the state before
      * creating this instance.
      * </p>
+     * <p>
+     * For text, the PDF standard font Helvetica will be used. It does not need to be embedded into
+     * the file and is available on all PDF viewers. But it is restricted to the WinANSI character set.
+     * </p>
      *
      * @param contentStream PDF page content stream
      */
     public PDFCanvas(PDPageContentStream contentStream) {
-        setupFontMetrics(PDF_FONT);
         this.contentStream = contentStream;
         isContentStreamOwned = false;
         try {
+            configureFonts(null, PDFFontSettings.standardHelvetica());
             initGraphicsState();
         } catch (IOException e) {
             // should add throws IOException to constructor in next major release
             throw new UncheckedIOException(e);
+        }
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    private void configureFonts(PDDocument doc, PDFFontSettings fontSettings) throws IOException {
+        setupFontMetrics(fontSettings.getFontFamily());
+
+        switch (fontSettings.getFontEmbedding()) {
+            case STANDARD_HELVETICA:
+                regularFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
+                boldFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
+                break;
+            case EMBEDDED_LIBERATION_SANS:
+                regularFont = PDType0Font.load(doc, PDFCanvas.class.getResource("/fonts/LiberationSans-Regular.ttf").openStream());
+                boldFont = PDType0Font.load(doc, PDFCanvas.class.getResource("/fonts/LiberationSans-Bold.ttf").openStream());
+                break;
+            case EMBEDDED_CUSTOM:
+                regularFont = PDType0Font.load(doc, Files.newInputStream(fontSettings.getRegularFontPath()));
+                boldFont = PDType0Font.load(doc, Files.newInputStream(fontSettings.getBoldFontPath()));
+                break;
         }
     }
 
@@ -237,99 +384,6 @@ public class PDFCanvas extends AbstractCanvas implements ByteArrayResult {
         }
 
         contentStream.saveGraphicsState();
-    }
-
-    private static void initPdfBox() {
-        // use reflection to load PDFBox elements differing between 2.0 and 3.0
-
-        // try PDFBox 3.0 first, then PDFBox 2.0
-        String pdfBox3ErrorMessage = loadPdfBox3Functions();
-        String pdfBox2ErrorMessage = null;
-        if (pdfBox3ErrorMessage != null)
-            pdfBox2ErrorMessage = loadPdfBox2Fonts();
-
-        if (pdfBox3ErrorMessage != null && pdfBox2ErrorMessage != null) {
-            throw new IllegalStateException(String.format("Unable to load PDFBox 3.0 or 2.0: %s, %s",
-                    pdfBox2ErrorMessage, pdfBox3ErrorMessage));
-        }
-    }
-
-    @SuppressWarnings({"java:S1872", "java:S1192", "JavaReflectionMemberAccess"})
-    private static String loadPdfBox3Functions() {
-        try {
-            Class<?> standard14FontsClass = Class.forName("org.apache.pdfbox.pdmodel.font.Standard14Fonts");
-            Class<?> fontNameClass = null;
-            for (Class<?> innerClass : standard14FontsClass.getDeclaredClasses()) {
-                if ("FontName".equals(innerClass.getSimpleName())) {
-                    fontNameClass = innerClass;
-                    break;
-                }
-            }
-            if (fontNameClass == null)
-                return "org.apache.pdfbox.pdmodel.font.Standard14Fonts$FontName not found";
-
-            Constructor<?> pdType1FontClassConstructor = PDType1Font.class.getConstructor(fontNameClass);
-            PDType1Font helveticaFont = null;
-            PDType1Font helveticaBoldFont = null;
-            for (Object enumValue : fontNameClass.getEnumConstants()) {
-                if ("Helvetica".equals(enumValue.toString())) {
-                    helveticaFont = (PDType1Font) pdType1FontClassConstructor.newInstance(enumValue);
-                } else if ("Helvetica-Bold".equals(enumValue.toString())) {
-                    helveticaBoldFont = (PDType1Font) pdType1FontClassConstructor.newInstance(enumValue);
-                }
-            }
-
-            if (helveticaFont == null)
-                return "org.apache.pdfbox.pdmodel.font.Standard14Fonts$FontName.HELVETICA not found";
-            if (helveticaBoldFont == null)
-                return "org.apache.pdfbox.pdmodel.font.Standard14Fonts$FontName.HELVETICA_BOLD not found";
-
-            Class<?> loaderClass = Class.forName("org.apache.pdfbox.Loader");
-            Method loadPdfFromFile = loaderClass.getMethod("loadPDF", File.class);
-            Method loadPdfFromBytes = loaderClass.getMethod("loadPDF", byte[].class);
-
-            regularFont = helveticaFont;
-            boldFont = helveticaBoldFont;
-            setupDocumentCreationLambdas(loadPdfFromFile, loadPdfFromBytes);
-            return null;
-
-        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
-                 InvocationTargetException e) {
-            return e.getMessage();
-        }
-    }
-
-    private static synchronized String loadPdfBox2Fonts() {
-        try {
-            regularFont = (PDType1Font) PDType1Font.class.getField("HELVETICA").get(null);
-            boldFont = (PDType1Font) PDType1Font.class.getField("HELVETICA_BOLD").get(null);
-
-            Method loadPdfFromFile = PDDocument.class.getMethod("load", File.class);
-            Method loadPdfFromBytes = PDDocument.class.getMethod("load", byte[].class);
-            setupDocumentCreationLambdas(loadPdfFromFile, loadPdfFromBytes);
-            return null;
-
-        } catch (NoSuchMethodException | IllegalAccessException | NoSuchFieldException e) {
-            return e.getMessage();
-        }
-    }
-
-    private static void setupDocumentCreationLambdas(Method loadPdfFromFile, Method loadPdfFromBytes) {
-        createDocumentFromPath = path -> {
-            try {
-                return (PDDocument) loadPdfFromFile.invoke(null, path.toFile());
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new IllegalStateException("Failed to invoke org.apache.pdfbox.Loader.loadPDF(java.io.File)", e);
-            }
-        };
-        createDocumentFromBytes = bytes -> {
-            try {
-                //noinspection PrimitiveArrayArgumentToVarargsMethod
-                return (PDDocument) loadPdfFromBytes.invoke(null, bytes);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new IllegalStateException("Failed to invoke org.apache.pdfbox.Loader.loadPDF(byte[])", e);
-            }
-        };
     }
 
     @Override

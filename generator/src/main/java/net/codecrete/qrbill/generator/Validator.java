@@ -6,7 +6,7 @@
 //
 package net.codecrete.qrbill.generator;
 
-import net.codecrete.qrbill.generator.Payments.CleaningResult;
+import net.codecrete.qrbill.generator.StringCleanup.CleaningResult;
 import net.codecrete.qrbill.generator.ValidationMessage.Type;
 
 import java.math.BigDecimal;
@@ -403,7 +403,7 @@ class Validator {
 
     private String cleanedValue(String value, String fieldRoot, String subfield) {
         CleaningResult result = new CleaningResult();
-        Payments.cleanText(value, true, result);
+        StringCleanup.cleanText(value, billOut.getFormat().getCharacterSet(), true, result);
         if (result.replacedUnsupportedChars)
             validationResult.addMessage(Type.WARNING, fieldRoot + subfield, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         return result.cleanedString;
@@ -411,7 +411,7 @@ class Validator {
 
     private String cleanedValue(String value, String fieldName) {
         CleaningResult result = new CleaningResult();
-        Payments.cleanText(value, true, result);
+        StringCleanup.cleanText(value, billOut.getFormat().getCharacterSet(), true, result);
         if (result.replacedUnsupportedChars)
             validationResult.addMessage(Type.WARNING, fieldName, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         return result.cleanedString;

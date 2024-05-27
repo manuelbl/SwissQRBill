@@ -68,6 +68,13 @@ public class Bill implements Serializable {
     private BillFormat format = new BillFormat();
 
     /**
+     * Creates a new instance with default values for the format.
+     */
+    public Bill() {
+        // default constructor, for JavaDoc documentation
+    }
+
+    /**
      * Gets the version of the QR bill standard.
      *
      * @return the version
