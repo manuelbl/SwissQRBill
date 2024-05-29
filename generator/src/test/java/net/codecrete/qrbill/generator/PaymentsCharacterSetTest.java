@@ -71,6 +71,7 @@ class PaymentsCharacterSetTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "a   b  c|a b c", " a  b c|a b c"})
+    @SuppressWarnings("java:S4144")
     void multipleSpaces_becomeSingleSpace(String combinedText) {
         String[] textAndExpected = combinedText.split("\\|");
         assertEquals(textAndExpected[1], Payments.cleanedAndTrimmedText(textAndExpected[0], EXTENDED_LATIN));
@@ -104,10 +105,7 @@ class PaymentsCharacterSetTest {
                 continue;
             builder.add(Arguments.of(ch, String.format("U+%04X", (int) ch)));
         }
-        for (char ch = 0x00A0; ch <= 0x00FF; ch++) {
-            builder.add(Arguments.of(ch, String.format("U+%04X", (int) ch)));
-        }
-        for (char ch = 0x0100; ch <= 0x017F; ch++) {
+        for (char ch = 0x00A0; ch <= 0x017F; ch++) {
             builder.add(Arguments.of(ch, String.format("U+%04X", (int) ch)));
         }
         builder.add(Arguments.of((char) 0x0218, "U+0218"));

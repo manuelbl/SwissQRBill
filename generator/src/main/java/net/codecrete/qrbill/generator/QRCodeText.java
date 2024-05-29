@@ -177,6 +177,7 @@ public class QRCodeText {
         return bill;
     }
 
+    @SuppressWarnings("java:S1066")
     private static void validateHeader(String[] lines) {
         if (lines.length < 31 || lines.length > 34) {
             // A line feed at the end is illegal (cf 4.2.3) but found in practice. Don't be too strict.

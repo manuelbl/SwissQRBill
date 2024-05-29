@@ -14,6 +14,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class SPSCharacterSetTest {
 
     @ParameterizedTest
+    @ValueSource(chars = { '\t', '^', '\u007F', '¡', '¶', 'Õ', 'æ', 'ø', '€' })
+    void latin1Subset_doesNotContainInvalidCharacters(char validChar) {
+        assertFalse(SPSCharacterSet.LATIN_1_SUBSET.contains(validChar));
+    }
+
+    @ParameterizedTest
     @ValueSource(chars = { 'A', 'b', '3', '%', '{', '®', 'Ò', 'æ', 'Ă', 'Ķ', 'Ŕ', 'ț', '€' })
     void extendedLatin_containsValidCharacters(char validChar) {
         assertTrue(SPSCharacterSet.EXTENDED_LATIN.contains(validChar));
@@ -36,4 +42,5 @@ class SPSCharacterSetTest {
     void extendedLatin_doesNotContainInvalidCodePoints(char invalidChar) {
         assertFalse(SPSCharacterSet.EXTENDED_LATIN.contains((int)invalidChar));
     }
+
 }
