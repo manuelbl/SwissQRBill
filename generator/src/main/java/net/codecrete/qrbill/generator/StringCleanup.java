@@ -251,9 +251,9 @@ class StringCleanup {
         String codePointString = new String(new int[] { codePoint }, 0, 1);
 
         // check if canonical decomposition yields a valid string
-        String canoncial = decomposedString(codePointString, characterSet, Normalizer.Form.NFD);
-        if (canoncial != null) {
-            sb.append(canoncial);
+        String canonical = decomposedString(codePointString, characterSet, Normalizer.Form.NFD);
+        if (canonical != null) {
+            sb.append(canonical);
             return true;
         }
 

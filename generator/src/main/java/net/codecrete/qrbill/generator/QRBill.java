@@ -134,7 +134,7 @@ public class QRBill {
      * @see #draw
      */
     public static byte[] generate(Bill bill) {
-        try (Canvas canvas = createCanvas(bill.getFormat())) {
+        try (Canvas canvas = createCanvas(bill)) {
             validateAndGenerate(bill, canvas);
             return ((ByteArrayResult) canvas).toByteArray();
         } catch (IOException e) {
@@ -277,9 +277,10 @@ public class QRBill {
         return QRCodeText.decode(text);
     }
 
-    private static Canvas createCanvas(BillFormat format) throws IOException {
+    private static Canvas createCanvas(Bill bill) throws IOException {
         double drawingWidth;
         double drawingHeight;
+        BillFormat format = bill.getFormat();
 
         // define page size
         switch (format.getOutputSize()) {
@@ -313,7 +314,7 @@ public class QRBill {
                 break;
             case PDF:
                 canvas = new PDFCanvas(drawingWidth, drawingHeight,
-                        format.getCharacterSet() != SPSCharacterSet.LATIN_1_SUBSET
+                        bill.getCharacterSet() != SPSCharacterSet.LATIN_1_SUBSET
                                 ? PDFFontSettings.embeddedLiberationSans()
                                 : PDFFontSettings.standardHelvetica());
                 break;

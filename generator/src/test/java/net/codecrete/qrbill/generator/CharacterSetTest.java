@@ -60,7 +60,7 @@ class CharacterSetTest extends BillDataValidationBase {
     @Test
     void unstructuredMessageReplacementExtendedLatin() {
         bill = SampleData.getExample8();
-        bill.getFormat().setCharacterSet(SPSCharacterSet.EXTENDED_LATIN);
+        bill.setCharacterSet(SPSCharacterSet.EXTENDED_LATIN);
         validate();
         assertNoMessages();
     }

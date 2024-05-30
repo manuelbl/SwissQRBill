@@ -68,7 +68,7 @@ class DecodedTextTest {
     void decodeTextNewline(int sample, String newLine, boolean extraNewLine) {
         QrDataSeparator separator = newLine.equals("\r\n") ? QrDataSeparator.CR_LF : QrDataSeparator.LF;
         Bill bill = SampleQrCodeText.getBillData(sample);
-        bill.getFormat().setQrDataSeparator(separator);
+        bill.setSeparator(separator);
         normalizeSourceBill(bill);
         Bill bill2 = QRBill.decodeQrCodeText(SampleQrCodeText.getQrCodeText(sample, newLine) + (extraNewLine ? newLine : ""));
         normalizeDecodedBill(bill2);
@@ -84,6 +84,7 @@ class DecodedTextTest {
         assertEquals("XXXX", bill2.getReferenceType());
     }
 
+    @SuppressWarnings("java:S1066")
     static void normalizeSourceBill(Bill bill) {
         bill.getFormat().setLanguage(Language.DE);
         bill.setAccount(bill.getAccount().replace(" ", ""));

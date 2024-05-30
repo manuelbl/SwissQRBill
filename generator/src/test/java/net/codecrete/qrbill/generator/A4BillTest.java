@@ -94,7 +94,7 @@ class A4BillTest {
     @Test
     void createA4PDFBill8b() {
         Bill bill = SampleData.getExample8();
-        bill.getFormat().setCharacterSet(SPSCharacterSet.EXTENDED_LATIN);
+        bill.setCharacterSet(SPSCharacterSet.EXTENDED_LATIN);
         generateAndCompareBill(bill, GraphicsFormat.PDF, "a4bill_ex8b.pdf");
     }
 

@@ -41,12 +41,6 @@ public class BillFormat implements Serializable {
     /** ISO country code of local country */
     private String localCountryCode = "CH";
 
-    /** Data separator for QR code data */
-    private QrDataSeparator qrDataSeparator = QrDataSeparator.LF;
-
-    /** Character set used for the QR bill data */
-    private SPSCharacterSet characterSet = SPSCharacterSet.LATIN_1_SUBSET;
-
     /**
      * Creates a new instance with default values
      */
@@ -69,8 +63,6 @@ public class BillFormat implements Serializable {
         marginLeft = format.marginLeft;
         marginRight = format.marginRight;
         localCountryCode = format.localCountryCode;
-        qrDataSeparator = format.qrDataSeparator;
-        characterSet = format.characterSet;
     }
 
     /**
@@ -325,62 +317,6 @@ public class BillFormat implements Serializable {
     }
 
     /**
-     * Gets the line separator for the QR code data fields.
-     * <p>
-     * The default is {@link QrDataSeparator#LF}. There is no need to change it except
-     * for improving compatibility with a non-compliant software processing the QR code data.
-     * </p>
-     * @return the line separator for the QR code data fields.
-     */
-    public QrDataSeparator getQrDataSeparator() {
-        return qrDataSeparator;
-    }
-
-    /**
-     * Sets the line separator for the QR code data fields.
-     * <p>
-     * The default is {@link QrDataSeparator#LF}. There is no need to change it except
-     * for improving compatibility with a non-compliant software processing the QR code data.
-     * </p>
-     * @param qrDataSeparator  the line separator for the QR code data fields.
-     */
-    public void setQrDataSeparator(QrDataSeparator qrDataSeparator) {
-        this.qrDataSeparator = qrDataSeparator;
-    }
-
-    /**
-     * Gets the character set used for the QR bill data.
-     * <p>
-     * Defaults to {@link SPSCharacterSet#LATIN_1_SUBSET}.
-     * </p>
-     * <p>
-     * Until November 21, 2025, {@link SPSCharacterSet#LATIN_1_SUBSET} is the only value that will generate
-     * QR bills accepted by all banks. This will change by November 21, 2025. A release after that date
-     * wil change the default to {@link SPSCharacterSet#EXTENDED_LATIN}.
-     * </p>
-     * @return the character set used for the QR bill data.
-     */
-    public SPSCharacterSet getCharacterSet() {
-        return characterSet;
-    }
-
-    /**
-     * Sets the character set used for the QR bill data.
-     * <p>
-     * Defaults to {@link SPSCharacterSet#LATIN_1_SUBSET}.
-     * </p>
-     * <p>
-     * Until November 21, 2025, {@link SPSCharacterSet#LATIN_1_SUBSET} is the only value that will generate
-     * QR bills accepted by all banks. This will change by November 21, 2025. A release after that date
-     * wil change the default to {@link SPSCharacterSet#EXTENDED_LATIN}.
-     * </p>
-     * @param characterSet  the character set used for the QR bill data.
-     */
-    public void setCharacterSet(SPSCharacterSet characterSet) {
-        this.characterSet = characterSet;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -396,9 +332,7 @@ public class BillFormat implements Serializable {
                 resolution == that.resolution &&
                 marginLeft == that.marginLeft &&
                 marginRight == that.marginRight &&
-                Objects.equals(localCountryCode, that.localCountryCode) &&
-                qrDataSeparator == that.qrDataSeparator &&
-                characterSet == that.characterSet;
+                Objects.equals(localCountryCode, that.localCountryCode);
     }
 
     /**
@@ -407,7 +341,7 @@ public class BillFormat implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(outputSize, language, separatorType, fontFamily, graphicsFormat, resolution, marginLeft,
-                marginLeft, localCountryCode, qrDataSeparator, characterSet);
+                marginLeft, localCountryCode);
     }
 
     /**
@@ -425,8 +359,6 @@ public class BillFormat implements Serializable {
                 ", marginLeft=" + marginLeft +
                 ", marginRight=" + marginRight +
                 ", localCountryCode='" + localCountryCode + '\'' +
-                ", qrDataSeparator=" + qrDataSeparator +
-                ", characterSet=" + characterSet +
                 '}';
     }
 }

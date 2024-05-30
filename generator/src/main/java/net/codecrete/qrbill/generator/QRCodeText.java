@@ -26,7 +26,7 @@ public class QRCodeText {
     private QRCodeText(Bill bill) {
         this.bill = bill;
         textBuilder = new StringBuilder();
-        dataSeparator = bill.getFormat().getQrDataSeparator() == QrDataSeparator.CR_LF ? "\r\n" : "\n";
+        dataSeparator = bill.getSeparator() == QrDataSeparator.CR_LF ? "\r\n" : "\n";
     }
 
     /**
@@ -141,7 +141,7 @@ public class QRCodeText {
 
         Bill bill = new Bill();
         bill.setVersion(Bill.Version.V2_0);
-        bill.getFormat().setQrDataSeparator(text.contains("\r\n") ? QrDataSeparator.CR_LF : QrDataSeparator.LF);
+        bill.setSeparator(text.contains("\r\n") ? QrDataSeparator.CR_LF : QrDataSeparator.LF);
 
         bill.setAccount(lines[3]);
 

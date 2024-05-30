@@ -327,7 +327,7 @@ public class FontMetrics {
         else if (ch >= 0xa0 && ch <= 0x017f) {
             width = charWidthxA0x17F[ch - 0xa0];
         } else if (ch >= 0x0218 && ch <= 0x021b) {
-                width = charWidthx218x21B[ch - 0xa0];
+                width = charWidthx218x21B[ch - 0x0218];
         } else if (ch == 0x2013) {
             width = charNDashWidth;
         } else if (ch == 0x20AC) {

@@ -66,6 +66,10 @@ public class Bill implements Serializable {
     private AlternativeScheme[] alternativeSchemes = null;
     /** Bill format */
     private BillFormat format = new BillFormat();
+    /** Data separator for QR code data */
+    private QrDataSeparator separator = QrDataSeparator.LF;
+    /** Character set used for the QR bill data */
+    private SPSCharacterSet characterSet = SPSCharacterSet.LATIN_1_SUBSET;
 
     /**
      * Creates a new instance with default values for the format.
@@ -240,7 +244,7 @@ public class Bill implements Serializable {
         if (ref != null) {
             if (ref.startsWith("RF"))
                 referenceType = REFERENCE_TYPE_CRED_REF;
-            else if (ref.length() > 0)
+            else if (!ref.isEmpty())
                 referenceType = REFERENCE_TYPE_QR_REF;
             else
                 referenceType = REFERENCE_TYPE_NO_REF;
@@ -413,6 +417,60 @@ public class Bill implements Serializable {
     }
 
     /**
+     * Gets the line separator for the QR code data fields.
+     * <p>
+     * The default is {@link QrDataSeparator#LF}. There is no need to change it except
+     * for improving compatibility with a non-compliant software processing the QR code data.
+     * </p>
+     * @return the line separator for the QR code data fields.
+     */
+    public QrDataSeparator getSeparator() {
+        return separator;
+    }
+
+    /**
+     * Sets the line separator for the QR code data fields.
+     * <p>
+     * The default is {@link QrDataSeparator#LF}. There is no need to change it except
+     * for improving compatibility with a non-compliant software processing the QR code data.
+     * </p>
+     * @param separator  the line separator for the QR code data fields.
+     */
+    public void setSeparator(QrDataSeparator separator) {
+        this.separator = separator;
+    }
+
+    /**
+     * Gets the character set used for the QR bill data.
+     * <p>
+     * Defaults to {@link SPSCharacterSet#LATIN_1_SUBSET}.
+     * </p>
+     * <p>
+     * Until November 21, 2025, {@link SPSCharacterSet#LATIN_1_SUBSET} is the only value that will generate
+     * QR bills accepted by all banks. This will change by November 21, 2025.
+     * </p>
+     * @return the character set used for the QR bill data.
+     */
+    public SPSCharacterSet getCharacterSet() {
+        return characterSet;
+    }
+
+    /**
+     * Sets the character set used for the QR bill data.
+     * <p>
+     * Defaults to {@link SPSCharacterSet#LATIN_1_SUBSET}.
+     * </p>
+     * <p>
+     * Until November 21, 2025, {@link SPSCharacterSet#LATIN_1_SUBSET} is the only value that will generate
+     * QR bills accepted by all banks. This will change by November 21, 2025.
+     * </p>
+     * @param characterSet  the character set used for the QR bill data.
+     */
+    public void setCharacterSet(SPSCharacterSet characterSet) {
+        this.characterSet = characterSet;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -431,7 +489,9 @@ public class Bill implements Serializable {
                 Objects.equals(unstructuredMessage, bill.unstructuredMessage) &&
                 Objects.equals(billInformation, bill.billInformation) &&
                 Arrays.equals(alternativeSchemes, bill.alternativeSchemes) &&
-                Objects.equals(format, bill.format);
+                Objects.equals(format, bill.format) &&
+                Objects.equals(separator, bill.separator) &&
+                Objects.equals(characterSet, bill.characterSet);
     }
 
     /**
@@ -441,7 +501,7 @@ public class Bill implements Serializable {
     public int hashCode() {
 
         int result = Objects.hash(version, amount, currency, account, creditor, referenceType, reference,
-                debtor, unstructuredMessage, billInformation, format);
+                debtor, unstructuredMessage, billInformation, format, separator, characterSet);
         result = 31 * result + Arrays.hashCode(alternativeSchemes);
         return result;
     }
@@ -464,6 +524,8 @@ public class Bill implements Serializable {
                 ", billInformation='" + billInformation + '\'' +
                 ", alternativeSchemes=" + Arrays.toString(alternativeSchemes) +
                 ", format=" + format +
+                ", qrDataSeparator=" + separator +
+                ", characterSet=" + characterSet +
                 '}';
     }
 }

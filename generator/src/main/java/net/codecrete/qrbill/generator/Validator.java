@@ -47,6 +47,8 @@ class Validator {
 
         billOut.setFormat(billIn.getFormat() != null ? new BillFormat(billIn.getFormat()) : null);
         billOut.setVersion(billIn.getVersion());
+        billOut.setSeparator(billIn.getSeparator());
+        billOut.setCharacterSet(billIn.getCharacterSet());
 
         validateAccountNumber();
         validateCreditor();
@@ -403,7 +405,7 @@ class Validator {
 
     private String cleanedValue(String value, String fieldRoot, String subfield) {
         CleaningResult result = new CleaningResult();
-        StringCleanup.cleanText(value, billOut.getFormat().getCharacterSet(), true, result);
+        StringCleanup.cleanText(value, billOut.getCharacterSet(), true, result);
         if (result.replacedUnsupportedChars)
             validationResult.addMessage(Type.WARNING, fieldRoot + subfield, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         return result.cleanedString;
@@ -411,7 +413,7 @@ class Validator {
 
     private String cleanedValue(String value, String fieldName) {
         CleaningResult result = new CleaningResult();
-        StringCleanup.cleanText(value, billOut.getFormat().getCharacterSet(), true, result);
+        StringCleanup.cleanText(value, billOut.getCharacterSet(), true, result);
         if (result.replacedUnsupportedChars)
             validationResult.addMessage(Type.WARNING, fieldName, ValidationConstants.KEY_REPLACED_UNSUPPORTED_CHARACTERS);
         return result.cleanedString;
