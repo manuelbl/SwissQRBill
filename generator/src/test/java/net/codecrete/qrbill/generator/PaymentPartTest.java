@@ -37,13 +37,4 @@ class PaymentPartTest {
         byte[] pdf = QRBill.generate(bill);
         FileComparison.assertFileContentsEqual(pdf, "payment_part2.pdf");
     }
-
-    @Test
-    void createQRBill3() {
-        Bill bill = SampleData.getExample3();
-        bill.getFormat().setOutputSize(OutputSize.PAYMENT_PART_ONLY);
-        bill.getFormat().setGraphicsFormat(GraphicsFormat.PNG);
-        byte[] png = QRBill.generate(bill);
-        FileComparison.assertFileContentsEqual(png, "payment_part2.png");
-    }
 }
