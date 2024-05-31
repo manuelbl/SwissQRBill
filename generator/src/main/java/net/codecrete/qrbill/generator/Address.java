@@ -18,15 +18,25 @@ import java.util.Objects;
  * If fields of both types are set, the address type becomes <i>conflicting</i>.
  * Name and country code must always be set unless all fields are empty.
  * </p>
+ * <p>
+ * Banks will no longer accept payments using the combined address elements starting November 21, 2025.
+ * Therefore, it is recommended to use structured addresses immediately.
+ * </p>
  */
 public class Address implements Serializable {
 
     /**
-     * Address type
+     * Address type.
+     * <p>
+     * Staring November 21, 2025, banks will only accepts payments with structured addresses.
+     * </p>
      */
     public enum Type {
         /**
          * Undetermined
+         * <p>
+         * This is a temporary state and not suitable for a valid payment.
+         * </p>
          */
         UNDETERMINED,
         /**
@@ -39,6 +49,9 @@ public class Address implements Serializable {
         COMBINED_ELEMENTS,
         /**
          * Conflicting
+         * <p>
+         * This a an invalid state and will prevent the generation of a QR bill.
+         * </p>
          */
         CONFLICTING
     }
@@ -127,7 +140,8 @@ public class Address implements Serializable {
      * Address line 1 contains street name, house number or P.O. box.
      * </p>
      * <p>
-     * This field is only used for combined elements addresses and is optional.
+     * This field is only used for combined address elements and is optional.
+     * Starting November 25, 2025, banks will no longer accept payments using combined address elements.
      * </p>
      *
      * @return address line 1
@@ -146,7 +160,8 @@ public class Address implements Serializable {
      * {@link Type#STRUCTURED}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>
-     * This field is only used for combined elements addresses and is optional.
+     * This field is only used for combined address elements and is optional.
+     * Starting November 25, 2025, banks will no longer accept payments using combined address elements.
      * </p>
      *
      * @param addressLine1 address line 1
@@ -162,7 +177,8 @@ public class Address implements Serializable {
      * Address line 2 contains postal code and town.
      * </p>
      * <p>
-     * This field is only used for combined elements addresses. For this type, it's mandatory.
+     * This field is only used for combined address elements. For this type, it's mandatory.
+     * Starting November 25, 2025, banks will no longer accept payments using combined address elements.
      * </p>
      *
      * @return address line 2
@@ -181,7 +197,8 @@ public class Address implements Serializable {
      * {@link Type#STRUCTURED}, in which case it becomes {@link Type#CONFLICTING}.
      * </p>
      * <p>
-     * This field is only used for combined elements addresses. For this type, it's mandatory.
+     * This field is only used for combined address elements. For this type, it's mandatory.
+     * Starting November 25, 2025, banks will no longer accept payments using combined address elements.
      * </p>
      *
      * @param addressLine2 address line 2

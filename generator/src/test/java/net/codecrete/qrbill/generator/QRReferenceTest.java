@@ -69,6 +69,12 @@ class QRReferenceTest {
     }
 
     @Test
+    void allZeroes_isInvalid() {
+        assertFalse(Payments.isValidQRReference("000000000000000000000000000"));
+        assertFalse(Payments.isValidQRReference("00 00000 00000 00000 00000 00000"));
+    }
+
+    @Test
     void rawReferenceWithInvalidCharacters() {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> Payments.createQRReference("1134a56"));
         assertEquals("Invalid character in reference (digits allowed only)", ex.getMessage());

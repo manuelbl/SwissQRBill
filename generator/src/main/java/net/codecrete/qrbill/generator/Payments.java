@@ -283,6 +283,9 @@ public class Payments {
         if (len != 27)
             return false;
 
+        if ("000000000000000000000000000".equals(reference))
+            return false;
+
         return calculateMod10(reference) == 0;
     }
 
