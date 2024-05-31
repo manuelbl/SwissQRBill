@@ -17,9 +17,9 @@ public enum OutputSize {
      */
     A4_PORTRAIT_SHEET,
     /**
-     * QR bill only (about 105 by 210 mm).
+     * QR bill only (about 210 by 105 mm).
      * <p>
-     * This size is suitable if the QR bill has not horizontal line.
+     * This size is suitable if the QR bill has no horizontal line.
      * If the horizontal line is needed and the A4 sheet size is not
      * suitable, use {@link #QR_BILL_EXTRA_SPACE} instead.
      * </p>
@@ -44,5 +44,14 @@ public enum OutputSize {
      * This format applies a white background (as opposed to a transparent one).
      * </p>
      */
-    QR_CODE_WITH_QUIET_ZONE
+    QR_CODE_WITH_QUIET_ZONE,
+    /**
+     * Payment part only (about 148 by 105 mm).
+     * <p>
+     * This size does not include separator lines. It is suitable for displaying the QR bill in online channels.
+     * See <i>Implementation Guidelines QR Bill v2.3</i>, ch. <i>3.8 Layout rules for the online use of the QR-bill</i>
+     * for additional requirements when using this size.
+     * </p>
+     */
+    PAYMENT_PART_ONLY,
 }

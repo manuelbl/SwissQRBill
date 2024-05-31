@@ -90,6 +90,21 @@ public class QRBill {
      */
     public static final double QR_CODE_WITH_QUIET_ZONE_HEIGHT = 56;
 
+    /**
+     * The width of the payment part, in mm
+     *
+     * @see OutputSize#PAYMENT_PART_ONLY
+     */
+    public static final double PAYMENT_PART_WDITH = 148;
+
+    /**
+     * The height of the payment part, in mm
+     *
+     * @see OutputSize#PAYMENT_PART_ONLY
+     */
+    public static final double PAYMENT_PART_HEIGHT = 105;
+
+
     private QRBill() {
         // do not instantiate
     }
@@ -291,6 +306,10 @@ public class QRBill {
             case QR_BILL_EXTRA_SPACE:
                 drawingWidth = QR_BILL_WITH_HORI_LINE_WIDTH;
                 drawingHeight = QR_BILL_WITH_HORI_LINE_HEIGHT;
+                break;
+            case PAYMENT_PART_ONLY:
+                drawingWidth = PAYMENT_PART_WDITH;
+                drawingHeight = PAYMENT_PART_HEIGHT;
                 break;
             case QR_CODE_ONLY:
                 drawingWidth = QR_CODE_WIDTH;

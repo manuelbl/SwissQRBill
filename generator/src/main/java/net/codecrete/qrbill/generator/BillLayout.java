@@ -62,6 +62,7 @@ class BillLayout {
     private double textAscender;
     private double lineSpacing;
     private double extraSpacing;
+    private final double paymentPartHoriOffset;
 
 
     BillLayout(Bill bill, Canvas graphics) {
@@ -71,6 +72,7 @@ class BillLayout {
         this.formatter = new BillTextFormatter(bill, true);
         this.additionalLeftMargin = Math.min(Math.max(bill.getFormat().getMarginLeft(), 5.0), 12.0) - MARGIN;
         this.additionalRightMargin = Math.min(Math.max(bill.getFormat().getMarginRight(), 5.0), 12.0) - MARGIN;
+        this.paymentPartHoriOffset = bill.getFormat().getOutputSize() == OutputSize.PAYMENT_PART_ONLY ? 0 : RECEIPT_WIDTH;
     }
 
     void draw() throws IOException {
@@ -96,6 +98,9 @@ class BillLayout {
             textFontSize--;
         }
         drawPaymentPart();
+
+        if (bill.getFormat().getOutputSize() == OutputSize.PAYMENT_PART_ONLY)
+            return;
 
         // receipt
 
@@ -128,12 +133,12 @@ class BillLayout {
         final double QR_CODE_BOTTOM = 42; // mm
 
         // title section
-        graphics.setTransformation(RECEIPT_WIDTH + MARGIN, 0, 0, 1, 1);
+        graphics.setTransformation(paymentPartHoriOffset + MARGIN, 0, 0, 1, 1);
         yPos = SLIP_HEIGHT - MARGIN - graphics.getAscender(FONT_SIZE_TITLE);
         graphics.putText(getText(MultilingualText.KEY_PAYMENT_PART), 0, yPos, FONT_SIZE_TITLE, true);
 
         // Swiss QR code section
-        qrCode.draw(graphics, RECEIPT_WIDTH + MARGIN, QR_CODE_BOTTOM);
+        qrCode.draw(graphics, paymentPartHoriOffset + MARGIN, QR_CODE_BOTTOM);
 
         // amount section
         drawPaymentPartAmountSection();
@@ -151,7 +156,7 @@ class BillLayout {
         final double AMOUNT_BOX_WIDTH_PP = 40; // mm
         final double AMOUNT_BOX_HEIGHT_PP = 15; // mm
 
-        graphics.setTransformation(RECEIPT_WIDTH + MARGIN, 0, 0, 1, 1);
+        graphics.setTransformation(paymentPartHoriOffset + MARGIN, 0, 0, 1, 1);
 
         // currency
         double y = AMOUNT_SECTION_TOP - labelAscender;
@@ -177,7 +182,7 @@ class BillLayout {
 
     private void drawPaymentPartInformationSection() throws IOException {
 
-        graphics.setTransformation(SLIP_WIDTH - PP_INFO_SECTION_WIDTH - MARGIN, 0, 0, 1, 1);
+        graphics.setTransformation(paymentPartHoriOffset + PP_AMOUNT_SECTION_WIDTH + 2 * MARGIN, 0, 0, 1, 1);
         yPos = SLIP_HEIGHT - MARGIN - labelAscender;
 
         // account and creditor
@@ -211,7 +216,7 @@ class BillLayout {
         if (bill.getAlternativeSchemes() == null || bill.getAlternativeSchemes().length == 0)
             return;
 
-        graphics.setTransformation(RECEIPT_WIDTH + MARGIN, 0, 0, 1, 1);
+        graphics.setTransformation(paymentPartHoriOffset + MARGIN, 0, 0, 1, 1);
         double y = FURTHER_INFORMATION_SECTION_TOP - graphics.getAscender(FONT_SIZE);
         double maxWidth = PAYMENT_PART_WIDTH - 2 * MARGIN - additionalRightMargin;
 
@@ -441,6 +446,7 @@ class BillLayout {
         drawScissorsBlade(x, y, 3, angle, true);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void drawScissorsBlade(double x, double y, double size, double angle, boolean mirrored) throws IOException {
         double scale = size / 476.0;
         double xOffset = 0.36 * size;
@@ -482,6 +488,7 @@ class BillLayout {
 
     // Draws a label and a single line of text at (0, yPos) and advances vertically.
     // yPos is taken as the baseline for the text.
+    @SuppressWarnings("SameParameterValue")
     private void drawLabelAndText(String labelKey, String text) throws IOException {
         drawLabel(labelKey);
         graphics.putText(text, 0, yPos, textFontSize, false);
@@ -550,6 +557,7 @@ class BillLayout {
         graphics.strokePath(CORNER_STROKE_WIDTH, 0, Canvas.LineStyle.Solid, false);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private String truncateText(String text, double maxWidth, int fontSize) {
 
         final double ELLIPSIS_WIDTH = 0.3528; // mm * font size
