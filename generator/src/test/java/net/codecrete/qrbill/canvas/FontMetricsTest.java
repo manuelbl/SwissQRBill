@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Unit tests for {@link FontMetrics} class
  */
 @DisplayName("Font metrics / line wrapping")
+@SuppressWarnings("java:S5976")
 class FontMetricsTest {
 
     private FontMetrics fontMetrics;
@@ -117,5 +118,21 @@ class FontMetricsTest {
     void newlines_hasWidth0() {
         assertEquals(0, fontMetrics.getTextWidth("\n", 10, false));
         assertEquals(0, fontMetrics.getTextWidth("\r", 10, false));
+    }
+
+    @Test
+    void fontFamilyWithQuotes_works() {
+        FontMetrics metrics = new FontMetrics("\"Liberation Sans\"");
+        assertEquals(5.70089, metrics.getTextWidth("ďīŊ", 10, false), 0.0001);
+    }
+
+    @Test
+    void latinExtendedBChars_textWidthWork() {
+        assertEquals(1.76389, fontMetrics.getTextWidth("ș", 10, false), 0.0001);
+    }
+
+    @Test
+    void euroSign_textWidthWork() {
+        assertEquals(2.62467, fontMetrics.getTextWidth("€", 10, false), 0.0001);
     }
 }

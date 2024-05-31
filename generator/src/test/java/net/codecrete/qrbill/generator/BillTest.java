@@ -117,6 +117,14 @@ class BillTest {
     }
 
     @Test
+    void setReferenceToEmpty() {
+        Bill bill = new Bill();
+        bill.setReference("");
+        assertEquals("", bill.getReference());
+        assertEquals(Bill.REFERENCE_TYPE_NO_REF, bill.getReferenceType());
+    }
+
+    @Test
     void createCreditorReference() {
         Bill bill = new Bill();
         bill.createAndSetCreditorReference("ABCD3934803");
@@ -184,6 +192,7 @@ class BillTest {
         assertEquals(SPSCharacterSet.EXTENDED_LATIN, bill.getCharacterSet());
     }
 
+    @SuppressWarnings({"EqualsWithItself", "AssertBetweenInconvertibleTypes"})
     @Test
     void testEqualsTrivial() {
         Bill bill = new Bill();
