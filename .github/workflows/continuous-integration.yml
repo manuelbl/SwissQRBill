@@ -2,6 +2,9 @@ name: Continuous Integration
 
 on: [push, pull_request]
 
+env:
+  MAVEN_ARGS: -B -V -ntp -e -Djansi.passthrough=true -Dstyle.color=always
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -48,7 +51,9 @@ jobs:
         run: ./build_and_run.sh
         working-directory: ./examples/maven_example
       - name: Example "gradle_example"
-        run: ./build_and_run.sh
+        run: |
+          mvn $MAVEN_ARGS package
+          mvn $MAVEN_ARGS exec:exec
         working-directory: ./examples/gradle_example
       - name: Example "kotlin_example"
         run: ./build_and_run.sh
@@ -57,5 +62,7 @@ jobs:
         run: ./build_and_run.sh
         working-directory: ./examples/append_to_pdf
       - name: Example "jasper_reports_rendering"
-        run: ./build_and_run.sh
+        run: |
+          mvn $MAVEN_ARGS package
+          mvn $MAVEN_ARGS exec:exec
         working-directory: ./examples/jasper_reports_rendering
