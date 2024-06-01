@@ -10,9 +10,9 @@ This library implements version 2.2 and 2.3 of the *Swiss Implementation Guideli
 
 ## Introduction
 
-The Swiss QR bill is the QR code based payment format that started on 30 June, 2020. The payment slip is sent electronically in most cases. But it can still be printed at the bottom of an invoice or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app to initiate the payment. The payment just needs to be confirmed.
+The Swiss QR bill is the QR code based payment format that started on 30 June, 2020. The payment slip is sent electronically or presented online in most cases. It can still be printed at the bottom of an invoice or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app to initiate the payment and then just needs to confirm it.
 
- If the invoicing party adds structured bill information (VAT rates, payment conditions etc.) to the QR bill, the payer can automate booking in accounts payable. The invoicing party can also automate the accounts receivable processing as the payment includes all relevant data including a reference number. The Swiss QR bill is convenient for the payer and payee.
+ If the invoicing party adds structured bill information (VAT rates, payment conditions etc.) to the QR bill, the payer can automate the booking in accounts payable. The invoicing party can also automate the accounts receivable processing as the payment includes all relevant data including a reference number. The Swiss QR bill is convenient for the payer and payee.
 
 ![QR Bill](https://raw.githubusercontent.com/wiki/manuelbl/SwissQRBill/images/qr-invoice-e1.svg?sanitize=true)
 
@@ -23,8 +23,8 @@ The Swiss QR bill is the QR code based payment format that started on 30 June, 2
 The Swiss QR bill library:
 
 - generates QR bills as PDF, SVG and PNG files
-- adds a QR bill to existing PDF file
-- generates payment slip (105mm by 210mm), A4 sheets or QR code only
+- adds QR bills to existing PDF files
+- generates payment slips (210mm by 105mm), payment part (148mm by 105mm), A4 sheets or QR code only
 - is multilingual: German, French, Italian, English, Romansh
 - validates the invoice data and provides detailed validation information
 - adds or retrieves structured bill information (according to Swico S1)
@@ -133,13 +133,20 @@ More code examples can be found in the [examples](examples) directory.
 
 More information can be found in the [Wiki](https://github.com/manuelbl/SwissQRBill/wiki). It's the joint Wiki for the .NET and the Java version.
 
-## Font license
 
-Starting on November 21, 2025, QR bills may use an extended character set (*Extended Latin* instead of a subset of Latin-1). This library is ready for it. The extended character set can be enabled by setting the `characterSet` property of `BillFormat` to `EXTENDED_LATIN`. The current default is `LATIN_1_SUBSET`.
+## Changes effective November 21, 2025
+
+On November 21, 2025, the QR bill specification 2.3 and further changes in the Swiss payment standards will become effective. The library is ready for these changes:
+
+- QR bills may use an extended character set (*Extended Latin* instead of a subset of *Latin-1*). To enable it, use `bill.setCharacterSet(CharacterSet.EXTENDED_LATIN)`. Do not use it before November 21, 2025.
+- Payments may no longer use *combined address elements* (aka unstructured addresses). In the library, the related methods have been marked as deprecated. Use structured addresses instead. Stop using unstructured addresses long before November 21, 2025 or customer will be unable to pay your bills.
 
 If the extended character set is used, it is no longer possible to use the PDF standard font *Helvectica* for the text as it is restricted to the smaller *WinANSI* character set. This library will automatically switch to the *Liberation Sans* font and embed the font subset actually used. SVG and PNG ouput can continue to use other fonts.
 
-The [*Liberation Sans*](https://github.com/liberationfonts/liberation-fonts) font is included in the library. It is made available free of charge by Goolge and Red Hat under the [SIL Open Font License, Version 1.1](https://github.com/liberationfonts/liberation-fonts/blob/main/LICENSE). You will likely need to add their copyright and license information to your product. See the [license](https://github.com/liberationfonts/liberation-fonts/blob/main/LICENSE) for details.
+
+## Font license
+
+The library includes the [*Liberation Sans*](https://github.com/liberationfonts/liberation-fonts) font (regular and bold face). It is made available free of charge by Goolge and Red Hat under the [SIL Open Font License, Version 1.1](https://github.com/liberationfonts/liberation-fonts/blob/main/LICENSE). You will likely need to add their copyright and license information to your product. See the [license](https://github.com/liberationfonts/liberation-fonts/blob/main/LICENSE) for details.
 
 
 
