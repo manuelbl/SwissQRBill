@@ -4,19 +4,21 @@
 
 Open-source Java library to generate and decode Swiss QR bills (jointly developed with the [.NET version](https://github.com/manuelbl/SwissQRBill.NET)).
 
-Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill). The code for this demonstration (Rect UI and RESTful service) can be found on [GitHub](https://github.com/manuelbl/SwissQRBillDemo) as well. 
+Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill). The code for this demonstration (React UI and RESTful service) can be found on [GitHub](https://github.com/manuelbl/SwissQRBillDemo) as well.
 
 This library implements version 2.2 and 2.3 of the *Swiss Implementation Guidelines QR-bill* from November 20, 2023, and *Swico Syntax Definition (S1)* from November 23, 2018.
+
 
 ## Introduction
 
 The Swiss QR bill is the QR code based payment format that started on 30 June, 2020. The payment slip is sent electronically or presented online in most cases. It can still be printed at the bottom of an invoice or added to the invoice on a separate sheet. The payer scans the QR code with his/her mobile banking app to initiate the payment and then just needs to confirm it.
 
- If the invoicing party adds structured bill information (VAT rates, payment conditions etc.) to the QR bill, the payer can automate the booking in accounts payable. The invoicing party can also automate the accounts receivable processing as the payment includes all relevant data including a reference number. The Swiss QR bill is convenient for the payer and payee.
+If the invoicing party adds structured bill information (VAT rates, payment conditions etc.) to the QR bill, the payer can automate the booking in accounts payable. The invoicing party can also automate the accounts receivable processing as the payment includes all relevant data including a reference number. The Swiss QR bill is convenient for the payer and payee.
 
 ![QR Bill](https://raw.githubusercontent.com/wiki/manuelbl/SwissQRBill/images/qr-invoice-e1.svg?sanitize=true)
 
 *More [examples](https://github.com/manuelbl/SwissQRBill/wiki/Swiss-QR-Invoice-Examples) can be found in the [Wiki](https://github.com/manuelbl/SwissQRBill/wiki)*
+
 
 ## Features
 
@@ -31,7 +33,7 @@ The Swiss QR bill library:
 - parses the invoice data embedded in the QR code
 - is easy to use (see example below)
 - is small and fast
-- is free – even for commecial use (MIT License)
+- is free – even for commercial use (MIT License)
 - has only two dependencies (PDFBox and Nayuki's QR code generator)
 - is available on Maven Central
 
@@ -143,7 +145,7 @@ More information can be found in the [Wiki](https://github.com/manuelbl/SwissQRB
 
 On November 21, 2025, the QR bill specification 2.3 and further changes in the Swiss payment standards will become effective. The library is ready for these changes:
 
-- QR bills may use an extended character set (*Extended Latin* instead of a subset of *Latin-1*). To enable it, use `bill.setCharacterSet(CharacterSet.EXTENDED_LATIN)`. Do not use it before November 21, 2025.
+- QR bills may use an extended character set (*Extended Latin* instead of a subset of *Latin-1*). To enable it, use `bill.setCharacterSet(SPSCharacterSet.EXTENDED_LATIN)`. Do not use it before November 21, 2025.
 - Payments may no longer use *combined address elements* (aka unstructured addresses). In the library, the related methods have been marked as deprecated. Use structured addresses instead. Stop using unstructured addresses long before November 21, 2025 or customer will be unable to pay your bills.
 
 If the extended character set is used, it is no longer possible to use the PDF standard font *Helvectica* for the text as it is restricted to the smaller *WinANSI* character set. This library will automatically switch to the *Liberation Sans* font and embed the font subset actually used. SVG and PNG ouput can continue to use other fonts.
