@@ -211,6 +211,7 @@ class SwicoBillInformationTest {
         assertNull(billInformation.getDueDate());
     }
 
+    @SuppressWarnings({"EqualsWithItself", "AssertBetweenInconvertibleTypes"})
     @Test
     void testEqualsTrivial() {
         SwicoBillInformation info = new SwicoBillInformation();

@@ -34,6 +34,7 @@ class BillFormatTest {
         assertEquals("BillFormat{outputSize=QR_BILL_ONLY, language=EN, separatorType=DASHED_LINE_WITH_SCISSORS, fontFamily='Helvetica,Arial,\"Liberation Sans\"', graphicsFormat=SVG, resolution=144, marginLeft=5.0, marginRight=5.0, localCountryCode='CH'}", text);
     }
 
+    @SuppressWarnings({"EqualsWithItself", "AssertBetweenInconvertibleTypes"})
     @Test
     void testEqualsTrivial() {
         BillFormat format = new BillFormat();

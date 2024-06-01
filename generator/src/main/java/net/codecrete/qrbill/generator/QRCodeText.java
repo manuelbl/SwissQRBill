@@ -80,6 +80,7 @@ public class QRCodeText {
         return textBuilder.toString();
     }
 
+    @SuppressWarnings("deprecation")
     private void appendPerson(Address address) {
         if (address != null) {
             appendDataField(address.getType() == Address.Type.STRUCTURED ? "S" : "K"); // AdrTp
@@ -217,6 +218,7 @@ public class QRCodeText {
      * @param isOptional indicates if address is optional
      * @return decoded address or {@code null} if address is optional and empty
      */
+    @SuppressWarnings("deprecation")
     private static Address decodeAddress(String[] lines, int startLine, boolean isOptional) {
 
         boolean isEmpty = lines[startLine].isEmpty() && lines[startLine + 1].isEmpty()

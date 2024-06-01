@@ -34,6 +34,7 @@ class AlternativeSchemeTest {
         assertEquals("AlternativeScheme{name='Paymit', instruction='PM,12341234,1241234'}", text);
     }
 
+    @SuppressWarnings({"AssertBetweenInconvertibleTypes", "EqualsWithItself"})
     @Test
     void testEqualsTrivial() {
         AlternativeScheme scheme = new AlternativeScheme("Paymit", "PM,12341234,1241234");

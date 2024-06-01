@@ -223,6 +223,7 @@ class SampleQrCodeText {
             "EPD"
     };
 
+    @SuppressWarnings("deprecation")
     static Bill getBillData4() {
         Bill bill = new Bill();
         bill.getFormat().setLanguage(Language.EN);
@@ -281,6 +282,7 @@ class SampleQrCodeText {
             "EPD"
     };
 
+    @SuppressWarnings("deprecation")
     static Bill getBillData5() {
         Bill bill = new Bill();
         bill.getFormat().setLanguage(Language.EN);

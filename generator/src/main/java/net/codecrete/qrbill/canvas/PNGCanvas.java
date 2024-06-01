@@ -175,6 +175,14 @@ public class PNGCanvas extends Graphics2DCanvas implements ByteArrayResult {
         root.appendChild(physNode);
         metadata.mergeTree(metadata.getNativeMetadataFormatName(), root);
 
+        IIOMetadataNode dimension = createDimensionNode(dpi);
+
+        root = new IIOMetadataNode(PNG_STANDARD_METADATA_FORMAT);
+        root.appendChild(dimension);
+        metadata.mergeTree(PNG_STANDARD_METADATA_FORMAT, root);
+    }
+
+    private static IIOMetadataNode createDimensionNode(int dpi) {
         // standard metadata format
         double pixelsPerMM = dpi / 25.4;
         String pixelsPerMMString = Double.toString(pixelsPerMM);
@@ -188,10 +196,7 @@ public class PNGCanvas extends Graphics2DCanvas implements ByteArrayResult {
         IIOMetadataNode dimension = new IIOMetadataNode("Dimension");
         dimension.appendChild(horizontalPixelSize);
         dimension.appendChild(verticalPixelSize);
-
-        root = new IIOMetadataNode(PNG_STANDARD_METADATA_FORMAT);
-        root.appendChild(dimension);
-        metadata.mergeTree(PNG_STANDARD_METADATA_FORMAT, root);
+        return dimension;
     }
 
     private static void addTextMetadata(IIOMetadata metadata) throws IIOInvalidTreeException {

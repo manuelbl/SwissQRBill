@@ -32,6 +32,7 @@ class AddressTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void setAddressLine1() {
         Address address = new Address();
         address.setAddressLine1("TYUI");
@@ -40,6 +41,7 @@ class AddressTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void setAddressLine2() {
         Address address = new Address();
         address.setAddressLine2("vbnm");
@@ -87,6 +89,7 @@ class AddressTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void conflictTest1() {
         Address address = new Address();
         address.setStreet("XY");
@@ -95,6 +98,7 @@ class AddressTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void conflictTest2() {
         Address address = new Address();
         address.setHouseNo("XY");
@@ -103,6 +107,7 @@ class AddressTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void conflictTest3() {
         Address address = new Address();
         address.setPostalCode("XY");
@@ -111,6 +116,7 @@ class AddressTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void conflictTest4() {
         Address address = new Address();
         address.setTown("XY");
@@ -147,6 +153,7 @@ class AddressTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void clearTestStructured() {
         Address address1 = createStructuredAddress();
         address1.clear();
@@ -162,6 +169,7 @@ class AddressTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void clearTestCombined() {
         Address address1 = createCombinedElementAddress();
         address1.clear();
@@ -184,6 +192,7 @@ class AddressTest {
     }
 
     @Test
+    @SuppressWarnings({"EqualsWithItself", "AssertBetweenInconvertibleTypes"})
     void testEqualsTrivial() {
         Address address = createCombinedElementAddress();
         assertEquals(address, address);
@@ -213,6 +222,7 @@ class AddressTest {
         return address;
     }
 
+    @SuppressWarnings("deprecation")
     private Address createCombinedElementAddress() {
         Address address = new Address();
         address.setName("Cornelia Singer");

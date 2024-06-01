@@ -131,6 +131,7 @@ class CreditorValidationTest extends BillDataValidationBase {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void creditorWithConflictingAddress() {
         bill = SampleData.getExample1();
         bill.getCreditor().setAddressLine1("Conflict");

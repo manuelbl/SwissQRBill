@@ -144,8 +144,12 @@ public class Address implements Serializable {
      * Starting November 25, 2025, banks will no longer accept payments using combined address elements.
      * </p>
      *
+     * @deprecated Use a structured address instead. Will be removed in release 4.
+     *
      * @return address line 1
      */
+    @Deprecated
+    @SuppressWarnings({"DeprecatedIsStillUsed", "java:S1133"})
     public String getAddressLine1() {
         return addressLine1;
     }
@@ -164,8 +168,12 @@ public class Address implements Serializable {
      * Starting November 25, 2025, banks will no longer accept payments using combined address elements.
      * </p>
      *
+     * @deprecated Use a structured address instead. Will be removed in release 4.
+     *
      * @param addressLine1 address line 1
      */
+    @Deprecated
+    @SuppressWarnings({"DeprecatedIsStillUsed", "java:S1133"})
     public void setAddressLine1(String addressLine1) {
         this.addressLine1 = addressLine1;
         changeType(Type.COMBINED_ELEMENTS);
@@ -181,8 +189,12 @@ public class Address implements Serializable {
      * Starting November 25, 2025, banks will no longer accept payments using combined address elements.
      * </p>
      *
+     * @deprecated Use a structured address instead. Will be removed in release 4.
+     *
      * @return address line 2
      */
+    @Deprecated
+    @SuppressWarnings({"DeprecatedIsStillUsed", "java:S1133"})
     public String getAddressLine2() {
         return addressLine2;
     }
@@ -201,8 +213,12 @@ public class Address implements Serializable {
      * Starting November 25, 2025, banks will no longer accept payments using combined address elements.
      * </p>
      *
+     * @deprecated Use a structured address instead. Will be removed in release 4.
+     *
      * @param addressLine2 address line 2
      */
+    @Deprecated
+    @SuppressWarnings({"DeprecatedIsStillUsed", "java:S1133"})
     public void setAddressLine2(String addressLine2) {
         this.addressLine2 = addressLine2;
         changeType(Type.COMBINED_ELEMENTS);

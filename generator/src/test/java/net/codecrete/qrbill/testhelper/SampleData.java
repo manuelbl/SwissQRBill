@@ -115,6 +115,7 @@ public class SampleData {
         return bill;
     }
 
+    @SuppressWarnings("deprecation")
     public static Bill getExample5() {
         Bill bill = new Bill();
         bill.getFormat().setLanguage(Language.RM);
@@ -139,6 +140,7 @@ public class SampleData {
         return bill;
     }
 
+    @SuppressWarnings("deprecation")
     public static Bill getExample6() {
         Bill bill = new Bill();
         bill.getFormat().setLanguage(Language.EN);
@@ -156,6 +158,7 @@ public class SampleData {
         return bill;
     }
 
+    @SuppressWarnings("deprecation")
     public static Bill getExample7() {
         Bill bill = new Bill();
         bill.getFormat().setLanguage(Language.DE);

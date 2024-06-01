@@ -276,6 +276,7 @@ class Validator {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void emitErrorsForConflictingType(Address addressOut, String fieldRoot) {
         if (addressOut.getAddressLine1() != null)
             validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_ADDRESS_LINE_1, ValidationConstants.KEY_ADDRESS_TYPE_CONFLICT);
@@ -291,6 +292,7 @@ class Validator {
             validationResult.addMessage(Type.ERROR, fieldRoot + ValidationConstants.SUBFIELD_TOWN, ValidationConstants.KEY_ADDRESS_TYPE_CONFLICT);
     }
 
+    @SuppressWarnings("deprecation")
     private void checkMandatoryAddressFields(Address addressOut, String fieldRoot) {
         validateMandatory(addressOut.getName(), fieldRoot, ValidationConstants.SUBFIELD_NAME);
         if (addressOut.getType() == Address.Type.STRUCTURED || addressOut.getType() == Address.Type.UNDETERMINED) {
@@ -303,6 +305,7 @@ class Validator {
         validateMandatory(addressOut.getCountryCode(), fieldRoot, ValidationConstants.SUBFIELD_COUNTRY_CODE);
     }
 
+    @SuppressWarnings("deprecation")
     private void cleanAddressFields(Address addressOut, String fieldRoot) {
         addressOut.setName(clippedValue(addressOut.getName(), 70, fieldRoot, ValidationConstants.SUBFIELD_NAME));
         if (addressOut.getType() == Address.Type.STRUCTURED) {
@@ -327,6 +330,7 @@ class Validator {
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     private Address cleanedPerson(Address addressIn, String fieldRoot) {
         if (addressIn == null)
             return null;
@@ -383,6 +387,7 @@ class Validator {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     private String clippedValue(String value, int maxLength, String field) {
         if (value != null && value.length() > maxLength) {
             validationResult.addMessage(Type.WARNING, field, ValidationConstants.KEY_FIELD_VALUE_CLIPPED,

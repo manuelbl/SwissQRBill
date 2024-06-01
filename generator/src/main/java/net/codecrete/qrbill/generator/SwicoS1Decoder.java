@@ -97,7 +97,7 @@ public class SwicoS1Decoder {
     }
 
     private void decodeElement(SwicoBillInformation billInformation, int tag, String value) {
-        if (value.length() == 0)
+        if (value.isEmpty())
             return;
 
         switch (tag) {

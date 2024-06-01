@@ -162,6 +162,7 @@ public class BillTextFormatter {
         return createAmountFormatter().format(amount);
     }
 
+    @SuppressWarnings("deprecation")
     private static String formatAddressForDisplay(Address address, boolean withCountryCode) {
         StringBuilder sb = new StringBuilder();
         sb.append(address.getName());
@@ -228,6 +229,7 @@ public class BillTextFormatter {
         return address != null && !format.getLocalCountryCode().equals(address.getCountryCode());
     }
 
+    @SuppressWarnings("deprecation")
     private Address createReducedAddress(Address address) {
         // Address without street / house number
         Address reducedAddress = new Address();
