@@ -61,5 +61,4 @@ fun main() {
     Files.write(path, svg)
 
     println("QR bill saved at ${path.toAbsolutePath()}")
-    println("Generated with version ${QRBill.getLibraryVersion()}")
 }

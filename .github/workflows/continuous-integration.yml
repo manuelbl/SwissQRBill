@@ -15,11 +15,17 @@ jobs:
         with:
           java-version: '17'
           distribution: 'zulu'
+      - name: Configure unit test GPG key
+        run: |
+          echo -n "$UNIT_TEST_SIGNING_KEY" | base64 --decode | gpg --import
+        env:
+          UNIT_TEST_SIGNING_KEY: ${{ vars.UNIT_TEST_SIGNING_KEY }}
+        shell: bash
       - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@v3
       - name: Build with Gradle
         working-directory: ./generator
-        run: ./gradlew build
+        run: ./gradlew build publishToMavenLocal
       - name: Upload received files from failing tests
         uses: actions/upload-artifact@v4
         if: failure()
@@ -38,3 +44,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ./generator
         run: ./gradlew jacocoTestReport sonar -Dsonar.token=$SONAR_TOKEN
+      - name: Example "maven_example"
+        run: ./build_and_run.sh
+        working-directory: ./examples/maven_example
+      - name: Example "gradle_example"
+        run: ./build_and_run.sh
+        working-directory: ./examples/gradle_example
+      - name: Example "kotlin_example"
+        run: ./build_and_run.sh
+        working-directory: ./examples/kotlin_example
+      - name: Example "append_to_pdf"
+        run: ./build_and_run.sh
+        working-directory: ./examples/append_to_pdf
+      - name: Example "jasper_reports_rendering"
+        run: ./build_and_run.sh
+        working-directory: ./examples/jasper_reports_rendering

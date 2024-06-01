@@ -6,7 +6,7 @@
 
   <groupId>net.codecrete.qrbill</groupId>
   <artifactId>jasper-reports-rendering</artifactId>
-  <version>3.2.0</version>
+  <version>3.3.0</version>
 
   <name>Jasper Reports Rendering</name>
   <description>Demo application using Jasper Reports to generate QR bills.</description>
@@ -22,17 +22,17 @@
     <dependency>
       <groupId>net.sf.jasperreports</groupId>
       <artifactId>jasperreports</artifactId>
-      <version>6.20.5</version>
+      <version>6.21.3</version>
     </dependency>
     <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-all</artifactId>
-      <version>1.16</version>
+      <version>1.17</version>
     </dependency>
     <dependency>
       <groupId>net.codecrete.qrbill</groupId>
       <artifactId>qrbill-generator</artifactId>
-      <version>3.1.1</version>
+      <version>[3.0.0,3.999999]</version>
     </dependency>
   </dependencies>
 
@@ -41,40 +41,40 @@
       <plugins>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.3.2</version>
         </plugin>
         <plugin>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.7.1</version>
+          <version>3.12.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>3.5.0</version>
         </plugin>
         <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.2</version>
+          <version>3.3.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.0</version>
+          <version>3.13.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
+          <version>3.2.5</version>
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.0.2</version>
+          <version>3.4.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
+          <version>3.1.2</version>
         </plugin>
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
+          <version>3.1.2</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -83,7 +83,7 @@
       <plugin>
         <groupId>com.pro-crafting.tools</groupId>
         <artifactId>jasperreports-plugin</artifactId>
-        <version>3.5.6</version>
+        <version>3.6.1</version>
         <executions>
           <execution>
             <phase>process-sources</phase>
@@ -110,7 +110,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.3.0</version>
         <executions>
           <execution>
             <goals>
@@ -119,7 +119,12 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>net.codecrete.qrbill.examples.JasperReportsRendering</mainClass>
+          <executable>java</executable>
+          <arguments>
+            <argument>-classpath</argument>
+            <classpath/>
+            <argument>net.codecrete.qrbill.examples.JasperReportsRendering</argument>
+          </arguments>
         </configuration>
       </plugin>
     </plugins>

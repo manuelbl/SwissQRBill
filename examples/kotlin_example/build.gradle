@@ -1,9 +1,9 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version "1.6.0"
+    id 'org.jetbrains.kotlin.jvm' version "1.9.24"
 }
 
 group 'net.codecrete.qrbill.examples'
-version '3.2.0'
+version '3.3.0'
 
 repositories {
     mavenLocal()
