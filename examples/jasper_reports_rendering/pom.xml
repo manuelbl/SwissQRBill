@@ -32,7 +32,7 @@
     <dependency>
       <groupId>net.codecrete.qrbill</groupId>
       <artifactId>qrbill-generator</artifactId>
-      <version>[3.0.0,3.999999]</version>
+      <version>[3.3.0,3.999999]</version>
     </dependency>
   </dependencies>
 

@@ -26,15 +26,17 @@ import java.util.Map;
  * </p>
  * <ul>
  *     <li>CreditorName</li>
- *     <li>CreditorAddressLine1</li>
- *     <li>CreditorAddressLine2</li>
+ *     <li>CreditorStreet – optional</li>
+ *     <li>CreditorHouseNo – optional</li>
+ *     <li>CreditorPostalCode – optional</li>
+ *     <li>CreditorTown – optional</li>
  *     <li>CreditorCountryCode</li>
  *     <li>Account</li>
  *     <li>DebtorName – optional</li>
- *     <li>DebtorAddressLine1 – optional</li>
- *     <li>DebtorAddressLine2 – optional</li>
- *     <li>CreditorAddressLine1 – optional</li>
- *     <li>CreditorAddressLine2 – optional</li>
+ *     <li>DebtorStreet – optional</li>
+ *     <li>DebtorHouseNo – optional</li>
+ *     <li>DebtorPostalCode – optional</li>
+ *     <li>DebtorTown – optional</li>
  *     <li>DebtorCountryCode – optional</li>
  *     <li>Reference – optional</li>
  *     <li>UnstructuredMessage – optional</li>
@@ -54,13 +56,17 @@ public class QrBillImageDataSource implements JRDataSource {
     public static final String FIELD_QR_BILL_IMAGE = "QrBillImage";
 
     public static final String INPUT_FIELD_CREDITOR_NAME = "CreditorName";
-    public static final String INPUT_FIELD_CREDITOR_ADDRESS_LINE_1 = "CreditorAddressLine1";
-    public static final String INPUT_FIELD_CREDITOR_ADDRESS_LINE_2 = "CreditorAddressLine2";
+    public static final String INPUT_FIELD_CREDITOR_STREET = "CreditorStreet";
+    public static final String INPUT_FIELD_CREDITOR_HOUSE_NO = "CreditorHouseNo";
+    public static final String INPUT_FIELD_CREDITOR_POSTAL_CODE = "CreditorPostalCode";
+    public static final String INPUT_FIELD_CREDITOR_TOWN = "CreditorTown";
     public static final String INPUT_FIELD_CREDITOR_COUNTRY_CODE = "CreditorCountryCode";
     public static final String INPUT_FIELD_ACCOUNT = "Account";
     public static final String INPUT_FIELD_DEBTOR_NAME = "DebtorName";
-    public static final String INPUT_FIELD_DEBTOR_ADDRESS_LINE_1 = "DebtorAddressLine1";
-    public static final String INPUT_FIELD_DEBTOR_ADDRESS_LINE_2 = "DebtorAddressLine2";
+    public static final String INPUT_FIELD_DEBTOR_STREET = "DebtorStreet";
+    public static final String INPUT_FIELD_DEBTOR_HOUSE_NO = "DebtorHouseNo";
+    public static final String INPUT_FIELD_DEBTOR_POSTAL_CODE = "DebtorPostalCode";
+    public static final String INPUT_FIELD_DEBTOR_TOWN = "DebtorTown";
     public static final String INPUT_FIELD_DEBTOR_COUNTRY_CODE = "DebtorCountryCode";
     public static final String INPUT_FIELD_REFERENCE = "Reference";
     public static final String INPUT_FIELD_UNSTRUCTURED_MESSAGE = "UnstructuredMessage";
@@ -76,13 +82,17 @@ public class QrBillImageDataSource implements JRDataSource {
 
     private void initFieldNameMap() {
         addFieldNameMapping(INPUT_FIELD_CREDITOR_NAME);
-        addFieldNameMapping(INPUT_FIELD_CREDITOR_ADDRESS_LINE_1);
-        addFieldNameMapping(INPUT_FIELD_CREDITOR_ADDRESS_LINE_2);
+        addFieldNameMapping(INPUT_FIELD_CREDITOR_STREET);
+        addFieldNameMapping(INPUT_FIELD_CREDITOR_HOUSE_NO);
+        addFieldNameMapping(INPUT_FIELD_CREDITOR_POSTAL_CODE);
+        addFieldNameMapping(INPUT_FIELD_CREDITOR_TOWN);
         addFieldNameMapping(INPUT_FIELD_CREDITOR_COUNTRY_CODE);
         addFieldNameMapping(INPUT_FIELD_ACCOUNT);
         addFieldNameMapping(INPUT_FIELD_DEBTOR_NAME);
-        addFieldNameMapping(INPUT_FIELD_DEBTOR_ADDRESS_LINE_1);
-        addFieldNameMapping(INPUT_FIELD_DEBTOR_ADDRESS_LINE_2);
+        addFieldNameMapping(INPUT_FIELD_DEBTOR_STREET);
+        addFieldNameMapping(INPUT_FIELD_DEBTOR_HOUSE_NO);
+        addFieldNameMapping(INPUT_FIELD_DEBTOR_POSTAL_CODE);
+        addFieldNameMapping(INPUT_FIELD_DEBTOR_TOWN);
         addFieldNameMapping(INPUT_FIELD_DEBTOR_COUNTRY_CODE);
         addFieldNameMapping(INPUT_FIELD_REFERENCE);
         addFieldNameMapping(INPUT_FIELD_UNSTRUCTURED_MESSAGE);
@@ -177,16 +187,20 @@ public class QrBillImageDataSource implements JRDataSource {
 
         var creditor = new Address();
         creditor.setName(getStringValue(INPUT_FIELD_CREDITOR_NAME));
-        creditor.setAddressLine1(getStringValue(INPUT_FIELD_CREDITOR_ADDRESS_LINE_1));
-        creditor.setAddressLine2(getStringValue(INPUT_FIELD_CREDITOR_ADDRESS_LINE_2));
+        creditor.setStreet(getStringValue(INPUT_FIELD_CREDITOR_STREET));
+        creditor.setHouseNo(getStringValue(INPUT_FIELD_CREDITOR_HOUSE_NO));
+        creditor.setPostalCode(getStringValue(INPUT_FIELD_CREDITOR_POSTAL_CODE));
+        creditor.setTown(getStringValue(INPUT_FIELD_CREDITOR_TOWN));
         creditor.setCountryCode(getStringValue(INPUT_FIELD_CREDITOR_COUNTRY_CODE));
         bill.setCreditor(creditor);
         bill.setAccount(getStringValue(INPUT_FIELD_ACCOUNT));
 
         var debtor = new Address();
         debtor.setName(getStringValue(INPUT_FIELD_DEBTOR_NAME));
-        debtor.setAddressLine1(getStringValue(INPUT_FIELD_DEBTOR_ADDRESS_LINE_1));
-        debtor.setAddressLine2(getStringValue(INPUT_FIELD_DEBTOR_ADDRESS_LINE_2));
+        debtor.setStreet(getStringValue(INPUT_FIELD_DEBTOR_STREET));
+        debtor.setHouseNo(getStringValue(INPUT_FIELD_DEBTOR_HOUSE_NO));
+        debtor.setPostalCode(getStringValue(INPUT_FIELD_DEBTOR_POSTAL_CODE));
+        debtor.setTown(getStringValue(INPUT_FIELD_DEBTOR_TOWN));
         debtor.setCountryCode(getStringValue(INPUT_FIELD_DEBTOR_COUNTRY_CODE));
         bill.setDebtor(debtor);
 

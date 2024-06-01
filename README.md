@@ -77,8 +77,10 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
             // Set creditor
             Address creditor = new Address();
             creditor.setName("Robert Schneider AG");
-            creditor.setAddressLine1("Rue du Lac 1268/2/22");
-            creditor.setAddressLine2("2501 Biel");
+            creditor.setStreet("Rue du Lac");
+            creditor.setHouseNo("1268/2/22");
+            creditor.setPostalCode("2501");
+            creditor.setTown("Biel");
             creditor.setCountryCode("CH");
             bill.setCreditor(creditor);
     
@@ -89,16 +91,19 @@ To generate a QR bill, you first fill in the `Bill` data structure and then call
             // Set debtor
             Address debtor = new Address();
             debtor.setName("Pia-Maria Rutschmann-Schnyder");
-            debtor.setAddressLine1("Grosse Marktgasse 28");
-            debtor.setAddressLine2("9400 Rorschach");
+            debtor.setStreet("Grosse Marktgasse");
+            debtor.setHouseNo("28");
+            debtor.setPostalCode("9400");
+            debtor.setTown("Rorschach");
             debtor.setCountryCode("CH");
             bill.setDebtor(debtor);
     
             // Set output format
-            BillFormat format = bill.getFormat();
+            BillFormat format = new BillFormat();
             format.setGraphicsFormat(GraphicsFormat.SVG);
             format.setOutputSize(OutputSize.QR_BILL_ONLY);
             format.setLanguage(Language.DE);
+            bill.setFormat(format);
 
             // Generate QR bill
             byte[] svg = QRBill.generate(bill);

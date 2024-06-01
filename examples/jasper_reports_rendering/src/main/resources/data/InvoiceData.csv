@@ -1,11 +1,11 @@
-InvoiceNumber,CreditorName,CreditorAddressLine1,CreditorAddressLine2,CreditorCountryCode,Account,Reference,UnstructuredMessage,BillInformation,DebtorName,DebtorAddressLine1,DebtorAddressLine2,DebtorCountryCode,Currency,Amount,Language
-1,Mordasini Architekten,Ackerstrasse 28,4057 Basel,CH,CH93666701BCX8EPX5F02,RF1910037484,Ref 10037484,,Alexandra Fankhauser,Hulmenweg 25,8352 Frauenfeld,CH,CHF,40.50,IT
-2,Frey Camponovo SA,Aeneas Silvius-Strasse 28,9500 St. Gallen,CH,CH0828791JBHR7DKK50N9,,Bestellungsreferenz 3829203,,Jorim Peter,Camoletti 28,4051 Locarno,CH,CHF,300.00,DE
-3,Chiesa Pellegrini SA,Naphtastrasse 15,8005 Richterswil,CH,CH3337859H8W8Z84402FI,RF4923409BCYZ230,,//S1/10/802277/11/2007012107/20/55878/30/109532551/32/7.7/40/0:30,Alexander Leuthold,Chemin Wiliam-Barbey 7,1292 Genève,CH,CHF,2832.25,DE
-4,Swisstech AG,Rue Jean-Jaquet 10,1202 Versoix,CH,CH39 3016 2R48 39C9 8000 1,8 76300 65822 54397,,,Eduard Thomann,Industriestrasse 12,8604 Uster,CH,CHF,928.20,FR
-5,Markt Monitoring AG,Rue du Lac 16,1207 Meyrin,CH,CH04 3005 8823 7392 0BC0 1,9 00027 23849 31830,,,Sanna Thönen,Spitzwiesenstrasse 3,8957 Baden,CH,CHF,770.45,DE
-6,Klink Klingenstein,Sonnenhofweg 16,3006 Uznach,CH,CH38445968XH2M35XYKH6,,,//S1/10/10201409/11/190512/20/1400.000-53/30/106017086/31/180508/32/7.7/40/2:10;0:30,Frida Gassmann,Chemin des Vallières 17,1295 Nyon,CH,CHF,2012.50,DE
-7,Carrosserie Meyer AG,Technikumstrasse 30,8400 Zürich,CH,CH8233989K7S515W72SGU,,,,Leonie Zürcher,Weinbergstrasse 31,5502 Hunzenschwil,CH,EUR,2348.10,DE
-8,Schreinerei Habegger & Söhne,Uetlibergstrasse 138,8045 Zürich,CH,CH45 0023 0230 9999 9999 A,RF19 2320 QF02 T323 4UI2 34,Rechnungsnr. 10978 / Auftragsrnr. 3987,,Simon Glarner,Bächliwis 55,8184 Bachenbülach,CH,CHF,287.30,DE
-9,Gromion SA,Avenue Fornachon 34,2034 Peseux,CH,CH95 0020 6206 1057 2901 J,RF23 T208 3QFT 2800 291F,,,Céline Pythoud,Chemin du Grand Record 42,1040 Échallens,CH,CHF,371.20,FR
-10,Robert Schneider AG,Rue du Lac 1268/2/22,2501 Biel,CH,CH44 3199 9123 0008 8901 2,21 00000 00003 13947 14300 09017,Instruction of 15.09.2019,//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010,Pia-Maria Rutschmann-Schnyder,Grosse Marktgasse 28,9400 Rorschach,CH,CHF,123949.75,DE
+InvoiceNumber,CreditorName,CreditorStreet,CreditorHouseNo,CreditorPostalCode,CreditorTown,CreditorCountryCode,Account,Reference,UnstructuredMessage,BillInformation,DebtorName,DebtorStreet,DebtorHouseNo,DebtorPostalCode,DebtorTown,DebtorCountryCode,Currency,Amount,Language
+1,Mordasini Architekten,Ackerstrasse,28,4057,Basel,CH,CH93666701BCX8EPX5F02,RF1910037484,Ref 10037484,,Alexandra Fankhauser,Hulmenweg,25,8352,Frauenfeld,CH,CHF,40.50,IT
+2,Frey Camponovo SA,Aeneas Silvius-Strasse,28,9500,St. Gallen,CH,CH0828791JBHR7DKK50N9,,Bestellungsreferenz 3829203,,Jorim Peter,Camoletti,28,4051,Locarno,CH,CHF,300.00,DE
+3,Chiesa Pellegrini SA,Naphtastrasse,15,8005,Richterswil,CH,CH3337859H8W8Z84402FI,RF4923409BCYZ230,,//S1/10/802277/11/2007012107/20/55878/30/109532551/32/7.7/40/0:30,Alexander Leuthold,Chemin Wiliam-Barbey,7,1292,Genève,CH,CHF,2832.25,DE
+4,Swisstech AG,Rue Jean-Jaquet,10,1202,Versoix,CH,CH39 3016 2R48 39C9 8000 1,8 76300 65822 54397,,,Eduard Thomann,Industriestrasse,12,8604,Uster,CH,CHF,928.20,FR
+5,Markt Monitoring AG,Rue du Lac,16,1207,Meyrin,CH,CH04 3005 8823 7392 0BC0 1,9 00027 23849 31830,,,Sanna Thönen,Spitzwiesenstrasse,3,8957,Baden,CH,CHF,770.45,DE
+6,Klink Klingenstein,Sonnenhofweg,16,3006,Uznach,CH,CH38445968XH2M35XYKH6,,,//S1/10/10201409/11/190512/20/1400.000-53/30/106017086/31/180508/32/7.7/40/2:10;0:30,Frida Gassmann,Chemin des Vallières,17,1295,Nyon,CH,CHF,2012.50,DE
+7,Carrosserie Meyer AG,Technikumstrasse,30,8400,Zürich,CH,CH8233989K7S515W72SGU,,,,Leonie Zürcher,Weinbergstrasse,31,5502,Hunzenschwil,CH,EUR,2348.10,DE
+8,Schreinerei Habegger & Söhne,Uetlibergstrasse,138,8045,Zürich,CH,CH45 0023 0230 9999 9999 A,RF19 2320 QF02 T323 4UI2 34,Rechnungsnr. 10978 / Auftragsrnr. 3987,,Simon Glarner,Bächliwis,55,8184,Bachenbülach,CH,CHF,287.30,DE
+9,Gromion SA,Avenue Fornachon,34,2034,Peseux,CH,CH95 0020 6206 1057 2901 J,RF23 T208 3QFT 2800 291F,,,Céline Pythoud,Chemin du Grand Record,42,1040,Échallens,CH,CHF,371.20,FR
+10,Robert Schneider AG,Rue du Lac,1268/2/22,2501,Biel,CH,CH44 3199 9123 0008 8901 2,21 00000 00003 13947 14300 09017,Instruction of 15.09.2019,//S1/01/20170309/11/10201409/20/14000000/22/36958/30/CH106017086/40/1020/41/3010,Pia-Maria Rutschmann-Schnyder,Grosse Marktgasse,28,9400,Rorschach,CH,CHF,123949.75,DE

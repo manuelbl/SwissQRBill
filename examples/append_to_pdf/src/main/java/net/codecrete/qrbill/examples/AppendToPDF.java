@@ -33,7 +33,7 @@ public class AppendToPDF {
         // Setup bill format
         Bill bill = new Bill();
         bill.getFormat().setLanguage(Language.DE);
-        bill.getFormat().setOutputSize(OutputSize.QR_CODE_ONLY);
+        bill.getFormat().setOutputSize(OutputSize.QR_BILL_ONLY);
 
         // Set account and amount
         bill.setAccount("CH48 0900 0000 8575 7337 2");
@@ -43,8 +43,10 @@ public class AppendToPDF {
         // Set creditor
         Address creditor = new Address();
         creditor.setName("Omnia Trading AG");
-        creditor.setAddressLine1("Allmendweg 30");
-        creditor.setAddressLine2("4528 Zuchwil");
+        creditor.setStreet("Allmendweg");
+        creditor.setHouseNo("30");
+        creditor.setPostalCode("4528");
+        creditor.setTown("Zuchwil");
         creditor.setCountryCode("CH");
         bill.setCreditor(creditor);
 
@@ -55,8 +57,10 @@ public class AppendToPDF {
         // Set debtor
         Address debtor = new Address();
         debtor.setName("Machina Futura AG");
-        debtor.setAddressLine1("Alte Fabrik 3A");
-        debtor.setAddressLine2("8400 Winterthur");
+        debtor.setStreet("Alte Fabrik");
+        debtor.setHouseNo("3A");
+        debtor.setPostalCode("8400");
+        debtor.setTown("Winterthur");
         debtor.setCountryCode("CH");
         bill.setDebtor(debtor);
 
