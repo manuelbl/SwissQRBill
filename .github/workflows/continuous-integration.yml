@@ -20,7 +20,6 @@ jobs:
           distribution: 'zulu'
       - name: Configure unit test GPG key
         run: |
-          env
           echo -n "$UNIT_TEST_SIGNING_KEY" | base64 --decode | gpg --import
         env:
           UNIT_TEST_SIGNING_KEY: ${{ vars.UNIT_TEST_SIGNING_KEY }}
