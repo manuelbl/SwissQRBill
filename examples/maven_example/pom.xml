@@ -7,7 +7,7 @@
     <groupId>net.codecrete.qrbill</groupId>
     <artifactId>maven-example</artifactId>
     <packaging>jar</packaging>
-    <version>3.3.0</version>
+    <version>3.3.1</version>
     <name>QR Bill Maven Example</name>
 
     <properties>
@@ -35,7 +35,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.3.1</version>
                 <executions>
                 <execution>
                     <goals>
