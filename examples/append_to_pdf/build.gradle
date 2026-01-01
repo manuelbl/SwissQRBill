@@ -1,15 +1,17 @@
+plugins {
+    id 'application'
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
 }
 
-apply plugin: 'java'
-
-task execute(type: JavaExec) {
+tasks.register('execute', JavaExec) {
     mainClass = 'net.codecrete.qrbill.examples.AppendToPDF'
     classpath = sourceSets.main.runtimeClasspath
 }
 
 dependencies {
-    implementation group: 'net.codecrete.qrbill', name: 'qrbill-generator', version: '3.+'
+    implementation "net.codecrete.qrbill:qrbill-generator:3.+"
 }

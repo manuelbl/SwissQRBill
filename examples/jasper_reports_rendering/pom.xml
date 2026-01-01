@@ -22,12 +22,12 @@
     <dependency>
       <groupId>net.sf.jasperreports</groupId>
       <artifactId>jasperreports</artifactId>
-      <version>6.21.3</version>
+      <version>7.0.3</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.xmlgraphics</groupId>
-      <artifactId>batik-all</artifactId>
-      <version>1.17</version>
+      <groupId>net.sf.jasperreports</groupId>
+      <artifactId>jasperreports-pdf</artifactId>
+      <version>7.0.3</version>
     </dependency>
     <dependency>
       <groupId>net.codecrete.qrbill</groupId>
@@ -41,40 +41,39 @@
       <plugins>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.3.2</version>
+          <version>3.5.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.12.1</version>
+          <version>3.21.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.5.0</version>
+          <version>3.9.0</version>
         </plugin>
-        <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>3.4.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.13.0</version>
+          <version>3.14.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.2.5</version>
+          <version>3.5.4</version>
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.4.1</version>
+          <version>3.5.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.1.4</version>
         </plugin>
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.1.4</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -82,8 +81,8 @@
     <plugins>
       <plugin>
         <groupId>com.pro-crafting.tools</groupId>
-        <artifactId>jasperreports-plugin</artifactId>
-        <version>3.6.1</version>
+        <artifactId>jasperreports-maven-plugin</artifactId>
+        <version>4.0.1</version>
         <executions>
           <execution>
             <phase>process-sources</phase>
@@ -93,11 +92,10 @@
           </execution>
         </executions>
         <configuration>
-          <compiler>net.sf.jasperreports.engine.design.JRJdtCompiler</compiler>
+          <compiler>net.sf.jasperreports.jdt.JRJdtCompiler</compiler>
           <sourceDirectory>src/main/jasperreports</sourceDirectory>
           <outputDirectory>${project.build.directory}/classes/jasper</outputDirectory>
           <outputFileExt>.jasper</outputFileExt>
-          <xmlValidation>true</xmlValidation>
           <verbose>false</verbose>
           <numberOfThreads>4</numberOfThreads>
           <failOnMissingSourceDirectory>true</failOnMissingSourceDirectory>
@@ -110,7 +108,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.6.3</version>
         <executions>
           <execution>
             <goals>

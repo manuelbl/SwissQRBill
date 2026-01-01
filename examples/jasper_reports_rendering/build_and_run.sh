@@ -1,3 +1,3 @@
 #!/bin/sh
-mvn package
-mvn exec:exec
+./mvnw package
+./mvnw exec:exec
