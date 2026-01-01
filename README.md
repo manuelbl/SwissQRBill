@@ -46,12 +46,12 @@ If you are using *Maven*, add the below dependency to your `pom.xml`:
     <dependency>
         <groupId>net.codecrete.qrbill</groupId>
         <artifactId>qrbill-generator</artifactId>
-        <version>[3.3.1,3.999999]</version>
+        <version>[3.3.2,3.999999]</version>
     </dependency>
 
 If you are using *Gradle*, add the below dependency to your *build.gradle* file:
 
-    compile group: 'net.codecrete.qrbill', name: 'qrbill-generator', version: '3.3.1+'
+    implementation "net.codecrete.qrbill:qrbill-generator:3.3.2+"
 
 To generate a QR bill, you first fill in the `Bill` data structure and then call `QRBill.generate`:
 

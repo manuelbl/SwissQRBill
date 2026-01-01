@@ -7,7 +7,7 @@
     <groupId>net.codecrete.qrbill</groupId>
     <artifactId>maven-example</artifactId>
     <packaging>jar</packaging>
-    <version>3.3.1</version>
+    <version>3.3.2</version>
     <name>QR Bill Maven Example</name>
 
     <properties>
