@@ -128,15 +128,30 @@ public class FileComparison {
     private static void clearPdfID(byte[] pdfData) {
         int offset = pdfData.length - 74;
         while (offset > 0) {
+            // search backwards for "/ID [<"
             if (pdfData[offset] == '/' && pdfData[offset + 1] == 'I' && pdfData[offset + 2] == 'D'
-                    && pdfData[offset + 3] == ' ' && pdfData[offset + 4] == '[' && pdfData[offset + 5] == '<') {
-                for (int i = offset + 6; i < offset + 73; i++)
-                    pdfData[i] = '0';
-                return;
-            }
-            offset--;
+                    && pdfData[offset + 3] == ' ' && pdfData[offset + 4] == '[' && pdfData[offset + 5] == '<')
+                break;
+            offset -= 1;
         }
 
-        throw new AssertionError("PDF ID not found");
+        if (offset == 0)
+            throw new AssertionError("PDF ID not found");
+
+        // overwrite ID with '0' until ">" is found
+        offset += 6;
+        while (pdfData[offset] != '>') {
+            pdfData[offset] = '0';
+            offset++;
+        }
+
+        // skip "> <" and overwrite again
+        if (pdfData[offset] == '>' || pdfData[offset + 1] == ' ' || pdfData[offset + 2] == '<') {
+            offset += 3;
+            while (pdfData[offset] != '>') {
+                pdfData[offset] = '0';
+                offset++;
+            }
+        }
     }
 }
