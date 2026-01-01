@@ -44,7 +44,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ./generator
-        run: ./mvnw jacocoTestReport verify sonar:sonar -Pcoverage -Dsonar.token=$SONAR_TOKEN
+        run: ./mvnw verify sonar:sonar -Pcoverage -Dsonar.token=$SONAR_TOKEN
       - name: Example "maven_example"
         run: |
           mvn $MAVEN_ARGS package
