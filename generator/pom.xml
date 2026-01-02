@@ -6,9 +6,10 @@
 
     <groupId>net.codecrete.qrbill</groupId>
     <artifactId>qrbill-generator</artifactId>
-    <version>3.3.2</version>
+    <version>3.3.2-SNAPSHOT</version>
 
     <properties>
+        <maven.compiler.release>8</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonatype-central-publishing.version>0.9.0</sonatype-central-publishing.version>
         <sonar.projectName>Swiss QR Bill Generator (Java)</sonar.projectName>
@@ -49,9 +50,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.14.1</version>
-                <configuration>
-                    <release>8</release>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -71,8 +69,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <release>25</release>
-                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                    <release>21</release>
                 </configuration>
             </plugin>
             <plugin>
