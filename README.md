@@ -8,6 +8,9 @@ Try it yourself and [create a QR bill](https://www.codecrete.net/qrbill). The co
 
 This library implements version 2.2 and 2.3 of the *Swiss Implementation Guidelines QR-bill* from November 20, 2023, and *Swico Syntax Definition (S1)* from November 23, 2018.
 
+> Release 3.4 of ths library changes the default character set from *Latin-1 Subset* to *Extended Latin*.
+> See the section [Swiss Payment Standards 2025](#swiss-payment-standards-2025) for details.
+
 
 ## Introduction
 
@@ -46,12 +49,12 @@ If you are using *Maven*, add the below dependency to your `pom.xml`:
     <dependency>
         <groupId>net.codecrete.qrbill</groupId>
         <artifactId>qrbill-generator</artifactId>
-        <version>[3.3.2,3.999999]</version>
+        <version>[3.4.0,3.999999]</version>
     </dependency>
 
 If you are using *Gradle*, add the below dependency to your *build.gradle* file:
 
-    implementation "net.codecrete.qrbill:qrbill-generator:3.3.2+"
+    implementation "net.codecrete.qrbill:qrbill-generator:3.4.0+"
 
 To generate a QR bill, you first fill in the `Bill` data structure and then call `QRBill.generate`:
 
@@ -141,12 +144,18 @@ More code examples can be found in the [examples](examples) directory.
 More information can be found in the [Wiki](https://github.com/manuelbl/SwissQRBill/wiki). It's the joint Wiki for the .NET and the Java version.
 
 
-## Changes effective November 21, 2025
+## Swiss Payment Standards 2025
 
-On November 21, 2025, the QR bill specification 2.3 and further changes in the Swiss payment standards will become effective. The library is ready for these changes:
+On November 21, 2025, the Swiss Payment Standards 2025 and the associated QR bill specification
+introduced two changes relevant for QR bills:
 
-- QR bills may use an extended character set (*Extended Latin* instead of a subset of *Latin-1*). To enable it, use `bill.setCharacterSet(SPSCharacterSet.EXTENDED_LATIN)`. Do not use it before November 21, 2025.
-- Payments may no longer use *combined address elements* (aka unstructured addresses). In the library, the related methods have been marked as deprecated. Use structured addresses instead. Stop using unstructured addresses long before November 21, 2025 or customer will be unable to pay your bills.
+- Payments may no longer use *combined address elements* (aka unstructured addresses). Banks will
+only accept bill with structured addresses. In the library, the related methods have been marked as
+deprecated but still work. They will be removed in release 4.0.
+
+- QR bills now support an extended character set (*Extended Latin* instead of a subset of *Latin-1*).
+As of version 3.4 of the library, this is the default. To switch back to the more limited
+character set, use `bill.setCharacterSet(SPSCharacterSet.LATIN_1_SUBSET)`.
 
 If the extended character set is used, it is no longer possible to use the PDF standard font *Helvectica* for the text as it is restricted to the smaller *WinANSI* character set. This library will automatically switch to the *Liberation Sans* font and embed the font subset actually used. SVG and PNG ouput can continue to use other fonts.
 

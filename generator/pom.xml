@@ -6,7 +6,7 @@
 
     <groupId>net.codecrete.qrbill</groupId>
     <artifactId>qrbill-generator</artifactId>
-    <version>3.3.2-SNAPSHOT</version>
+    <version>3.4.0</version>
 
     <properties>
         <maven.compiler.release>8</maven.compiler.release>
