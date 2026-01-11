@@ -69,7 +69,7 @@ public class Bill implements Serializable {
     /** Data separator for QR code data */
     private QrDataSeparator separator = QrDataSeparator.LF;
     /** Character set used for the QR bill data */
-    private SPSCharacterSet characterSet = SPSCharacterSet.LATIN_1_SUBSET;
+    private SPSCharacterSet characterSet = SPSCharacterSet.EXTENDED_LATIN;
 
     /**
      * Creates a new instance with default values for the format.

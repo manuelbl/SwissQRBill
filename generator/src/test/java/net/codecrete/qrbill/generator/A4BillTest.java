@@ -51,6 +51,7 @@ class A4BillTest {
     void createA4PDFBill3() {
         Bill bill = SampleData.getExample3();
         bill.getFormat().setFontFamily("Arial");
+        bill.setCharacterSet(SPSCharacterSet.LATIN_1_SUBSET);
         generateAndCompareBill(bill, GraphicsFormat.PDF, "a4bill_ex3.pdf");
     }
 
@@ -88,7 +89,9 @@ class A4BillTest {
 
     @Test
     void createA4PDFBill8a() {
-        generateAndCompareBill(SampleData.getExample8(), GraphicsFormat.PDF, "a4bill_ex8a.pdf");
+        Bill bill = SampleData.getExample8();
+        bill.setCharacterSet(SPSCharacterSet.LATIN_1_SUBSET);
+        generateAndCompareBill(bill, GraphicsFormat.PDF, "a4bill_ex8a.pdf");
     }
 
     @Test
