@@ -32,10 +32,6 @@ public enum SPSCharacterSet {
      * U+0020 to U+007E), <i>Latin-1 Supplement</i> (Unicode codePoints U+00A0 to U+00FF) and <i>Latin Extended A</i>
      * (Unicode codePoints U+0100 to U+017F) plus a few additional characters (such as the Euro sign).
      * </p>
-     * <p>
-     * This character set has been introduced with SPS 2022 (November 18, 2022) but may not be used in QR bills
-     * until November 21, 2025 when all banks are ready to accept messages with this character set.
-     * </p>
      */
     EXTENDED_LATIN(SPSCharacterSet::isInExtendedLatin),
 

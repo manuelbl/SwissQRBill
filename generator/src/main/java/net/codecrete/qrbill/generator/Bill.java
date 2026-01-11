@@ -443,11 +443,7 @@ public class Bill implements Serializable {
     /**
      * Gets the character set used for the QR bill data.
      * <p>
-     * Defaults to {@link SPSCharacterSet#LATIN_1_SUBSET}.
-     * </p>
-     * <p>
-     * Until November 21, 2025, {@link SPSCharacterSet#LATIN_1_SUBSET} is the only value that will generate
-     * QR bills accepted by all banks. This will change by November 21, 2025.
+     * Defaults to {@link SPSCharacterSet#EXTENDED_LATIN}.
      * </p>
      * @return the character set used for the QR bill data.
      */
@@ -459,10 +455,6 @@ public class Bill implements Serializable {
      * Sets the character set used for the QR bill data.
      * <p>
      * Defaults to {@link SPSCharacterSet#LATIN_1_SUBSET}.
-     * </p>
-     * <p>
-     * Until November 21, 2025, {@link SPSCharacterSet#LATIN_1_SUBSET} is the only value that will generate
-     * QR bills accepted by all banks. This will change by November 21, 2025.
      * </p>
      * @param characterSet  the character set used for the QR bill data.
      */

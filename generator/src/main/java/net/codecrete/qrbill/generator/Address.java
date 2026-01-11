@@ -19,8 +19,8 @@ import java.util.Objects;
  * Name and country code must always be set unless all fields are empty.
  * </p>
  * <p>
- * Banks will no longer accept payments using the combined address elements starting November 21, 2025.
- * Therefore, it is recommended to use structured addresses immediately.
+ * Since November 21, 2025, banks no longer accept payments using the combined address elements.
+ * Use structured addresses instead. Version 4 of this library will remove support for combined address elements.
  * </p>
  */
 public class Address implements Serializable {
@@ -28,7 +28,7 @@ public class Address implements Serializable {
     /**
      * Address type.
      * <p>
-     * Staring November 21, 2025, banks will only accepts payments with structured addresses.
+     * Since November 21, 2025, combined address elements are no longer accepted.
      * </p>
      */
     public enum Type {
@@ -45,12 +45,15 @@ public class Address implements Serializable {
         STRUCTURED,
         /**
          * Combined address elements
+         * <p>
+         * No longer accepted by banks.
+         * </p>
          */
         COMBINED_ELEMENTS,
         /**
          * Conflicting
          * <p>
-         * This a an invalid state and will prevent the generation of a QR bill.
+         * This an invalid state and will prevent the generation of a QR bill.
          * </p>
          */
         CONFLICTING
@@ -141,7 +144,7 @@ public class Address implements Serializable {
      * </p>
      * <p>
      * This field is only used for combined address elements and is optional.
-     * Starting November 25, 2025, banks will no longer accept payments using combined address elements.
+     * Since November 25, 2025, banks no longer accept payments using combined address elements.
      * </p>
      *
      * @deprecated Use a structured address instead. Will be removed in release 4.
@@ -165,7 +168,7 @@ public class Address implements Serializable {
      * </p>
      * <p>
      * This field is only used for combined address elements and is optional.
-     * Starting November 25, 2025, banks will no longer accept payments using combined address elements.
+     * Since November 25, 2025, banks no longer accept payments using combined address elements.
      * </p>
      *
      * @deprecated Use a structured address instead. Will be removed in release 4.
@@ -186,7 +189,7 @@ public class Address implements Serializable {
      * </p>
      * <p>
      * This field is only used for combined address elements. For this type, it's mandatory.
-     * Starting November 25, 2025, banks will no longer accept payments using combined address elements.
+     * Since November 25, 2025, banks no longer accept payments using combined address elements.
      * </p>
      *
      * @deprecated Use a structured address instead. Will be removed in release 4.
@@ -210,7 +213,7 @@ public class Address implements Serializable {
      * </p>
      * <p>
      * This field is only used for combined address elements. For this type, it's mandatory.
-     * Starting November 25, 2025, banks will no longer accept payments using combined address elements.
+     * Since November 25, 2025, banks no longer accept payments using combined address elements.
      * </p>
      *
      * @deprecated Use a structured address instead. Will be removed in release 4.
