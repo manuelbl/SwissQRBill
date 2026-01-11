@@ -4,7 +4,7 @@
 <g font-family="Helvetica,Arial,&quot;Liberation Sans&quot;" transform="translate(0 841.89)">
 <title>Swiss QR Bill</title>
 <g transform="translate(189.921 -0)">
-<text x="0" y="-274.665" font-size="11" font-weight="bold">Part da pajamaint</text>
+<text x="0" y="-274.665" font-size="11" font-weight="bold">Part da pajament</text>
 </g>
 <g transform="translate(189.921 -119.055) scale(1.402)">
 <path fill="#000000" shape-rendering="crispEdges"
@@ -352,7 +352,7 @@ d="M63.543,-59.685l3.307,0l0,-3.858l3.858,0l0,-3.307l-3.858,0l0,-3.858l-3.307,0l
 <text x="0" y="-207.865" font-size="9">Kanton St. Gallen</text>
 <text x="0" y="-187.865" font-size="7" font-weight="bold">Referenza</text>
 <text x="0" y="-177.865" font-size="9">21 00000 00003 13947 14300 09017</text>
-<text x="0" y="-157.865" font-size="7" font-weight="bold">Infuormaziuns supplementaras</text>
+<text x="0" y="-157.865" font-size="7" font-weight="bold">Infurmaziuns supplementaras</text>
 <text x="0" y="-147.865" font-size="9">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed</text>
 <text x="0" y="-137.865" font-size="9">//S1/01/20170309/11/10201409/20/14000000/22/36958/30/C</text>
 <text x="0" y="-127.865" font-size="9">H106017086/40/1020/41/3010</text>
