@@ -8,6 +8,7 @@ package net.codecrete.qrbill.generator;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -139,7 +140,7 @@ public class Bill implements Serializable {
      */
     public void setAmountFromDouble(Double amount) {
         if (amount != null)
-            this.amount = BigDecimal.valueOf((long) (amount * 100 + 0.5), 2);
+            this.amount = BigDecimal.valueOf(amount).setScale(2, RoundingMode.HALF_UP);
         else
             this.amount = null;
     }
