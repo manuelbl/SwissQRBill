@@ -18,12 +18,6 @@ jobs:
         with:
           java-version: '25'
           distribution: 'zulu'
-      - name: Configure unit test GPG key
-        run: |
-          echo -n "$UNIT_TEST_SIGNING_KEY" | base64 --decode | gpg --import
-        env:
-          UNIT_TEST_SIGNING_KEY: ${{ vars.UNIT_TEST_SIGNING_KEY }}
-        shell: bash
       - name: Build with Maven
         working-directory: ./generator
         run: ./mvnw $MAVEN_ARGS install javadoc:javadoc
@@ -44,7 +38,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ./generator
-        run: ./mvnw verify sonar:sonar -Pcoverage -Dsonar.token=$SONAR_TOKEN
+        run: ./mvnw verify sonar:sonar -Dsonar.token=$SONAR_TOKEN
       - name: Example "maven_example"
         run: |
           mvn $MAVEN_ARGS package
