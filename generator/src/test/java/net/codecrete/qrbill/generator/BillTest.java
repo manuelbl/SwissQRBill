@@ -78,6 +78,15 @@ class BillTest {
     }
 
     @Test
+    void setAmountFromDoubleRoundsHalfAwayFromZero() {
+        Bill bill = new Bill();
+        bill.setAmountFromDouble(1.005);
+        assertEquals(BigDecimal.valueOf(101, 2), bill.getAmount());
+        bill.setAmountFromDouble(0.145);
+        assertEquals(BigDecimal.valueOf(15, 2), bill.getAmount());
+    }
+
+    @Test
     void setAmountFromDoubleNull() {
         Bill bill = new Bill();
         bill.setAmountFromDouble(null);
