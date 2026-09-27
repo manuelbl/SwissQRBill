@@ -1,6 +1,11 @@
 name: Continuous Integration
 
-on: [push, pull_request]
+# Tags are excluded: the release workflow calls this workflow to verify the tagged commit.
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_call:
 
 env:
   MAVEN_ARGS: -B -V -ntp -e -Djansi.passthrough=true -Dstyle.color=always
@@ -39,6 +44,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ./generator
         run: ./mvnw verify sonar:sonar -Dsonar.token=$SONAR_TOKEN
+      - name: Point examples at the version under development
+        run: python3 scripts/sync_example_versions.py
       - name: Example "maven_example"
         run: |
           mvn $MAVEN_ARGS package

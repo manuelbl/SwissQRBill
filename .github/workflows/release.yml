@@ -1,0 +1,80 @@
+# Publishes a release to Maven Central when a tag of the form vX.Y.Z is pushed.
+# See docs/releasing.md for the release process and the one-time setup.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  MAVEN_ARGS: -B -V -ntp -e -Djansi.passthrough=true -Dstyle.color=always
+
+jobs:
+
+  verify:
+    uses: ./.github/workflows/continuous-integration.yml
+    # SonarQube needs SONAR_TOKEN.
+    secrets: inherit
+
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    # The environment holds the credentials; it requires approval and only accepts v* tags.
+    environment: release
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check version
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Tag $GITHUB_REF_NAME is not of the form vX.Y.Z"
+            exit 1
+          fi
+          python3 scripts/set_version.py --check "$version"
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'zulu'
+          server-id: central
+          server-username: CENTRAL_USERNAME
+          server-password: CENTRAL_PASSWORD
+      # The GPG key is used in memory by the Bouncy Castle signer; no keyring is needed.
+      - name: Publish to Maven Central
+        run: ./mvnw -Prelease -Dgpg.signer=bc -DskipTests deploy
+        working-directory: ./generator
+        env:
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+          MAVEN_GPG_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+      # The library, sources and Javadoc jars are attached to the GitHub release.
+      - name: Keep jars for GitHub release
+        uses: actions/upload-artifact@v6
+        with:
+          name: jars
+          path: generator/target/qrbill-generator-*.jar
+          if-no-files-found: error
+
+  draft-release:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: jars
+      - name: Create draft GitHub release
+        run: gh release create "$GITHUB_REF_NAME" qrbill-generator-*.jar --repo "$GITHUB_REPOSITORY" --draft --generate-notes --verify-tag
+        env:
+          GH_TOKEN: ${{ github.token }}

@@ -4,11 +4,12 @@ plugins {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
-    implementation("net.codecrete.qrbill:qrbill-generator:3.+")
+    implementation("net.codecrete.qrbill:qrbill-generator:3.4.0")
 }
 
 java {
