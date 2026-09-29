@@ -149,8 +149,12 @@ public class QRBill {
      * @see #draw
      */
     public static byte[] generate(Bill bill) {
+        return generate(bill, true);
+    }
+
+    public static byte[] generate(Bill bill, boolean validate) {
         try (Canvas canvas = createCanvas(bill)) {
-            validateAndGenerate(bill, canvas);
+            validateAndGenerate(bill, canvas, validate);
             return ((ByteArrayResult) canvas).toByteArray();
         } catch (IOException e) {
             throw new QRBillGenerationException(e);
@@ -224,9 +228,13 @@ public class QRBill {
     }
 
     private static void validateAndGenerate(Bill bill, Canvas canvas) throws IOException {
+        validateAndGenerate(bill, canvas, true);
+    }
+
+    private static void validateAndGenerate(Bill bill, Canvas canvas, boolean validate) throws IOException {
         ValidationResult result = Validator.validate(bill);
         Bill cleanedBill = result.getCleanedBill();
-        if (result.hasErrors())
+        if (validate && result.hasErrors())
             throw new QRBillValidationError(result);
 
         if (bill.getFormat().getOutputSize() == OutputSize.QR_CODE_ONLY) {
